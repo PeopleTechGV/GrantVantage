@@ -1,0 +1,2703 @@
+﻿* {
+    box-sizing: border-box;
+    transition: background .15s linear;
+    font-family: 'Segoe UI', Helvetica, Calibri, Arial, sans-serif;
+}
+
+/*#region ACCORDION REPAIR START : RUTUL PATEL : DO NOT DELETE */
+
+
+/*.acc-header {
+    border: 2px solid #cc0000 !important;
+    border-radius: 0 !important;
+    margin: 3px 0 !important;
+    padding-left: 2.2em !important;
+}
+
+.acc-Content {
+    border-radius: 0 !important;
+    background: none repeat scroll 0 0 transparent !important;
+    border: 2px solid #0000CC !important;
+    padding: 3px calc(0.5em + 5px) 3px calc(2.2em + 5px) !important;
+}
+
+.prfle-tab-head {
+    background-color: #e0e0e0;
+    border: medium none !important;
+}
+
+.prfle-tab-head-brown {
+    background-color: #e0e0e0;
+    border: medium none !important;
+}*/
+
+/*#endregion */
+
+html, body {
+    height: 100%;
+}
+
+html, body, ul, li, div, span, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    list-style-type: none;
+}
+
+body {
+    font-size: 12px;
+    line-height: 1.4;
+    background: #FFFFFF;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+a {
+    text-decoration: none;
+    color: #345E8E;
+    cursor: pointer;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+select {
+    -moz-appearance: none;
+    background: url("/content/images/ddlArrow.png") no-repeat scroll right center #ffffff;
+    border: 1px solid #bec0c4;
+    color: #345E8E;
+}
+
+/*#region COMMON LABLE COLOR */
+
+.lblSBblue {
+    color: #345E8E;
+    font-weight: 600;
+}
+
+.lblNblue {
+    color: #345E8E;
+    font-weight: normal;
+}
+
+.lblBblue {
+    color: #345E8E !important;
+    font-weight: bold;
+}
+
+.lblSBbrown {
+    color: #953634;
+    font-weight: 600;
+}
+
+.lblNbrown {
+    color: #953634;
+    font-weight: normal;
+}
+
+.lblBbrown {
+    color: #953634;
+    font-weight: bold;
+}
+
+.lblSBwhite {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.lblNwhite {
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+.lblBwhite {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.lblSBgold {
+    color: #DC9C4D;
+    font-weight: 600;
+}
+
+.lblNgold {
+    color: #DC9C4D;
+    font-weight: normal;
+}
+
+.lblBgold {
+    color: #DC9C4D;
+    font-weight: bold;
+}
+/*#endregion */
+
+/*#region COMMON GRID */
+
+.GridContainer {
+    clear: both;
+    display: inline-block;
+    width: 100%;
+}
+
+    .GridContainer ul.RowHeader, .GridContainer ul.RowContent {
+        width: 100%;
+        border-bottom: 1px solid #DDDDDD;
+        float: left;
+        font-size: 10pt;
+        font-weight: 600;
+        list-style: outside none none;
+        text-align: left;
+        position: relative;
+    }
+
+    .GridContainer ul li {
+        box-sizing: border-box;
+        float: left;
+    }
+
+    .GridContainer ul.RowHeader {
+        border-bottom: 2px solid #953634;
+        color: #953634;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    .GridContainer ul.RowContent {
+        color: #345E8E;
+        padding: 10px 5px;
+    }
+
+        .GridContainer ul.RowContent:hover {
+            background-color: #C6E3FF;
+        }
+
+ul.RowContent .FullContent {
+    clear: both;
+    font-size: 8pt;
+    font-weight: 600;
+    padding: 6px 6px 0;
+    text-align: justify;
+    width: 94.5%;
+}
+
+.GridContainer .CursorPointer * {
+    cursor: pointer;
+}
+
+.RowContent > li > .GearButtonAbsRight {
+    visibility: hidden;
+}
+
+.RowContent:hover > li > .GearButtonAbsRight {
+    visibility: visible;
+}
+
+.ScrollableGrid > ul.RowHeader {
+    padding-right: 22px;
+}
+
+.ScrollableGrid > .ScrollableRow {
+    height: 250px;
+    overflow-y: auto;
+}
+
+.RowContent > .ActionRightBreadCrum {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+}
+
+    .RowContent > .ActionRightBreadCrum a {
+        display: none;
+    }
+
+.RowContent:hover > .ActionRightBreadCrum a {
+    display: block;
+}
+
+.GridCol2 > ul.RowHeader {
+    display: none;
+}
+
+.GridCol2 > ul:nth-child(even) {
+    margin-right: 1%;
+    width: 49.5% !important;
+    padding: 8px !important;
+}
+
+.GridCol2 > ul:nth-child(odd) {
+    width: 49.5% !important;
+    padding: 8px !important;
+}
+
+.GridCol2 > ul > li {
+    float: none;
+    font-size: 9pt;
+    padding: 1px 0;
+    width: 100% !important;
+}
+
+.GridCol2 .GearButtonAbsRight {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+
+.GridCol2 .GridCol2Title {
+    font-weight: bold;
+}
+/*#endregion */
+
+/*#region HEADER */
+header {
+    background-color: #ffffff;
+    display: table;
+    height: 80px;
+    overflow: hidden;
+    padding: 8px;
+    width: 100%;
+}
+
+.Logo {
+    display: table-cell;
+    vertical-align: middle;
+    width: 16%;
+}
+
+    .Logo > a > img {
+        /*width: 100%;*/
+        max-width: 150px;
+        max-height: 60px;
+    }
+
+.HeaderText {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    width: 56%;
+}
+
+    .HeaderText span {
+        font-size: 25px;
+        color: #345E8E;
+    }
+
+        .HeaderText span > .first-letter {
+            font-size: 36px;
+        }
+
+.PoweredBy {
+    width: 14%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+    .PoweredBy > img.SplashTrack {
+        float: right;
+        max-width: 150px;
+        width: 100%;
+    }
+
+.HeaderAction {
+    display: table-cell;
+    vertical-align: middle;
+    width: 14%;
+}
+
+    .HeaderAction > .btnHeader {
+        border: 0 none;
+        color: #345E8E;
+        cursor: pointer;
+        float: right;
+        font-size: 12px;
+        height: 25px;
+        line-height: 20px;
+        padding-bottom: 42px;
+        margin-left: 3px;
+        background-color: transparent;
+        line-height: 12px;
+    }
+
+#slidepanel-login, #slidepanel-signup {
+    background-color: #111111;
+    color: #fff;
+    display: none;
+    float: right;
+    overflow: hidden;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    text-align: left !important;
+    top: 80px;
+    width: 232px;
+    z-index: 999;
+}
+
+    #slidepanel-signup .topbox ul li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        cursor: pointer;
+    }
+/*#endregion */
+
+/*#region SECTION */
+
+section.ContentSection {
+    margin-top: 40px;
+    background-color: #ffffff;
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.contnt-left {
+    background-color: #f2f2f2;
+    display: block;
+    float: left;
+    padding: 12px;
+    width: 274px;
+    z-index: 10;
+}
+
+.contnt-right {
+    border-top: 0 none;
+    float: right;
+    padding: 12px 12px 30px;
+    width: calc(100% - 274px);
+    width: -webkit-calc(100% - 274px);
+    width: -moz-calc(100% - 274px);
+}
+
+ul.LeftMenu {
+    list-style-type: none;
+}
+
+    ul.LeftMenu > li {
+        background-color: #953634;
+        display: block;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        width: 250px;
+    }
+
+        ul.LeftMenu > li > a {
+            background-position: 12px center;
+            color: #ffffff;
+            display: block;
+            font-size: 11pt;
+            font-weight: normal;
+            height: 50px;
+            padding: 15px 10px 15px 48px;
+            text-decoration: none;
+        }
+
+            ul.LeftMenu > li > a:hover, ul.LeftMenu > li > a.activeMenu:hover {
+                background-color: #B9CDE5;
+                color: #345E8E;
+                text-decoration: none;
+            }
+
+            ul.LeftMenu > li > a.activeMenu {
+                background-color: #345E8E;
+                color: #FFFFFF;
+            }
+
+/*#endregion */
+
+/*#region DROP MENU USING GEAR BUTTON */
+
+ul.DropMenu {
+    position: absolute;
+    width: auto !important;
+    float: none !important;
+}
+
+    ul.DropMenu a {
+        display: block;
+        cursor: pointer;
+    }
+
+        ul.DropMenu a.WithIcon {
+            background-position: 2px center;
+            background-repeat: no-repeat;
+            background-size: 16px 16px;
+            padding: 3px 3px 3px 22px;
+            text-align: left;
+        }
+
+        ul.DropMenu a img {
+            height: 20px;
+            width: 20px;
+        }
+
+.DropMenu ul {
+    background-color: #FFFFFF;
+    border: 1px solid #b8cce4;
+    list-style: outside none none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 180px !important;
+    z-index: 5000;
+    visibility: hidden;
+    transition: all 0s linear;
+    transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -webkit-transition-delay: 0s;
+    margin: -2px 0px 0px;
+}
+
+.DropMenu li {
+    float: left;
+    list-style: none;
+}
+
+    /*.dropmenu li a {
+        display: block;
+        text-decoration: none;
+    }*/
+
+    .DropMenu li:hover > ul {
+        background-color: #fff;
+        visibility: visible;
+    }
+
+.DropMenu ul li {
+    float: none;
+    position: relative;
+    width: 100%;
+}
+
+    .DropMenu ul li a {
+        border: 1px solid #FFF;
+        color: #345E8E !important;
+        font-weight: normal;
+        margin: 2px;
+        padding: 3px;
+        text-align: left;
+        text-indent: 0;
+    }
+
+        .DropMenu ul li a:hover {
+            background-color: #fdeeb3;
+            text-decoration: none;
+            border: 1px solid #F3CB53;
+        }
+
+.DropMenu ul ul {
+    position: absolute;
+    right: 100%;
+    top: 0;
+}
+
+.ddlLeftArrow {
+    background-image: url("/Content/images/RightArrow.png");
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 12px auto;
+    float: right;
+    height: 16px;
+    width: 16px;
+}
+
+.ComboDropdown:hover + .DropMenu > li > ul {
+    background-color: #fff;
+    visibility: visible;
+    transition-delay: .35s;
+    -moz-transition-delay: .35s;
+    -webkit-transition-delay: .35s;
+}
+
+.DrpResize > li.floatright {
+    float: none !important;
+}
+
+.DrpResize > li > .btnWithIcon {
+    padding: 3px 3px 3px 22px !important;
+    float: none;
+}
+
+.user-image {
+    padding: 10px 0;
+}
+
+    .user-image > img {
+        border: 2px solid #d88383;
+        border-radius: 60px;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto;
+        width: 78px;
+    }
+
+/*#endregion */
+
+/*#region TOP NAVIGATION BAR */
+
+.NavigationBar {
+    background-color: #345e8e;
+    height: 40px;
+    padding-left: 274px;
+    position: absolute;
+    top: 80px;
+    width: 100% !important;
+    z-index: 20;
+}
+
+    .NavigationBar > .NavItems {
+        float: left;
+        padding: 0 12px;
+        position: relative;
+        width: auto;
+    }
+
+        .NavigationBar > .NavItems > .navTitle {
+            font-size: 10pt;
+            float: left;
+            height: 40px;
+            color: #FFFFFF;
+            font-weight: normal;
+            padding: 10px 0;
+        }
+
+ul.dropdownMenu {
+    background-color: #f2f2f2;
+    float: left;
+    left: 0;
+    list-style-type: none;
+    margin: 0;
+    min-width: 100%;
+    padding: 10px;
+    overflow: auto;
+    max-height: 460px;
+    position: absolute;
+    top: 100%;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9999;
+}
+
+    ul.dropdownMenu > li {
+        background-color: #953634;
+        margin-bottom: 10px;
+        min-width: 120px;
+        max-width: 380px;
+        white-space: nowrap;
+        width: auto;
+    }
+
+        ul.dropdownMenu > li:last-child {
+            margin-bottom: 0;
+        }
+
+        ul.dropdownMenu > li > a {
+            background-position: 10px center;
+            background-size: 16px 16px;
+            color: #ffffff;
+            display: block;
+            font-size: 10pt;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px;
+            text-decoration: none;
+            text-overflow: ellipsis;
+            width: auto;
+        }
+
+            ul.dropdownMenu > li > a.activeMenu {
+                background-color: #345E8E;
+            }
+
+                ul.dropdownMenu > li > a:hover,
+                ul.dropdownMenu > li > a.activeMenu:hover {
+                    background-color: #B9CDE5;
+                    color: #345E8E;
+                    text-decoration: none;
+                }
+
+.hasDropdown:hover {
+    cursor: pointer;
+    background-color: #F2F2F2;
+}
+
+    .hasDropdown:hover > .navTitle {
+        color: #345E8E;
+    }
+
+    .hasDropdown:hover > .dropdownMenu {
+        opacity: 1;
+        visibility: visible;
+    }
+
+ul.menuAqua > li > a {
+    background-color: #31859C;
+    padding: 10px;
+}
+
+    ul.menuAqua > li > a:hover {
+        background-color: #B7DEE8;
+    }
+
+ul.menuPurple > li > a {
+    background-color: #604A7B;
+    padding: 10px;
+}
+
+    ul.menuPurple > li > a:hover {
+        background-color: #CCC1DA;
+    }
+
+ul.hasIcon > li > a {
+    padding-left: 36px;
+}
+
+.MenuItemIcon {
+    float: left;
+    height: 40px;
+    padding: 12px 0;
+    width: 16px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 16px 16px;
+}
+
+    .MenuItemIcon + .navTitle {
+        margin-left: 12px;
+    }
+
+.NavItems > .chevron {
+    background: url("/content/images/Down_Chevron_white_8.png") no-repeat scroll center center transparent;
+    float: right;
+    height: 40px;
+    margin-left: 12px;
+    position: relative;
+    width: 8px;
+}
+
+.navSubTitle {
+    margin-left: 2px;
+}
+
+.dropdownMenu > .dropdownInfo {
+    background-color: transparent;
+    color: #111111;
+    font-weight: 600;
+    margin-bottom: 0;
+    padding: 1px 2px;
+    width: 100%;
+}
+
+ul.multiColumns {
+    width: 490px;
+}
+
+    ul.multiColumns > li {
+        float: left;
+        width: 230px;
+    }
+
+        ul.multiColumns > li:nth-child(odd) {
+            margin-right: 10px;
+        }
+
+        ul.multiColumns > li:nth-last-child(-n+2) {
+            margin-bottom: 0;
+        }
+
+ul.MenuRight {
+    left: auto;
+    right: 0;
+}
+/*#endregion */
+
+/*#region ACTIONBAR */
+.ActionBar {
+    /*float: left;*/
+    display: inline-block;
+    margin-bottom: 5px;
+    width: auto;
+    z-index: 11;
+}
+
+    .ActionBar > li {
+        margin-right: 3px;
+        float: left;
+    }
+
+        .ActionBar > li > a {
+            background-position: 8px center;
+            float: left;
+            font-size: 9pt;
+            font-weight: 600;
+            padding: 6px 6px 6px 28px;
+            text-transform: uppercase;
+        }
+
+
+        .ActionBar > li:hover > .ActionOptions {
+            background-color: #B9CDE5;
+            transition-delay: 0;
+        }
+
+        .ActionBar > li:hover {
+            background-color: #C6E3FF;
+        }
+
+        .ActionBar > li > a:hover {
+            background-color: #C6E3FF;
+        }
+
+        .ActionBar > li > .ActionOptions:hover {
+            background-color: #B9CDE5;
+        }
+
+    .ActionBar .ActionOptions ul.RightMenu {
+        left: 100%;
+        position: absolute;
+        top: 0;
+    }
+
+    .ActionBar .ActionOptions {
+        float: left !important;
+        position: relative;
+        width: 28px !important;
+    }
+
+        .ActionBar .ActionOptions > li > a {
+            float: left;
+            padding: 6px 0;
+            position: relative;
+            text-align: center;
+            width: 28px !important;
+        }
+
+        .ActionBar .ActionOptions img {
+            width: 8px;
+            height: 8px;
+        }
+
+.ActionOptions {
+    background-image: url("/Content/images/cbMenuBorder.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+
+
+
+.ActionBar ul.ChangeStatus {
+    float: left !important;
+    position: relative;
+    width: auto !important;
+}
+
+
+    .ActionBar ul.ChangeStatus li a {
+        background-position: 8px center;
+        display: block;
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+    }
+
+.ActionBar .DropMenu li a {
+    font-size: 9pt;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/*#endregion */
+
+/*#region CSMenu */
+ul.CSMenu {
+    overflow: hidden;
+    width: 100%;
+}
+
+    ul.CSMenu > li {
+        display: block;
+        float: left;
+        margin-right: 10px;
+        width: 280px;
+    }
+
+        ul.CSMenu > li > a {
+            background: url("/Content/images/Options_Gear_24.png") no-repeat scroll 8px center transparent;
+            padding: 12px 12px 12px 38px;
+            font-size: 10pt;
+            font-weight: 600;
+            line-height: 14px;
+            display: block;
+        }
+
+            ul.CSMenu > li > a:hover {
+                background-color: #B9CDE5;
+            }
+/*#endregion */
+
+/*#region FORM */
+
+.form-default {
+    float: left;
+    overflow: hidden;
+    padding: 5px 0;
+    width: 100%;
+}
+
+    .form-default > .form-group {
+        clear: both;
+        float: left;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+        .form-default > .form-group > label {
+            float: left;
+        }
+
+        .form-default > .form-group > input[type="text"], .form-group > select {
+            border: 1px solid #bec0c4;
+            clear: both;
+            color: #345E8E;
+            float: left;
+            font-size: 9pt;
+            padding: 2px;
+            width: 88%;
+            margin-top: 1px;
+        }
+
+        .form-default > .form-group > textarea {
+            border: 1px solid #bec0c4;
+            clear: both;
+            color: #345E8E;
+            float: left;
+            font-size: 9pt;
+            padding: 2px;
+            width: 100%;
+            margin-top: 1px;
+            height: 70px;
+        }
+
+        .form-default > .form-group > input[type=text] ~ input[type=text] {
+            margin-top: 10px;
+        }
+
+        .form-default > .form-group > .label {
+            color: #953634;
+            float: left;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+.form-chkActive {
+    float: right;
+    padding-top: 5px;
+}
+/*#endregion */
+
+/*#region MULTISELECT DROPDOWN */
+
+span.ui-dropdownchecklist {
+    background: url("/content/images/ddlArrow.png") no-repeat scroll right center #ffffff;
+    border: 1px solid #bec0c4;
+    height: 24px;
+    padding-right: 20px;
+    width: 100% !important;
+}
+
+.ui-dropdownchecklist-selector {
+    background: none repeat scroll 0 0 transparent !important;
+    border: medium none !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 3px !important;
+    width: 100% !important;
+}
+
+.ui-dropdownchecklist-text {
+    color: #345e8e !important;
+    height: auto !important;
+    line-height: 15px;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+div.ui-dropdownchecklist {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #aaa;
+    height: auto !important;
+    margin-top: 6px;
+    max-height: 150px;
+    overflow: auto;
+    width: 100% !important;
+}
+
+.ui-dropdownchecklist-item {
+    background: none repeat scroll 0 0 #fff !important;
+    border: medium none !important;
+    margin: 0 !important;
+    padding: 4px !important;
+    width: 100% !important;
+}
+
+    .ui-dropdownchecklist-item > input[type=checkbox] {
+        margin: 2px 5px 2px 2px !important;
+    }
+
+.ui-dropdownchecklist-dropcontainer {
+    border: medium none;
+}
+
+/*#endregion */
+
+/*#region ATTACHMENT GRID OFFER TEMPLATE */
+.GridAttachment {
+    clear: both;
+    width: 100%;
+    display: block;
+    padding: 3px 15px;
+}
+
+    .GridAttachment > ul {
+        width: 100%;
+        overflow: hidden;
+        font-size: 10pt;
+        font-weight: 600;
+        list-style: outside none none;
+        overflow: hidden;
+        text-align: left;
+        position: relative;
+        color: #345E8E;
+    }
+
+    .GridAttachment ul li {
+        float: left;
+        padding-left: 5px;
+    }
+
+    .GridAttachment ul.RowHeader {
+        border-bottom: 1px solid #345E8E;
+        padding: 3px 0;
+    }
+
+    .GridAttachment ul.RowContent {
+        color: #345E8E;
+        padding: 7px 0;
+        font-weight: normal;
+    }
+
+        .GridAttachment ul.RowContent:hover {
+            background-color: #FFEBAF;
+        }
+
+        .GridAttachment ul.RowContent > li > .btnDelete {
+            background-repeat: no-repeat;
+            display: none;
+            float: left;
+            height: 16px;
+            width: 16px;
+        }
+
+        .GridAttachment ul.RowContent:hover > li > .btnDelete {
+            display: block;
+        }
+
+/*#endregion */
+
+/*#region MY APPLICATION */
+.ApplicationBox {
+    background-color: #F6F6F6;
+    border: 1px solid #D6D6D6;
+    display: block;
+    float: left;
+    margin-bottom: 12px;
+    padding: 2px;
+    width: 100%;
+}
+
+
+    .ApplicationBox > ul.boxHeader {
+        background-color: #e6e6e6;
+        border-bottom: medium none;
+        cursor: pointer;
+        float: left;
+        margin-bottom: 2px;
+        padding: 8px;
+        width: 100%;
+    }
+
+        .ApplicationBox > ul.boxHeader > li {
+            float: left;
+            font-weight: bold;
+            color: #953634;
+        }
+
+
+    .ApplicationBox .prfle-tab-head {
+        border-bottom: medium none;
+    }
+
+.SelectedBox {
+    border: 1px solid #B9CDE5 !important;
+    -webkit-box-shadow: 0 7px 6px -6px #bdbdbd;
+    -moz-box-shadow: 0 7px 6px -6px #bdbdbd;
+    box-shadow: 0 7px 6px -6px #bdbdbd;
+}
+
+
+ul.vacancy-app-list-selected {
+    background-color: #B9CDE5 !important;
+}
+
+    ul.vacancy-app-list-selected > li {
+        color: #345E8E !important;
+    }
+
+        ul.vacancy-app-list-selected > li:before {
+            color: #953634 !important;
+        }
+
+.AccGrid {
+    margin-left: 2%;
+    width: 97%;
+}
+
+    .AccGrid ul.RowHeader {
+        font-size: 9pt;
+        padding: 3px 5px;
+        border-bottom-width: 1px;
+    }
+
+    .AccGrid ul.RowContent {
+        font-size: 9pt;
+        padding: 7px 5px;
+    }
+
+.lblRight {
+    color: #953634;
+    float: left;
+    font-weight: bold;
+    margin-right: 1%;
+    text-align: right;
+    width: 29%;
+}
+
+.tblSummary {
+    display: block;
+    float: left;
+    margin-left: 22px;
+    padding: 5px 0;
+}
+
+    .tblSummary > .SummaryBox {
+        float: left;
+        padding: 5px 0;
+    }
+
+    .tblSummary span:first-child {
+        color: #953634;
+        font-weight: bold;
+        text-align: right;
+        width: 34%;
+        margin-right: 1%;
+        float: left;
+    }
+
+    .tblSummary span:last-child {
+        width: 65%;
+        float: left;
+    }
+
+/*#endregion */
+
+/*#region DATALIST */
+.DataList {
+    width: 100%;
+    float: left;
+}
+
+    .DataList > li {
+        background-color: #e3e3e3;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        float: left;
+        margin-bottom: 1%;
+        margin-right: 1%;
+        padding: 5px;
+        width: 15%;
+        cursor: pointer;
+    }
+
+        .DataList > li.Active {
+            box-shadow: 0 6px 6px -6px #333;
+        }
+
+        .DataList > li:hover {
+            box-shadow: 0 6px 6px -6px #333;
+        }
+
+        .DataList > li > span.dlTitle {
+            font-size: 9pt;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            float: left;
+        }
+
+        .DataList > li > .SkinImage {
+            width: 100%;
+            margin: 8px 0;
+            float: left;
+        }
+
+            .DataList > li > .SkinImage > img {
+                display: block;
+                margin: 0 auto;
+                width: 80% !important;
+            }
+
+.dlAction {
+    float: left;
+    width: 100%;
+}
+
+    .dlAction > a {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        color: #345e8e;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto;
+        padding: 4px 0;
+        text-align: center;
+        width: 55px;
+    }
+/*#endregion */
+
+.std-width {
+    width: 100%;
+    float: left;
+}
+
+.std_width {
+    width: 100%;
+    float: left;
+}
+
+h1 {
+    font-size: 36px;
+    margin: 5px;
+    color: #315477;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 26px;
+    margin: 5px;
+    color: #315477;
+    font-weight: normal;
+}
+
+    h2.vacancy {
+        font-size: 26px;
+        margin: 5px;
+        color: #315477;
+        font-weight: normal;
+        width: 157px;
+        float: left;
+    }
+
+h3 {
+    font-size: 14px;
+    color: #376092;
+    margin: 0 5px;
+    padding: 0;
+    font-weight: normal;
+}
+
+p {
+    margin: 5px;
+    padding: 0;
+}
+
+.CursorPointer {
+    cursor: pointer;
+}
+
+.Search-Job-Box {
+    background-color: #c4d9f2;
+    background-position: 16px center;
+    background-repeat: no-repeat;
+    float: left;
+    height: 60px;
+    margin-bottom: 10px;
+    margin-right: 1%;
+    padding: 5px 0 5px 60px;
+    position: relative;
+    width: 49.5%;
+}
+
+    .Search-Job-Box:nth-child(even) {
+        margin-right: 0;
+    }
+
+    .Search-Job-Box .Box-Title {
+        float: left;
+        font-weight: 600;
+        padding: 1px;
+        width: 100%;
+    }
+
+    .Search-Job-Box > select, .Search-Job-Box > input {
+        height: 25px;
+        width: 97%;
+    }
+
+.sm-UserPanel {
+    display: none;
+}
+
+.saved-searches * {
+    box-sizing: content-box;
+}
+
+.GearButtonAbsRight {
+    float: right;
+    position: relative;
+    margin-right: 5px;
+}
+
+    .GearButtonAbsRight > li {
+        float: left;
+        margin-left: 5px;
+    }
+
+.GearAbsolute {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+.MobEnable {
+    display: none;
+}
+
+.DrpResize > li > .ActionOptions {
+    display: none;
+}
+
+.ActionBar .EnableResize {
+    display: none;
+}
+
+#DropToggle a {
+    text-transform: uppercase;
+}
+
+.editorContent li {
+    list-style-type: inherit !important;
+}
+
+.editorContent ul > li {
+    list-style-type: disc !important;
+}
+
+.SearchExport {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+.drpMore {
+    background-color: transparent;
+    background-image: url("/Content/images/more.png");
+    background-position: center center;
+    width: 28px;
+    height: 29px;
+}
+
+    .drpMore:hover {
+        background-color: #C6E3FF;
+    }
+
+#DropToggle {
+    float: right !important;
+    margin-bottom: 4px;
+    position: relative;
+    width: 38px;
+}
+
+.btn-icon24 {
+    background-color: transparent;
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    border: 0 none;
+    color: #3B6392;
+    /*Commented is previous color for login for CR-22 By Muneendra*/
+    /*color: #345e8e;*/
+    cursor: pointer;
+    display: inline-block;
+    font-size: 10pt;
+    font-weight: 600;
+    outline: medium none;
+    padding: 8px 8px 8px 40px;
+}
+
+.btn-icon24-right {
+    background-color: transparent;
+    background-position: 90% center;
+    background-repeat: no-repeat;
+    border: 0 none;
+    color: #345e8e;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 10pt;
+    font-weight: 600;
+    outline: medium none;
+    padding: 8px 40px 8px 8px;
+}
+
+.btn-icon16-right {
+    background-color: transparent;
+    background-position: 90% center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    border: 0 none;
+    color: #345e8e;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 10pt;
+    font-weight: 600;
+    outline: medium none;
+    padding: 6px 28px 6px 6px;
+}
+
+    .btn-icon24:hover, .btn-icon24-right:hover, .btn-icon16-right:hover {
+        background-color: #C6E3FF; /*#FFEBAF*/
+    }
+
+.CaseUpper {
+    text-transform: uppercase;
+}
+
+.txtSearch {
+    display: inline-block;
+    border: none !important;
+    border-radius: 4px;
+    color: #345E8E;
+    font-size: 12px;
+    height: 25px;
+    padding: 4px 6px;
+    width: 150px;
+    margin-bottom: 0px !important;
+    vertical-align: middle;
+    box-shadow: none !important;
+}
+
+    .txtSearch:focus, .txtSearch:hover {
+        background: none !important;
+        border-color: none !important;
+        box-shadow: none !important;
+    }
+
+.bordered {
+    border: 1px solid #BEC0C4;
+}
+
+.ShowOnSingle, .ShowOnMulti {
+    display: none;
+}
+
+.TopNotification {
+    opacity: 1;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    display: none;
+    font-size: 15px;
+    text-align: center;
+    z-index: 10;
+}
+
+label.RememberMe {
+    display: inline-block;
+    padding: 9px 0;
+}
+
+    label.RememberMe > input {
+        position: relative;
+        top: 2px;
+        /*width: 13px;*/
+    }
+
+.PasswordHelp {
+    display: inline-block;
+    padding: 12px 0;
+}
+
+    .PasswordHelp > a {
+        text-decoration: underline;
+    }
+
+.NoRecords {
+    color: black;
+    font-size: 9pt;
+    font-style: italic;
+    padding: 6px 3px !important;
+}
+
+ul.AutoWidth {
+    white-space: nowrap;
+    width: auto !important;
+    max-width: 400px;
+}
+
+    ul.AutoWidth > li > a {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+.ui-widget-content {
+    color: #345E8E;
+}
+
+.submenu-right {
+    left: 100%;
+    right: unset !important;
+}
+
+.table-responsive {
+    min-height: 0.01%;
+}
+
+.margin-top40 {
+    margin-top: 40px;
+}
+
+.margin-top75 {
+    margin-top: 75px;
+}
+
+.stick-Actionbar {
+    z-index: 9;
+}
+
+.CommonNotification {
+    opacity: 1;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    display: none;
+    font-size: 15px;
+    text-align: center;
+    z-index: 1001;
+}
+
+.contnt-right, .contnt-left {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+}
+
+.FreezeNavigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.FreezeActionbar {
+    background-color: #f2f2f2;
+    margin: 0;
+    height: 35px;
+    padding: 3px 12px;
+    position: fixed;
+    right: 0;
+    top: 40px;
+}
+
+.FreezeSectionLeft {
+    position: fixed;
+    top: 40px;
+}
+
+.FreezeSearchBox {
+    position: fixed;
+    right: 12px;
+    top: 43px;
+    z-index: 12;
+}
+
+.FreezeDrpMore {
+    position: fixed !important;
+    right: 192px;
+    top: 43px;
+    z-index: 99;
+}
+
+.QuestionForm > .one-div-full {
+    float: left;
+    margin-bottom: 1px;
+    width: 100%;
+    padding: 10px 0;
+}
+
+    .QuestionForm > .one-div-full .detail-select, .QuestionForm > .one-div-full .input-details {
+        margin-bottom: 0;
+    }
+
+.ATSCheckBox > input[type="checkbox"] {
+    float: left;
+    margin: 0 2px 0 0 !important;
+}
+
+.ATSCheckBox > label {
+    float: left;
+    margin-right: 10px;
+    margin-top: -2px;
+}
+
+.fb-button {
+    background: url("/Content/images/Facebook_icon_24.png") no-repeat scroll 3px 3px #3B5999;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 #8a9cc2 inset;
+    cursor: pointer;
+    font-size: 14px;
+    height: 30px;
+    line-height: 23px;
+    padding: 3px 5px 0 35px;
+    text-align: left;
+    width: 175px;
+    color: white;
+}
+
+.lblPending {
+    color: gray;
+    font-style: italic;
+}
+
+.btnUploadAppDocs {
+    display: block;
+    text-align: center;
+    width: 105px;
+}
+
+.ibtUpload {
+    background-color: transparent;
+    background-image: url("/Content/images/add_new_16.png");
+    background-position: center center;
+    border: medium none;
+    height: 22px;
+    width: 22px;
+    cursor: pointer;
+}
+
+    .ibtUpload:hover {
+        background-color: #345E8E;
+        background-image: url("/Content/images/add_new_white_16.png");
+    }
+
+.DropdownClass {
+    background-image: url("/content/images/ddlArrow.png");
+    background-position: right center;
+    background-color: #FFFFFF;
+}
+
+#peopleC-button {
+    background-image: url("/content/images/ddlArrow.png");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-color: #FFFFFF;
+    border-radius: 0;
+    color: #345e8e;
+    padding: 3px;
+    width: 100% !important;
+}
+
+#peopleC-menu {
+    padding: 0;
+}
+
+    #peopleC-menu > li.ui-menu-item {
+        padding: 2px 0 !important;
+        text-indent: 3px;
+    }
+
+        #peopleC-menu > li.ui-menu-item:hover, #peopleC-menu > li.ui-state-focus {
+            border: medium none;
+            background-color: #3399FF;
+            color: #FFFFFF;
+        }
+
+.NoRecordMessage {
+    border: 1px solid #cccccc;
+    box-shadow: 0 0 5px #cccccc;
+    color: #953634;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px;
+    width: 100%;
+}
+
+section {
+    color: #345E8E;
+}
+
+.my-vacancies ol {
+    margin: 0;
+    padding: 0;
+}
+
+.std_width p, .std_width ul, .std_width ol, .std_width li, .my-vacancies ul, .my-vacancies li {
+    padding: 0;
+    list-style: none;
+}
+
+.seting-icon li {
+    list-style: none;
+}
+
+td ul {
+    list-style: none;
+}
+
+article, aside, details, figcaption, figure, footer, hgroup, menu, nav, section {
+    display: block;
+}
+
+.navRightSide {
+    float: right;
+    position: relative;
+}
+
+.navRight {
+    float: right;
+    position: relative;
+    margin: 4px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #cccccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.container_aa {
+    width: 960px;
+    margin: auto;
+    clear: both;
+}
+
+.head-mid {
+    width: 60%;
+    float: left;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.hdmenu_aa {
+    width: 16%;
+    float: right;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.hdmenu_bottom {
+    border-top: 1px solid #b9cde5;
+}
+
+input.upload-btn[type="button"] {
+    background: url("/content/images/Browse_24.png") no-repeat center center;
+    background-size: 20px 20px;
+    border: 0 none;
+    color: #953634;
+    cursor: pointer;
+    font-size: 12px;
+    height: 25px;
+    margin: 0 2px;
+    padding-top: 3px;
+    width: 25px;
+}
+
+.spctop-btm {
+    padding-bottom: 5px;
+    position: relative;
+}
+
+.std_hlfwdth {
+    width: 49%;
+    float: left;
+    margin-left: 1%;
+}
+
+.language-box {
+    width: 50%;
+    float: left;
+    text-align: center;
+    color: #953634;
+    font-size: 12px;
+    padding-top: 5px;
+}
+
+span.candidate {
+    color: #ADA88B;
+    font-weight: bold;
+}
+
+#loginForm {
+    width: 265px;
+    border: 1px solid #88a1c4;
+    margin-top: 0px;
+    background: #c3d7f3;
+    padding-top: 0;
+    padding-bottom: 6px;
+    padding-left: 0;
+    padding-right: 10px;
+}
+
+    #loginForm fieldset {
+        margin: 0 0 7px 0;
+        /*display:block;*/
+        border: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+fieldset#body {
+    background: #c3d7f3;
+    padding: 10px 13px;
+    margin: 0;
+    width: 80%;
+    float: left;
+}
+
+#loginForm #checkbox {
+    width: auto;
+    margin: 1px 9px 0 0;
+    float: left;
+    padding: 0;
+    border: 0;
+    *margin: -3px 9px 0 0; /* IE7 Fix */
+}
+
+#body label {
+    color: #3a454d;
+    margin: 5px 0 0 0;
+    display: block;
+    float: left;
+}
+
+#loginForm #body fieldset label {
+    display: block;
+    float: none;
+    margin: 0 0 4px 0;
+}
+
+#loginForm input {
+    width: 96%;
+    border: 1px solid #899caa;
+    color: #3a454d;
+    font-weight: normal;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-size: 12px;
+}
+
+#loginForm #login {
+    width: 10%;
+    float: left;
+    background: url(/Content/images/Login_32.png) no-repeat 0 0 transparent;
+    color: #fff;
+    border: 0;
+    padding: 7px 10px 8px 10px;
+    margin: 85px 0 0 0;
+    cursor: pointer;
+}
+
+#loginForm span {
+    text-align: right;
+    display: block;
+    padding: 7px 0 4px 0;
+}
+
+    #loginForm span a {
+        color: #3a454d;
+        font-size: 12px;
+    }
+
+input:focus {
+    outline: none;
+}
+/*-------LOGIN Ends HERE -------*/
+
+.aplyjob-hlf {
+    width: 50%;
+    float: left;
+    padding-top: 3px;
+    padding-bottom: 4px;
+    word-break: break-all;
+}
+
+.aplyjob-label {
+    text-align: right;
+    color: #953634;
+    font-weight: bold;
+}
+
+.aplyjob-title {
+    color: #953634;
+    font-weight: bold;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 1.5%;
+    padding-top: 5px;
+    width: 100%;
+    float: left;
+    text-align: justify;
+}
+
+ul.job-requimnts {
+    list-style: disc;
+    padding: 0 0 0 15px;
+    margin: 5px;
+}
+
+    ul.job-requimnts li {
+        padding: 1px 0 2px 5px;
+    }
+
+.candidate a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.doc-preview {
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.doc-preview-hd {
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+.user-roles {
+    width: 26%;
+    float: left;
+}
+
+    .user-roles label {
+        color: #953634;
+    }
+
+.ats-user-box {
+    width: 36%;
+    height: 23px;
+    margin-bottom: 0;
+    float: left;
+    overflow: hidden;
+    border: 0px solid #95b3d7 !important;
+    margin-left: 0.5%;
+}
+
+    .ats-user-box .user-select {
+        -moz-appearance: none;
+        background: url("/Content/images/ddlArrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+        border: 1px solid #95b3d7 !important;
+        color: #345E8E;
+        font-size: 11px;
+        height: 23px;
+        overflow: hidden;
+        padding: 3px;
+        text-indent: 0.01px;
+        text-overflow: "";
+        width: 98%;
+    }
+
+.ats-roles-box {
+    width: 100%;
+    float: left;
+}
+
+    .ats-roles-box .roles-title {
+        color: #953634;
+        border-bottom: 1px solid #95b3d7;
+        margin-bottom: 5px;
+        padding-left: 5px;
+        font-weight: bold;
+    }
+
+    .ats-roles-box ul.roles-type {
+        list-style: none;
+    }
+
+        .ats-roles-box ul.roles-type li {
+            margin: 4px 0;
+            float: left;
+        }
+
+    .ats-roles-box input.roles-selection[type="checkbox"] {
+        margin-top: 2px;
+        margin-right: 7px;
+        float: left;
+    }
+
+.security-detail {
+    width: 100%;
+    float: left;
+}
+
+    .security-detail .security-dtl-hd {
+        list-style: none;
+        border-bottom: 1px solid #95b3d7;
+    }
+
+        .security-detail .security-dtl-hd li.sys-entity-hd {
+            width: 24%;
+            float: left;
+            padding: 2px 0 1px 5px;
+            color: #953634;
+            font-weight: bold;
+        }
+
+
+        .security-detail .security-dtl-hd li.ats-create-hd {
+            width: 19%;
+            float: left;
+            text-align: center;
+            font-weight: normal;
+            color: #953634;
+        }
+
+    .security-detail ul.ats-details {
+        list-style: none;
+        border-bottom: 1px solid #95b3d7;
+        width: 100%;
+        float: left;
+    }
+
+        .security-detail ul.ats-details a {
+            text-decoration: none;
+            width: 100%;
+            float: left;
+            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .security-detail ul.ats-details li.sys-entity {
+            width: 23%;
+            float: left;
+            padding: 5px 0 5px 5px;
+        }
+
+        .security-detail ul.ats-details li.ats-create {
+            width: 15%;
+            float: left;
+            text-align: center;
+            color: #953634;
+        }
+
+        .security-detail ul.ats-details:hover {
+            background: #dae4f2;
+        }
+
+        .security-detail ul.ats-details a li.sys-entity {
+            text-decoration: none;
+            color: #345E8E;
+        }
+
+        .security-detail ul.ats-details a li.ats-create {
+            text-decoration: none;
+            color: #953634;
+        }
+
+.security-title {
+    color: #953634;
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 0;
+    padding-left: 0.5%;
+    padding-right: 1.5%;
+    padding-top: 5px;
+    width: 97%;
+    margin-top: 0;
+    float: left;
+}
+
+.PrivilegeRow > ul.dropdown {
+    display: none;
+    list-style: none;
+    margin: 0;
+    float: left;
+    padding: 0 0 4px;
+    border-bottom: 1px solid #BEC0C4;
+    width: 100%;
+}
+
+ul.dropdown {
+    display: none;
+    list-style: none;
+    margin: 0;
+    float: left;
+    padding: 2px 0 5px 0;
+    border-bottom: 1px solid #BEC0C4;
+    width: 100%;
+}
+
+    ul.dropdown li {
+        color: #333;
+        margin: 2px 0;
+        padding: 5px 0px;
+    }
+
+        ul.dropdown li ul.ats-catgry {
+            width: 100%;
+            float: left;
+            list-style: none;
+            margin: 2px 0;
+            padding: 0;
+        }
+
+            ul.dropdown li ul.ats-catgry li.catgry-title {
+                color: #345e8e;
+                float: left;
+                margin: 0;
+                padding: 0;
+                text-align: left;
+                width: 24%;
+                text-indent: 8px;
+            }
+
+            ul.dropdown li ul.ats-catgry li.catgry-check {
+                width: 19%;
+                float: left;
+                margin: 0;
+                padding: 0 0 0 0 !important;
+                text-align: center;
+            }
+
+.sys-entity-hd.lblBblue > span {
+    float: right;
+    position: relative;
+    right: -24%;
+}
+
+input.detail-input {
+    color: #345E8E;
+    font-size: 11px;
+    padding: 3px 0.5%;
+    width: 94%;
+    border: 1px solid #95b3d7;
+    float: left;
+    /*margin-top: 2px;*/
+}
+
+a.add-user {
+    text-decoration: none;
+    color: #376092;
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+    a.add-user img {
+        margin-right: 2px;
+    }
+
+.viewdoc-dtl-lft {
+    width: 58%;
+    float: left;
+    font-size: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    word-break: break-all;
+}
+
+.viewdoc-dtl-rgt {
+    width: 42%;
+    float: left;
+    font-size: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    word-break: break-all;
+}
+
+ul.vacancy-app {
+    background-color: #cc0000;
+    border-bottom: 2px solid #953634;
+    float: left;
+    font-weight: bold;
+    list-style: outside none none;
+    margin-left: 2%;
+    width: 98%;
+}
+
+.prfle-tab-head {
+    color: #345E8E;
+    font-weight: bold;
+    border-bottom: 3px solid;
+    border-color: #345E8E;
+    width: 99%;
+}
+
+.prfle-tab-head-brown {
+    color: #953634;
+    font-weight: bold;
+    border-bottom: 3px solid;
+    border-color: #953634;
+    min-height: 18px;
+}
+
+.prfle-button-save {
+    background: url("/Content/images/Save_24.png") no-repeat scroll 7px 5px rgba(0, 0, 0, 0);
+    border: medium none;
+    color: #953634 !important;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 2em;
+    margin-right: 3px;
+    padding: 6px 8px 6px 38px;
+    text-align: left;
+}
+
+    .prfle-button-save:hover {
+        text-decoration: none;
+        background-color: #ffebaf;
+    }
+
+.prfle-button-delete {
+    background: url("/Content/images/delete_24.png") no-repeat scroll 7px 5px rgba(0, 0, 0, 0);
+    color: #953634 !important;
+    cursor: pointer;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    height: 37px;
+    line-height: 2em;
+    margin-right: 3px;
+    padding: 3px 6px 5px 38px;
+    text-align: left;
+    border: none;
+}
+
+    .prfle-button-delete:hover {
+        text-decoration: none;
+        background-color: #ffebaf;
+    }
+
+p.info {
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    display: block;
+    font-size: 12px !important;
+    font-style: italic;
+    font-weight: bold;
+    height: 27px;
+    line-height: 22px;
+    margin-bottom: 10px !important;
+    margin-top: 5px;
+    overflow: hidden;
+    padding: 0 0 5px 10px !important;
+}
+
+#error .info_inner {
+    background: url("/Content/images/icon_error.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    border: 0 none;
+    color: #CC0000;
+}
+
+#success .info_inner {
+    background: url("/Content/images/icon_success.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    border: 0 none;
+    color: #5A801B;
+}
+
+.info .info_inner {
+    display: block;
+    height: 30px;
+    padding: 6px 10px 0 35px;
+}
+
+.input-validation-error {
+    border: 2px solid red !important;
+}
+
+.sidebar-Upload {
+    color: #953634;
+}
+
+.upload-resume {
+    margin-left: -10px;
+}
+
+.job-type .job-icon .search-listing {
+    background: url("/Content/images/Search_Jobs_32.png") no-repeat scroll 8px 12px rgba(0, 0, 0, 0);
+    border: 1px solid #BEC0C4;
+    color: #345E8E;
+    float: right;
+    font-size: 12px;
+    height: 60px;
+    padding: 5px 6px 5px 45px;
+    text-align: left;
+    width: 111px;
+}
+
+    .job-type .job-icon .search-listing:hover {
+        cursor: pointer;
+        background-color: #FFEBAF;
+    }
+
+.job-type .job-icon .notify-me {
+    background: url("/Content/images/Notify_Me_32.png") no-repeat scroll 11px 12px rgba(0, 0, 0, 0);
+    border: 1px solid #BEC0C4;
+    color: #345E8E;
+    float: right;
+    font-size: 12px;
+    height: 60px;
+    padding: 5px 6px 5px 50px;
+    text-align: left;
+    width: 111px;
+}
+
+    .job-type .job-icon .notify-me:hover {
+        cursor: pointer;
+        background-color: #FFEBAF;
+    }
+
+.job-type .job-icon-right .set-as-my-default {
+    background: url("/Content/images/Set_As_Default_32.png") no-repeat scroll 11px 12px rgba(0, 0, 0, 0);
+    border: 1px solid #BEC0C4;
+    color: #345E8E;
+    float: right;
+    font-size: 12px;
+    height: 60px;
+    padding: 5px 6px 5px 50px;
+    text-align: left;
+    width: 118px;
+}
+
+    .job-type .job-icon-right .set-as-my-default:hover {
+        cursor: pointer;
+        background-color: #FFEBAF;
+    }
+
+.popup_radio {
+    float: left;
+}
+
+.label_radio {
+    width: 100%;
+    float: left;
+    margin-top: 1%;
+    font-weight: bold;
+}
+
+.popup_btn_save {
+    float: right;
+    margin-right: 10px;
+}
+
+.detail-jobdescription {
+    text-align: justify;
+    clear: both;
+    padding-left: 5px;
+    width: 90%;
+    padding-top: 3px;
+}
+
+.detail-job-description {
+    text-align: justify;
+    clear: both;
+    /*padding-left: 0px;*/
+    width: 100%;
+    /*padding-top: 3px;*/
+}
+
+.detail-jobdescription:hover {
+    text-decoration: none;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.hrs-input {
+    border: 1px solid #bec0c4;
+    color: #345e8e;
+    float: left;
+    font-size: 11px;
+    height: 22px;
+    margin-bottom: 3%;
+    margin-right: 17px;
+    text-indent: 3px;
+    width: 90px;
+}
+
+.left-div .hrs-lable {
+    color: #3E6AAC;
+    float: left;
+    font-size: 11px;
+    font-weight: bold;
+    padding-top: 3px;
+    padding-right: 1px;
+}
+
+.menuItem {
+    background-repeat: no-repeat;
+    height: 20px;
+    font-weight: bold;
+}
+
+.aplcant-img > img {
+    border: 2px solid #345E8E;
+    border-radius: 2px;
+}
+
+.aplcant-img > img {
+    -webkit-transition: all 0.25s linear; /* Safari and Chrome */
+    -moz-transition: all 0.25s linear; /* Firefox */
+    -ms-transition: all 0.25s linear; /* IE 9 */
+    -o-transition: all 0.25s linear; /* Opera */
+    transition: all 0.25s linear;
+    transition-delay: .25s;
+    -moz-transition-delay: .25s;
+    -webkit-transition-delay: .25s;
+    position: relative;
+}
+
+    .aplcant-img > img:hover {
+        -webkit-transform: scale(2.25); /* Safari and Chrome */
+        -moz-transform: scale(2.25); /* Firefox */
+        -ms-transform: scale(2.25); /* IE 9 */
+        -o-transform: scale(2.25); /* Opera */
+        transform: scale(2.25);
+        z-index: 9999;
+    }
+
+#profileImg {
+    -webkit-transition: all 1s ease; /* Safari and Chrome */
+    -moz-transition: all 1s ease; /* Firefox */
+    -ms-transition: all 1s ease; /* IE 9 */
+    -o-transition: all 1s ease; /* Opera */
+    transition: all 1s ease;
+}
+
+    #profileImg:hover {
+        -webkit-transform: scale(2.25); /* Safari and Chrome */
+        -moz-transform: scale(2.25); /* Firefox */
+        -ms-transform: scale(2.25); /* IE 9 */
+        -o-transform: scale(2.25); /* Opera */
+        transform: scale(2.25);
+        border: 3px solid #345E8E !important;
+    }
+
+.doneround {
+    background: url("/content/images/Done.png") no-repeat scroll 7px 5px rgba(0, 0, 0, 0);
+    color: #953634;
+    float: left;
+    font-weight: bold;
+    padding: 12px 8px 10px 36px;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+    .doneround:hover {
+        text-decoration: none;
+        background-color: #FFEBAF;
+    }
+
+.contnt-left .begin {
+    text-align: center;
+    padding: 10px;
+    width: 115px;
+}
+
+.tooltip {
+    border: 1px solid grey !important;
+    border-radius: initial;
+    position: absolute;
+    border-color: gray;
+    font-size: 11px;
+    font-style: normal;
+    font-family: Arial, sans-serif;
+    background: none repeat scroll 0 0 #fff;
+    text-decoration: none;
+    color: gray;
+    background-color: #ffebaf;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.15);
+    top: -1px;
+    z-index: 1;
+    box-shadow: 0 0 0px #aaa !important;
+}
+
+div.acc-header {
+    background-color: transparent !important;
+    border: 0px none !important;
+    height: auto;
+}
+
+    div.acc-header:hover {
+        background-color: #FFEBAF !important;
+    }
+
+.acc-header > p.prfle-tab-head:hover > span.edit a {
+    display: block;
+}
+
+.acc-header > p.prfle-tab-head:hover > span.ansoption a {
+    display: block;
+}
+
+.acc-header > p.prfle-tab-head-brown:hover > span.rndoption a {
+    display: block;
+}
+
+.acc-header > p.prfle-tab-head-brown:hover > span.ansoption a {
+    display: block;
+}
+
+.acc-header > p.prfle-tab-head-brown:hover > span.edit a {
+    display: block;
+}
+
+.acc-Content > span.editsection {
+    margin: 0;
+}
+
+.acc-header > p.prfle-tab-head:hover > span.delete a {
+    display: block;
+}
+
+.acc-header > prfle-tab-head-brown:hover > span.delete a {
+    display: block;
+}
+
+.btn-small {
+    background-position: 8px center;
+    float: left;
+    font-size: 9pt;
+    font-weight: 600;
+    padding: 6px 6px 6px 28px;
+    text-transform: uppercase;
+}
+
+    .btn-small:hover {
+        background-color: #C6E3FF;
+    }
+
+.textEllipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.accApply {
+    display: none;
+    height: 15px;
+    position: absolute;
+    right: 25px;
+    top: 5px;
+    width: 15px;
+}
+
+.acc-header:hover > ul.accApply {
+    display: block;
+}
+
+ul.accApply img {
+    height: 16px;
+    width: 16px;
+}
+
+.QueCatTitle {
+    border-bottom: 1px solid #345e8e;
+    color: #953634;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    padding: 2px 0;
+    width: 100%;
+    float: left;
+}
+
+.accDisplayJob {
+    margin-left: 25px;
+    float: left;
+    clear: both;
+}
+
+    .accDisplayJob > ul.Actions {
+        margin-top: 10px;
+        min-height: 29px;
+        float: left;
+        width: 100%;
+    }
+
+ul.accGroupHeader {
+    border-bottom: 3px solid #345e8e;
+    margin-bottom: 8px;
+    margin-left: 30px;
+    overflow: hidden;
+    padding: 2px;
+    width: 96%;
+}
+
+    ul.accGroupHeader > li {
+        color: #953634;
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+
+.lblUp, .lblDown {
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.VacPostedOn .grid-filter {
+    left: 78px !important;
+    position: absolute !important;
+}
+
+.VacLocation .grid-filter {
+    left: 108px !important;
+    position: absolute !important;
+}
+
+.VacTitle .grid-filter {
+    left: 130px !important;
+    position: absolute !important;
+}
+
+.VacPositionType .grid-filter {
+    left: 90px !important;
+    position: absolute !important;
+}
+
+.lbl {
+    color: #953634;
+    font-size: 12px;
+}
+
+.lnkApplicants {
+    font-size: 12px;
+    color: #953634;
+    text-decoration: underline;
+}
+
+.ProfileMaker {
+    display: inline-block;
+    padding: 10px 5px 10px 25px;
+    width: 100%;
+}
+
+
+#ulDeclineReasons {
+    min-width: 160px !important;
+    max-width: 180px !important;
+    width: auto !important;
+}
+
+.CellPadding {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.InlineAction {
+    display: inline-block;
+    margin-bottom: 5px;
+    z-index: 11;
+}
+
+    .InlineAction > li {
+        float: left;
+        margin-right: 3px;
+    }
+
+
+        .InlineAction > li > a {
+            background-position: 8px center;
+            float: left;
+            font-size: 9pt;
+            font-weight: 600;
+            padding: 4px 5px 3px 28px;
+            text-transform: uppercase;
+        }
+
+.Error-UnAuthorized {
+    color: #333333 !important;
+    opacity: 0.3;
+}
+
+    .Error-UnAuthorized > td {
+        color: #000 !important;
+    }
+
+.CSParent {
+    float: left;
+    width: 100%;
+}
+
+.CSChild {
+    float: left;
+    width: 100%;
+    height: 0px;
+    visibility:hidden;
+}
+.Error-UnAuthorized {
+    color: #333333 !important;
+    opacity: 0.3;
+}
+
+    .Error-UnAuthorized > td {
+        color: #000 !important;
+    }
+
+.btn-16 {
+    background-position: center center;
+    float: left;
+    height: 16px;
+    width: 16px;
+}
+
+.chkSecurityRoles > br {
+    margin: 4px 0;
+}
+
+.acc-inner-padding {
+    padding: 10px 0 10px 3%;
+}
+
+.AccQuestionCategory .prfle-tab-head {
+    border-bottom: 3px solid #345e8e;
+    border-color: #345e8e;
+}

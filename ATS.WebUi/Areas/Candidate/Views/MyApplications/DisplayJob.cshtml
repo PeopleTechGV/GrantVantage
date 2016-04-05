@@ -1,0 +1,139 @@
+﻿@model ATS.BusinessEntity.Vacancy
+@{
+    ViewBag.Title = "DisplayJob";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems">
+        <span class="navTitle">@Model.JobTitle, @Model.LocationText</span>
+        <span class="chevron"></span>
+    </div>
+    <div class="NavItems hasDropdown">
+        <span class="navTitle">@Model.JobTitle</span>
+        <span class="chevron"></span>
+        <ul class="dropdownMenu menuAqua">
+            @*@Html.Partial("_RecentViewed", Model.objRecentViewedList)*@
+        </ul>
+    </div>
+}
+
+@if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+{
+    Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = Model, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "Candidate", showSaveJob = 1 });
+}
+else
+{
+    Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = Model, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "Candidate", showSaveJob = 0 });
+}
+
+<div class="std_width spctop-btm">
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">
+            @Html.LanguageLabelFor(m => m.PositionID):
+        </div>
+        <div class="std_hlfwdth">
+            @Html.DisplayFor(m => m.PositionIDText)
+        </div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">
+            @Html.LanguageLabelFor(m => m.StartDate):
+        </div>
+        <div class="std_hlfwdth">@Html.DisplayFor(m => m.StartDateText)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.Location): </div>
+        <div class="std_hlfwdth">@Html.DisplayFor(m => m.Location)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.JobType): </div>
+        <div class="std_hlfwdth">@Html.DisplayFor(m => m.EmploymentTypeText)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">@Html.LabelFor(m => m.PositionTypeId): </div>
+        <div class="std_hlfwdth">@Html.DisplayFor(m => m.PositionTypeName)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.EmploymentType): </div>
+        <div class="std_hlfwdth">
+            @Html.DisplayFor(m => m.JobTypeText)
+        </div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">
+            Salary Range:
+        </div>
+        <div class="std_hlfwdth">
+            @Html.DisplayFor(m => m.SalaryMinText)-@Html.DisplayFor(m => m.SalaryMaxText)
+        </div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">
+            @Html.LanguageLabelFor(m => m.PostedOn):
+        </div>
+        <div class="std_hlfwdth">
+            @Html.DisplayFor(m => m.PostedOnDateText)
+        </div>
+    </div>
+</div>
+<div style="margin-left:30px;">
+    @if (Model.ShowOnWebJobDescription)
+    {
+        <div class="aplyjob-title">  Job Description</div>
+        <article class="std_width">
+            @Html.DisplayFor(m => m.JobDescription)
+        </article>
+    }
+    @if (Model.ShowOnWebDuties)
+    {
+        <div class="aplyjob-title">
+            @Resources.Resources.LanguageDisplay(ATS.BusinessEntity.Common.RecordOfEmployementConstant.FRM_PRF_DUTIES_AND_RESPONSIBILITES)
+        </div>
+        <div class="editorContent">@Html.Raw(@Model.DutiesAndResponsibilities)</div>
+    }
+    @if (Model.ShowOnWebSkills)
+    { <div class="aplyjob-title">
+        @Resources.Resources.LanguageDisplay(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)
+    </div>
+        String[] mydataSkills = Model.SkillsAndQualification.Split('\n');
+        <article class="std_width">
+            <ul class="job-requimnts">
+                @foreach (String strdataskill in mydataSkills)
+                {
+                    <li> @strdataskill </li>
+                }
+            </ul>
+        </article>
+    }
+
+    @if (Model.ShowOnWebBenefits)
+    { <div class="aplyjob-title">
+        @Html.LanguageLabelFor(m => m.Benefits)
+    </div>
+        String[] mydataBenefits = Model.Benefits.Split('\n');
+        <article class="std_width">
+            <ul class="job-requimnts">
+                @foreach (String strdataBenefit in mydataBenefits)
+                {
+                    <li> @strdataBenefit </li>
+                }
+            </ul>
+        </article>
+    }
+    @if (Model.ShowOnWebCommission)
+    {
+        <br />
+        <div class="aplyjob-title">
+            @Html.LanguageLabelFor(m => m.Commission)
+        </div>
+        <div class="editorContent">@Html.Raw(@Model.Commission)</div>
+    }
+    @if (Model.ShowOnWebBonus)
+    {
+        <div class="aplyjob-title">
+            @Html.LanguageLabelFor(m => m.BonusPotential)
+        </div>
+        <div class="editorContent">@Html.Raw(@Model.BonusPotential)</div>
+    }
+</div>

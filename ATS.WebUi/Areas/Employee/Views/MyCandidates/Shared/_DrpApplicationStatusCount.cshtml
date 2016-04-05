@@ -1,0 +1,12 @@
+﻿
+    @foreach (SelectListItem item in (SelectList)ViewBag.ApplicationStatusListWithCount)
+    {
+        <li>
+            <a href='@Url.Action("Index", "MyCandidates", new { @Status = item.Text, area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+                <span>@item.Text</span>
+                <span class="lblNavCount">@item.Value</span>
+            </a>
+        </li>
+    }
+
+

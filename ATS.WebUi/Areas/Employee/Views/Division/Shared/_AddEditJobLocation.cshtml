@@ -1,0 +1,77 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.JobLocation
+
+@using (Ajax.BeginForm("InsertJobLocation", "Division", new { area = "Employee" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "DivisionJobLocationSuccess(data)",
+        OnFailure = "DivisionJobLocationFailure"
+    }, new { id = "DivisionJobLocation", isFormChange = "false" }))
+{
+
+    
+    
+    <script>
+        var formjb = $("#DivisionJobLocation");
+        $.validator.unobtrusive.parse(formjb);
+
+    </script>
+    
+    @Html.HiddenFor(m => m.JobLocationId)
+    @Html.HiddenFor(m => m.ClientId)
+
+@Html.HiddenFor(m => m.DivisionId)    
+    
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.DefaultValue, new { @class = "label" })
+            @Html.TextBoxFor(m => m.DefaultValue, new { @class = "detail-input w50" })
+            @if (ViewBag.IsEdit == 1)
+            {
+                @Html.CheckBoxFor(m => m.IsActive, new { @id = "isActive" }) @Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)
+            }
+        </div>
+        @for (int i = 0; i < Model.JobLocatoinEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.JobLocatoinEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.JobLocatoinEntityLanguage[i].LanguageId)
+                @Html.TextBoxFor(m => m.JobLocatoinEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.DivisionId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.DivisionId, (IEnumerable<SelectListItem>)ViewBag.ListOfDivision, "--Select One--", new { @class = "detail-select", @disabled = "disabled" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.LocationManagerId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.LocationManagerId, (IEnumerable<SelectListItem>)ViewBag.ListOfLocationManagers, "--Select One--", new { @class = "detail-select" })
+        </div>
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.OnBoardingManagerId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.OnBoardingManagerId, (IEnumerable<SelectListItem>)ViewBag.ListOfOnBoardingManager, "--Select One--", new { @class = "detail-select" })
+        </div>
+        <div class="vacancy-Details ARPInlineAction">
+            <button type="submit" class="prfle-button-save CaseUpper">Save</button>
+            <button type="button" id="RemoveJoblocation" class="prfle-button-delete CaseUpper" onclick="">Remove</button>
+        </div>
+    </div>
+}
+
+<script>
+
+    function DivisionJobLocationSuccess(data)
+    {
+        var jsonData = JSON.parse(data);
+        if (!jsonData.IsError) {
+            $('#DivisionAcc').accordion("destroy").accordion(VacancyModel.AccFirstAttr).accordion({ active: 5 })
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+</script>

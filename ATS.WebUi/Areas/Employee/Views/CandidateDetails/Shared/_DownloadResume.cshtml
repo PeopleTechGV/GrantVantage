@@ -1,0 +1,155 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.CandidateProfileForPDF
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Resume</title>
+
+    <link href='@Url.Content("~/Content/css/PublicResume/print-profile.css")' rel="stylesheet" type="text/css" />   
+    <script type="text/javascript" src='@Url.Content("~/Content/js/PublicResume/cufon.yui.js")'></script>
+    <script type="text/javascript" src='@Url.Content("~/Content/js/PublicResume/myriad.js")'></script>
+
+    <script type="text/javascript">
+        Cufon.replace('h1,h2');
+    </script>
+</head>
+<body>
+    <!-- Begin Wrapper -->
+
+
+    <div class="wrapper-mid">
+        <!-- Begin Paper -->
+        <div id="paper">
+
+            <div id="paper-mid">
+                <div class="entry">
+                    <!-- Begin Image -->
+
+                    <span class="portrait" />
+                    <!-- End Image -->
+                    <!-- Begin Personal Information -->
+                    <div class="self">
+                        <h1 class="name">
+                            @Model.objUserDetails.Affix  @Model.objUserDetails.FirstName @Model.objUserDetails.MiddleName  @Model.objUserDetails.LastName <br />
+                            <span></span>
+                        </h1>
+                        <ul>
+                            <li class="ad">@Model.objUserDetails.Address ,</li>
+                            <li class="">@Model.objUserDetails.City,</li>
+                            <li class="">@Model.objUserDetails.PostOfficeBox,</li>
+                            <li class="">@Model.objUserDetails.State</li>
+                            <li class="mail">@Model.objUserDetails.WorkEmail (Work)</li>
+                            <li class="mail">@Model.objUserDetails.HomeEmail (Home)</li>
+                            <li class="tel">@Model.objUserDetails.BusinessPhoneNo (Work)</li>
+                            <li class="tel">@Model.objUserDetails.MobilePhone (Mobile)</li>
+                            <li class="tel">@Model.objUserDetails.HomePhone (Home)</li>
+                            <li class="fax">@Model.objUserDetails.Fax</li>
+                            @if (!String.IsNullOrEmpty(Model.objUserDetails.Website))
+                            {
+                                <li class="web">@Model.objUserDetails.Website</li>
+                            }
+
+                        </ul>
+                    </div>
+                    <!-- End Personal Information -->
+                    <!-- Begin Social -->
+                    <div class="social">
+                        <ul>                            
+                        </ul>
+                    </div>
+                    <!-- End Social -->
+                </div>
+                <br clear="all"/>
+                <div class="entry">
+                    <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.AvailabilityConstant.FRM_PRF_TTL_AVAILIBILITY)</h2>
+                    @{Html.RenderPartial("../PublicViewProfile/Shared/Availability", new ViewDataDictionary(ViewData) { Model = @Model.ObjAvailability });}
+                    <!-- Begin 1st Row -->
+                    <div class="entry">
+                        <h2>Objective</h2>
+                        <p>@Model.ObjObjective.ObjectiveDetails</p>
+                    </div>
+                    <!-- End 1st Row -->
+                    <!-- Begin 2st Row -->
+                    <div class="entry">
+                        <h2>Executive Summary</h2>
+                        <p>@Model.ObjExecutiveSummary.ExecutiveSummaryDetails</p>
+                    </div>
+                    <!-- End 2st Row -->
+                    <!-- Begin 3rd Row -->
+                    <div class="entry">
+                        <h2>Experience</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/JobHistory", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactEmployments });}
+
+                    </div>
+                    <!-- End 3rd Row -->
+                    <!-- Begin 4th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel("Achievements")</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/Achievement", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactAchievement });}
+                    </div>
+                    <!-- End 4th Row -->
+                    <!-- Begin 5th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)</h2>
+
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/SkillsAndQualification", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactSkills });}
+                    </div>
+                    <!-- End 5th Row -->
+                    <!-- Begin 6th Row -->
+                    <div class="entry">
+                        <h2>Educations</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/Education", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactEducations });}
+
+                    </div>
+                    <!-- End 6th Row -->
+                    <!-- Begin 7th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.LicenceAndCertificationsConstant.FRM_TITL_LICENCEANDCERTIFICATIONS)</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/LicenceAndCertifications", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactLicenceAndCertifications });}
+                    </div>
+                    <!-- End 7th Row -->
+                    <!-- Begin 8th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.PublicationHistoryConstant.FRM_PUB_TITL_PUBLICATION)</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/PublicationHistory", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactPublicationHistory });}
+
+                    </div>
+                    <!-- End 8th Row -->
+                    <!-- Begin 9th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.SpeakingEventHistoryConst.FRM_SPK_TITL_SPEAKINGEVENTHISTORY)</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/SpeakingEventHistory", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactSpeakingEventHistory });}
+                    </div>
+                    <!-- End 9th Row -->
+                    <!-- Begin 10th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.AssociationsConst.FRM_ASC_TITLE_ASSOCIATION)</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/Association", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactAssociations });}
+                        @*
+
+                            @{Html.RenderPartial("../PublicViewProfile/Shared/AlternativeInfo", new ViewDataDictionary(ViewData) { Model = @Model.objUserDetails });}
+                        *@
+                    </div>
+                    <!-- End 10th Row -->
+                    <!-- Begin 11th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguagesConst.FRM_LAN_TITLE_LANGUAGES)</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/Languages", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactLanguages });}
+                    </div>
+                    <!-- End 11th Row -->
+                    <!-- Begin 12th Row -->
+                    <div class="entry">
+                        <h2>@Html.LanguageLabel(ATS.BusinessEntity.Common.ReferencesConstant.FRM_PRF_TTL_REFERENCES)</h2>
+                        @{Html.RenderPartial("../PublicViewProfile/Shared/References", new ViewDataDictionary(ViewData) { Model = @Model.ObjContactReferences });}
+                    </div>
+                    <!-- End 12th Row -->
+                </div>
+
+            </div>
+            <!-- End Paper -->
+        </div>
+        <!-- End Wrapper -->
+</body>
+</html>

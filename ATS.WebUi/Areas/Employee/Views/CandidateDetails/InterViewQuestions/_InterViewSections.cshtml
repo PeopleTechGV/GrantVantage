@@ -1,0 +1,48 @@
+﻿@model ATS.BusinessEntity.InterViewProcess
+<div class="std_width intrview-dtl">
+    <h4>Interview Questions and Comments</h4>
+    <div class="question-box">
+        <div class="std_width question-section-hd" data-pkid="@Model.ObjQueCat.QueCatId" data-querow="@ViewBag.QueRow">
+            <div class="width-40 width75">
+                <label class="sectionlbl-lft">Section @Model.CurrentCat: </label>
+                <span class="intrview-dtl-value">@Model.ObjQueCat.LocalName</span>
+            </div>
+
+            @if (Model.CurrentCat > 1)
+            {
+                <div class="width-10">
+                    <a class="prev-hd-active" href="javascript:void(0)" id="CatPrev" data-url='@Url.Action("GetSectionByRow", "Application", new {VacRndId = @Model.VacRndId,Row=Model.PrevCat })'></a>
+                </div>
+            }
+            else
+            {
+                <div class="width-10">
+                    <a class="prev-hd-disable" href="javascript:void(0)"></a>
+                </div>
+            }
+            @if (Model.NextCat == 0)
+            {
+                <div class="width-10">
+                    <a class="next-hd-disable" href="javascript:void(0)"></a>
+                </div>
+            }
+            else
+            {
+                <div class="width-10">
+                    <a id="CatNext" href="javascript:void(0)" class="next-hd-active" data-url='@Url.Action("GetSectionByRow", "Application", new {VacRndId = @Model.VacRndId,Row=Model.NextCat })'></a>
+                </div>
+            }
+            @*<div class="width-40">
+                <span class="intrview-dtl-value" style="float:right;">50.0</span>
+                <label class="sectionlbl-rgt">Section @Model.CurrentCat Score:</label>
+            </div>*@
+        </div>
+        <div id="Questions">
+
+
+        </div>
+    
+    </div>
+</div>
+
+  

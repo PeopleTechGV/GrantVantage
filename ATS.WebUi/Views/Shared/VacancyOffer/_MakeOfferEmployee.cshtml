@@ -1,0 +1,507 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+@using BEMakeOfferConstant = ATS.BusinessEntity.Common.MakeOffer
+<link type="text/css" rel="stylesheet" href="~/CLEditor/jquery.cleditor.css">
+@*<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>*@
+@if (Model.OfferStatusId == (int)ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed)
+{
+    Model.CanEditOffer = false;//Do not allow to edit offer if it is confirmed by Employer
+}
+@{string _currency = "($)"; }
+
+<script>
+    $(document).ready(function () {
+        $(".accMakeOffer").accordion(VacancyModel.AccSecondAttr);
+        $('.accMakeOffer').on('accordionbeforeactivate', function (event, ui) {
+            event.stopImmediatePropagation();
+        });
+    });
+    $(function () {
+        var dates = $("#txtOfferDeadlineDate").datepicker({
+            onSelect: function (selectedDate) {
+                var option = this.id == "txtOfferStartDate" ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = $.datepicker.parseDate(
+                instance.settings.dateFormat ||
+                $.datepicker._defaults.dateFormat,
+                selectedDate, instance.settings);
+                dates.not(this).datepicker("option", option, date);
+            }
+        });
+        var dates = $("#txtAwardIssueDate").datepicker({
+            onSelect: function (selectedDate) {
+                var option = this.id == "txtOfferStartDate" ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = $.datepicker.parseDate(
+                instance.settings.dateFormat ||
+                $.datepicker._defaults.dateFormat,
+                selectedDate, instance.settings);
+                dates.not(this).datepicker("option", option, date);
+            }
+        });
+    });
+</script>
+
+<div class="OfferMain">
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.CandidateName):</span>
+                <span class="CandDetailsRight">@Model.CandidateName</span>
+            </div>
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.OfferTypeText):</span>
+                <span class="CandDetailsRight">@Model.OfferTypeText</span>
+            </div>
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.JobTitle):</span>
+                <span class="CandDetailsRight" style="white-space: nowrap">@Model.JobTitle</span>
+            </div>
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.OfferStatusText):</span>
+                <span class="CandDetailsRight">@Model.OfferStatusText</span>
+            </div>
+            @if (@Model.CreatedOn != DateTime.MinValue)
+            {
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.CreatedByName):</span>
+                    <span class="CandDetailsRight" style="white-space: nowrap">@Model.CreatedByName</span>
+                </div>
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_CREATED_ON):</span>
+                    <span class="CandDetailsRight" style="white-space: nowrap">@Model.CreatedOn.ToString("MM/dd/yyyy hh:ss tt")</span>
+                </div>
+            }
+            @if (@Model.UpdatedOn != DateTime.MinValue)
+            {
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.UpdatedByName):</span>
+                    <span class="CandDetailsRight" style="white-space: nowrap">@Model.UpdatedByName</span>
+                </div>
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_UPDATED_ON):</span>
+                    <span class="CandDetailsRight" style="white-space: nowrap">@Model.UpdatedOn.ToString("MM/dd/yyyy hh:ss tt")</span>
+                </div>
+            }
+            <hr class="BreakLine" />
+            @if (Model.OfferStatusId != (int)ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed)
+            {
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.EmailTemplateId)</span>
+                    @Html.DropDownListFor(m => m.EmailTemplateId, (SelectList)ViewBag.DRPEmailTemplates, "--Select--", new { @id = "ddlNoteToCandidate" })
+                    @if (Model.EmailToCandidate_EditContent)
+                    {
+                        <a id="btnEditEmail" onclick="OpenEditEmailModel(this);"></a>
+                    }
+                </div>
+            }
+            @if (Model.OfferStatusId == (int)ATS.BusinessEntity.VacancyOfferStatus.Candidate_Accepted || Model.OfferStatusId == (int)ATS.BusinessEntity.VacancyOfferStatus.Candidate_Countered)
+            {
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.OfferLetterId)</span>
+                    @Html.DropDownListFor(m => m.OfferLetterId, (SelectList)ViewBag.DRPOfferLetters, "--Select--", new { @id = "ddlOfferLetter" })
+                    @if (Model.OfferLetterId_EditContent)
+                    {
+                        <a id="btnEditOfferLetter" onclick="OpenEditOfferLetterModel(this);"></a>
+                    }
+                </div>
+            }
+            @*<hr class="BreakLine" />*@
+            <div class="OfferBox OW50 ClearFloat">
+                <span>@Html.LanguageLabelFor(m => m.PlacementType)</span>
+                @if (Model.PlacementType_EM && Model.CanEditOffer)
+                {
+                    @Html.DropDownListFor(m => m.PlacementType, (SelectList)ViewBag.DRPPlacementType, "--Select--", new { @id = "ddlPlacementType", @class = "CanRevise", @OnChange = "MakeOffer.PlacementTypeChange(this);" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(m => m.PlacementType, (SelectList)ViewBag.DRPPlacementType, "--Select--", new { @id = "ddlPlacementType", @class = "disableCtl", @disabled = "disabled" })
+                    @Html.HiddenFor(m => m.PlacementType)
+                }
+            </div>
+            <div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.StartDate)</span>
+                @Html.TextBoxFor(m => m.StartDateText, "{0:MM/dd/yyyy}", new { @class = "dpclass", @id = "txtStartDate", @ReadOnly = false })
+            </div>
+
+            <div class="OfferBox OW25 Contract">
+                <span>@Html.LanguageLabelFor(m => m.EndDate)</span>
+                @Html.TextBoxFor(m => m.EndDateText, "{0:MM/dd/yyyy}", new { @class = "dpclassEnd", @id = "txtEndDate", @ReadOnly = false })
+            </div>
+            @*<div class="OfferBox OW50">
+                <span>@Html.LanguageLabelFor(m => m.JobType)</span>
+                @if (Model.JobType_EM && Model.CanEditOffer)
+                {
+                    @Html.DropDownListFor(m => m.JobType, (SelectList)ViewBag.DRPJobType, "--Select--", new { @class = "CanRevise" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(m => m.JobType, (SelectList)ViewBag.DRPJobType, "--Select--", new { @disabled = "disabled", @class = "disableCtl" })
+                    @Html.HiddenFor(m => m.JobType)
+                }
+            </div>*@
+
+            <div class="OfferBox OW50 ClearFloat">
+                <span>@Html.LanguageLabelFor(m => m.Location)</span>
+                @Html.DropDownListFor(m => m.Location, (SelectList)ViewBag.DRPLocationList, "--Select--")
+            </div>
+            <div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.OfferDeadlineDate)</span>
+                @Html.TextBoxFor(m => m.OfferDeadlineDateText, "{0:MM/dd/yyyy}", new { @class = "dpclassEnd", @id = "txtOfferDeadlineDate", @ReadOnly = false })
+            </div>            
+            <br clear="all" />
+        </div>
+        <div class="OfferDetails">
+            <span>@Html.LanguageLabel(BEMakeOfferConstant.FRM_MAKEOFF_OFFER_DETAILS)</span>
+            @*Used in GV*@
+      
+            <div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.AwardAmount)@_currency</span>
+                @if (@Model.AwardAmount_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.AwardAmount, new { @id = "txtAwardAmount", @class = "ValueColumnEmp CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.AwardAmount, new { @id = "txtAwardAmount", @class = "disableCtl", @Readonly = true })
+                    @Html.HiddenFor(m => m.AwardAmount)
+                }
+            </div>
+            <div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.CashMatchRequired) (%)</span>
+                @if (@Model.CashMatchRequired_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.CashMatchRequired, new { @id = "txtCashMatchRequired", @class = "ValueColumnEmp CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.CashMatchRequired, new { @id = "txtCashMatchRequired", @class = "disableCtl", @Readonly = true })
+                    @Html.HiddenFor(m => m.CashMatchRequired)
+                }
+            </div>
+            <div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.AwardIssueDate)</span>
+                @Html.TextBoxFor(m => m.AwardIssueDateText, "{0:MM/dd/yyyy}", new { @class = "dpclassEnd", @id = "txtAwardIssueDate", @ReadOnly = false })
+            </div>
+        
+            <br clear="all" />
+            @*Used in GV END*@
+            
+            @*<div class="OfferBox OW25 Permanent ClearFloat">
+                <span>@Html.LanguageLabelFor(m => m.SalaryType)</span>
+                @if (@Model.SalaryType_EM && Model.CanEditOffer)
+                {
+                    @Html.DropDownListFor(m => m.SalaryType, (SelectList)ViewBag.DRPSalaryType, "--Select--", new { @class = "CanRevise", @OnChange = "MakeOffer.ChangePayRate(this);" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(m => m.SalaryType, (SelectList)ViewBag.DRPSalaryType, "--Select--", new { @disabled = "disabled", @class = "disableCtl" })
+                    @Html.HiddenFor(m => m.SalaryType)
+                }
+            </div>
+            <div class="OfferBox OW25 SalaryType">
+                <span>@Html.LanguageLabelFor(m => m.SalaryOffered)@_currency</span>
+                @if (@Model.SalaryOffered_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.SalaryOffered, new { @id = "txtSalaryOffered", @class = "ValueColumnEmp CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.SalaryOffered, new { @id = "txtSalaryOffered", @class = "disableCtl", @Readonly = true })
+                    @Html.HiddenFor(m => m.SalaryOffered)
+                }
+            </div>
+
+            <div class="OfferBox OW25 HourlyType">
+                <span>Hour Per Week</span>
+                @if (@Model.HoursPerWeek_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.HoursPerWeek, new { @id = "txtHoursPerWeek", @class = "CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.HoursPerWeek, new { @id = "txtHoursPerWeek", @class = "disableCtl", @Readonly = true })
+                    @Html.HiddenFor(m => m.HoursPerWeek)
+                }
+            </div>
+
+            <div class="OfferBox OW25 HourlyType">
+                <span>Hourly Wage@_currency</span>
+                @if (@Model.HourlyWage_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.HourlyWage, new { @id = "txtHourlyWage", @class = "ValueColumnEmp CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.HourlyWage, new { @id = "txtHourlyWage", @class = "disableCtl", @readonly = true })
+                    @Html.HiddenFor(m => m.HourlyWage)
+                }
+            </div>
+
+            <div class="OfferBox OW25 PieceType">
+                <span>Rate@_currency</span>
+                @if (@Model.Rate_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.Rate, new { @id = "txtPieceRate", @class = "ValueColumnEmp CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.Rate, new { @id = "txtPieceRate", @class = "disableCtl", @Readonly = true })
+                    @Html.HiddenFor(m => m.Rate)
+                }
+            </div>
+
+            <div class="OfferBox OW25 PieceType">
+                <span>Per</span>
+                @if (@Model.Per_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.Per, new { @id = "txtPiecePer", @class = "CanRevise" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.Per, new { @id = "txtPiecePer", @class = "disableCtl", @Readonly = true })
+                    @Html.HiddenFor(m => m.Per)
+                }
+            </div>
+
+            <div class="OfferBox OW25 Contract">
+                <span>@Html.LanguageLabelFor(m => m.PayRate)@_currency</span>
+
+                @if (Model.PayRate_EM && Model.CanEditOffer)
+                {
+                    @Html.TextBoxFor(m => m.PayRate, new { @id = "txtPayRate", @class = "ValueColumnEmp CanRevise" })
+                }
+
+                else
+                {
+                    @Html.TextBoxFor(m => m.PayRate, new { @id = "txtPayRate", @class = "disableCtl", @ReadOnly = true })
+                    @Html.HiddenFor(m => m.PayRate)
+                }
+            </div>
+
+            <div class="OfferBox OW25 Contract">
+                <span>@Html.LanguageLabelFor(m => m.RatePeriod)</span>
+                @if (Model.RatePeriod_EM && Model.CanEditOffer)
+                {
+                    @Html.DropDownListFor(m => m.RatePeriod, (SelectList)ViewBag.DRPRatePeriod, "--Select--", new { @class = "CanRevise" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(m => m.RatePeriod, (SelectList)ViewBag.DRPRatePeriod, "--Select--", new { @disabled = "disabled", @class = "disableCtl" })
+                    @Html.HiddenFor(m => m.RatePeriod)
+                }
+            </div>*@
+            @*CR-14 begin*@
+
+            @*@if (@Model.PlusCommission)
+            {
+                <div class="OfferBox OW50 PlusCommission ClearFloat">
+                    <span>@Html.LanguageLabelFor(m => m.CommissionDescriprion)</span>
+
+                    @if (@Model.CommissionDescriprion_EM && Model.CanEditOffer)
+                    {
+                        @Html.TextBoxFor(m => m.CommissionDescriprion, new { @id = "txtCommissionDesc", @class = "CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.CommissionDescriprion, new { @id = "txtCommissionDesc", @class = "disableCtl", @ReadOnly = true })
+                        @Html.HiddenFor(m => m.CommissionDescriprion)
+                    }
+                </div>
+
+                <div class="OfferBox OW25 PlusCommission">
+                    <span>@Html.LanguageLabelFor(m => m.AnnualCommissionPotential)@_currency</span>
+                    @if (@Model.AnnualCommissionPotential_EM && Model.CanEditOffer)
+                    {
+                        @Html.TextBoxFor(m => m.AnnualCommissionPotential, new { @id = "txtCommissionPotential", @PlaceHolder = "Annual Commission", @class = "ValueColumnEmp CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.AnnualCommissionPotential, new { @id = "txtCommissionPotential", @PlaceHolder = "Annual Commission", @class = "disableCtl", @ReadOnly = true })
+                        @Html.HiddenFor(m => m.AnnualCommissionPotential)
+                    }
+                </div>
+
+                <div class="OfferBox OW25 PlusCommission">
+                    <span>@Html.LanguageLabelFor(m => m.CommissionCap)@_currency</span>
+                    @if (@Model.CommissionCap_EM && Model.CanEditOffer)
+                    {
+                        @Html.TextBoxFor(m => m.CommissionCap, new { @id = "txtCommissionCap", @class = "ValueColumnEmp CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.CommissionCap, new { @id = "txtCommissionCap", @class = "disableCtl", @ReadOnly = true })
+                        @Html.HiddenFor(m => m.CommissionCap)
+                    }
+                </div>
+            }
+
+            @if (@Model.PlusBonus)
+            {
+                <div class="OfferBox OW50 PlusBonus ClearFloat">
+                    <span>@Html.LanguageLabelFor(m => m.BonusDescription)</span>
+                    @if (@Model.BonusDescription_EM && Model.CanEditOffer)
+                    {
+                        @Html.TextBoxFor(m => m.BonusDescription, new { @id = "txtBonusDesc", @class = "CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.BonusDescription, new { @id = "txtBonusDesc", @class = "disableCtl", @ReadOnly = true })
+                        @Html.HiddenFor(m => m.BonusDescription)
+                    }
+                </div>
+
+                <div class="OfferBox OW25 PlusBonus">
+                    <span>@Html.LanguageLabelFor(m => m.AnnualBonusPotential)@_currency</span>
+
+                    @if (@Model.AnnualBonusPotential_EM && Model.CanEditOffer)
+                    {
+                        @Html.TextBoxFor(m => m.AnnualBonusPotential, new { @id = "txtBonusPotential", @PlaceHolder = "Annual Bonus", @class = "ValueColumnEmp CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.AnnualBonusPotential, new { @id = "txtBonusPotential", @PlaceHolder = "Annual Bonus", @class = "disableCtl", @ReadOnly = true })
+                        @Html.HiddenFor(m => m.AnnualBonusPotential)
+                    }
+                </div>
+
+                <div class="OfferBox OW25 PlusBonus">
+                    <span>@Html.LanguageLabelFor(m => m.BonusCap)@_currency</span>
+                    @if (@Model.BonusCap_EM && Model.CanEditOffer)
+                    {
+                        @Html.TextBoxFor(m => m.BonusCap, new { @id = "txtBonusCap", @class = "ValueColumnEmp CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.BonusCap, new { @id = "txtBonusCap", @class = "disableCtl", @ReadOnly = true })
+                        @Html.HiddenFor(m => m.BonusCap)
+                    }
+                </div>
+            }
+
+            @if (@Model.IncludeCandidateNotice)
+            {
+                <div class="OfferBox OW25 ClearFloat">
+                    <span>@Html.LanguageLabelFor(m => m.CandidateNoticePeriod)</span>
+
+                    @if (@Model.CompanyNoticePeriod_EM && Model.CanEditOffer)
+                    {
+                        @Html.DropDownListFor(m => m.CandidateNoticePeriod, (SelectList)ViewBag.DRPNoticePeriod, "--Select--", new { @class = "CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CandidateNoticePeriod, (SelectList)ViewBag.DRPNoticePeriod, "--Select--", new { @disabled = "disabled", @class = "disableCtl" })
+                        @Html.HiddenFor(m => m.CandidateNoticePeriod)
+                    }
+                </div>
+
+                <div class="OfferBox OW25">
+                    <span>@Html.LanguageLabelFor(m => m.CandidateNoticePeriodType)</span>
+                    @if (@Model.CandidateNoticePeriodType_EM && Model.CanEditOffer)
+                    {
+                        @Html.DropDownListFor(m => m.CandidateNoticePeriodType, (SelectList)ViewBag.DRPNoticePeriodDaysType, "--Select--", new { @class = "CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CandidateNoticePeriodType, (SelectList)ViewBag.DRPNoticePeriodDaysType, "--Select--", new { @disabled = "disabled", @class = "disableCtl" })
+                        @Html.HiddenFor(m => m.CandidateNoticePeriodType)
+                    }
+                </div>
+
+            }
+
+            @if (@Model.IncludeCompanyNotice)
+            {
+                <div class="OfferBox OW25">
+                    <span>@Html.LanguageLabelFor(m => m.CompanyNoticePeriod)</span>
+                    @if (@Model.CompanyNoticePeriod_EM && Model.CanEditOffer)
+                    {
+                        @Html.DropDownListFor(m => m.CompanyNoticePeriod, (SelectList)ViewBag.DRPNoticePeriod, new { @class = "CanRevise" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CompanyNoticePeriod, (SelectList)ViewBag.DRPNoticePeriod, new { @disabled = "disabled", @class = "disableCtl" })
+                        @Html.HiddenFor(m => m.CompanyNoticePeriod)
+                    }
+                </div>
+
+                <div class="OfferBox OW25">
+                    <span>@Html.LanguageLabelFor(m => m.CompanyNoticePeriodType)</span>
+                    @if (@Model.CompanyNoticePeriodType_EM && Model.CanEditOffer)
+                    {
+                        @Html.DropDownListFor(m => m.CompanyNoticePeriodType, (SelectList)ViewBag.DRPNoticePeriodDaysType, "--Select--", new { @class = "CanRevise" })
+
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CompanyNoticePeriodType, (SelectList)ViewBag.DRPNoticePeriodDaysType, "--Select--", new { @disabled = "disabled", @class = "disableCtl" })
+                        @Html.HiddenFor(m => m.CompanyNoticePeriodType)
+                    }
+                </div>
+            }
+            <br clear="all" />
+            @if (!string.IsNullOrEmpty(Model.ResponseFromApplicant))
+            {
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.ResponseFromApplicant)</span>
+                    @Html.TextAreaFor(m => m.ResponseFromApplicant)
+                </div>
+            }
+            @if (Model.objApplicationHistory != null && Model.objApplicationHistory.Count > 0)
+            {
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabel("Award History")</span>
+
+                    <div class="previous-remarks" style="max-height: 50px; margin-left: 0; overflow: auto; font-size: 10px; padding-left: 6px; border: 1px solid #bec0c4;width:100%;">
+                        <ul>
+                            @foreach (ATS.BusinessEntity.ApplicationHistory objOfferHistory in Model.objApplicationHistory)
+                            {
+                                <li>@objOfferHistory.UpdatedOn.ToString("MM/dd/yy hh:mmtt").ToLower()@Html.Raw(" UTC: ") @objOfferHistory.Description</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>*@
+
+            @*CR-14 end*@
+        @*</div>
+            </div>*@
+
+    </div>
+    <div class="accMakeOffer">
+        @if (Model.IncludeAttachments && Model.OfferAttachmentList.Count != 0)
+        {
+            <div class="acc-header">
+                <p class="prfle-tab-head-brown">
+                    <span class="lblBbrown">
+                        Award Attachments
+                    </span>
+                </p>
+            </div>
+            <div class="acc-Content">
+                <div class="acc-inner" style="padding-left: 2.5%;">
+                    <div class="GridAttachment" style="margin-bottom: 10px; margin-left: 2%; width: 96%;">
+                        <ul class="RowHeader">
+                            <li class="w80">Attachment Name</li>
+                            <li class="w20">Attach in Email</li>
+                        </ul>
+                        @foreach (ATS.BusinessEntity.OfferAttachment current in Model.OfferAttachmentList)
+                        {
+                            @Html.Partial("VacancyOffer/_VacancyOfferAttachments", current)
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="OfferAction" style="padding: 4px 9px;">
+        @if (Model.IsReviewer)//Show button if current user is reviewer
+        {
+            @Html.Partial("VacancyOffer/_OfferActionEmployeer", Model)
+        }
+    </div>
+    @Html.Partial("VacancyOffer/_EditOfferLetter", Model)
+    @Html.Partial("VacancyOffer/_EditEmail", Model)
+    @Html.Partial("VacancyOffer/_ConfirmOffer", Model)
+</div>

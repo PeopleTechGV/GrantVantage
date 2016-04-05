@@ -1,0 +1,269 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<List<BEClient.CandidateApplications>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BECommonApplicationDetailsConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@using BEApplicationMenuConstant = ATS.BusinessEntity.Common.ApplicationStatusMenuConstant
+@using BEMDLConst = ATS.BusinessEntity.Common.ModelConstant
+
+@{
+    ViewBag.Title = "My Applications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool IsView = true;
+}
+@{
+    var totalCount = 0;
+    if (Model.obj.Count() > 0)
+    {
+        totalCount = Model.obj.Count();
+    }
+}
+
+@section Navigation{
+    <div id="NavMyApp" class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgMyApplication16W"></div>
+        <span class="navTitle">
+            MY APPLICATIONS:
+            <span class="navSubTitle lblNgold CaseUpper">@ViewBag.SelectedStatus</span>
+            <span class="lblNavCount">@totalCount</span>
+        </span>
+        <span class="chevron"></span>
+        <ul id="mnuMyApp" class="dropdownMenu menuPurple CaseUpper">
+            @Html.Partial("_NavMyApplication")
+        </ul>
+    </div>
+}
+
+<div id="Messages" style="width: auto; float: left;"></div>
+
+@if (Model.obj.Count() > 0)
+{
+    <ul class="ActionBar ResizableAction" style="min-height:29px;">
+        <li>
+            <a id="draftApplication" class="bgNext16" href='javascript:void(0)' title='@String.Format("{0} {1}", "Continue", "Application")'>
+                Continue Application
+            </a>
+        </li>
+        <li>
+            <a id="viewApplication" class="bgFlag16B" href='javascript:void(0);' title='View Application'>
+                View Application
+            </a>
+        </li>
+        <li>
+            <a id="withdrawApplication" class="bgWithdraw16B" href='javascript:void(0);' title='Withdraw Application'>
+                Withdraw Application
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="std_width spctop-btm" id="divAppList">
+
+    @if (Model.obj.Count() > 0)
+    {
+        for (int i = 0; i < Model.obj.Count(); i++)
+        {
+            String AppStatus = Model.obj.ElementAt(i).ApplicationStatus.ToString();
+            <div class="ApplicationBox">
+                <ul class="boxHeader myApp-row" data-id='@Model.obj.ElementAt(i).objVacancy.VacancyId' data-applicationid='@Model.obj.ElementAt(i).ApplicationId'>
+                    <li class="w50">@Model.obj.ElementAt(i).objVacancy.JobTitle, @Model.obj.ElementAt(i).objVacancy.LocationText</li>
+                    @*<li class="w25">@Model.obj.ElementAt(i).AppliedOnText &nbsp;</li>*@
+                    <li class="w50 cntAppStatus textright">@Html.LanguageLabel(@Model.obj.ElementAt(i).ShowToCandidate)</li>
+                    @*<li id="btnViewDetailsMob" class="ViewDetailsMyApp MobView" onclick="btnViewDetailsMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>*@
+                    @if (Model.obj[i].ApplicationStatus != BEApplicationOptionsConstant.APP_STAT_DRAFT)
+                    {
+                        @Html.Hidden("viewApplication", @Html.Raw(Url.Action("Index", "JobApplication", new { ApplicationId = Model.obj[i].ApplicationId, Status = @ViewBag.SelectedStatus })))
+                    }
+                    else
+                    {
+                        @Html.Hidden("submitApplication", @Html.Raw(Url.Action("Index", "ApplyVacancy", new { VacancyId = Model.obj[i].objVacancy.VacancyId, Status = @ViewBag.SelectedStatus })))
+                    }
+                    @Html.Hidden("withdrawApplication", @Html.Raw(Url.Action("WithdrawApplication", "MyApplications", new { ApplicationId = Model.obj[i].ApplicationId })))
+                </ul>
+                @Html.Partial("Shared/_AccApplication", Model.obj[i])
+            </div>
+        }
+    }
+    else
+    {
+        <span class="NoRecordMessage">YOU HAVE NOT APPLIED FOR ANY OPPORTUNITIES</span>
+    }
+</div>
+
+<script type="text/javascript">
+    function SelectApplication(element) {
+        $(".vacancy-app-list-selected").removeClass("vacancy-app-list-selected");
+        $(".SelectedBox").removeClass("SelectedBox");
+        $(element).children(".boxHeader").addClass("vacancy-app-list-selected");
+        $(element).addClass("SelectedBox");
+        var _submitApp = $(element).find("#submitApplication").val();
+        var _viewApp = $(element).find("#viewApplication").val();
+        var _widthdrawApp = $(element).find("#withdrawApplication").val();
+
+        if (_submitApp != undefined) {
+            $("#draftApplication").show();
+            $("#draftApplication").attr("href", _submitApp);
+        }
+        else
+            $("#draftApplication").hide();
+
+        if (_viewApp != undefined) {
+            $("#viewApplication").hide();
+            $("#viewApplication").attr("href", _viewApp);
+        }
+        else
+            $("#viewApplication").hide();
+
+        if (_widthdrawApp != undefined) {
+            $("#withdrawApplication").show();
+            $("#withdrawApplication").attr("href", _widthdrawApp);
+        }
+        else
+            $("#withdrawApplication").hide();
+    }
+
+    $(".ApplicationBox").click(function (element) {
+        SelectApplication(this);
+    });
+
+    function btnViewDetailsMob(element) {
+        var dpId = $(element).parents('.search-row').find('ul').attr('data-id');
+        var dpAppId = $(element).parents('.search-row').find('ul').attr('data-applicationid');
+        var dpLink = '@Html.Raw(Url.Action("Index", "ApplyVacancy", new { VacancyId = "_DATAID_" }))';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        dpLink = dpLink.replace("_DATAAPPID_", dpAppId);
+        window.location = dpLink;
+    }
+
+    $(document).ready(function () {
+        $(".AccApplication").accordion(VacancyModel.AccSecondAttr);
+        $(".AccApplication").on('accordionbeforeactivate', function (event, ui) {
+            AccCandidateOffers(event, ui);
+            var ApplicationBox = $(this).parents(".ApplicationBox");
+            SelectApplication(ApplicationBox);
+            event.stopImmediatePropagation();
+        });
+
+        $("#draftApplication").hide();
+        $("#viewApplication").hide();
+        $("#withdrawApplication").hide();
+    });
+
+    function AccCandidateOffers(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var AppId = $(ui.newHeader).parents(".ApplicationBox").find(".boxHeader").attr('data-applicationid');;
+            var index = $(ui.newHeader).attr('data-index');
+            var dataLink = "";
+            if (index == '3') {
+                var _totalOffers = $(ui.newHeader).attr('data-totaloffer');
+                dataLink = '@Html.Raw(Url.Action("GetAllCandidateOffers", "MyApplications", new { AppId = "_APPID_" }))';
+                dataLink = dataLink.replace("_APPID_", AppId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).find(".acc-Content").find(".AccCandidateOffers").html("");
+                    $(ui.newPanel).find(".AccCandidateOffers").html(data);
+                    var newCount = $(ui.newPanel).find('.AccVacancyOffer').attr('data-count');
+                    newCount = '(' + newCount + ')';
+                    $(ui.newPanel).find('.AccCandidateOffers').find(".AccVacancyOffer").accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                    $(ui.newHeader).find('p').children().text(newCount);
+                    $('.AccCandidateOffers').on('accordionbeforeactivate', function (event, ui) {
+                        AccVacancyOffer(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                });
+            }
+            else if (index == '1') {
+                var dataLink = '@Html.Raw(Url.Action("GetApplicationById", "MyApplications", new { ApplicationId = "_APPID_" }))';
+                dataLink = dataLink.replace("_APPID_", AppId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).html("");
+                    $(ui.newPanel).html(data);
+                    event.stopImmediatePropagation();
+                });
+            }
+            else if (index == '2') {
+                var dataLink = '@Html.Raw(Url.Action("GetAllInterviews", "MyApplications", new { ApplicationId = "_APPID_" }))';
+                dataLink = dataLink.replace("_APPID_", AppId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).html("");
+                    $(ui.newPanel).html(data);
+                    event.stopImmediatePropagation();
+                });
+            }
+            else if (index == '4') {
+                var dataLink = '@Html.Raw(Url.Action("GetAllAppQuestions", "MyApplications", new { ApplicationId = "_APPID_" }))';
+                dataLink = dataLink.replace("_APPID_", AppId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).html("");
+                    $(ui.newPanel).html(data);
+                    $(".AccQuestionCategory").accordion(VacancyModel.AccSecondAttr);
+                    event.stopImmediatePropagation();
+                });
+            }
+            else if (index == '5') {
+                var dataLink = '@Html.Raw(Url.Action("GetRequiredDocuments", "MyApplications", new { ApplicationId = "_APPID_" }))';
+                dataLink = dataLink.replace("_APPID_", AppId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    var Count = $(data).find("ul.RowContent").length;
+                    $(ui.newHeader).find(".lblReqDocCount").html(Count);
+                    $(ui.newPanel).html("");
+                    $(ui.newPanel).html(data);
+                    event.stopImmediatePropagation();
+                });
+            }
+            else if (index == '6') {
+                var dataLink = '@Html.Raw(Url.Action("GetAllCandidateSurveyRounds", "MyApplications", new { ApplicationId = "_APPID_" }))';
+                dataLink = dataLink.replace("_APPID_", AppId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).html("");
+                    $(ui.newPanel).html(data);
+                    var _accs = $(ui.newHeader).next().children().children('.acc-header');
+                    var cnt = "0";
+                    var temp = "0";
+                    $(_accs).each(function () {
+                        cnt = parseInt($(this).attr('data-quecnt'));
+                        temp = parseInt(temp + cnt);
+                    })
+                    $(ui.newHeader).find(".lblrequireinfo").html("(" + temp + ")");
+                    event.stopImmediatePropagation();
+                });
+            }
+        }
+    }
+
+    function AccVacancyOffer(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var AppId = $(ui.newPanel).parents('.AccCandidateOffers').parents(".AccApplication").prev().attr('data-applicationid')
+            var _VacOfferId = $(ui.newHeader).attr('data-vacofferid');
+            var IsCandidate = true;
+            var _dataLink = '@Html.Raw(Url.Action("GetVacancyOfferById", "Application", new { area=ATS.WebUi.Common.Constants.AREA_EMPLOYEE, VacancyOfferId = "_VACOFFERID_" , AppId = "_AppID_", IsCandidate="_ISCANDIDATE_" }))';
+            _dataLink = _dataLink.replace("_VACOFFERID_", _VacOfferId);
+            _dataLink = _dataLink.replace("_AppID_", AppId);
+            _dataLink = _dataLink.replace("_ISCANDIDATE_", IsCandidate);
+            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                if ($('.AccCandidateOffers').find('form').length > 0) {
+                    $('.AccCandidateOffers').find('form').remove();
+                }
+                $(ui.newPanel).html(data);
+                var _curOfferNo = $(ui.newHeader).attr('data-offerno');
+                var _totalOffers = $(ui.newHeader).attr('data-totaloffer');
+                if (_curOfferNo < _totalOffers) {
+                    $(".offerbtn").hide();
+                }
+            });
+        }
+    }
+</script>
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

@@ -1,0 +1,1192 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.CandidateProfile
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@System.Web.Optimization.Scripts.Render("~/bundles/TimePickerJS")
+@System.Web.Optimization.Styles.Render("~/bundles/TimePickerCSS")
+@System.Web.Optimization.Scripts.Render("~/bundles/jNumberRange")
+@System.Web.Optimization.Styles.Render("~/Content/cssNumberRange")
+
+<script type="text/javascript">
+    function IgnoreCanInterviewPromoteClick(element) {
+        $(element).children().find(".prfle-tab-head-brown > .ansoption").each(function () {
+            $(this).live('click', function (event) {
+                event.stopImmediatePropagation();
+                event.preventDefault();
+            });
+        });
+    }
+
+    function IgnoreInactiveClick(element) {
+        $(element).each(function () {
+            $(element).addClass('ui-state-disabled');
+        });
+    }
+
+    function IgnoreInterviewHeaderClick(ui) {
+        $(ui).find(".reviewer-tab-head ").children().find('.floatright a').each(function (index) {
+            $(this).live('click', function (event) {
+                event.stopImmediatePropagation();
+                event.preventDefault();
+            });
+        });
+    }
+
+    function ignoreDeleteonInterview(accordianClass) {
+        $("." + accordianClass + " > .acc-header > .reviewer-tab-head").each(function () {
+            $(this).children('p').children('.floatright').find('a#delete').live(function (event) {
+                event.stopImmediatePropagation();
+                event.preventDefault();
+            });
+        });
+    }
+
+    function ignoreRevRatclick(accordianclass) {
+        $("." + accordianclass + " > .acc-header > .AccGearBox").each(function (index) {
+            $(this).click(function (event) {
+                event.stopImmediatePropagation();
+                event.preventDefault();
+            });
+        });
+
+    }
+
+    function AccReviewerBA(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var ApplicationId = $(ui.newHeader).parents('.CanInterview').parents('.acc-Content:first').prev().attr('data-pkid');
+            var VacRMId = $(ui.newHeader).attr('data-pkid');
+            var QueId = $(ui.newHeader).parents().parents().prev().attr('data-queid');
+            var VacQueId = $(ui.newHeader).parents().parents().prev().attr('data-pkid');
+            var VacRndId = $(ui.newHeader).parents().parents().prev().attr('data-vacrndid');
+            var QueCatId = $(ui.newHeader).parents('.AccQuestionDetail:first').parents("div.acc-Content").prev().attr("data-sectionid")
+            var _dataLink = '@Html.Raw(Url.Action("GetCanAnsByVacQueIdAndRMID", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_AppId_", QueId = "_QueId_", VacRMId = "_VacRMId_", VacRndId = "_VacRndId_", QueCatId = "_QueCatId_", VacQueId = "_VacQueId_" }))';
+            _dataLink = _dataLink.replace("_AppId_", ApplicationId);
+            _dataLink = _dataLink.replace("_VacRMId_", VacRMId);
+            _dataLink = _dataLink.replace("_QueId_", QueId);
+            _dataLink = _dataLink.replace("_QueCatId_", QueCatId);
+            _dataLink = _dataLink.replace("_VacRndId_", VacRndId);
+            _dataLink = _dataLink.replace("_VacQueId_", VacQueId);
+            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                $(ui.newPanel).find('.CanAnswer').html('');
+                $(ui.newPanel).find('.CanAnswer').html(data);
+                $(ui.newPanel).find('.CanAnswer').find("#score").slider(VacancyModel.ScaleScore);
+                if ($(ui.newPanel).find('.CanAnswer').find("#AnsScore").length > 0) {
+                    $(ui.newPanel).find('.CanAnswer').find("#AnsScore").slider(VacancyModel.ScaleScore);
+                    if ($(ui.newPanel).find('.CanAnswer').find("#AnsScore").attr("contenteditable") == "false") {
+                    }
+                }
+            });
+        }
+    }
+    var mytest;
+    function InterviewsBA(event, ui) {
+        if (event.originalEvent === undefined) {
+            return;
+        }
+        if (ui.newHeader.length > 0 && event.originalEvent.target.outerHTML.indexOf('img') != 1) {
+            var _vacrndid = $(ui.newHeader).attr('data-vacrndid');
+            var _scheIntid = $(ui.newHeader).attr('data-pkid');
+            var _dataLink = '@Html.Raw(@Url.Action("GetInterviewDetails", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, VacRndId = "_VACRNDID_", ScheduleIntId = "_SCHEINTID_" }))';
+            _dataLink = _dataLink.replace("_VACRNDID_", _vacrndid);
+
+            _dataLink = _dataLink.replace("_SCHEINTID_", _scheIntid);
+            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                $(ui.newPanel).children('.acc-inner').html('');
+                var htmlcat = $('<div>' + data + '</div>');
+                if ($(htmlcat).find('div.question-section-hd').length > 0) {
+                    var quecatid = $(htmlcat).find('div.question-section-hd').attr('data-pkid');
+                    var link = '@Html.Raw(Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = "_VACRNDID_", QueCatId = "_QUECATID", ScheduleIntId="_SCHEDULEINTID_",Row = "_ROW_" }))';
+                    VacancyModel.LoadQueBasedonCat(link, _vacrndid, quecatid, _scheIntid, 1, htmlcat, $(ui.newPanel).children('.acc-inner'));
+                }
+                else {
+                    $(ui.newPanel).children('.acc-inner').append(htmlcat);
+                }
+            });
+        }
+        else {
+            $(ui.oldPanel).children().html('');
+        }
+    }
+
+    $('.Interviews').live("accordionbeforeactivate", function (event, ui) {
+        InterviewsBA(event, ui);
+        event.stopImmediatePropagation();
+    });
+
+    function CanInterviewBA(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var $that = $(ui.newHeader).parents('div.acc-Content').prev();
+            var appid = $that.attr('data-pkid');
+            var vacid = $that.attr('data-vacid');
+            var curAccIndex = $(ui.newHeader).attr('data-index');
+            switch (parseInt(curAccIndex)) {
+                case 1:
+                    OpenInterview(event, ui, appid);
+                    // ignoreDeleteonInterview("Interviews");
+                    break;
+                case 2:
+                    OpenRevRat(event, ui, vacid);
+                    break;
+                case 3:
+                    OpenComments(event, ui, appid);
+                    break;
+                case 4:
+                    OpenCandidateHistory(event, ui, appid);
+                    break;
+                case 5:
+                    OpenRequiredDocuments(event, ui, appid);
+                    break;
+                case 6:
+                    OpenApplication(event, ui, appid);
+                    break;
+            }
+        }
+    }
+
+    $(".CanInterview").live("accordionbeforeactivate", function (event, ui) {
+        CanInterviewBA(event, ui);
+        event.stopImmediatePropagation();
+    });
+
+    function OpenInterview(event, ui, vacancyId) {
+        var _dataLink = '@Html.Raw(@Url.Action("GetInterviews", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, AppId = "_APPID_" }))';
+        _dataLink = _dataLink.replace("_APPID_", vacancyId);
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+
+            if ($(data).filter('#noteInterview:hidden').length > 0) {
+                $(ui.newPanel).find('.Interviews').html('');
+                $(ui.newPanel).find('.Interviews').append(data)
+                //$(ui.newPanel).find('.Interviews').closest('.acc-inner').prev().hide();
+                $(ui.newPanel).find('.Interviews').parent().children('.acc-action').hide();
+                $(ui.newPanel).find('.Interviews').closest('.acc-inner').children('.Content').hide();
+            }
+            else {
+                $(ui.newPanel).find('.Interviews').html('');
+                $(ui.newPanel).find('.Interviews').append(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                // $(ui.newPanel).find('.Interviews').closest('.acc-inner').prev().show();
+                $(ui.newPanel).find('.Interviews').parent().children('.acc-action').show();
+                $(ui.newPanel).find('.Interviews').closest('.acc-inner').children('.Content').show();
+                $(ui.newPanel).find('.Interviews').accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                $(ui.newPanel).find('.Interviews').on("accordionbeforeactivate", function (event, ui) {
+                    InterviewsBA(event, ui);
+                    event.stopImmediatePropagation();
+                });
+            }
+        });
+    }
+
+    function OpenRevRat(event, ui, vacancyId) {
+        var ApplicatinoId = $(ui.newHeader).parents('.acc-Content').prev().attr('data-pkid');
+        VacancyModel.CallPostMethod('@Url.Action("GetApplicationProcess", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })?VacancyId=' + vacancyId + '&ApplicationId=' + ApplicatinoId + '&mode=Update',
+            function (data) {
+                $(ui.newPanel).find('.AccRevRat').html('');
+                $(ui.newPanel).find('.AccRevRat').html(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                //Start Apply Round Number - shanil
+                $.each($(ui.newPanel).find('.AccRevRat').find(".CountRound"), function (index, value) {
+                    $(this).text(index + 1);
+                });
+
+                $.each($(ui.newPanel).find('.AccRevRat').find(".inativeCan"), function (index, value) {
+                    IgnoreInactiveClick($(ui.newPanel).find('.AccRevRat').find(".inativeCan").closest('.acc-header'));
+                });
+
+                $(ui.newPanel).find('.AccRevRat').on("accordionbeforeactivate", function (event, ui) {
+                    AccRevRatBA(event, ui)
+                    event.stopImmediatePropagation();
+                    IgnoreCanInterviewPromoteClick('.AccRevRat')
+
+                });
+
+                ignoreRevRatclick("AccRevRat");
+            });
+    }
+    function OpenApplication(event, ui, appid) {
+        var dataLink = '@Html.Raw(Url.Action("GetAllAppQuestions", "Application", new { ApplicationId = "_APPID_" }))';
+        dataLink = dataLink.replace("_APPID_", appid);
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+            $(ui.newPanel).find(".AppQueSection").html("");
+            $(ui.newPanel).find(".AppQueSection").html(data);
+            $(".AccQuestionCategory").accordion(VacancyModel.AccSecondAttr);
+            event.stopImmediatePropagation();
+        });
+    }
+    function AccRoundDetailBA(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var _VacCatId = $(ui.newHeader).attr('data-sectionid');
+            var _VacRndId = $(ui.newHeader).attr('data-rndtypeid');
+            var _AppId = $(ui.newHeader).parents('.CanInterview').parents('.acc-Content').prev().attr('data-pkid');
+            var _dataLink = '@Html.Raw(@Url.Action("GetQuestions", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, VacRndId = "_VacRndId_", VacCatId = "_VacCatId_", AppId = "_AppId_" }))';
+            _dataLink = _dataLink.replace("_VacRndId_", _VacRndId);
+            _dataLink = _dataLink.replace("_VacCatId_", _VacCatId);
+            _dataLink = _dataLink.replace("_AppId_", _AppId);
+            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                $(ui.newPanel).find('.AccQuestionDetail').html('');
+                $(ui.newPanel).find('.AccQuestionDetail').html(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                $(ui.newPanel).find('.AccQuestionDetail').on('accordionbeforeactivate', function (event, ui) {
+                    AccQuestionDetailBA(event, ui);
+                    event.stopImmediatePropagation();
+                });
+            });
+        }
+    }
+
+    function AccQuestionDetailBA(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var _VacRndId = $(ui.newHeader).attr('data-vacrndid');
+            var _VacQueId = $(ui.newHeader).attr('data-pkid');
+            var _ApplicationId = $(ui.newHeader).parents('.CanInterview').parents('.acc-Content').prev().attr('data-pkid');
+            VacancyModel.CallGetMethod('@Url.Action("GetReviewers", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })?VacRndId=' + _VacRndId + '&VacQueId=' + _VacQueId + '&ApplicationId=' + _ApplicationId,
+                function (data) {
+                    $(ui.newPanel).find('.AccReviewer').html('');
+                    $(ui.newPanel).find('.AccReviewer').html(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                    $(ui.newPanel).find('.AccReviewer').on("accordionbeforeactivate", function (event, ui) {
+                        AccReviewerBA(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                });
+        }
+    }
+
+    $(".AccQuestionDetail").live("accordionbeforeactivate", function (event, ui) {
+        AccQuestionDetailBA(event, ui);
+        event.stopImmediatePropagation();
+    });
+
+    $(".AccRoundDetail").live("accordionbeforeactivate", function (event, ui) {
+        AccRoundDetailBA(event, ui);
+        event.stopImmediatePropagation();
+    });
+
+    function AccRevRatBA(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var _VacRndId = $(ui.newHeader).attr('data-vacroundid');
+            var _AppId = $(ui.newHeader).parents('.CanInterview').parents().prev().attr('data-pkid');
+            var _findEle = $(ui.newPanel).find('.AccRoundDetail');
+            var _curr = $(ui.newHeader).children('p').attr('data-rndattrno');
+            if (_curr == '5') {
+                var isSurveyPending = $(ui.newHeader).children('p').attr('data-surveypending');
+                if (isSurveyPending == "True") {
+                    var Message = "<span class='ttldbrown' style='margin-left: 15px;'>Applicant hasn't submit survey answers yet.</span>";
+                    $(ui.newPanel).find('.AccRoundDetail').html('');
+                    $(ui.newPanel).find('.AccRoundDetail').html(Message);
+                    return;
+                }
+            }
+
+            if ($(_findEle).length > 0) {
+                VacancyModel.CallGetMethod('@Url.Action("GetInterviewRoundSection", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })?VacRndId=' + _VacRndId + '&AppId=' + _AppId,
+                    function (data, Message) {
+                        if (Message == "MakeOffer" || _curr == '4') {
+                            $(ui.newPanel).find('.AccRoundDetail').html('');
+                            $(ui.newPanel).find('.AccRoundDetail').html(data);
+                            $(ui.newPanel).find('.AccRoundDetail').find('.AccVacancyOffer').accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                            $('.AccVacancyOffer').on('accordionbeforeactivate', function (event, ui) {
+                                if (ui.newHeader.length > 0) {
+                                    if ($(ui.newHeader).attr('data-vacofferid') == '00000000-0000-0000-0000-000000000000') {
+                                        if ($(ui.newPanel).find("form").length == 0) {
+                                            var lastOfferStatus = $('.AccRoundDetail').find('#btnAddOffer').attr('data-laststatus');
+                                            var _dataLink = '@Html.Raw(Url.Action("GetNewOfferRound", "Application", new { AppId = "_APPID_", LastOfferStatusId = "_LASTOFFERSTATUSID_", VacRndId = "_VACRNDID_" }))';
+                                            _dataLink = _dataLink.replace("_APPID_", _AppId);
+                                            _dataLink = _dataLink.replace("_LASTOFFERSTATUSID_", lastOfferStatus);
+                                            _dataLink = _dataLink.replace("_VACRNDID_", _VacRndId);
+                                            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                                                $(ui.newPanel).html("");
+                                                $(ui.newPanel).html(data);
+                                            });
+                                        }
+                                        return true;
+                                    }
+                                    else {
+                                        var _VacOfferId = $(ui.newHeader).attr('data-vacofferid');
+                                        var _LastOfferTypeId = $(ui.newHeader).attr('data-lastoffertype');
+                                        var _Isrev = $(ui.newHeader).attr('data-isrev');
+                                        var _dataLink = '@Html.Raw(Url.Action("GetVacancyOfferById", "Application", new { VacancyOfferId = "_VACOFFERID_", AppId = "_AppID_", IsRev = "_ISREV_", lastOfferTypeId ="_LASTOFFERTYPE_", VacRndId = "_VacRndId_"}))';
+                                        _dataLink = _dataLink.replace("_VACOFFERID_", _VacOfferId);
+                                        _dataLink = _dataLink.replace("_AppID_", _AppId);
+                                        _dataLink = _dataLink.replace("_ISREV_", _Isrev);
+                                        _dataLink = _dataLink.replace("_LASTOFFERTYPE_", _LastOfferTypeId);
+                                        _dataLink = _dataLink.replace("_VacRndId_", _VacRndId);
+                                        VacancyModel.CallGetMethod(_dataLink, function (data) {
+                                            if ($('.AccVacancyOffer').find('form').length > 0) {
+                                                $('.AccVacancyOffer').find('form').remove();
+                                            }
+                                            $(ui.newPanel).html(data);
+                                            $('.AccRoundDetail').find('#btnAddOffer').hide();
+                                            //hide action buttons
+                                            var _curOfferNo = $(ui.newHeader).attr('data-offerno');
+                                            var _totalOffers = $(ui.newHeader).attr('data-totaloffer');
+                                            if (_curOfferNo < _totalOffers) {
+                                                $(".offerbtn").hide();
+                                            }
+                                        });
+                                    }
+                                }
+                                else {
+                                    $('.AccRoundDetail').find('#btnAddOffer').show();
+                                }
+                                event.stopImmediatePropagation();
+                            });
+                        }
+                        else {
+                            $(ui.newPanel).find('.AccRoundDetail').html('');
+                            $(ui.newPanel).find('.AccRoundDetail').html(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                            $(ui.newPanel).find('.AccRoundDetail').on('accordionbeforeactivate', function (event, ui) {
+                                AccRoundDetailBA(event, ui);
+                                event.stopImmediatePropagation();
+                            });
+                            $.each($(ui.newPanel).find('.AccRoundDetail').find(".cntSection"), function (index, value) {
+                                $(this).text(index + 1);
+                            });
+                        }
+                    });
+            }
+        }
+    }
+
+    $(".AccRevRat").live("accordionbeforeactivate", function (event, ui) {
+        AccRevRatBA(event, ui)
+        event.stopImmediatePropagation();
+    });
+
+    function OpenComments(event, ui, appId) {
+        var _dataLink = '@Html.Raw(@Url.Action("GetComments", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, AppId = "_APPID_" }))';
+        _dataLink = _dataLink.replace("_APPID_", appId);
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+            $(ui.newPanel).find('.Comments').html('');
+            $(ui.newPanel).find('.Comments').append(data);
+        });
+    }
+    function OpenRequiredDocuments(event, ui, appid) {
+        var _dataLink = '@Html.Raw(@Url.Action("GetRequiredDocuments", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_APPID_" }))';
+        _dataLink = _dataLink.replace("_APPID_", appid);
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+            $(ui.newPanel).find('.CandidateRequiredDocuments').html('');
+            $(ui.newPanel).find('.CandidateRequiredDocuments').append(data);
+        });
+    }
+
+    function OpenCandidateHistory(event, ui, appId) {
+        var _dataLink = '@Html.Raw(@Url.Action("GetCandidateHistoryByApplicationId", "CandidateHistory", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_APPID_" }))';
+        _dataLink = _dataLink.replace("_APPID_", appId);
+
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+            $(ui.newPanel).find('.CandidateHistory').html('');
+            $(ui.newPanel).find('.CandidateHistory').append(data);
+        });
+    }
+
+    $(".AccApplication").live("accordionbeforeactivate", function (event, ui) {
+        if (ui.newHeader.length > 0) {
+
+            var _ApplicationId = $(ui.newHeader).attr('data-pkid');
+            VacancyModel.CallGetMethod('@Url.Action("GetCanInterviewAccformat", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE})?ApplicationId=' + _ApplicationId,
+                function (data) {
+                    $(ui.newPanel).find('.CanInterview').html('');
+                    $(ui.newPanel).find('.CanInterview').append(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                    $(ui.newPanel).find('.CanInterview').find(".Interviews").accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+
+                    $(ui.newPanel).find('.CanInterview').on("accordionbeforeactivate", function (event, ui) {
+                        CanInterviewBA(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+
+
+
+                    var Name = $(ui.newHeader).find(".VacNameOnAcc").attr("data-vacancyname");
+                    if (Name != undefined) {
+                        $(".ActionVacancyName").html(Name);
+                    }
+
+                    $('.applicantdetails').css("display", "none");
+                    $('#BeginInterview').html('');
+                    var _IsDeclined = $(ui.newHeader).attr('data-isdeclined');
+                    if (_IsDeclined == "False") {
+                        $('.applicantdetails').css("display", "block");
+                        GetInterviews(_ApplicationId);
+                    }
+                    GetRequiredDocs(_ApplicationId);
+                });
+        }
+        event.stopImmediatePropagation();
+    });
+    $(document).ready(function () {
+        $('#BeginInterview').html('');
+        $('.applicantdetails').css("display", "block");
+        var _AppId = getParameterByName("ApplicationId");
+        if (_AppId != "" && _AppId != undefined) {
+            GetInterviews(_AppId);
+        }
+    });
+
+    function GetInterviews(_AppId) {
+        $.post("/MyCandidates/GetBeginInterviews", { ApplicationId: _AppId }, function (data) {
+            data = JSON.parse(data);
+            $('#BeginInterview').html('');
+            if (data.ScheduleIntId.length == 0) {
+                $('#BeginInterview').append('<li class="NoRecords">No Pending Interviews</li>')
+            }
+            else {
+                for (var i = 0; i < data.ScheduleIntId.length; i++) {
+                    var AppendHtml = '<li><a OnClick="return BeginInterview(this);" data-scheduleintid=' + data.ScheduleIntId[i] + ' data-vacrndid=' + data.VacRndId[i] + '>' + data.RoundDetail[i] + '</a></li>';
+                    $('#BeginInterview').append(AppendHtml);
+                }
+            }
+        });
+    }
+    function GetRequiredDocs(_AppId) {
+        var downloadDRP = $("#ulRequiredDocs")
+        var _UserId = $(downloadDRP).attr('user-id');
+        var _dataLink = '@Html.Raw(@Url.Action("GetRequiredDocumentsByApplicationId", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_APPID_", UserId = "_USERID_" }))';
+        _dataLink = _dataLink.replace("_APPID_", _AppId);
+        _dataLink = _dataLink.replace("_USERID_", _UserId);
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+            $(downloadDRP).html('');
+            $(downloadDRP).append(data);
+        });
+    }
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    $("#ProfileAccordion").live("accordionbeforeactivate", function (event, ui) {
+        if (ui.newHeader.length > 0) {
+            if ($(ui.newHeader).attr('data-header') == 'Application') {
+                VacancyModel.CallGetMethod('@Url.Action("GetApplicationList", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ProfileId= Model.objProfile.ProfileId })',
+                    function (data) {
+                        $(ui.newPanel).find('.AccApplication').html('');
+                        $(ui.newPanel).find('.AccApplication').append(data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                        $(ui.newPanel).find('.AccApplication').find(".CanInterview").accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                        //AnANd :to make Application draft acc disable
+                        $.each($(ui.newPanel).find('.acc-header'), function (index, value) {
+                            var status = $(this).find('p').children().find('#rndweight').text();
+                            if (status.trim() == "Draft") {
+                                IgnoreInactiveClick($(this));
+                            }
+                        });
+                    });
+            }
+        }
+        event.stopImmediatePropagation();
+    });
+
+    var icons = {
+        header: "iconOpen",
+        activeHeader: "iconClosed"
+    };
+    var icons12 = {
+        header: "iconOpen12",
+        activeHeader: "iconClosed12"
+    };
+    var subAccAttr =
+        {
+            icons: icons12,
+            heightStyle: "content",
+            collapsible: true,
+            active: false,
+            animate: true,
+            collapsible: true
+        };
+    $(function () {
+        $('.AccApplication').accordion(VacancyModel.AccSecondAttr);
+        $('.ApplicationInner').accordion(VacancyModel.AccSecondAttr);
+        $("#ProfileAccordion").accordion({
+            icons: icons,
+            heightStyle: "content",
+            collapsible: true,
+            active: false,
+            animate: true,
+            collapsible: true,
+            activate: function (event, ui) {
+                $(".SubAccordion").accordion("option", "collapsible", true);
+                $(".SubAccordion").accordion("option", "active", false);
+            }
+        });
+        $(".SubAccordion").accordion(subAccAttr);
+        VacancyModel.IgnoreAccordianClick();
+        if ('@ViewBag.IsFromVacancy' == '1') {
+            VacancyModel.MakeFormReadOnly('ProfileAccordion');
+            $('#ProfileAccordion button').remove();
+            $('#ProfileAccordion a').remove();
+        }
+    });
+</script>
+
+<style>
+    .section-height {
+        height: 33px;
+    }
+
+    .vacancy-Details {
+        margin-left: 20px;
+        width: 98%;
+    }
+</style>
+
+<div id="ConfirmDiv">
+</div>
+
+<div id="ProfileAccordion" class="SMContentBox">
+    @if (Model.ObjApplicationCount != 0)
+    {
+        <div class="acc-header" data-header="Application">
+            <p class="prfle-tab-head">
+                @Html.Label("Applications")
+                <span class='ttldb count' style="color:#953634;">
+                    (<span class="lblCountApp">@Model.ObjApplicationCount</span>)
+                </span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner">
+                <div class="AccApplication">
+
+                </div>
+            </div>
+        </div>
+    }
+
+    @Html.Partial("Profile/_PersonalInfo", Model)
+
+    @*CR-2*@
+    @*Employment accordion*@
+    @*
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Employment")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countEmployment = Model.ObjContactEmployments.Count() + Model.ObjContactAchievement.Count();
+                }
+                (@countEmployment)
+            </span>
+        </p>
+    </div>*@
+
+    @*<div class="acc-Content">
+        <div class="acc-inner">
+            <div class="SubAccordion">
+             comment this line   Job History
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel("Job History")
+                        <span class='ttldb count'>(@Model.ObjContactEmployments.Count())</span> 
+                     comment this line RK 30052004
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accJobHistories">
+                        @foreach (BEClient.EmploymentHistory _currentEmployment in Model.ObjContactEmployments)
+                        {
+                            @Html.Partial("Profile/_JobHistory", _currentEmployment)
+                        }
+                    </div>
+                    <a id="addJobHistory" href='@Url.Action("AddJobHistoryModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_COMPANY)</a>
+                </div>
+
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel("Achievements")
+                        <span class='ttldb count'>(@Model.ObjContactAchievement.Count())</span>
+
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accAchievements">
+                        @foreach (BEClient.Achievement _currentAchievement in Model.ObjContactAchievement)
+                        {
+                            @Html.Partial("Profile/_Achievement", _currentAchievement)
+                        }
+                    </div>
+                    <a id="addAchievement" href='@Url.Action("AddAchievementModel", "Profile", new { @area = "", @currentProfileId=Model.objProfile.ProfileId ,@userId = Model.objUserDetails.UserId})' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_ACHIEVEMENTS)</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countSkills = Model.ObjContactSkills.Count();
+                }
+                (@countSkills)
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="SubAccordion" id="accSkills">
+            @foreach (BEClient.Skills _currentSkills in Model.ObjContactSkills)
+            {
+                @Html.Partial("Profile/_SkillAndQualification", _currentSkills)
+            }
+        </div>
+        <a id="addSkills" href='@Url.Action("AddSkillsModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_SKILLSANDQUALIFICATIONS)</a>
+    </div>
+
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Educational Background")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countEducationBackground = Model.ObjContactEducations.Count() + Model.ObjContactLicenceAndCertifications.Count();
+                }
+                (@countEducationBackground)
+            </span>
+        </p>
+    </div>*@
+    @*<div class="acc-Content">
+        <div class="acc-inner">
+            <div class="SubAccordion">
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel("Education")
+                        <span class='ttldb count'>(@Model.ObjContactEducations.Count())</span>
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accEducations">
+                        @foreach (BEClient.EducationHistory _currentEducationHistory in Model.ObjContactEducations)
+                        {
+                            @Html.Partial("Profile/_Education", _currentEducationHistory)
+                        }
+                    </div>
+                    <a id="addEducationHistory" href='@Url.Action("AddEducationHistoryModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_EDUCATION)</a>
+                </div>
+
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.LicenceAndCertificationsConstant.FRM_TITL_LICENCEANDCERTIFICATIONS)
+                        <span class='ttldb count'>(@Model.ObjContactLicenceAndCertifications.Count())</span>
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accLicenceAndCertifications">
+                        @foreach (BEClient.LicenceAndCertifications _currentLicenceAndCertifications in Model.ObjContactLicenceAndCertifications)
+                        {
+                            @Html.Partial("Profile/_LicenceAndCertifications", _currentLicenceAndCertifications)
+                        }
+                    </div>
+                    <a id="addLicenceAndCertifications" href='@Url.Action("AddLicenceAndcertificationModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_LICENCEANDCERTIFICATIONS)</a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+
+    @*<div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Extracurricular")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countExtracurricular = Model.ObjContactPublicationHistory.Count() + Model.ObjContactSpeakingEventHistory.Count() + Model.ObjContactAssociations.Count() + Model.ObjContactLanguages.Count();
+                }
+                (@countExtracurricular)
+            </span>
+        </p>
+    </div>*@
+    @*<div class="acc-Content">
+        <div class="acc-in">
+
+            <div class="SubAccordion">
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PublicationHistoryConstant.FRM_PUB_TITL_PUBLICATION)
+                        <span class='ttldb count'>(@Model.ObjContactPublicationHistory.Count())</span>
+                      Comment this line RK 30052004
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accPublicationHistory">
+                        @foreach (BEClient.PublicationHistory _currentPublicationHistory in Model.ObjContactPublicationHistory)
+                        {
+                            @Html.Partial("Profile/_PublicationHistory", _currentPublicationHistory)
+                        }
+                    </div>
+                    <a id="addPublicationHistory" href='@Url.Action("AddPublicationHistoryModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_PUBLICATIONHISTORY)</a>
+                </div>
+
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.SpeakingEventHistoryConst.FRM_SPK_TITL_SPEAKINGEVENTHISTORY)
+                        <span class='ttldb count'>(@Model.ObjContactSpeakingEventHistory.Count())</span>
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accSpeakingEventHistory">
+                        @foreach (BEClient.SpeakingEventHistory _currentSpeakingEventHistory in Model.ObjContactSpeakingEventHistory)
+                        {
+                            @Html.Partial("Profile/_SpeakingEventHistory", _currentSpeakingEventHistory)
+                        }
+                    </div>
+                    <a id="addSpeakingEventHistory" href='@Url.Action("AddSpeakingEventHistoryModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_SPEAKINGEVENTHISTORY)</a>
+                </div>
+
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.AssociationsConst.FRM_ASC_TITLE_ASSOCIATION)
+                        <span class='ttldb count'>(@Model.ObjContactAssociations.Count())</span>
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accAssociation">
+                        @foreach (BEClient.Associations _currentAssociations in Model.ObjContactAssociations)
+                        {
+                            @Html.Partial("Profile/_Associations", _currentAssociations)
+                        }
+                    </div>
+                    <a id="addAssociations" href='@Url.Action("AddAssociationsModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_ASSOCIATIONS)</a>
+
+                </div>*@
+                @*END Association*@
+
+                @*Language*@
+                @*<div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.LanguagesConst.FRM_LAN_TITLE_LANGUAGES)
+                        <span class='ttldb count'>(@Model.ObjContactLanguages.Count())</span>
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accLanguages">
+                        @foreach (BEClient.Languages _currentlanguages in Model.ObjContactLanguages)
+                        {
+                            @Html.Partial("Profile/_Languages", _currentlanguages)
+                        }
+                    </div>
+                    <a id="addLanguages" href='@Url.Action("AddLanguagesModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_LANGUAGES)</a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+
+    @*<div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("References")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countOtherInformation = Model.ObjContactReferences.Count();
+                }
+                (@countOtherInformation)
+            </span>
+        </p>
+    </div>*@
+    @*<div class="acc-Content">
+        <div class="acc-Content">
+            <div class="SubAccordion" id="accReferences">
+                @foreach (BEClient.References _currentreferences in Model.ObjContactReferences)
+                {
+                    @Html.Partial("Profile/_References", _currentreferences)
+                }
+            </div>
+            <a id="addReferences" href='@Url.Action("AddReferencesModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_REFERENCES)</a>
+        </div>
+    </div>*@
+    
+    @*region*@
+
+    @*<div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Other Information")
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="SubAccordion">
+            @Html.Partial("Profile/_AlternativeEmrContact", Model.objUserDetails)
+        </div>
+    </div>*@
+</div>
+
+<script>
+    $(document).ready(function () {
+        function AddEditAnswerSuccess(response) {
+            response = JSON.parse(response);
+            var _ele = $('#frmAddEditAnswer').parent();
+            if (response.IsError) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', response.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', response.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        }
+
+        function ValidateCheckBox(form) {
+            var allow = false;
+            allow = VacancyModel.ValidateQuestionAnswer(form);
+            return !allow;
+        }
+
+        $('#CatNext').live('click', function () {
+            if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+                if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                    $('#frmAddEditAnswer').submit();
+                    CatNext(this);
+                }
+            }
+        });
+
+        $('#CatPrev').live('click', function () {
+            if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+                if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                    $('#frmAddEditAnswer').submit();
+                    CatNext(this);
+                }
+            }
+        });
+
+        $('#QuePrev').live('click', function () {
+            if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+                if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                    $('#frmAddEditAnswer').submit();
+                    QueNext(this);
+                }
+            }
+        });
+
+        $('#QueNext').live('click', function () {
+            if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+                if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                    $('#frmAddEditAnswer').submit();
+                    QueNext(this);
+                }
+            }
+        });
+
+        function CatNext(element) {
+            var _QueRow = 1;
+            var ele = $(element);
+            var _scheduleintid = $(ele).parents('.acc-Content').prev().attr('data-pkid');
+            VacancyModel.CallGetMethod($(element).attr('data-url'), function (data) {
+                var vacRndId = VacancyModel.getUrlParameter(ele.attr('data-url'), 'VacRndId');
+                var htmlcat = $('<div>' + data + '</div>');
+                var quecatid = htmlcat.find('.question-section-hd').attr('data-pkid');
+                var link = '@Html.Raw(Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = "_VACRNDID_", QueCatId = "_QUECATID", ScheduleIntId = "_SCHEDULEINTID_", Row = "_ROW_" }))';
+                VacancyModel.LoadQueBasedonCat(link, vacRndId, quecatid, _scheduleintid, _QueRow, htmlcat, ele.parents('.acc-inner:first'));
+            });
+        }
+
+        function QueNext(element) {
+            var ele = $(element);
+            var _scheduleintid = $(ele).parents('.acc-Content').prev().attr('data-pkid');
+            var _url = $(element).attr('data-url');
+            _url = _url.replace("_SCHEDULEINTID_", _scheduleintid);
+            VacancyModel.CallGetMethod(_url, function (data) {
+                var $queRes = $('<div>' + data + '</div>');
+                if ($queRes.find('.prev-disable').length > 0) {
+                    var cathtml = ele.parents('#Questions').prev().find('#CatPrev').parent().clone();
+                    $(cathtml).find('#CatPrev').attr('class', 'prev-active');
+                    $(cathtml).find('#CatPrev').text('Prev');
+                    $queRes.find('.prev-disable').parent().html($(cathtml).html());
+                }
+                if ($queRes.find('.next-disable').length > 0) {
+                    var cathtml = ele.parents('#Questions').prev().find('#CatNext').parent().clone();
+                    $(cathtml).find('#CatNext').attr('class', 'next-active');
+                    $(cathtml).find('#CatNext').text('Next');
+                    $queRes.find('.next-disable').parent().html($(cathtml).html());
+                }
+                var Qele = ele.parents('#Questions');
+                Qele.html($queRes);
+
+                Qele.find("#score").slider(VacancyModel.ScaleScore);
+                if (Qele.find("#AnsScore").length > 0) {
+                    Qele.find("#AnsScore").slider(VacancyModel.ScaleScore);
+                }
+            });
+        }
+        $('input,select,textarea').live("change", function () {
+            var content = $(this).closest('.acc-Content');
+            if (content.length > 0) {
+                var head = $(content).prev();
+                if ($(head).find(".Save").length > 0) {
+                    var savelink = $(head).find(".Save").get(0);
+                    $(savelink).show();
+                    var myform = content.find("form").get(0);
+                    $(myform).attr("isformchange", true);
+                    return false;
+                }
+            }
+        });
+
+        $('#addJobHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accJobHistories").append(html).accordion('refresh').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accJobHistories").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accJobHistories").parent().prev();
+                    var headcount = $("#accJobHistories").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addAchievement').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accAchievements").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accAchievements").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accAchievements").parent().prev();
+                    var headcount = $("#accAchievements").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addSkills').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accSkills").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accSkills").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accSkills").parent().prev();
+                    var headcount = $("#accSkills").find(".acc-header").size();
+                    $header.find('.prfle-tab-head > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addEducationHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accEducations").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accEducations").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accEducations").parent().prev();
+                    var headcount = $("#accEducations").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addLicenceAndCertifications').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accLicenceAndCertifications").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accLicenceAndCertifications").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accLicenceAndCertifications").parent().prev();
+                    var headcount = $("#accLicenceAndCertifications").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+
+                }
+            });
+            return false;
+        });
+
+        $('#addPublicationHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accPublicationHistory").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accPublicationHistory").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accPublicationHistory").parent().prev();
+                    var headcount = $("#accPublicationHistory").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addSpeakingEventHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accSpeakingEventHistory").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accSpeakingEventHistory").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accSpeakingEventHistory").parent().prev();
+                    var headcount = $("#accSpeakingEventHistory").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addAssociations').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accAssociation").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accAssociation").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accAssociation").parent().prev();
+                    var headcount = $("#accAssociation").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addLanguages').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accLanguages").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accLanguages").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+                    var $header = $("#accLanguages").parent().prev();
+                    var headcount = $("#accLanguages").find(".acc-header").size();
+                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#addReferences').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#accReferences").append(html).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $("#accReferences").on('accordionbeforeactivate', function (event, ui) {
+                        AccCollapse(event, ui);
+                        event.stopImmediatePropagation();
+                    });
+                    $("#ProfileAccordion a").hide();
+
+                    var $header = $("#accReferences").parent().parent().prev();
+                    var headcount = $("#accReferences").find(".acc-header").size();
+                    $header.find('.prfle-tab-head > .count').html("(" + headcount + ")")
+                    VacancyModel.ProfileHeaderCount($header);
+                    VacancyModel.IgnoreAccordianClick();
+                }
+            });
+            return false;
+        });
+
+        $('#AddScheduleInt').live('click', function () {
+            var $that = $(this);
+            var allAccord = $that.parent().parent().find(".Interviews");
+            allAccord.accordion({ active: $(allAccord).find(".acc-header").size() });
+            var appid = $that.parents('.CanInterview').closest('.acc-inner').parent().prev().attr('data-pkid');
+            var _dataLink = '@Html.Raw(@Url.Action("GetInterviewSchedule", "Application", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, AppId = "_APPID_" }))';
+            _dataLink = _dataLink.replace("_APPID_", appid);
+            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                var $formDiv = $that.parent().prev();
+                $formDiv.append(data);
+            });
+            $(this).parent(".Content").hide();
+            return false;
+        });
+    });
+
+    function AddVacancyOffer(element, lastOfferStatus) {
+        var _ele = $(element);
+        $(element).parent("div").prev(".AccVacancyOffer").find("form").remove();
+        if ($(element).parent("div").prev(".AccVacancyOffer").find(".acc-newOffer").length != 0) {
+            $(element).parent("div").prev(".AccVacancyOffer").accordion({ active: $(this).find(".acc-header").size() - 1 });;
+            _ele.hide();
+        }
+        else {
+            var _AppId = $(_ele).parents('.CanInterview').parent().parent().prev().attr('data-pkid');
+            //var _VacRndId = $(_ele).parents('.AccRoundDetail').parent().prev().attr('data-pkid');
+            var _VacRndId = $(_ele).parents('.AccRoundDetail').parents('.acc-Content').prev().attr('data-pkid')
+            var _dataLink = '@Html.Raw(Url.Action("GetOfferRound", "Application", new { AppId = "_APPID_", LastOfferStatusId = "_LASTOFFERSTATUSID_" ,VacRndId = "_VACRNDID_"}))';
+            _dataLink = _dataLink.replace("_APPID_", _AppId);
+            _dataLink = _dataLink.replace("_LASTOFFERSTATUSID_", lastOfferStatus);
+            _dataLink = _dataLink.replace("_VACRNDID_", _VacRndId);
+            VacancyModel.CallGetMethod(_dataLink, function (data) {
+                $(_ele).parent().prev().append(data).accordion('destroy').accordion(subAccAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });;
+                _ele.hide();
+            });
+        }
+    }
+</script>
+
+<script>
+    $(".acc-header").click(function () {
+        if ($(this).next().children("form").length != 0) {
+            if ($(this).hasClass("ui-state-active")) {
+                $("#ProfileAccordion a").show();
+            }
+            else {
+                $("#ProfileAccordion a").hide();
+            }
+        }
+        else {
+            $("#ProfileAccordion a").show();
+        }
+        $(this).next().find(".SubAccordion").accordion("option", "active", false);
+    });
+
+    function AccCollapse(event, ui) {
+        if (ui.newHeader.length > 0) {
+            $("#ProfileAccordion a").hide();
+        }
+        else {
+            $("#ProfileAccordion a").show();
+        }
+    }
+</script>

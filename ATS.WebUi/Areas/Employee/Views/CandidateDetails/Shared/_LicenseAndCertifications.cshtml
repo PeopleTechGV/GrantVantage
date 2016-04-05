@@ -1,0 +1,47 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.LicenceAndCertifications
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.Name)</span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="std-width">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Name, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.Name, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ValidFrom, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.ValidFromText, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Description, new { @class = "label" })
+                                @Html.TextAreaFor(m => m.Description, new { @class = "detail-input txtarea" })
+                            </div>
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.IssuingAuthority, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.IssuingAuthority, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ValidTo, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.ValidToText, new { @class = "detail-input", @readOnly = "readOnly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br clear="all" />
+            </td>
+        </tr>
+    </table>
+</div>

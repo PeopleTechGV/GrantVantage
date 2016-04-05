@@ -1,0 +1,43 @@
+﻿@model ATS.BusinessEntity.Vacancy
+@{
+    string StrStep2Block = "";
+    StrStep2Block = ATS.WebUi.Common.CommonFunctions.GetLangBlockContent(ATS.BusinessEntity.LanguageBlock.Setp2Block);
+}
+
+<div class="CanAccountInner">
+    <div class="CanAccountTitle">
+        <span class="MainTitle">Step 2: Required Documents</span>
+        <span class="SubTitle">@StrStep2Block</span>
+    </div>
+    <div class="BoxUploadResume">
+        <div id="DivNewResume" class="UploadResumeSection">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var AnVacid = $('#AnVacancyId').val();
+        $(".UploadResumeSection").hide();
+        $("#DivNewResume").show();
+        var dataLink = '@Url.Action("GetUploadNewResume", "ApplyVacancy", new { VacancyId = "_VACID_" })';
+        dataLink = dataLink.replace("_VACID_", AnVacid);
+        VacancyModel.CallPostMethod(dataLink, function (data) {
+            $("#DivNewResume").html('');
+            $("#DivNewResume").append(data);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#sticker').addClass("GrayScale");
+        $('#sticker').find("button").hide();
+        $('#sticker').find("a").click(function (e) {
+            e.preventDefault();
+        });
+        $('#sticker').find("#profileImg").hide();
+        $('#sticker').find("#lblClickToUpload").hide();
+    });
+</script>

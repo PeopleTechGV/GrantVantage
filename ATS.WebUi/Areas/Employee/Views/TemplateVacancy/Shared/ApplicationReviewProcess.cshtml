@@ -1,0 +1,138 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo
+@model BEClient.VacancyTemplate
+
+@{
+    var CssClass = "DisplayBlock";
+    BERndAttr RndAttr = (BERndAttr)Model.objTVacancyRound.RoundAttributeNo;
+    if (BERndAttr.OfferRound == RndAttr)
+    {
+        CssClass = "DisplayNone";
+    }
+}
+
+<div class="acc-header" data-vacroundid="@Model.objTVacancyRound.TVacRndId" data-pkid="@Model.objTVacancyRound.TVacRndId" data-rndattrnoheader='@Model.objTVacancyRound.RoundAttributeNo' data-rndorderheader="@Model.objTVacancyRound.RndOrder">
+    <p class="prfle-tab-head-brown" data-rndattrno='@Model.objTVacancyRound.RoundAttributeNo'>
+        <span class="w50 SMW70" style="float:left;">
+            <span class='Save'>@Html.LanguageLabel(BECommonConst.FRM_APP_REV_ROUND) <span class="CountRound"></span>:</span>
+            <span class='lblRRName ttldblue'>@Model.objTVacancyRound.RoundType</span>
+        </span>
+        <span style="padding-right: 1%;padding-left: 1%;" class="ansoption">
+            @if (@Model.objTVacancyRound.RndOrder == 1 && @Model.RndCnt > 1)
+            {
+                <span class="down onload sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("TVacRndReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacId = Model.objTVacancyRound.TVacId, @TVacRndId = Model.objTVacancyRound.TVacRndId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.objTVacancyRound.RndOrder + 1)' data-id='@Model.objTVacancyRound.TVacRndId' onclick="return SetTVacRndOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+            }
+            else if (@Model.objTVacancyRound.RndOrder == @Model.RndCnt && @Model.RndCnt > 1)
+            {
+                <span class="up onload sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("TVacRndReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacId = Model.objTVacancyRound.TVacId, @TVacRndId = Model.objTVacancyRound.TVacRndId, @OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.objTVacancyRound.RndOrder - 1)' data-id='@Model.objTVacancyRound.TVacRndId' onclick="return SetTVacRndOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+            }
+            else
+            {
+                if (@Model.RndCnt > 1)
+                {
+                    <span class="up onload sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("TVacRndReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacId = Model.objTVacancyRound.TVacId, @TVacRndId = Model.objTVacancyRound.TVacRndId, @OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.objTVacancyRound.RndOrder - 1)' data-id='@Model.objTVacancyRound.TVacRndId' onclick="return SetTVacRndOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                    <span class="down onload sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("TVacRndReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacId = Model.objTVacancyRound.TVacId, @TVacRndId = Model.objTVacancyRound.TVacRndId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.objTVacancyRound.RndOrder + 1)' data-id='@Model.objTVacancyRound.TVacRndId' onclick="return SetTVacRndOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                }
+            }
+            <span class="up"><a href='javascript:void(0);' id="TVacroundDelete" onclick="TemplateMyVacancy.DeleteTVacRnd(this);" data-pkid="@Model.objTVacancyRound.TVacRndId"><img src="~/Content/images/delete_16.png" height="13" width="13" /></a></span>
+        </span>
+        <span class="ReviewRoundWt floatright sm-disabled @CssClass">
+            <span class=" ttllbrown">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT):</span>
+            <span class="lblRRWeight ttldblue">@Model.objTVacancyRound.RoundWeight</span>
+        </span>
+    </p>
+</div>
+
+<div class="acc-Content" name="RoundDetail" data-mode="@ViewBag.PageMode">
+    <div class="AccRoundDetail" style="width:98%">
+
+    </div>
+    @Html.Partial("Shared/_SectionDone", null)
+</div>
+
+<script>
+    function DeleteTVacRndConfirm(result, element) {
+        if (result) {
+            var _TVacRndId = $(element).attr('data-pkid')
+            var _dataLink = '@Url.Action("RemoveTVacRound", "TemplateVacancy", new { TVacRoundId = "_DATAPKID_" })';
+            _dataLink = _dataLink.replace("_DATAPKID_", _TVacRndId)
+            $.ajax({
+                url: _dataLink,
+                type: "POST",
+                success: function (response) {
+                    var data = JSON.parse(response)
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        var lblRoundCount = $(element).parents('.AccTVacRounds').parent().prev().find("#vacrndcnt");
+                        var RndCount = lblRoundCount.text();
+                        lblRoundCount.text(parseInt(RndCount) - 1);
+                        var _parentAcc = $(element).parents(".innerTVac");
+                        var active = _parentAcc.accordion("option", "active");
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', data.Message, 3000);
+                        _parentAcc.accordion("option", "active", false).accordion("refresh");
+                        _parentAcc.accordion("option", "active", active);
+                        $(element).parents('.AccTVacRounds').next().html('');
+                        $('#addTVacRnd').show();
+
+                    }
+                }
+            });
+        }
+    }
+    function SetTVacRndOrder(element, TVacId) {
+        var _ele = $(element);
+        var _newrndAttr = "";
+        var _currRndAttr = "";
+        var _message = "";        
+        _currRndAttr = $(_ele).parents('.acc-header').attr('data-rndattrnoheader');
+        _newrndAttr = $(_ele).parents('.acc-header').next().next().attr('data-rndattrnoheader');
+        if (_newrndAttr == 1 && _currRndAttr != 1) {
+            _message = "Application Round Must be the First Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr != 1 && _currRndAttr == 1) {
+            _message = "Application Round Must be the First Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr == 5 && (_currRndAttr == 1)) {
+            _message = "Applicant Survey Round cannot be the first round and it cannot be the last round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr != 4 && (_currRndAttr == 4)) {
+            _message = "Award Round Must be the Last Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_currRndAttr == 5 && (_newrndAttr == 1)) {
+            _message = "Applicant Survey Round cannot be the first round and it cannot be the last round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_currRndAttr == 5 && (_newrndAttr == 4)) {
+            _message = "Applicant Survey Round cannot be the first round and it cannot be the last round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr != 4 && _currRndAttr == 4) {
+            _message = "Award Round Must be the Last Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr == 4 && _currRndAttr != 4) {
+            _message = "Award Round Must be the Last Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else {
+            $.get($(element).attr("data-url"), function (response) {
+                var jsonData = JSON.parse(response);
+                if (!jsonData.IsError) {
+                    var _parentAcc = $(element).parents(".innerTVac");
+                    var active = _parentAcc.accordion("option", "active");
+                    _parentAcc.accordion("option", "active", false).accordion("refresh");
+                    _parentAcc.accordion("option", "active", active);
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, 3000);
+                }
+            });
+        }
+    }
+
+</script>

@@ -1,0 +1,189 @@
+/**
+ * default development theme for jQRangeSlider
+ * Using fam fam icon set from Mark James, http://www.famfamfam.com/lab/icons/silk/ (Creative Commons Attribution 2.5 License)
+ */
+.ui-state-default
+{
+    border:1px solid #BEC0C4;
+}
+.ui-rangeSlider{
+	height:22px;
+}
+.ui-rangeSlider-innerBar
+{
+    background-image: url('/Content/images/jslider.plastic.png');
+}
+.ui-rangeSlider .ui-rangeSlider-innerBar{
+	/*height:2px;
+	top: 7px !important;
+	margin:3px 0px;
+	background:#5983B8;*/
+    position: absolute;
+width: 0%;
+left: 100%;
+top: 0;
+height: 5px;
+background-repeat: repeat-x;
+background-position: 0 0;
+	
+}
+
+.ui-rangeSlider .ui-rangeSlider-handle
+{
+    
+	width:0px;
+	height:0px;
+	background:#AAA;
+	background:rgba(100,100,100, 0.3);
+	cursor:pointer;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar{
+     background-image: url('/Content/images/jslider.plastic.png');
+    top: 0;
+background-repeat: repeat-x;
+background-position: 0 -40px;
+	height: 5px;
+	cursor:pointer;
+	
+
+/*    position: absolute;
+width: 0%;
+left: 100%;
+top: 0;
+height: 5px;
+background-repeat: repeat-x;
+background-position: 0 -40px;*/
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar.ui-draggable-dragging{
+	cursor:	pointer;
+	cursor:pointer;
+}
+
+.ui-rangeSlider-arrow{
+	height: 16px;
+margin: 0px 0;
+width: 16px;
+background-repeat: no-repeat;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-leftArrow{
+	
+    background-image: url('/Content/images/jslider.plastic.png');
+    width: 1% ;
+background-position: 0 0;
+left: 1% !important;
+
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-rightArrow{
+	background-image: url('/Content/images/jslider.plastic.png');
+   width: 1%;
+left: 100%;
+background-position: right 0;
+}
+
+.ui-rangeSlider-arrow-inner{
+    	background-image: url('/Content/images/jslider.plastic.png');
+	width: 80%;
+left: 10%;
+background-repeat: repeat-x;
+background-position: 0 -20px;
+}
+
+.ui-rangeSlider-container{
+	height:22px;
+    background-image: url('/Content/images/jslider.plastic.png');
+
+background-repeat: repeat-x;
+background-position: 0 -40px;
+height: 5px;
+cursor: pointer;
+}
+
+.ui-rangeSlider-withArrows .ui-rangeSlider-container{
+	margin:0px 0px 0px 5px;
+}
+
+.ui-rangeSlider-noArrow .ui-rangeSlider-container{
+	margin:0px 0px 0px 5px;
+}
+.ui-rangeSlider-leftLabel .ui-rangeSlider-label-value
+{
+    font-size: 9px;
+white-space: nowrap;
+padding: 1px 2px 0;
+position: absolute;
+top: -15px;
+left: 40%;
+
+background: white;
+line-height: 12px;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+-o-border-radius: 2px;
+border-radius: 2px;
+
+/*    color:#953634;
+    z-index:1;*/
+}
+.ui-rangeSlider-rightLabel .ui-rangeSlider-label-value
+{
+    font-size: 9px;
+white-space: nowrap;
+padding: 1px 2px 0;
+position: absolute;
+top: -15px;
+left: -275%;
+background: white;
+line-height: 12px;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+-o-border-radius: 2px;
+border-radius: 2px;
+
+/*    color:#953634;
+    z-index:1;*/
+}
+.ui-rangeSlider-label 
+{
+    
+
+     /*background-image: url('/Content/images/jslider.plastic.png');
+    width: 13px;
+height: 15px;
+background-position: 0 -60px;
+position: absolute;
+left: 0%;
+top: -4px;
+margin: 0 2px 2px;
+cursor: pointer;
+bottom: 4px;
+cursor: hand;*/
+
+    margin: 0 2px 2px;
+    /*background-image: url('/Content/images/pointer_24.png');*/
+    background-image: url('/Content/images/jslider.plastic.png');
+    background-position: 0 -60px;
+    background-repeat: no-repeat;
+    white-space: nowrap;
+    bottom: 4px;
+    padding: 13px 6px 7px;
+    cursor: pointer;
+    height:0px;
+}
+
+.ui-rangeSlider-label-inner{
+	display:none;
+}
+
+/*
+ * Edit slider
+ */
+
+input.ui-editRangeSlider-inputValue{
+	width:3em;
+	vertical-align: middle;
+	text-align:center;
+}

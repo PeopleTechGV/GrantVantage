@@ -1,0 +1,20 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.ScheduleInt>
+
+<div class="GridContainer AccGrid">
+    <ul class="RowHeader">
+        <li class="w20">Date</li>
+        <li class="w20">Start</li>
+        <li class="w20">End</li>
+        <li class="w40">Interviewer(s)</li>
+    </ul>
+    @foreach (BEClient.ScheduleInt item in Model)
+    {
+        <ul class="RowContent">
+            <li class="w20">@item.ScheduleDateStr</li>
+            <li class="w20">@item.StartTime</li>
+            <li class="w20">@item.EndTime</li>
+            <li class="w40">@item.InterviewerList</li>
+        </ul>
+    }
+</div>

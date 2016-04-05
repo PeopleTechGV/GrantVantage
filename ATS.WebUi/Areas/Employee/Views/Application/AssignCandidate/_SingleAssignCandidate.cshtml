@@ -1,0 +1,41 @@
+﻿@using HtmlHelpers.BeginCollectionItem
+@using BEClient = ATS.BusinessEntity
+@model BEClient.Reviewers
+@using (Html.BeginCollectionItem("objReviewers"))
+{
+    <div class="drAssignCandidate">
+        @Html.HiddenFor(m => m.UserId)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.ApplicationId)
+        @Html.HiddenFor(m => m.RndTypeId)
+        @Html.HiddenFor(m => m.FullName)
+        @Html.HiddenFor(m => m.RndAttribute)
+        @Html.HiddenFor(m => m.VacancyReviewMemberId)
+
+        <div class="ddAssignCandidate textleft">
+            @Html.CheckBoxFor(m => m.IsAssignedReviewer, new { @class = "chkAssigned" })
+            @Model.FullName
+        </div>
+        @if (@ViewBag.IsOfferRound)
+        {
+            <div class="ddAssignCandidate cntWeight">@Html.TextBoxFor(m => m.Weight, new { @class = "txtWeight", @id = "Weight" })</div>
+            <div class="ddAssignCandidate cntCanPromote">@Html.CheckBoxFor(m => m.CanPromote)</div>
+            <div class="ddAssignCandidate cntCanMakeAward">@Html.CheckBoxFor(m => m.CanMakeOffers, new { @id = "CanMakeOffers" })</div>
+            <div class="ddAssignCandidate cntCanEditAward">@Html.CheckBoxFor(m => m.CanEditOffers)</div>
+        }
+        else if (@ViewBag.IsOnlyOfferRound)
+        {
+            <div class="ddAssignCandidate cntCanMakeAward">@Html.CheckBoxFor(m => m.CanMakeOffers, new { @id = "CanMakeOffers" })</div>
+            <div class="ddAssignCandidate cntCanEditAward">@Html.CheckBoxFor(m => m.CanEditOffers)</div>
+            @Html.HiddenFor(m => m.CanPromote)
+            @Html.HiddenFor(m => m.Weight)
+        }
+        else
+        {
+            <div class="ddAssignCandidate cntWeight">@Html.TextBoxFor(m => m.Weight, new { @class = "txtWeight", @id = "Weight" })</div>
+            <div class="ddAssignCandidate cntCanPromote">@Html.CheckBoxFor(m => m.CanPromote)</div>
+            @Html.HiddenFor(m => m.CanMakeOffers)
+            @Html.HiddenFor(m => m.CanEditOffers)
+        }
+    </div>
+}

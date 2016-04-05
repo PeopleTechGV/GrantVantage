@@ -1,0 +1,13 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.Achievement>
+@using BERecordOfEmploymentConst = ATS.BusinessEntity.Common.RecordOfEmployementConstant
+
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.IssuingAuthority</h3>
+        <p>
+            @v.Description<br />
+        </p>
+    </div>
+}

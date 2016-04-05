@@ -1,0 +1,6 @@
+﻿@model ATS.BusinessEntity.SRPEntity.IDynamicSRP
+
+<ul class="ActionBar">
+    <li><a id="AddNew" class="bgAdd bgAdd16B" href='@Model.AddRecordURL'>@Html.LanguageLabel(Model.AddBtnText)</a></li>
+    <li><a id="btnDelete" class="bgAdd bgDelete16B ShowOnMulti" onclick="ConfirmDeleteRecords(this);">@Html.LanguageLabel(Model.RemoveBtnText)</a></li>
+</ul>

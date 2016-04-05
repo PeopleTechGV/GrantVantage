@@ -1,0 +1,46 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.ScheduleInt
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant;
+
+@if (ViewBag.IsDeclined)
+{
+    <div>
+        Please Reactivate the Applicant.
+    </div>
+}
+else
+{
+    <div class="acc-header" data-vacrndid="@Model.VacRndId" data-pkid="@Model.ScheduleIntId" data-appid="@Model.ApplicationId" style="width:98%;">
+        <p style="overflow: hidden;">
+            <span class="w10 SMW100 floatleft lblNblue cntScheduleDate">@Model.ScheduleDateStr</span>
+            <span class="w10 SMW100 floatleft lblNblue cntStartTime">@Model.StartTime</span>
+            <span class="w10 SMW100 floatleft lblNblue cntEndTime">@Model.EndTime</span>
+            <span class="w40 SMW100 floatleft lblNblue cntInterviewers">@Model.InterviewerList</span>
+            <span class="w13 SMW100 floatleft lblNblue cntRound">@Model.RndOrder: @Model.Round</span>
+            <span class="w10 SMW100 floatleft lblNblue cntScore" id="rndscore">@Model.Score</span>
+            <span class="w7 SMW100 floatright absSchAction">
+                <span class="ansoption">
+                    <a id="edit" href="javascript:void(0);" class="EnableButton active" data-id="@Model.ScheduleIntId" onclick="EditSchedule(this);">
+                        <img width=" 15" height="15" src="/Content/images/Edit_16.png">
+                    </a>
+                </span>
+                <span class="ansoption">
+                    <a id="delete" href="javascript:void(0);" class="EnableButton" data-id="@Model.ScheduleIntId" onclick="DeleteConfirm(this, event);">
+                        <img width="15" height="15" src="/Content/images/delete_16.png">
+                    </a>
+                </span>
+            </span>
+        </p>
+    </div>
+
+    <div class="acc-Content">
+        <div class="edit-schedule">
+
+        </div>
+        <div class="acc-inner">
+
+        </div>
+    </div>
+}
+
+

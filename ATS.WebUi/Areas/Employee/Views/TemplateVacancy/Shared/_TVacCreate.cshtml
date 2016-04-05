@@ -1,0 +1,33 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.TVac>
+@using BEClient = ATS.BusinessEntity;
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.VacancyTemplate
+
+<div class="acc-header" data-catidonly="@Model.obj.TVacId">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        <span class="ttldb lblTemplateName">@Model.obj.Name</span>
+        @if (ViewBag.QuestionPermission != null)
+        {
+            List<ATS.BusinessEntity.SRPEntity.UserPermissionWithScope> UserPermissionWithScope = ViewBag.QuestionPermission;
+
+            if (UserPermissionWithScope != null)
+            {
+                if (UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Modify)).Count() > 0)
+                {
+                    <span class="edit" style="display:none;"><a href='javascript:void(0);' id="editCategory" data-url='@Url.Action("GetVacancyTemplateByRights", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacId = Model.obj.TVacId })' data-id='@Model.obj.TVacId' onclick="return editTVac(this);"><img src="~/Content/images/Edit_16.png" /></a></span>
+                }
+                
+            }
+        }
+        <span class="notification" style="display:none;"></span>
+        <span style="float:right">
+            <span class="ttllbrown"><label></label></span>
+            <span id="rndweight" class="ttldblue"><label></label></span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content" data-catid="@Model.obj.TVacId">
+        <span class="editsection">
+            @Html.Partial("Shared/_AddEditTVac", Model)
+        </span>
+</div>

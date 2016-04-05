@@ -1,0 +1,33 @@
+﻿@using BELabel = ATS.BusinessEntity.Common.ClientLabel
+@using BECommonConstatant = ATS.BusinessEntity.Common.CommonConstant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div id="Messages" style="width: auto; float: left;">
+</div>
+<div class="featured-jobs" style="clear:left;">
+    <div class="search">
+        <div class="vacancies-heading">
+            @Html.LanguageLabel(BELabel.FRM_CLIENT)</div>        
+            <a href ='@Url.Action("View", "Client")' class="btn-add-new"  style="width: 50px; height: 27px; padding-top: 13px; margin-left: 64px; text-decoration: none; ">
+            @Html.LanguageLabel(BECommonConstatant.ADD)  </a>
+            
+        @*<div class="search-box">
+            <input id="searchbox" value="" />
+        </div>*@
+    </div>
+</div>
+@Html.Partial("Shared/_ClientList")
+@if (ViewBag.IsError != null && ViewBag.IsError==true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError==false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

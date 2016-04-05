@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ATS.BusinessEntity.VacancyStatus>
+@using BEVacStatusConst = ATS.BusinessEntity.Common
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w50">@Html.LanguageLabel(BEVacStatusConst.VacancyStatusConstant.FRM_VACSTATUSNAME)</li>
+        <li class="w50">@Html.LanguageLabel(BEVacStatusConst.VacancyStatusConstant.FRM_VACSTATUSCATEGORY)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.VacancyStatus current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.VacancyStatusId'>
+            <li class="w50 cntName">@current.VacancyStatusTextLocal</li>
+            <li class="w50 cntCategory">@current.Category</li>
+            <li id="btnVacStatusMob" class="ViewDetailsMob MobView" onclick="btnVacStatusMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "VacancyStatus")';
+    });
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var vacancystatusId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "VacancyStatus", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", vacancystatusId);
+        window.location = dLink;
+    });
+
+    function btnVacStatusMob(element) {
+        var vacancystatusId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "VacancyStatus", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", vacancystatusId);
+        window.location = dLink;
+    }
+</script>

@@ -1,0 +1,143 @@
+﻿@model ATS.BusinessEntity.BeginInterView
+
+
+@using (Ajax.BeginForm("AddBeginInterview", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "BeginInterviewSuccess",
+            OnFailure = "BeginInterviewFailure"
+        }, new { id = "frmBeginInt" }))
+{
+    <div class="std_width intrview-dtl">
+        @Html.HiddenFor(m => m.VacRndId)
+        @Html.HiddenFor(m => m.ScheduleIntId)
+        @Html.HiddenFor(m => m.TotalScore, new { @id = "TotalScore" })
+        
+        @if (Model.IsReviewer)
+        {
+            if (Model.IsComplete)
+            {<h4>Interview Questions and Comments</h4>
+                <button id="ReopenInt" class="beign-intrvw" onclick="return ReopenInterview(event, this);">Re-Open Interview</button>
+                
+                <div class="width-75">
+                    <span class="std_width red reopen-text">
+                        Interview Questions Completed on
+                        <span class="blue">@Model.IntEndOn</span>
+                        by
+                        <span class="blue">@Model.UserText</span>
+                    </span>
+                    <span class="std_width red reopen-text">
+                        Total Score :
+                        <span class="blue" id="rndscore">@Model.Score</span>
+                    </span>
+                </div>
+
+            }
+            else
+            {
+                <button id="addBeginInt" type="submit" class="beign-intrvw">Begin Interview</button>
+            }
+        }
+        else
+        {
+            @*<button id="addBeginInt" type="submit" class="beign-intrvw" disabled="disable">Begin Interview</button>*@
+         @*<span id="notReviewer" class="ttldbrown" style="margin-left: 15px;">You are not Reviewer of the above Scheduled Round.</span>*@
+            
+        }
+
+
+    </div>
+}
+
+<script>
+
+    function BeginInterviewSuccess(response) {
+
+        var Jsondata = JSON.parse(response);
+        var ele = $('#frmBeginInt').parent();
+        //ele.parents('.Interviews').attr('data-apprndid',$(Jsondata.Data).find('.question-section-hd').attr('data-apprndid'))
+        @*var Elemodel = @Html.Raw(Json.Encode(Model))*@
+
+        var vacrndid = $("#frmBeginInt").parents('.acc-Content:first').prev().attr('data-vacrndid');
+        var scheduleintid = $("#frmBeginInt").parents('.acc-Content:first').prev().attr('data-pkid');
+        var Quecatid = $(Jsondata.Data).find(".std_width.question-section-hd").attr('data-pkid');
+        var row = 1;
+
+        $('#frmBeginInt').remove();
+        var htmlcat = $('<div>' + Jsondata.Data + '</div>');
+        //$(ele).append(Jsondata.Data)
+        //var nele = $(Jsondata.Data).find('.std_width.question-section-hd');
+        if ($(htmlcat).find('div.question-section-hd').length > 0) {
+            var link = '@Html.Raw(Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = "_VACRNDID_", QueCatId = "_QUECATID", ScheduleIntId="_SCHEDULEINTID_",Row = "_ROW_" }))';
+            link = link.replace("_VACRNDID_", vacrndid);
+            link = link.replace("_QUECATID", Quecatid);
+            link = link.replace("_SCHEDULEINTID_", scheduleintid);
+            link = link.replace("_ROW_", row);
+            VacancyModel.LoadQueBasedonCat(link, vacrndid, Quecatid, scheduleintid, 1, htmlcat, $(ele));
+        }
+        else {
+            $(ele).html(htmlcat);
+        }
+        $(ele).parent().prev('.edit-schedule').html('');
+    }
+    function ReopenInterview(event,element) {
+        event.preventDefault();
+        ReopenInt(element);
+    }
+
+    function ReopenInt(element) {
+
+        var self = $(element);
+        var vacrndid = $(self).parents('.acc-Content:first').prev().attr('data-vacrndid');
+        var scheduleintid = $(self).parents('.acc-Content:first').prev().attr('data-pkid');
+        var IsComplete = false
+        var qrow = 1;
+        var ele = $(element).parents('.acc-Content:first');//$('#frmBeginInt').parent();
+
+        var dataLink = '@Html.Raw(Url.Action("UpdateInterViewStatus", "Application", new { VacRndId = "_VACRNDID_", ScheduleIntId = "_SCHEINTID_" ,IsComplete = "_ISCOMP_"}))';
+        dataLink = dataLink.replace("_VACRNDID_", vacrndid);
+        dataLink = dataLink.replace("_SCHEINTID_", scheduleintid);
+        dataLink = dataLink.replace("_ISCOMP_", IsComplete);
+        VacancyModel.CallPostMethod(dataLink, function (data) {
+            
+            //$(self).parents('.acc-inner:first').html('<div>' + data + '</div>');
+            var htmlcat = $('<div>' + data + '</div>');
+            
+            //$(ele).append(Jsondata.Data)
+            //var nele = $(Jsondata.Data).find('.std_width.question-section-hd');
+            var Quecatid = $(htmlcat).find(".std_width.question-section-hd").attr('data-pkid');
+
+            if ($(htmlcat).find('div.question-section-hd').length > 0) {
+                var link = '@Html.Raw(Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = "_VACRNDID_", QueCatId = "_QUECATID", ScheduleIntId="_SCHEDULEINTID_",Row = "_ROW_" }))';
+                link = link.replace("_VACRNDID_", vacrndid);
+                link = link.replace("_QUECATID", Quecatid);
+                link = link.replace("_SCHEDULEINTID_", scheduleintid);
+                link = link.replace("_ROW_", qrow);
+                VacancyModel.LoadQueBasedonCat(link, vacrndid, Quecatid, scheduleintid, 1, htmlcat, $(ele).children('.acc-inner'));
+            }
+            else {
+                $(ele).html(htmlcat);
+            }
+            $(ele).parent().prev('.edit-schedule').html('');
+
+
+            var _ApplicationId = $(ele).parents('.acc-Content').prev('div[data-isdeclined]').attr('data-pkid');
+            $.post("/MyCandidates/GetBeginInterviews", { ApplicationId: _ApplicationId }, function (data) {
+                data = JSON.parse(data);
+                $('#BeginInterview').html('');
+
+
+                if (data.ScheduleIntId.length == 0) {
+                    $('#BeginInterview').append('<li class="NoRecords">No Pending Interviews</li>')
+                }
+                else {
+                    for (var i = 0; i < data.ScheduleIntId.length; i++) {
+                        var AppendHtml = '<li><a OnClick="return BeginInterview(this);" data-scheduleintid=' + data.ScheduleIntId[i] + ' data-vacrndid=' + data.VacRndId[i] + '>' + data.RoundDetail[i] + '</a></li>';
+                        $('#BeginInterview').append(AppendHtml);
+                    }
+                }
+            });
+        });
+    }
+</script>

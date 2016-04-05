@@ -1,0 +1,11 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.Skills>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+<div class="content">
+    <ul class="skills">
+        @foreach (var v in Model)
+        {
+            <li>@v.SkillAndQualification</li>
+        }
+    </ul>
+</div>

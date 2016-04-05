@@ -1,0 +1,32 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model ATS.BusinessEntity.SRPEntity.IDynamicSRP
+
+<script>
+    function MyOnClickValidate() {
+        if (window["OnClickValidate"] == '') {
+            return true;
+        }
+        else {
+            return window["OnClickValidate"]();
+        }
+    }
+</script>
+
+@{
+    bool ViewRemoveBtn = false;
+}
+
+@if (ViewBag.IsDelete != null)
+{
+    bool.TryParse(Convert.ToString(ViewBag.IsDelete), out ViewRemoveBtn);
+}
+
+
+<ul class="ActionBar">
+    <li><a id="Update" class="bgSave16B" href='javascript:void(0);' onclick='return MyOnClickValidate();'>@Html.LanguageLabel(Model.SaveBtnText)</a></li>
+
+    @if (ViewRemoveBtn)
+    {
+        <li><a id="Remove" href='javascriptvoid();' class="btn-remove-vacancy bgDelete16B">@Html.LanguageLabel(Model.RemoveBtnText)</a></li>
+    }
+</ul>

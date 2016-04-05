@@ -1,0 +1,44 @@
+﻿@model IList<ATS.BusinessEntity.Division>
+@using BEDivisionConst = ATS.BusinessEntity.Common
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w50">@Html.LanguageLabel(BEDivisionConst.DivisionConstant.LST_DIV_NAME)</li>
+        <li class="w50">@Html.LanguageLabel(BEDivisionConst.DivisionConstant.LST_DIV_PDIVISION)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.Division current in Model)
+    {
+        ATS.BusinessEntity.PageMode pageMode = ATS.WebUi.Common.CommonFunctions.GetPageMode(current.PermissionType, ViewBag.PageMode);
+        string strPermissionType = current.PermissionType != null ? string.Join(",", current.PermissionType) : "";
+        if (pageMode != ATS.BusinessEntity.PageMode.Other)
+        {
+            <ul class="RowContent CursorPointer" data-id='@current.DivisionId' data-auth="@strPermissionType">
+                <li class="w50 cntDivision">@current.DivisionName</li>
+                <li class="w50 cntParentDivision">@current.ParentDivisionName</li>
+                <li id="MobDivision" class="ViewDetailsMob MobView" onclick="MobDivision(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+            </ul>
+        }
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "Division")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var divisionId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "Division", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", divisionId);
+        window.location = dLink;
+    });
+
+    function MobDivision(element) {
+        var divisionId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "Division", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", divisionId);
+        window.location = dLink;
+    }
+</script>

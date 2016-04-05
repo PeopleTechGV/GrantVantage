@@ -1,0 +1,51 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.DivisionPositionType>
+
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Employee/Views/CompanySetup/CompanySetUpMaster.cshtml";
+}
+
+
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmDivisionPositionType');
+        });
+    </script>
+}
+@{
+    string actionName = ViewBag.RedirectAction;
+}
+@using (Html.BeginForm(actionName, "DivisionPositionType", FormMethod.Post, new { id = "frmDivisionPositionType" }))
+{      
+      @Html.Partial("Buttons/_SaveBtn", Model)
+    @Html.Partial("Buttons/_BackBtn")
+    <br />
+    <br /> <br /> <br />
+    <div id="EditDiv">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m => m.obj.DivisionPositionTypeId, new { Id = "DivisionPositionTypeId" })
+        @Html.HiddenFor(m => m.obj.ClientId)
+        <div class="vacancy-Details">
+            <div class="one-div">
+                <div class="box">
+                    @Html.LanguageLabelFor(m => m.obj.DivisionId, new { @class = "label" })
+                    <br />
+                    <div id="ParentDivision">
+                    @Html.DropDownListFor(m => m.obj.DivisionId, (SelectList)ViewBag.DivisionLst, "- Select one -", new { @class = "detail-select" })
+                    </div>
+                    </div>
+                                    <div class="box">
+                    @Html.LanguageLabelFor(m => m.obj.PositionTypeId, new { @class = "label" })
+                    <br />
+                    <div  id="PositionTypeId">
+                    @Html.DropDownListFor(m => m.obj.PositionTypeId, (SelectList)ViewBag.PositionTypeLst, "- Select one -", new { @class = "detail-select" })
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}

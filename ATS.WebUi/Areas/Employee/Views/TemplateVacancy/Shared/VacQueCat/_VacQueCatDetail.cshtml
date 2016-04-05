@@ -1,0 +1,122 @@
+﻿@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BEClient = ATS.BusinessEntity;
+@model BEClient.TVacQueCat
+
+<div class="acc-header" data-pkid="@Model.TVacQueCatId" data-roundid="@Model.TVacRndId">
+    <p class="prfle-tab-head-brown">
+        <span class="w50 SMW70" style="float:left;">
+            <span class='Save'></span>
+            <span class='ttldblue' id="rndtype">@Model.objQueCat.LocalName</span>
+            <span id="VacQueCount" class="lblRoundBraces revCount">@Model.TVacQueCount</span>
+        </span>
+        <span style="padding-right: 1%;padding-left: 1%;" class="ansoption">
+            @if (@Model.Order == 1 && @Model.TVacQueCatCnt > 1)
+            {
+                <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("TVacQueCatReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacRndId = Model.TVacRndId, @TVacQueCatId = Model.TVacQueCatId, @OrderDir = "Down" })' onclick="return SetTVacQueCatOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+
+            }
+            else if (@Model.Order == @Model.TVacQueCatCnt && @Model.TVacQueCatCnt > 1)
+            {
+                <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("TVacQueCatReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacRndId = Model.TVacRndId, @TVacQueCatId = Model.TVacQueCatId, @OrderDir = "Up" })' onclick="return SetTVacQueCatOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+            }
+            else
+            {
+                if (@Model.TVacQueCatCnt > 1)
+                {
+                    <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("TVacQueCatReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacRndId = Model.TVacRndId, @TVacQueCatId = Model.TVacQueCatId, @OrderDir = "Up" })' onclick="return SetTVacQueCatOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                    <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("TVacQueCatReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacRndId = Model.TVacRndId, @TVacQueCatId = Model.TVacQueCatId, @OrderDir = "Down" })' onclick="return SetTVacQueCatOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                }
+            }
+            <span class="up">
+                <a href='javascript:void(0);' id="TVacQueCatEdit" onclick="EditTVacQueCat(this, event)" data-pkid="@Model.TVacQueCatId" data-tvacrndid="@Model.TVacRndId"><img src="~/Content/images/edit_16.png" height="13" width="13" /></a>
+                <a href='javascript:void(0);' id="TVacQueCatdelete" onclick="TemplateMyVacancy.DeleteTVacQueCatConfirm(this)" data-pkid="@Model.TVacQueCatId"><img src="~/Content/images/delete_16.png" height="13" width="13" /></a>
+            </span>
+        </span>
+        <span class="w30">
+            <label></label>
+        </span>
+        <span class="w30 floatright textright sm-disabled">
+            <span class="ttldblue">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+            <span class="ttllbrown lblCatWeight" id="rndweight">@Model.Weight</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="CRUInterviewQuestion ARPInterviewQue">
+        <span class="editsection" style="display:none;"></span>
+        <div class="QuestionDetails" style="width:98%;"></div>
+        <div class="Content">
+            <a id="addTQuestion" href="javascript void();" class="btn CaseUpper">@Html.LanguageLabel(BECommonConst.FRM_QUE_ADD)</a>
+        </div>
+        @Html.Partial("Shared/_SectionDone", null)
+    </div>
+    <div class="CRUVacQueCat"></div>
+</div>
+
+<script>
+    function EditTVacQueCat(element, event) {
+        var accHeader = $(element).parents(".acc-header");
+        var accParent = $(element).parents(".VacQueCat");
+        var Index = $(accParent).find(".acc-header").index(accHeader);
+
+        $(accParent).off("accordionbeforeactivate");
+        $(accParent).accordion("option", "active", parseInt(Index));
+
+        var TVacQueCatId = $(element).attr("data-pkid");
+        var TVacRndId = $(element).attr("data-tvacrndid");
+        var dataLink = '@Html.Raw(Url.Action("GetTVacQueCatById", "TemplateVacancy", new { TVacancyRndId = "_TVACRNDID_", TVacQueCatId = "_TVACQUECATID_" }))';
+        dataLink = dataLink.replace("_TVACQUECATID_", TVacQueCatId);
+        dataLink = dataLink.replace("_TVACRNDID_", TVacRndId);
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+            $(accHeader).next(".acc-Content").find(".CRUInterviewQuestion").hide();
+            $(accHeader).next(".acc-Content").find(".CRUVacQueCat").show();
+            $(accHeader).next(".acc-Content").find(".CRUVacQueCat").html('');
+            $(accHeader).next(".acc-Content").find(".CRUVacQueCat").append(data);
+        });
+
+        $(element).parents(".VacQueCat").on("accordionbeforeactivate", function (event, ui) {
+            MyVacancy.AccVacQueCatBA(event, ui);
+            event.stopImmediatePropagation();
+            MyVacancy.MakeFormReadOnly();
+        });
+    }
+
+    function DeleteVacQueCat(Result, element) {
+        if (Result) {
+            var CountCQ = $(element).parents(".acc-header").find('#VacQueCount').text();
+            var CountTQ = $(element).parents(".VacQueCat").parent(".acc-Content").prev(".acc-header").find(".queCount").html();
+            $(element).parents(".VacQueCat").parent(".acc-Content").prev(".acc-header").find(".queCount").html(parseInt(CountTQ) - parseInt(CountCQ));
+
+            var _VacQueCatId = $(element).attr('data-pkid');
+            var _VacRndId = $(element).parents('.acc-header:first').attr('data-roundid');
+            var _dataLink = '@Html.Raw(@Url.Action("RemoveVacQueCat", "TemplateVacancy", new { VacQueCatId = "_VacQueCatId_", VacRndId = "_VacRndId_" }))';
+            _dataLink = _dataLink.replace("_VacQueCatId_", _VacQueCatId)
+            _dataLink = _dataLink.replace("_VacRndId_", _VacRndId)
+            VacancyModel.CallPostMethod(_dataLink, function (data, message) {
+
+                var _parentAcc = $(element).parents('.TVacAccordian');
+                var _rndacc = $(element).parents('.AccRoundDetail');
+                var _rndactive = _rndacc.accordion("option", "active");
+                _parentAcc.find(_rndacc).accordion("option", "active", false);
+                _parentAcc.find(_rndacc).accordion("option", "active", _rndactive);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, 3000);
+            });
+        }
+    }
+
+    function SetTVacQueCatOrder(element) {
+        var _ele = $(element);
+        $.get($(element).attr("data-url"), function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                var _parentAcc = $(element).parents('.TVacAccordian');
+                var _rndacc = $(element).parents('.AccRoundDetail');
+                var _rndactive = _rndacc.accordion("option", "active");
+                _parentAcc.find(_rndacc).accordion("option", "active", false);
+                _parentAcc.find(_rndacc).accordion("option", "active", _rndactive);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, 3000);
+            }
+        });
+    }
+</script>
+@*----------------------------------------------TEMPLATE----------------------------------------------*@

@@ -1,0 +1,37 @@
+﻿@using BEClient = ATS.WebUi.Areas.Candidate.Models;
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.ResumeList>
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+@{
+    ViewBag.Title = "UploadNewCoverLetter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var contrName = string.Empty;
+    if (ATS.WebUi.Common.CurrentSession.Instance != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs != null)
+    {
+        contrName = Convert.ToString(ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.Select(r => r.Controller).FirstOrDefault());
+    }
+
+}
+
+<div id="search-resumes">
+    <div class="nav-bar clearfix">
+        <ul class="saved-searches">
+            @Html.Partial("_BreadCrumb", Model)
+        </ul>
+    </div>
+</div>
+
+<table class="tblUlopadCoverLetter">
+    <tr>
+        <td class="tdUploadCL">
+            @Html.Partial("Search/_DisplayJob", (ATS.BusinessEntity.Vacancy)ViewBag.ApplyVacancy)
+        </td>
+    </tr>
+    <tr>
+        <td class="tdUploadCL">
+            <div id="CADirectApply" class="CanAccountForm">
+                @Html.Partial("../ApplyVacancy/Shared/CAStep2", (ATS.BusinessEntity.Vacancy)ViewBag.ApplyVacancy)
+            </div>
+        </td>
+    </tr>
+</table>

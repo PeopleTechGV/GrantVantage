@@ -1,0 +1,135 @@
+﻿@model  ATS.WebUi.Models.Question.ATSQuestionCommon
+
+
+@Html.HiddenFor(m => m.VacQueId, new { id = "hdnQueId" })
+@Html.HiddenFor(m => m.VacRndId, new { id = "hdnVacRndId" })
+@Html.HiddenFor(m => m.QuestionDataType)
+@Html.HiddenFor(m => m.ScheduleIntId, new { @id = "ScheduleInt" })
+@Html.HiddenFor(m => m.AppAnsId, new { @id = "AppAnsId" })
+
+@{
+
+    bool IsSelfEvalRnd = false;
+
+    string readOnlyCss = "";
+    string myClass = "";
+    IsSelfEvalRnd = ATS.WebUi.Common.CommonFunctions.IsRoundTypeSelfEval(Model.VacRndId);
+    if (IsSelfEvalRnd)
+    {
+        readOnlyCss = @"readonly=true style=pointer-events:none;";
+        myClass = "notedit";
+    }
+
+}
+
+
+@switch (Model.GetType().Name)
+{
+    case "ATSPickList":
+
+        <div class="question-dtl-value @myClass" @readOnlyCss>
+            @Html.Partial("InterViewQuestions/_PickListInt", Model)
+        </div>
+
+        <div class="question-dtl-lbl">Score</div>
+        <div class="question-dtl-value slider" readonly="true" style="pointer-events: none;">
+            @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+        </div>
+        break;
+    case "ATSCheckBox":
+
+    <div class="question-dtl-value @myClass" @readOnlyCss>
+        @Html.Partial("InterViewQuestions/_CheckListInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider @myClass" readonly="true" style="pointer-events: none;">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+    case "ATSTextArea":
+
+    <div class="question-dtl-value @myClass" @readOnlyCss>
+        @Html.Partial("InterViewQuestions/_LargeTextInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider @myClass">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+    case "ATSTextBox":
+
+    <div class="question-dtl-value @myClass" @readOnlyCss>
+        @Html.Partial("InterViewQuestions/_SmallTextInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+
+        break;
+    case "ATSYesNo":
+
+    <div class="question-dtl-value @myClass" @readOnlyCss>
+        @Html.Partial("InterViewQuestions/_YesNoInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider" readonly="true" style="pointer-events: none;">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+    case "ATSScale":
+
+    <div class="question-dtl-value slider @myClass" @readOnlyCss>
+        @Html.Partial("InterViewQuestions/_ScaleInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score IntSaveAnswer" })
+    </div>
+        break;
+}
+
+
+
+
+<script>
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+    if (msie > 0) {
+        $(document).ready(function () {
+            $('.notedit').find(".input-details").attr('contenteditable', "false");
+            $('.notedit').find("input:checkbox").click(function (e) {
+                e.preventDefault(); return false;
+            });
+            $('.notedit').find("input:checkbox").attr('contenteditable', "false");
+            var prev_val;
+            $('.notedit').find("select").focus(function () {
+                prev_val = $(this).val();
+            }).change(function (e) {
+                $(this).val(prev_val);
+                e.preventDefault(); return false;
+            });
+            $('.notedit').find("select").attr('contenteditable', "false");
+            $('.notedit').find("#AnsScore").attr('contenteditable', "false");
+            $(document).on('mousemove', '.notedit > .jslider', function (e) {
+                $(this).hide();
+                $(this).show();
+                $(this).find(".jslider-pointer").hide();
+                e.preventDefault();
+                return false;
+            });
+            $(document).on('hover', '.notedit .jslider-pointer', function (e) {
+                $(this).find(".jslider-pointer").hide();
+                $(this).find(".jslider-pointer-to").hide();
+                e.preventDefault();
+                return false;
+            });
+            $(document).on('mouseout', '.notedit ', function (e) {
+                $(this).find(".jslider-pointer").show();
+                $(this).find(".jslider-pointer-to").hide();
+                e.preventDefault();
+                return false;
+            });
+        });
+    }
+</script>

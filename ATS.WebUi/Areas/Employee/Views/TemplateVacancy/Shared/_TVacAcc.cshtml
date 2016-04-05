@@ -1,0 +1,29 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.TVac
+
+@{
+    bool AllowDelete = false;
+    if (Model.PermissionType != null && Model.PermissionType.Contains(BEClient.ATSPermissionType.Delete))
+    {
+        AllowDelete = true;
+    }
+}
+
+<div class="acc-header" data-tvacid="@Model.TVacId" data-tvacidonly="@Model.TVacId">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        <span class="ttldb lblTemplateName" style="float:left;">@Model.Name</span>
+        @if (AllowDelete)
+        {
+            <span class="ansoption">
+                <span id="DeleteTVac" class="delete"><a href='javascript:void(0);' data-id='@Model.TVacId' onclick="TemplateMyVacancy.DeleteTVac(this)"><img src="~/Content/images/delete_16.png" width="13" height="13" /></a></span>
+            </span>
+        }
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+
+<div class="acc-Content" data-catid="@Model.TVacId">
+    <div class="AccTVacDetails">
+
+    </div>
+</div>

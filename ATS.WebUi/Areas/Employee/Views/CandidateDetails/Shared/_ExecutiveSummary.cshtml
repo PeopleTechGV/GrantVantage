@@ -1,0 +1,18 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.ExecutiveSummary
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        @Html.LanguageLabel(ATS.BusinessEntity.Common.ExecutiveSummaryConstant.FRM_TITL_EXECUTIVESUMMARY)
+    </p>
+</div>
+
+<div class="w100">
+    <div style="color: #345E8E; margin: 5px 2px;">
+        @Html.DisplayFor(m => m.ExecutiveSummaryDetails, new { @class = "executiveclass" })
+    </div>
+    <div class="right-div">
+    </div>
+</div>
+<br clear="all" />
+

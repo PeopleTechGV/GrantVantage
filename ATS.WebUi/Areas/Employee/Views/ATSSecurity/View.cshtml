@@ -1,0 +1,116 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.ATSSecurityRoles>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string action = ViewBag.RedirectAction;
+    ViewBag.MenuDisplayName = "ATsSecurityRole";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(action, "ATSSecurity", FormMethod.Post, new { id = "ATSSecurityRoleType" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.ATSSecurityRoleId, new { Id = "ATSSecurityRoleId" })
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    @Html.HiddenFor(m => m.obj.obj.SequenceNo, new { Id = "SequenceNo" })
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DefaultName, new { @class = "detail-input" })
+        </div>
+        @for (int i = 0; i < Model.obj.obj.AtsSecurityEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.AtsSecurityEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.AtsSecurityEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.obj.obj.AtsSecurityEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.ExistingATSSecurityRoleId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.obj.ExistingATSSecurityRoleId, (SelectList)ViewBag.AvailableRoles, "----Select----", new { @id = "drpAvailableroles" })
+        </div>
+
+        @if (Model.obj.obj.lstATSRolePrivilege.Count() > 0)
+        {
+            <div>
+                @Html.Partial("_ATSSecurityRole", @Model.obj.obj.lstATSRolePrivilege)
+            </div>
+        }
+
+    </div>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+<script>
+    function OnClickValidate() {
+        $('#ATSSecurityRoleType').submit();
+    }
+
+    $(document).ready(function () {
+        if ($("#SequenceNo").val() == 301) {
+            $("#Remove").hide();
+        }
+
+        $(".btn-remove-vacancy").live("click", function () {
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete security role", 310, "Are you sure want to delete this Security Template?", "Yes", "Cancel", "Delete", this, "test");
+            return false;
+        });
+
+        $("#drpAvailableroles").rules("remove");
+        $("#drpAvailableroles").change(function () {
+            var _value = $("#drpAvailableroles option:selected").val();
+
+            if (_value != "") {
+                var _dataLink = '@Url.Action("GetAllPriveleges", "ATSSecurity", new { AtsSecurityRoleId = "_DATAID_" })';
+                _dataLink = _dataLink.replace("_DATAID_", _value);
+                $.ajax({
+                    url: _dataLink,
+                    type: "GET",
+                    success: function (response) {
+                        var data = JSON.parse(response)
+                        if (data.IsError) {
+                            VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        }
+                        else {
+
+                            $("#drpAvailableroles").parent().next().html(data.Data);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "ATSSecurity", new { id = @Model.obj.obj.ATSSecurityRoleId })'
+            window.location.href = deletelink;
+        }
+    }
+
+</script>
+
+

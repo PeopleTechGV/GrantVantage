@@ -1,0 +1,189 @@
+﻿@model ATS.BusinessEntity.VacancyQuestion
+@using BEClient = ATS.BusinessEntity;
+@{
+    bool ViewSaveBtn = false;
+    bool ViewRemoveBtn = false;
+}
+@if (Model.PermissionType.Contains(BEClient.ATSPermissionType.Modify))
+{
+    ViewSaveBtn = true;
+}
+@if (Model.PermissionType.Contains(BEClient.ATSPermissionType.Delete))
+{
+    ViewRemoveBtn = true;
+}
+@{
+    var addClassName = String.Empty;
+    if (ATS.WebUi.Common.CommonFunctions.AllowAnsOptQuestionType.Where(x => x.Key.Equals(Model.QueType)).Count() > 0)
+    {
+        addClassName = "question";
+    }
+}
+
+<div class="std_width reviewer-fld ARPVacDetails @addClassName" data-pkid="@Model.VacQueId" title="" data-queid="@Model.QueId" data->
+    <div id="W80" class="reviewer-name w50 vacancy-question"><label class="r-name">@Model.LocalName</label></div>
+    <div id="QueType" class="reviewer-name w20 SMW80 textcenter vacancy-question-type"><label class="r-wght">@Model.QueTypeLocalName</label></div>
+    <div id="QueWt" class="reviewer-name w10 SMW80 textcenter vacancy-question-weight"><label class="r-wght">@Model.Weight</label></div>
+    @*CR-9*@
+    <div id="QueIntkey" class="reviewer-name w20 SMW80 textcenter vacancy-question"><label class="r-wght">@Model.IntegrationKey</label></div>
+    @if (@Model.Order == 1 && @Model.VacQueCnt > 1)
+    {
+        <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("VacQueReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacQueCatId = Model.VacQueCatId, @VacQueId = Model.VacQueId, @OrderDir = "Down" })' onclick="return SetVacQueOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+    }
+    else if (@Model.Order == @Model.VacQueCnt && @Model.VacQueCnt > 1)
+    {
+        <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("VacQueReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacQueCatId = Model.VacQueCatId, @VacQueId = Model.VacQueId, @OrderDir = "Up" })' onclick="return SetVacQueOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+    }
+    else
+    {
+        if (@Model.VacQueCnt > 1)
+        {
+            <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("VacQueReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacQueCatId = Model.VacQueCatId, @VacQueId = Model.VacQueId, @OrderDir = "Up" })' onclick="return SetVacQueOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+            <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("VacQueReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacQueCatId = Model.VacQueCatId, @VacQueId = Model.VacQueId, @OrderDir = "Down" })' onclick="return SetVacQueOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+        }
+    }
+    <span class="delete deleteIcon floatright" style="margin-right: 5px;">
+        @if (ViewRemoveBtn)
+        {
+            <a id="deleteQue" onclick="" data-id="@Model.VacQueId" data-url="" href="javascript:void(0);">
+                <img width="15" height="15" src="/Content/images/delete_16.png">
+            </a>
+        }
+    </span>
+    <span class="edit floatright" style="margin-right: 5px;">
+        @if (ViewSaveBtn)
+        {
+            <a id="edit" onclick="EditVacQue(this)" data-id="@Model.VacQueId" data-rndid="@Model.RndTypeId" data-url="" href="javascript:void(0);">
+                <img width="15" height="15" src="/Content/images/Edit_16.png">
+            </a>
+        }
+    </span>
+</div>
+
+<script>
+    $(function () {
+        $("div.question").tooltip({
+            track: false,
+            position: { my: "left top+1", at: "left bottom", collision: "flipfit" },
+            hide: 100,
+            open: function (event, ui) {
+                setTimeout(function () {
+                    $(ui.tooltip).hide('toggle');
+                }, 3000);
+            },
+            content: function (callback) {
+                if ($(this).find('form').length <= 0) {
+                    callback("connecting......");
+                    var element = $(this);
+
+                    var queId = element.attr("data-queid");
+                    var _Link = '@Url.Action("GetAnswerTooltip", "MyVacancy", new { VacQueId = "_VACQUEID_"})';
+                    _Link = _Link.replace("_VACQUEID_", queId);
+                    // here retrieve the id of the teacher
+                    $.ajax({
+                        url: _Link,
+                        global: false,
+                        success: function (response) {
+                            response = JSON.parse(response);
+                            if (!response.IsError) {
+                                $(this).removeAttr("title");
+                                if ($.trim(response.Data) != "") {
+                                    $(this).attr("title", "");
+                                    callback(response.Data);
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+        })
+    });
+
+    function EditVacQue(element) {
+        var IsFormOpen = AccordionOpenValidation();
+        if (!IsFormOpen) {
+            return false;
+
+        }
+        $(element).parents('.QuestionDetails').next().find('a').remove();
+        var dataid = $(element).attr('data-id');
+        var rndid = $(element).attr('data-rndid');
+        var _vacQueCatId = $(element).parents('.acc-Content:first').prev().attr('data-pkid')
+        var _Link = '@Html.Raw(Url.Action("GetVacQueById", "MyVacancy", new { VacQueId = "_DATAID_", VacRndId = "_VACRNDID_", VacQueCatId="_VACQUECATID_" }))';
+        _Link = _Link.replace("_DATAID_", dataid);
+        _Link = _Link.replace("_VACRNDID_", rndid);
+        _Link = _Link.replace("_VACQUECATID_", _vacQueCatId);
+
+        var $replaceelement = $(element).parent().parent();
+        $.ajax({
+            url: _Link,
+            type: "GET",
+            success: function (response) {
+                response = JSON.parse(response);
+                if (!response.IsError) {
+                    var $fin = $(response.Data);
+                    MyVacancy.CreateSelectMenu($fin.find('#peopleC'));
+                    //var _dataLink = '@Html.Raw(Url.Action("GetQueDetails", "TemplateVacancy", new { QueId = "_SELDATA_", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_", VacQueCatId = "_VACQUECATID_", newQueId = "_NEWVAL_" }))'
+
+                    //MyVacancy.CreateSelectMenu($fin.find('form').find('#peopleC'));
+                    @*$fin.find('form').find('#peopleC').selectmenu().selectmenu({
+                        width: 250,
+                        change: function (event, ui) {
+                            var _dataLink = '@Html.Raw(Url.Action("GetQueDetails", "MyVacancy", new { QueId = "_SELDATA_", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_", VacQueCatId = "_VACQUECATID_", newQueId = "_NEWVAL_" }))'
+                            MyVacancy.DropVacQueOnChange($(this), ui.item.value, _dataLink);
+                        },
+                        _renderMenu: function (ul, items) {
+                            $(ul).addClass('r-right');
+                        }
+                    }).selectmenu("menuWidget").addClass("overflow");*@
+                    $replaceelement.html($fin);
+
+                    $("form").each(function () {
+                        $.validator.unobtrusive.parse($(this));
+                    });
+                }
+            }
+        });
+
+
+
+    }
+
+    function SetVacQueOrder(element) {
+        var _ele = $(element);
+        $.get($(element).attr("data-url"), function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                var _parentAcc = $(element).parents('.AccRoundDetail');
+                var _rndacc = $(element).parents('.VacQueCat');
+                var _rndactive = _rndacc.accordion("option", "active");
+                _parentAcc.find(_rndacc).accordion("option", "active", false);
+                _parentAcc.find(_rndacc).accordion("option", "active", _rndactive);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, 3000);
+            }
+        });
+    }
+
+    function AccordionOpenValidation() {
+
+        var _$FormOpen = $('.AccRound');
+
+        var IsFormOpen = false;
+        var $Form;
+        console.log(_$FormOpen.find('form').not("#frmRoundConfig").length);
+        if (_$FormOpen.find('form').not("#frmRoundConfig,#frmVacQueCat,#frmVacRev").length > 0) {
+            //frmRoundConfig
+            IsFormOpen = true;
+            $Form = $(_$FormOpen.find('form').get(0));
+        }
+        else {
+            return true;
+        }
+        if (IsFormOpen) {
+            $Form.effect("shake", "slow");
+            $Form.find('div:first').effect("highlight", "slow");
+
+            return false;
+        }
+    }
+</script>

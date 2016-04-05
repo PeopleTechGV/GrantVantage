@@ -1,0 +1,37 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.AppInstructionDoc>
+
+<div class="GridAttachment">
+    <ul class="RowHeader">
+        <li class="w50">Document Name</li>
+    </ul>
+    @foreach (BEClient.AppInstructionDoc current in Model)
+    {
+        <ul class="RowContent" data-id="@current.AppInstructionDocId">
+            <li class="w50">@current.FileName</li>
+            <li class="w25">
+                <a class="btnDelete bgDelete16B" href="javascript:void(0);" onclick="DeleteOfferAttachmentConfirm(this)">
+                </a>
+            </li>
+        </ul>
+    }
+</div>
+
+<script>
+    function DeleteOfferAttachmentConfirm(element) {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Document", 350, "Are you sure you want to delete this document?", "Yes", "Cancel", "DeleteOfferAttachment", element, null);
+        return false;
+    }
+
+    function DeleteOfferAttachment(Result, element) {
+        if (Result) {
+            var DocumentId = $(element).parents(".RowContent").attr("data-id");
+            var dataLink = '@Url.Action("DeleteAppInstructionDoc", "MyVacancy", new { AppInstructionDocId = "_APPINSTRUCTIONDOCID_" })';
+            dataLink = dataLink.replace("_APPINSTRUCTIONDOCID_", DocumentId);
+            VacancyModel.CallPostMethod(dataLink, function (data, message) {
+                $(element).parents(".RowContent").remove();
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, 3000);
+            });
+        }
+    }
+</script>

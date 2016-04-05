@@ -1,0 +1,89 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.Division>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+
+@{
+    bool AllowAdd = Model.obj.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0 ? true : false;
+}
+
+
+
+<style>
+    .styled_list {
+        margin-right: 30px;
+    }
+
+    .ats-roles-box {
+        padding: 8px 2.5%;
+    }
+
+        .ats-roles-box > .styled_list > label {
+            display: inline-block;
+            padding: 8px 4px;
+        }
+</style>
+
+<div class="ats-roles-box">
+    @{
+        if (Model.obj.obj.AvailablePositionTypeList.Count > 0)
+        {
+            string[] value = ViewBag.DisableDivision;
+            var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 3, new { @class = "styled_list", id = "RoleChk" });
+            @Html.CheckBoxListFor(M => M.obj.obj.objPositionType.PositionTypeId,
+                              M => M.obj.obj.AvailablePositionTypeList,
+                              divis => divis.PositionTypeId,
+                              divis => divis.LocalName,
+                              M => M.obj.obj.SelectedPositionTypeList,
+                              new { @class = "styled_checkbox", @onclick = "ATHD();" },
+                              htmlListInfo,
+                              value,
+                              x => new
+                              {
+                                  //@style = "pointer-events:" + (x.PermissionType == null ? "none;" : "auto;") + "opacity:" + (x.PermissionType == null ? "0.3;" : "1.0")
+                              })
+        }
+
+    }
+</div>
+
+<div id="EditSection"></div>
+
+
+
+@if (AllowAdd)
+{
+    <div class="IBP8 w100">
+        <a id="addPositionType" href='javascript:void(0);' class="btn CaseUpper">ADD PROGRAM TYPE</a>
+    </div>
+}
+
+
+<script>
+
+    var checkboxCount = 0;
+    var inputTags = $('.styled_checkbox');
+    for (var i = 0, length = inputTags.length; i < length; i++) {
+        if (inputTags[i].type == 'checkbox') {
+            checkboxCount++;
+        }
+    }
+
+    $(document).ready(function () {
+        if (document.getElementById("SelectPositionType").value == "") {
+            ATHD();
+        }
+    });
+
+    function ATHD() {
+        var totalValue = '';
+        $(inputTags).each(function (index, value) {
+            if ($(this).attr('checked'))
+                totalValue += $(this).val() + ';';
+        });
+        totalValue = totalValue.substring(0, totalValue.length - 1);
+        document.getElementById("SelectPositionType").value = totalValue;
+
+    }
+</script>
+
+

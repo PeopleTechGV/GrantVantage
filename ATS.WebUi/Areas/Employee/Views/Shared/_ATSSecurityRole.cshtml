@@ -1,0 +1,49 @@
+﻿@model List<ATS.BusinessEntity.ATSRolePrivilege>
+@using BEClient = ATS.BusinessEntity
+@using HtmlHelpers.BeginCollectionItem
+@{
+    Layout = null;
+}
+
+<div class="security-detail">
+    <div class="std-width" id="AllRelativePrivileges">
+        <ul class="std-width security-dtl-hd spctop-btm">
+            <li class="sys-entity-hd lblBblue">Privilege <span>Within Division: </span></li>
+            <li class="ats-create-hd">Own</li>
+            <li class="ats-create-hd">Sister</li>
+            <li class="ats-create-hd">Child</li>
+            <li class="ats-create-hd">All</li>
+        </ul>
+        @foreach (BEClient.ATSRolePrivilege item in Model)
+        {
+            using (Html.BeginCollectionItem("obj.obj.lstATSRolePrivilege"))
+            {
+                @Html.Partial("_SingleATSSecurityRole", @item)
+            }
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var CSParent = ".CSParent input[type=checkbox]";
+
+        SetCSPrivileges(CSParent);
+        $(CSParent).click(function () {
+            SetCSPrivileges(this);
+        });
+    });
+
+    function SetCSPrivileges(element) {
+        if ($(element).is(":checked")) {
+            $(".CSChild *").css("pointer-events", "auto");
+            $(".CSChild").removeClass("CSChild-Disabled");
+            $(".CSChild input[type=checkbox]").attr("checked", true);
+        }
+        else {
+            $(".CSChild").addClass("CSChild-Disabled");
+            $(".CSChild *").css("pointer-events", "none");
+            $(".CSChild input[type=checkbox]").removeAttr("checked");
+        }
+    }
+</script>

@@ -1,0 +1,73 @@
+﻿@model ATS.BusinessEntity.Master.Language
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.PageName</h2>
+<script type="text/javascript">
+    function SaveExcel() {
+        var checkfile = $('#ExcelFile').val();
+        if (checkfile.length < 0) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', "Please select the file.", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+<div id="Messages">
+</div>
+@{
+    string actionName = ViewBag.RedirectAction;
+}
+@using (Html.BeginForm(actionName, "LanguageUploadDownload", FormMethod.Post, new { id = "frmLanguageUploadDownload", encoding = "multipart/form-data", enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(m => m.LanguageId)
+    <br />   
+    
+     <button class="btn-save-vacancy" type="submit" name="btnSave" onclick="SaveExcel();"  style="height:45px;">
+                    @Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.SAVE)</button>
+       @Html.Partial("Buttons/_BackBtn")
+    <div class="vacancy-Details">
+    
+        <div class="left-div">
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.LanguageName, new { @class = "label" })
+                <br />
+                @Html.TextBoxFor(m => m.LanguageName, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.LanguageCulture, new { @class = "label" })
+                <br />
+                @Html.TextBoxFor(m => m.LanguageCulture, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                <button class="btn-save-lang" type="submit" name="btnDownload">
+                    @Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.DOWNLOAD)</button>
+            </div>
+            <div class="box">
+            <br />
+                @*<span class = "label">Import Language File</span>*@
+                @Html.LanguageLabelFor(m => m.UploadFile, new { @class = "label" })
+                <br />
+                <input type="file" id="ExcelFile" name="ExcelFile"  /> 
+            </div>
+        </div>
+        
+       
+    </div>
+
+}
+@if (ViewBag.IsError != null)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.Message != null)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+    </script>
+}

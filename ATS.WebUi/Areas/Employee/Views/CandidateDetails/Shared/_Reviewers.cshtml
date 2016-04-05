@@ -1,0 +1,26 @@
+﻿@model ATS.BusinessEntity.Reviewers
+
+<div class="acc-header w100 ClearFloat">
+    <p style="margin-left: 11px; padding: 3px 0px; overflow: hidden;">
+        <span class="w60 floatleft">
+            <span class='ttldblue' style="padding-right:2px;">Reviewer</span>
+            <span class='ttllbrown'>@Model.UserName</span>
+            @if (Model.IsAssignedReviewer)
+            {
+                <span class='flgAssignedReviewersProf'>(@Model.AssignedCandidateCount.ToString())</span>
+            }
+        </span>
+        <span class="w30 floatleft">
+            <span class="ttldblue" id="rndweight">@Model.Weight</span>
+        </span>
+        <span class="floatright">
+            <span class="ttldblue" id="rndscore">@Model.Score</span>
+        </span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <div class="acc-inner">
+        @Html.Partial("InterViewQuestions/_InterViewQuestions", Model.objInterviewproc)
+    </div>
+</div>

@@ -1,0 +1,165 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@model ATS.BusinessEntity.ApplicationReviewProcess
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByRndTypeId(Model.objVacancyRound.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+}
+@using (Ajax.BeginForm("UpdateRoundConfig", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "InnerRoundConfigSuccess(data,'" + Model.objVacancyRound.VacancyRoundId + "')",
+            OnFailure = "InnerRoundConfigFailure",
+        }, new { id = "frmRoundConfig", isFormChange = "false" }))
+{
+    <script>
+        var form = $("#frmRoundConfig");
+        $.validator.unobtrusive.parse(form);
+    </script>
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.objVacancyRound.VacancyRoundId)
+    <div class="vacancy-Details SMAccInner" data-rndconfigid="@Model.objVacancyRound.VacancyRoundId">
+        <div class="vacancy-quest-box ARPInlineForm">
+            <div class="std_width">
+                <div class="width-62 SMW100 ARPBox">
+                    @Html.LanguageLabelFor(m => m.objVacancyRound.RndTypeId, new { @class = "round-config-lft" })
+                    @Html.DropDownListFor(m => m.objVacancyRound.RndTypeId, (SelectList)ViewBag.RoundType, new { @id = "ReviewRound", @class = "round-slt-lft", @onchange = "CopyRndType(this);" })
+                </div>
+                <div id="RndConfig" class="SMW100">
+                    @if (RndAttr != BERndAttr.OfferRound)
+                    {
+                        @Html.HiddenFor(m => m.objVacancyRound.AssignCandiadteToReviewerId)
+                        @Html.HiddenFor(m => m.objVacancyRound.ReqReviewer)
+                        @Html.HiddenFor(m => m.objVacancyRound.AssignCandidateBatches)
+                        <div class="width-38 SMW100 ARPBox">
+                            @Html.LanguageLabelFor(m => m.objVacancyRound.RoundWeight, new { @class = "round-config-rgt labelwidth-rgt1" })
+                            @Html.TextBoxFor(m => m.objVacancyRound.RoundWeight, new { @class = "round-rgt" })
+                        </div>
+                        <div class="width-62 SMW100 ARPBox">
+                            @Html.LanguageLabelFor(m => m.objVacancyRound.PromoteCandidate, new { @class = "round-config-lft " })
+                            @Html.DropDownListFor(m => m.objVacancyRound.PromoteCandidate, (SelectList)ViewBag.YesNoDropDownPromoteCandidate, "- Select -", new { @class = "round-slt-lft" })
+                        </div>
+                        <div class="width-38 SMW100 ARPBox">
+                            @Html.LanguageLabelFor(m => m.objVacancyRound.PromotionThresoldScore, new { @class = "round-config-rgt labelwidth-rgt1" })
+                            @Html.TextBoxFor(m => m.objVacancyRound.PromotionThresoldScore, new { @class = "round-rgt" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="width-62 SMW100 ARPBox">
+                            @Html.LanguageLabelFor(m => m.objVacancyRound.OfferTemplateId, new { @class = "round-config-lft" })
+                            @if (ViewBag.OfferTemplates != null)
+                            {
+                                @Html.DropDownListFor(m => m.objVacancyRound.OfferTemplateId, (SelectList)ViewBag.OfferTemplates, "--Select--", new { @class = "round-slt-lft" })
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (Model.objVacancyRound.PermissionType.Contains(BEClient.ATSPermissionType.Modify))
+            {
+                <div class="box w100" style="border-bottom: 2px solid #953634;">
+                    <button type="submit" class="prfle-button-save CaseUpper" onclick="return CheckSubmitOnValidation(this,'@ViewBag.PageMode');">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_SAVE)</button>
+                </div>
+            }
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    function CheckSubmitOnValidation(element, mode) {
+
+        if (mode == '@ATS.BusinessEntity.PageMode.Update.ToString()') {
+
+            var currentRev = $(element).parent().prev().find('#ReqReviewer').val();
+            var existsRev = $(element).parents('.AccRounddetail:first').find("div[data-index='1']").find('.revCount').text();
+            $(element).parents('.AccRounddetail:first').find("div[data-index='1']").find('.revCount').attr('data-rndconfigrevcnt', currentRev);
+
+            if (existsRev.indexOf('(') < 0)
+                return true;
+
+            var existingRevCnt = existsRev.substring(existsRev.indexOf('(') + 1, existsRev.indexOf(')'));
+            if (parseInt(currentRev) < parseInt(existingRevCnt)) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', ConstantMsg.valReqReviewerRndConfEdit, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+
+
+        }
+        return true;
+    }
+    function InnerRoundConfigSuccess(response, rndId) {
+
+        var jsonData = JSON.parse(response);
+        if (!jsonData.IsError) {
+            var $rndConfigAcc = $("div[data-vacroundid='" + rndId + "']").next().find('.AccRoundDetail').find("div[data-index='3']");
+            $rndConfigAcc = $rndConfigAcc.next();
+            $rndConfigAcc.html("");
+            $rndConfigAcc.html(jsonData.Data);
+
+            var drpSelected = $rndConfigAcc.find("#ReviewRound option:selected").text();
+            var txtWeight = $rndConfigAcc.find("#objVacancyRound_RoundWeight").val();
+
+            $("#VacancyAcc").accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion({ active: 4 });
+
+
+            $("div[data-vacroundid='" + rndId + "']").find("#rndweight").text(txtWeight);
+            $("div[data-vacroundid='" + rndId + "']").find("#rndtype").text(drpSelected);
+        }
+        var Savelink = $("span[data-roundConfigid='" + rndId + "']").get(0);
+        VacancyModel.DisplayProfileCommonNotification(jsonData, $(Savelink));
+        return false;
+    }
+
+    function InnerRoundConfigFailure() {
+        var jsonData = JSON.parse(response);
+        var Savelink = $("span[data-roundConfigid='" + rndId + "']").get(0);
+        VacancyModel.DisplayProfileCommonNotification(jsonData, $(Savelink));
+
+        return false;
+    }
+    $('#ReviewRound').change(function () {
+
+        var RndTypeId = $(this).val();
+        if (RndTypeId == "") {
+            return false;
+        }
+
+        var Vacid = $('.AccRound').parent().prev().attr('data-recordid');
+        var VacRndId = $('#ReviewRound').parents(".vacancy-Details").attr('data-rndconfigid');
+        var dataLink = '@Html.Raw(@Url.Action("CheckForRoundNo", "MyVacancy", new { RndTypeId = "_RNDTYPEID_" ,VacId = "_VACId_",VacRndId = "_VACRNDID_"}))';
+        dataLink = dataLink.replace("_RNDTYPEID_", RndTypeId);
+        dataLink = dataLink.replace("_VACId_", Vacid);
+        dataLink = dataLink.replace("_VACRNDID_", VacRndId);
+        var _ele = $('#frmRoundConfig').parent();
+
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+
+            $(_ele).html('')
+            $(_ele).append(data);
+        });
+        //CopyRndType(this);
+
+    });
+
+    function CopyRndType(changeVal) {
+        var cur = $(changeVal);
+        var text = "";
+        if (cur.val() != 0) {
+            text = cur.find('option:selected').text();
+            //if (text == $(cur).eq(0).text()) {
+            //    return false;
+            //}
+
+        }
+        cur.closest('.acc-Content').prev().attr('data-qdatatype', cur.val());
+        VacancyModel.CopyDataToHeader(cur, "lblRndType", text);
+    }
+</script>
+
+
+

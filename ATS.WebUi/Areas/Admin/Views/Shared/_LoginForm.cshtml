@@ -1,0 +1,46 @@
+﻿
+@model ATS.WebUi.Models.LogOnModel
+<div id="slidepanel-login" style="display:block">
+    <div class="topbox">
+        @using (Ajax.BeginForm("Login", "Home", new {returnUrl = ViewBag.ReturnURL,area = "Admin" }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "LoginSuccess",
+            OnFailure = "LoginFailed"
+        }, new { @id = "LoginForm" }))
+        {
+        
+            <text>
+            <div>
+                @Html.ValidationSummary()
+            </div>
+            <fieldset>
+                <ul>
+                    <li>@Html.LanguageLabelFor(m => m.UserName)</li>
+                    <li>
+                        <label for="pupilname">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "input" })
+                        </label>
+                    </li>
+                    <li>@Html.LanguageLabelFor(m => m.Password)</li>
+                    <li>
+                        <label for="pupilpass">
+                            @Html.PasswordFor(m => m.Password, new { @class = "input" })
+                        </label>
+                            <button class="btn-login-new"></button>
+                     </li>
+                     <li class="send-password">@Html.ActionLink(Html.LanguageLabel("SendPassword").ToHtmlString(), "ForgotPassword", "Home", new { area = "Admin" }, new { style = "float: right;text-decoration:none;" })</li>
+                    
+                </ul>
+            </fieldset>
+            </text>
+        }
+    </div>
+    <br class="clear" />
+</div>
+<script>
+    function SubmitLogin() {
+        $('#updateForm').submit();
+    }
+</script>

@@ -1,0 +1,156 @@
+﻿@using ATS.WebUi.Helpers
+@using ATS.WebUi.Models
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SolrEntity.SolrSearchObject>
+@{
+    ViewBag.Title = "Search Job";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    SelectListItem list = ((SelectList)ViewBag.JobType).Where(x => x.Value.ToLower().Equals(ViewBag.SelectedJobType)).FirstOrDefault();
+}
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgSearch16W"></div>
+        <a id="SearchJobs" class="navTitle" href="@Html.Raw(Url.Action("Index","Search",new { @area = ATS.WebUi.Common.Constants.AREA_CANDIDATE }))">SEARCH JOBS</a>@*</span>*@
+        @*<span class="navTitle">SEARCH JOBS</span>*@
+    </div>
+
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgSavedJobs24W"></div>
+        <span class="navTitle">@list.Text</span>
+        <span class="chevron"></span>
+        <ul class="dropdownMenu menuPurple">
+            @if (((SelectList)ViewBag.JobType).Count() > 0)
+            {
+                foreach (SelectListItem _item in (SelectList)ViewBag.JobType)
+                {
+                    <li>
+                        <a id="QueryLink" onclick="SaveJobList(@_item.Value);">
+                            @_item.Text
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @id = "frmmain" }))
+{
+    <input type="hidden" id="drpSelectedJobView" name="SelectedJobView" value="0" />
+    <input type="hidden" id="drpSelectedJobType" name="SelectedJobType" value="0" />
+    <input type="hidden" id="hdnActionType" name="hdnActionType" />
+
+    @Html.Partial("_SearchJob", Model.obj)
+    if (Model.obj.QueryError)
+    {
+        <text> <span class="error">Invalid query</span>
+        </text>
+    }
+
+    if (Model.obj.TotalCount > 0)
+    {
+        Model.obj.DefaultMaxDate = Model.obj.DefaultMaxDate.ToLocalTime();
+        <div id="search-resumes">
+            <div class="nav-bar clearfix">
+                <div class="search-title floatleft">
+                    <div class="job-heading">
+                        <select id="drpView" class="view-job-input" name="dsdsa">
+                            @{
+        Dictionary<int, string> objdrpView = new Dictionary<int, string>();
+        objdrpView.Add(0, "Title/Description");
+        objdrpView.Add(1, "Title/Location (1 Col)");
+        objdrpView.Add(2, "Title/Location (2 Col)");
+                            }
+                            @foreach (var v in objdrpView)
+                            {
+                                if (Convert.ToInt32(ViewBag.SelectedJobView) == v.Key)
+                                {
+                                    <option value='@v.Key' selected="selected">@v.Value</option>
+                                }
+                                else
+                                {
+                                    <option value='@v.Key'>@v.Value</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div id="viewResult0">
+            @Html.Partial("Search/_AnonymousSearchDefault", Model.obj)
+        </div>
+        @*<div id="viewResult1" style="display: none;">
+                @Html.Partial("Search/_SearchColumn1", Model.obj)
+
+            </div>
+            <div id="viewResult2" style="display: none;">
+                @Html.Partial("Search/_SearchColumn2", Model.obj)
+            </div>*@
+    }
+    else
+    {
+
+        <text>
+            <span class="error">
+                No Jobs were found that match your search criteria. Please broaden your criteria and try again.
+            </span>
+        </text>
+    }
+}
+<script type="text/javascript">
+    $(function () {
+        $("#drpView").change();
+    });
+    $("#drpView").change(function () {
+        var n = $(this).val();
+        switch (n) {
+            case '0':
+                $(".GridContainer").find(".FullContent").show();
+                $(".GridContainer").removeClass("GridCol2");
+                //$("#viewResult1").hide();
+                //$("#viewResult2").hide();
+                break;
+            case '1':
+                $(".GridContainer").find(".FullContent").hide();
+                $(".GridContainer").removeClass("GridCol2");
+                //$("#viewResult1").show();
+                //$("#viewResult0").hide();
+                //$("#viewResult2").hide();
+                break;
+            case '2':
+                $(".GridContainer").find(".FullContent").hide();
+                $(".GridContainer").addClass("GridCol2");
+                //$("#viewResult1").hide();
+                //$("#viewResult0").hide();
+                //$("#viewResult2").show();
+                break;
+        }
+    });
+
+    function SaveJobList(JobTypeId) {
+
+        GetDrpValue();
+        document.getElementById("drpSelectedJobType").value = JobTypeId;
+        document.getElementById("frmmain").submit();
+    }
+
+    function GetDrpValue() {
+
+        if ($("#drpView").length > 0) {
+            document.getElementById("drpSelectedJobView").value = document.getElementById("drpView").value;
+        }
+    }
+
+    function SaveJob(JobId, ActionType) {
+        document.getElementById("hdnActionType").value = ActionType;
+        document.getElementById("JobId").value = JobId;
+        GetDrpValue();
+        document.getElementById("frmmain").submit();
+    }
+</script>

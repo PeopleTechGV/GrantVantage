@@ -1,0 +1,123 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using ATSCommon = ATS.WebUi.Common
+@using GridMvc.Html
+@model IEnumerable<ATS.BusinessEntity.InterviewCalender>
+@using BEVacancyConst = ATS.BusinessEntity.Common.VacancyConstant
+@using BEToolTipConstantConst = ATS.BusinessEntity.Common.TooltipConstant
+
+<style>
+    .table td {
+        padding: 10px 5px !important;
+    }
+
+    .id {
+        color: #6a788e;
+        padding: 0 3px;
+    }
+
+    .lbl {
+        color: #953634;
+        font-size: 12px !important;
+    }
+</style>
+<div class="code-cut table-responsive">
+    @Html.Grid(Model).Named("InterviewCalenderGrid").Columns(col =>
+       {
+           col.Add(c => c.ApplicationId, true).Css("tdVacancyId");
+           col.Add(c => c.ScheduleIntId, true).Css("tdPublicCode");
+           col.Add(c => c.InterviewDateTime).Titled("Interview Date/Time").SetWidth("auto").Css("VacTitle");
+           col.Add(c => c.ApplicantName)
+               .Titled("Applicant Name")
+                            .SetWidth("auto")
+                            .Css("CellApplicationName")
+                            .Sortable(true)
+                            .Filterable(true);
+           col.Add(c => c.JobTitle)
+                            .Titled("Opportunity Name")
+                            .SetWidth("auto")
+                            .Css("CellJobTitle")
+                            .Sortable(true)
+                            .Filterable(true);
+           col.Add(c => c.AppliedOn)
+                            .Titled("Applied On")
+                            .SetWidth("auto")
+                            .Css("CellAppliedOn")
+                            .Sortable(true)
+                            .Filterable(true)
+                            .Format("{0:MM/dd/yyyy}")
+                            .SetFilterWidgetType(string.Empty, new { format = "MM/dd/yyyy" }); ;
+           col.Add(c => c.Status).Titled("Status").Css("VacTitle").Sortable(true);
+           col.Add(c => c.Score)
+               .Titled("Score")
+                        .SetWidth("auto")
+                        .Css("CellScore")
+                        .Sortable(true)
+                        .Filterable(true)
+                        .Format("{0:00.00}");
+       }).WithMultipleFilters()
+</div>
+<script>
+    $(document).ready(function () {
+        $(".grid-wrap").addClass("table-responsive");
+        var clicks = 0;
+        $('.grid-row').on("click", function (e) {
+            $('.grid-table').find(".grid-row-selected").removeClass("grid-row-selected");
+            $(this).addClass("grid-row-selected");
+            var GridRow = $(this);
+            clicks++;
+            if (clicks == 1) {
+                setTimeout(function () {
+                    if (clicks == 1) {
+                        RowSingleClick(GridRow);
+                        ResizeActionbar();
+                    }
+                    clicks = 0;
+                }, 300);
+            }
+        });
+    });
+
+    function RowSingleClick(element) {
+        $('.ShowOnSingle').show();
+        var ApplicationId = $(element).find("[data-name=ApplicationId]").html();
+        var ScheduleintId = $(element).find("[data-name=ScheduleIntId]").html();
+        SetCancelLink(ScheduleintId);
+        VacancyModel.GetBeginInterviews(ApplicationId);
+    }
+
+    function SetCancelLink(Scheduleintid) {
+        $("#cancelInt").attr('data-scheduleid', Scheduleintid);
+    }
+
+    $("#cancelInt").click(function () {
+        var scheduleid = $(this).attr('data-scheduleid');
+        var _canlink = '@Html.Raw(Url.Action("DeleteSchedule", "InterviewCalender", new {@ScheduleIntId = "_SCHEDULEID_" }))';
+        _canlink = _canlink.replace("_SCHEDULEID_", scheduleid);
+        VacancyModel.CallPostMethod(_canlink, function (data) {
+            var _url = window.location.href;
+                window.location = _url;
+        });
+
+    })
+    function BeginInterview(element) {
+        var ScheduleIntId = $(element).attr("data-scheduleintid");
+        var VacRndId = $(element).attr("data-vacrndid");
+        var dLink = '@Html.Raw(Url.Action("ConductInterview", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ScheduleIntId = "_SCHEDULEINTID_", VacRndId = "_VACRNDID_" ,ReturnUrl = "Candidate"}))';
+        dLink = dLink.replace("_SCHEDULEINTID_", ScheduleIntId);
+        dLink = dLink.replace("_VACRNDID_", VacRndId);
+        window.location = dLink;
+    }
+
+    function selectone(ctl) {
+        if (!$(ctl).is(":checked")) {
+            $("#selectAll").prop("checked", false);
+        } else {
+            var flag = 0;
+            $(".chk").each(function () {
+                if (!this.checked)
+                    flag = 1;
+            })
+            if (flag == 0) { $("#selectAll").prop("checked", true); }
+        }
+    }
+</script>

@@ -1,0 +1,132 @@
+﻿@model ATS.BusinessEntity.Vacancy
+<link href='@Url.Content("~/Content/css/careers.css")' rel="stylesheet" />
+<div class="container_aa bottom">
+    <section class="contnt-right">
+        <div class="std_width spctop-btm">
+            <div id="crumbs" w>
+                <ul>
+                    <li>
+                        <a href="#" class="active">
+                            <img src="/Content/images/Upload_Resume_24.png" width="24" height="24" align="absmiddle" />&nbsp; @Model.JobTitle
+                            ,&nbsp;
+                            <span style="color: #953634;">@Html.DisplayFor(m => m.LocationText)</span><span class="dumy"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="std_width spctop-btm">
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label"> @Html.LanguageLabelFor(m => m.PositionID): </div>
+                <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.PositionIDText)</div>
+            </div>
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label">  @Html.LanguageLabelFor(m => m.StartDate): </div>
+                <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.StartDateText)</div>
+            </div>
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.Location): </div>
+                <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.LocationText)</div>
+            </div>
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.JobType): </div>
+                <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.JobTypeText) </div>
+            </div>
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.PositionTypeId): </div>
+                <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.PositionTypeName)</div>
+            </div>
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label">@Html.LanguageLabelFor(m => m.EmploymentType): </div>
+                <div class="std_hlfwdth aplyjob-content"> @Html.DisplayFor(m => m.EmploymentTypeText) </div>
+            </div>
+            @if (Model.ShowOnWebSal)
+            {
+                <div class="aplyjob-hlf">
+                    <div class="std_hlfwdth aplyjob-label">Salary Range: </div>
+                    <div class="std_hlfwdth aplyjob-content">@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@Html.DisplayFor(m => m.SalaryMinText)-@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@Html.DisplayFor(m => m.SalaryMaxText)</div>
+                </div>
+            }
+            else if (Model.ShowonWebHour)
+            {
+                <div class="aplyjob-hlf">
+                    <div class="std_hlfwdth aplyjob-label">Hourly Range: </div>
+                    <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.HourlyMin)-@Html.DisplayFor(m => m.HourlyMax)/hour</div>
+                </div>
+            }
+            else
+            {
+                <div class="aplyjob-hlf">
+                    <div class="std_hlfwdth aplyjob-label"></div>
+                    <div class="std_hlfwdth aplyjob-content"></div>
+                </div>
+            }
+            <div class="aplyjob-hlf">
+                <div class="std_hlfwdth aplyjob-label">  @Html.LanguageLabelFor(m => m.PostedOn): </div>
+                <div class="std_hlfwdth aplyjob-content">            @Html.DisplayFor(m => m.PostedOnDateText)</div>
+            </div>
+        </div>
+
+        <div style="margin-left:30px;">
+            @if (Model.ShowOnWebJobDescription)
+            {
+                <div class="aplyjob-title"> Job Description</div>
+                <article class="std_width editorContent">
+                    @*@Html.DisplayFor(m => m.JobDescription)*@
+                    @Html.Raw(@Model.JobDescription)
+                </article>
+            }
+            @if (Model.ShowOnWebDuties)
+            {
+                <div class="aplyjob-title">
+                    @Resources.Resources.LanguageDisplay(ATS.BusinessEntity.Common.RecordOfEmployementConstant.FRM_PRF_DUTIES_AND_RESPONSIBILITES)
+                </div>
+                String[] mydata = Model.DutiesAndResponsibilities.Split('\n');
+                <article class="std_width">
+                    <ul class="job-requimnts">
+                        @foreach (String strdata in mydata)
+                        {
+                            <li> @strdata </li>
+                        }
+                    </ul>
+                </article>
+            }
+            @if (Model.ShowOnWebSkills)
+            { <div class="aplyjob-title">
+                @Resources.Resources.LanguageDisplay(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)
+            </div>
+
+                String[] mydataSkills = Model.SkillsAndQualification.Split('\n');
+
+                <article class="std_width">
+                    <ul class="job-requimnts">
+                        @foreach (String strdataskill in mydataSkills)
+                        {
+                            <li> @strdataskill </li>
+
+                        }
+                    </ul>
+                </article>
+            }
+
+            @if (Model.ShowOnWebBenefits)
+            { <div class="aplyjob-title">
+                @Html.LanguageLabelFor(m => m.Benefits)
+            </div>
+
+                String[] mydataBenefits = Model.Benefits.Split('\n');
+
+                <article class="std_width">
+                    <ul class="job-requimnts">
+                        @foreach (String strdataBenefit in mydataBenefits)
+                        {
+                            <li> @strdataBenefit </li>
+
+                        }
+                    </ul>
+                </article>
+            }
+        </div>
+    </section>
+</div>

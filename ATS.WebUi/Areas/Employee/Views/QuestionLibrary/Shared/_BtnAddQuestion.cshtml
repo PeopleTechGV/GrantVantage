@@ -1,0 +1,21 @@
+﻿@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+@*@if (ViewBag.QuestionPermission != null)
+    {
+        List<ATS.BusinessEntity.SRPEntity.UserPermissionWithScope> UserPermissionWithScope = ViewBag.QuestionPermission;
+        if (UserPermissionWithScope != null)
+        {
+            if (UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0)
+            {
+                <text>
+                    <div class="Content acc-action">
+                        <a id="addQuestionQL" href='javascript:void(0);' data-url="@Url.Action("GetNewQuestion", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId, @QueOrder = "_QUEORDER_", @RoundAttributeNo = Model.RoundAttributeNo })" class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_QUE_ADD)</a>
+                    </div>
+                </text>
+            }
+        }
+    }*@
+
+<div class="Content acc-action">
+    <a id="addQuestionQL" href='javascript:void(0);' data-url="@Url.Action("GetNewQuestion", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId, @QueOrder = "_QUEORDER_", @RoundAttributeNo = Model.RoundAttributeNo })" class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_QUE_ADD)</a>
+</div>

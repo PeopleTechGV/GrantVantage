@@ -1,0 +1,27 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.VacancyApplicant>
+
+@foreach (BEClient.VacancyApplicant item in @Model)
+{
+    <li>
+        <a href="javascript:void(0);" data-vacstatus="@item.ApplicantionStatus" class="SelectedItem">
+            @item.ApplicantionStatus<span class="ttldbrown">&nbsp;(@item.TotalCount)</span>
+            @if (item.TotalCount > 0)
+            {
+                <img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" />
+            }
+        </a>
+        @if (item.VacApplicationLinkList != "")
+        {
+            <ul style="min-width: 180px; max-width:200px; right: -181px;">
+                @{ String[] AppList = item.VacApplicationLinkList.Split(','); }
+                @for (int i = 0; i < AppList.Length; i++)
+                {
+                    string _name = AppList[i].Split('#')[1].ToString();
+                    string _score = " (" + AppList[i].Split('#')[2].ToString() + ")";
+                    <li><a class="SelectedItem" href='@Url.Action("GetCandidateProfile", "MyCandidates", new { ApplicationId = AppList[i].Split('#')[0].ToString() })'>@_name<span class="ttldbrown">@_score</span></a></li>
+                }
+            </ul>
+        }
+    </li>
+}

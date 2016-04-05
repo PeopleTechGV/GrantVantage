@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D81FFED6-DE2A-4CCD-A552-DC9D4D19ACC4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ATS.DataAccess</RootNamespace>
+    <AssemblyName>ATS.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SANITY|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\SANITY\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SANITY</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\QA\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;QA</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\..\OtherDLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.SqlServer.ConnectionInfo\11.0.0.0__89845dcd8080cc91\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.SqlServer.Management.Sdk.Sfc\11.0.0.0__89845dcd8080cc91\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.SqlServer.Smo\11.0.0.0__89845dcd8080cc91\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Prompt.Shared.Utility.Library">
+      <HintPath>..\..\OtherDLL\Prompt.Shared.Utility.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AchievementRepository.cs" />
+    <Compile Include="AdHocPrivilegeRepository.cs" />
+    <Compile Include="AnsOptRepository.cs" />
+    <Compile Include="AppAnswerRepository.cs" />
+    <Compile Include="AppCommentRepository.cs" />
+    <Compile Include="AppInstructionDocsRepository.cs" />
+    <Compile Include="ApplicationBasedStatusRepository.cs" />
+    <Compile Include="ApplicationDocumentsRepository.cs" />
+    <Compile Include="ApplicationHostoryRepository.cs" />
+    <Compile Include="ApplicationRepository.cs" />
+    <Compile Include="AppQueAnsRepository.cs" />
+    <Compile Include="AssignedCandidatesRepository.cs" />
+    <Compile Include="AssociationsRepository.cs" />
+    <Compile Include="ATSResumeRepository.cs" />
+    <Compile Include="ATSRolePrivilegeRepository.cs" />
+    <Compile Include="ATSSecurityRolesRepository.cs" />
+    <Compile Include="AvailabilityRepository.cs" />
+    <Compile Include="BeginInterviewRepository.cs" />
+    <Compile Include="BlockCandidateRepository.cs" />
+    <Compile Include="CandidateApplicationsRepository.cs" />
+    <Compile Include="CandidateEmployeeRepository.cs" />
+    <Compile Include="CandidateHistoryRespository.cs" />
+    <Compile Include="CandidateSurveyRepository.cs" />
+    <Compile Include="ClientEmployeesRepository.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="CompanyInfoRepository.cs" />
+    <Compile Include="CompanyRepository.cs" />
+    <Compile Include="ConductInterviewDetailsRepository.cs" />
+    <Compile Include="CSNavigationRepository.cs" />
+    <Compile Include="DBGeneric\HelperMethods.cs" />
+    <Compile Include="DBGeneric\IDomainObjectFactory.cs" />
+    <Compile Include="DBGeneric\ParamStructure.cs" />
+    <Compile Include="DBGeneric\Repository.cs" />
+    <Compile Include="Common\DrpStringMappingRepository.cs" />
+    <Compile Include="DeclinedAutoEmailRepository.cs" />
+    <Compile Include="DegreeTypeRepository.cs" />
+    <Compile Include="DeleteMasterRepository.cs" />
+    <Compile Include="DivisionLanguageRepository.cs" />
+    <Compile Include="DivisionPositionTypeRepository.cs" />
+    <Compile Include="DivisionRepository.cs" />
+    <Compile Include="DocumentTypeRepository.cs" />
+    <Compile Include="EducationHistoryRepository.cs" />
+    <Compile Include="EmailContentRepository.cs" />
+    <Compile Include="EmailTemplatesRepository.cs" />
+    <Compile Include="EmploymentHistoryRepository.cs" />
+    <Compile Include="EntityLanguageRepository.cs" />
+    <Compile Include="ExecutiveSummaryRepository.cs" />
+    <Compile Include="GetScoreRepository.cs" />
+    <Compile Include="HireCandidatesRepository.cs" />
+    <Compile Include="InterviewCalenderRepository.cs" />
+    <Compile Include="InterviewProcessQueRepository.cs" />
+    <Compile Include="InterViewProcessRepository.cs" />
+    <Compile Include="JobLocationRepository.cs" />
+    <Compile Include="LanguageBlocksRepository.cs" />
+    <Compile Include="LanguagesRepository.cs" />
+    <Compile Include="LicenceAndCertificationsRepository.cs" />
+    <Compile Include="LocationDivisionRepository.cs" />
+    <Compile Include="Master\ClientLanguageRepository.cs" />
+    <Compile Include="Master\ClientMasterRepository.cs" />
+    <Compile Include="Master\LableRepository.cs" />
+    <Compile Include="Master\LanguageLableRepository.cs" />
+    <Compile Include="Master\LanguageRepository.cs" />
+    <Compile Include="Master\ClientRepository.cs" />
+    <Compile Include="Master\StoredProcedureRepository.cs" />
+    <Compile Include="Master\SubscriptionRepository.cs" />
+    <Compile Include="Master\UserMasterRepository.cs" />
+    <Compile Include="NavCountRepository.cs" />
+    <Compile Include="ObjectiveRepository.cs" />
+    <Compile Include="OfferAttachmentRepository.cs" />
+    <Compile Include="OfferLetterRepository.cs" />
+    <Compile Include="OfferTemplatesRepository.cs" />
+    <Compile Include="OrgDetailsRepository.cs" />
+    <Compile Include="PermissionAndScopeRepository.cs" />
+    <Compile Include="PortalContentRepository.cs" />
+    <Compile Include="PositionTypeRepository.cs" />
+    <Compile Include="ProfileRepository.cs" />
+    <Compile Include="ProjectRepository.cs" />
+    <Compile Include="PromoteCandidateRepository.cs" />
+    <Compile Include="PublicationHistoryRepository.cs" />
+    <Compile Include="QueCatRepository.cs" />
+    <Compile Include="QuestionDetailRepository.cs" />
+    <Compile Include="QuestionRepository.cs" />
+    <Compile Include="RecentlyViewedRepository.cs" />
+    <Compile Include="RecordExistsRepository.cs" />
+    <Compile Include="ReferencesRepository.cs" />
+    <Compile Include="RequiredDocumentRepository.cs" />
+    <Compile Include="ResumeSearchRepository.cs" />
+    <Compile Include="ReviewersRepository.cs" />
+    <Compile Include="RndTypeRepository.cs" />
+    <Compile Include="RoundAttributesRepository.cs" />
+    <Compile Include="SaveSearchResumeRepository.cs" />
+    <Compile Include="ScheduleIntRepository.cs" />
+    <Compile Include="SearchRepository.cs" />
+    <Compile Include="SkillsRepository.cs" />
+    <Compile Include="SkillTypeRepository.cs" />
+    <Compile Include="CommonRepository.cs" />
+    <Compile Include="SkinMasterRespository.cs" />
+    <Compile Include="SolrAccess\SolrSearchFieldsRepository.cs" />
+    <Compile Include="SpeakingEventHistoryRepository.cs" />
+    <Compile Include="TAppInstructionDocsRepository.cs" />
+    <Compile Include="TRequiredDocumentRepository.cs" />
+    <Compile Include="TVacQueRepository.cs" />
+    <Compile Include="TVacancyRoundRepository.cs" />
+    <Compile Include="TVacQueCatRepository.cs" />
+    <Compile Include="TVacRepository.cs" />
+    <Compile Include="TVacReviewMemberRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserDetailsRepository.cs" />
+    <Compile Include="UserDivisionPermissionRepository.cs" />
+    <Compile Include="UserDivisionSecurityRoleRepository.cs" />
+    <Compile Include="UserRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ATSSecurityRoleRepository.cs" />
+    <Compile Include="UserSecurityRoleRepository.cs" />
+    <Compile Include="UserVacancyRepository.cs" />
+    <Compile Include="VacancyApplicationRepository.cs" />
+    <Compile Include="VacancyHistoryRepository.cs" />
+    <Compile Include="VacancyOfferRepository.cs" />
+    <Compile Include="VacancyQuestionRepository.cs" />
+    <Compile Include="VacancyRepository.cs" />
+    <Compile Include="VacancyRoundRepository.cs" />
+    <Compile Include="VacancyStatusRepository.cs" />
+    <Compile Include="VacQueCatRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ATS.BusinessEntity\ATS.BusinessEntity.csproj">
+      <Project>{591B881E-F5F4-4CD7-89CC-F7766701B3E6}</Project>
+      <Name>ATS.BusinessEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ATS.HelperLibrary\ATS.HelperLibrary.csproj">
+      <Project>{15B1B229-A031-4AAD-ACD8-190E3DF22F8C}</Project>
+      <Name>ATS.HelperLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

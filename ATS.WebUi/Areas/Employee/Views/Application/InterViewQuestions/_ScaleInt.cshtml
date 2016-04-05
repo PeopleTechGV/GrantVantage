@@ -1,0 +1,11 @@
+﻿@model  ATS.WebUi.Models.Question.ATSScale
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+
+@{
+    if (Model.Answer == null)
+    {
+        Model.Answer = 0;
+    }
+}
+
+@Html.TextBoxFor(x => x.Answer, new { type = "slider", id = "AnsScore", @class = "IntSaveAnswer score" })

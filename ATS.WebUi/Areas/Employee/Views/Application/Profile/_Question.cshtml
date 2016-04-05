@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.InterviewProcessQue
+
+<div class="acc-header" data-pkid="@Model.VacQueId" data-queid="@Model.ObjQue.QueId" data-vacrndid="@Model.VacRndId">
+    <p class="sm-prfle-tab-head-brown" style="overflow: hidden;">
+        <span class="w60 SMW70" style="float:left;">
+            <span class='ttllbrown'>@Model.ObjQue.LocalName</span>
+        </span>
+        <span class="w30 textright MobDisable">
+            <span class="ttllbrown" id="rndweight">@Model.VacQueWeight</span>
+        </span>
+        <span class="w10 floatright textright SMWAuto">
+            <span class="ttllbrown" id="rndscore">@Model.ObjQue.Score</span>
+        </span>
+    </p>
+</div>
+
+<div style="clear:both;" class="acc-Content">
+    <div class="AccReviewer">
+
+
+    </div>
+</div>

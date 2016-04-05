@@ -1,0 +1,55 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.SRPEntity.DynamicSRP<BEClient.UserDivisionSecurityRole>
+@using BECommon = ATS.BusinessEntity.Common;
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+@System.Web.Optimization.Scripts.Render("~/bundles/jMultiSelectDropdown")
+
+@{
+    String selectone = Html.LanguageLabel(BECommon.DropDownConstant.DRP_SELECT_ONE).ToString();
+
+    string selectedDivision = @Model.obj.strSelectedDivisionList;
+}
+
+<style>
+    div.ui-dropdownchecklist {
+        max-height: 100px;
+    }
+</style>
+
+<div class="ats-roles-box">
+    @Html.HiddenFor(m => m.obj.strSelectedDivisionList, new { @id = "strdivisionlist" })
+    <div class="floatleft w30" style="position:relative">
+        @Html.ListBoxFor(m => m.obj.ListDivisionlist, ViewBag.AvailableDivisionlist as MultiSelectList, new { @id = "drpdivision", @class = "w100" })
+    </div>
+
+    <div>
+        <ul class="ActionBar" style="width: auto;">
+            <li>
+                <a id="saveAdhoc" class="bgSave16B" onclick="saveAdhocDivision(this);">SAVE</a>
+            </li>
+            <li>
+                <a id="saveAdhoc" class="bgDelete16B" onclick="removeAdhocDivision(this);">Remove</a>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<script>
+    var selectedDivision = document.getElementById('drp_Division').value;
+    var values = "";
+    $("#drpdivision").dropdownchecklist({
+        emptyText: '@selectone',
+        onItemClick: function (checkbox, selector) {
+            for (i = 0; i < selector.options.length; i++) {
+                if (selector.options[i].selected && (selector.options[i].value != "")) {
+                    if (values != "")
+                        values += ",";
+                    values += selector.options[i].value;
+                }
+            }
+        }
+    });
+    //var _ele = $(".ui-dropdownchecklist-dropcontainer div.ui-dropdownchecklist-item input[type=checkbox]").filter("[value='" + selectedDivision + "']");
+    //$(_ele).prop('disabled');
+
+</script>

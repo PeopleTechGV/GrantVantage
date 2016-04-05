@@ -1,0 +1,103 @@
+﻿@using BECommon = ATS.BusinessEntity.Common
+@model ATS.WebUi.Models.LogOnModel
+@using BECommonConst = ATS.BusinessEntity.Common.LoginConstant
+@{
+    ViewBag.Title = "EmployeeLogin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    div#content {
+        padding: 1.875em 0;
+        position: absolute;
+        left: 40%;
+    }
+
+    form input[type="text"], input[type="password"], textarea {
+        border: 1px solid #d9dbdd;
+        outline: medium none;
+        padding: 0.7em 0.625em;
+    }
+
+    .round {
+        border-radius: 0.3125em;
+    }
+
+    .ic-right-arrow {
+        background-image: url("../content/images/Login_32.png");
+    }
+
+    .button {
+        background-repeat: no-repeat;
+        display: inline-block;
+        padding: 0.833em;
+        text-decoration: none;
+    }
+
+    .image-right {
+        background-position: right center;
+        padding-right: 3em;
+    }
+
+    .vacancies-heading1 {
+        color: #345E8E;
+        font-size: 18px;
+        font-weight: bold;
+        padding-right: 10px;
+    }
+</style>
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgLogin16W"></div>
+        <span class="navTitle">EMPLOYEE LOGIN</span>
+        <span class="chevron"></span>
+    </div>
+}
+
+<section class="contnt-left1" style="width:95%;">
+    <div id="content1" class="floatleft">
+        @using (Html.BeginForm("EmployeeLogin", "Home"))
+        {
+            <text>
+                <fieldset>
+                    <p>
+                        <div id="Messages" style="margin-left:25px;">
+                        </div>
+                        @Html.ValidationSummary()
+                    </p>
+                    <p>
+                        <label for="login-username">@Html.LanguageLabelFor(m => m.UserName)</label>
+
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "detail-input w100" })
+                    </p>
+
+                    <p>
+                        <label for="login-password">@Html.LanguageLabelFor(m => m.Password)</label>
+                        @Html.PasswordFor(m => m.Password, new { @class = "detail-input w100" })
+                    </p>
+                    <p>
+                        &nbsp;
+                        @Html.ActionLink(Html.LanguageLabel("Password Help").ToHtmlString(), "ForgotPassword", "Home", new { area = "" }, new { style = "float:right;" })
+                    </p>
+                    <p>
+                        <button class="btn-icon24 bgLogin24 floatright">LOGIN</button>
+                    </p>
+                </fieldset>
+            </text>
+        }
+
+    </div>
+    @if (ViewBag.IsError != null && ViewBag.IsError == true)
+    {
+        <script>
+            VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        </script>
+    }
+    @if (ViewBag.IsError != null && ViewBag.IsError == false)
+    {
+        <script>
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        </script>
+    }
+</section>

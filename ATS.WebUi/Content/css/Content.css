@@ -1,0 +1,557 @@
+﻿@media screen and (min-width: 320px) and (max-width: 767px) {
+    .RowContent *::before {
+        color: #953634;
+        padding-right: 4px;
+    }
+
+    .cntDivision::before {
+        content: "Division:";
+    }
+
+    .cntParentDivision::before {
+        content: "Parent Division:";
+    }
+
+    .cntDegreeType::before {
+        content: "Degree Type:";
+    }
+
+    .cntPriority::before {
+        content: "Priority:";
+    }
+
+    .cntReviewRound:before {
+        content: "Review Round:";
+    }
+
+    .cntRndType::before {
+        content: "Round Type: ";
+    }
+
+    .cntShowToCand::before {
+        content: "Show To Applicant: ";
+    }
+
+    .cntLocation::before {
+        content: "Program Office: ";
+    }
+
+    .cntPositionType::before {
+        content: "Program Type: ";
+    }
+
+    .cntSkillType::before {
+        content: "Skill Type: ";
+    }
+
+    .cntName::before {
+        content: "Name: ";
+    }
+
+    .cntUserName::before {
+        content: "User Name: ";
+    }
+
+    .cntCategory::before {
+        content: "Category: ";
+    }
+
+    .cntLangBlocks::before {
+        content: "Language Blocks: ";
+    }
+
+    .cntDescription::before {
+        content: "Description: ";
+    }
+
+    .cntExtensionTypes::before {
+        content: "Extension Types: ";
+    }
+
+    .cntRoundAttribute::before {
+        content: "Round Attributes:";
+    }
+
+    .cntEmailName::before {
+        content: "Email Name:";
+    }
+
+    .cntEmailSubject::before {
+        content: "Subject:";
+    }
+
+    .cntEmailDesc::before {
+        content: "Email Description:";
+    }
+
+    .cntTemplateType::before {
+        content: "Template Type";
+    }
+
+    .cntSubject::before {
+        content: "Subject";
+    }
+
+    .cntAwardLetter::before {
+        content: "AwardLetter";
+    }
+
+    .cntDelete::before {
+        content: "Delete:";
+    }
+
+    .cntMandatory::before {
+        content: "Mandatory:";
+    }
+
+    .cntAppliedOn::before {
+        content: "Applied On:";
+    }
+
+    .cntStatus::before {
+        content: "Status:";
+    }
+
+    .cntScore::before {
+        content: "Score:";
+    }
+
+    .cntResume::before {
+        content: "Resume:";
+    }
+
+    .search-result-detail .search-row.col2 li ul .detail-job-title::before {
+        content: 'Job Title: ';
+        color: #953634;
+    }
+
+    .search-result-detail .search-row.default li ul .detail-job-title::before {
+        content: 'Parent Division: ';
+        color: #953634;
+    }
+
+    .search-result-detail .search-row.col2 li ul .detail-location::before {
+        content: 'Location: ';
+        color: #953634;
+    }
+
+    .search-result-detail .search-row.default li ul .detail-location::before {
+        content: 'Division: ';
+        color: #953634;
+        width: 100%;
+    }
+
+    .search-result-detail .search-row li ul .detail-posted-on::before {
+        content: 'Posted on: ';
+        color: #953634;
+    }
+
+    #ARPQuestion::before {
+        content: "Question";
+    }
+
+    #ARPQueType::before {
+        content: "Question Type";
+    }
+
+    #ARPQueWt::before {
+        content: "Weight";
+    }
+
+
+    #ARPRevName::before {
+        content: "Reviewer Name";
+    }
+
+    #ARPRevTitle::before {
+        content: "Title";
+    }
+
+    #ARPRevWt::before {
+        content: "Weight";
+    }
+
+    #ARPRevCP::before {
+        content: "Can Promote";
+    }
+
+
+    .users:nth-child(1)::before {
+        content: 'Name: ' !important;
+    }
+
+    .users:nth-child(2)::before {
+        content: 'User Name: ' !important;
+    }
+
+    .users:nth-child(3)::before {
+        content: 'Division: ' !important;
+    }
+
+    .VacancyStatus:nth-child(1)::before {
+        content: 'Name: ' !important;
+    }
+
+    .VacancyStatus:nth-child(2)::before {
+        content: 'Category: ' !important;
+    }
+
+
+    .round-Type:before {
+        content: 'Round Types: ' !important;
+    }
+
+    .joblocation:nth-child(1)::before {
+        content: 'Location: ' !important;
+    }
+
+    .joblocation:nth-child(2)::before {
+        content: 'Division: ' !important;
+    }
+
+    .positiontype:before {
+        content: 'Program Type: ' !important;
+    }
+
+    .skilltype:before {
+        content: 'Skill Type: ' !important;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.job-title::before {
+        content: 'Job Title: ' !important;
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.job-place::before {
+        content: 'Location: ' !important;
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.job-applied::before {
+        content: 'Applied On: ' !important;
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.job-status::before {
+        content: 'Status: ' !important;
+        color: #953634;
+    }
+
+    ul.doc-list li.file-name::before {
+        content: 'File Name: ';
+        color: #953634;
+    }
+
+    ul.doc-list li.doc-type::before {
+        content: 'Document Type: ';
+        color: #953634;
+        font-weight: bold;
+    }
+
+    .doc-list li.doc-date::before {
+        content: 'Date Uploaded: ';
+        color: #953634;
+        font-weight: bold;
+    }
+
+    .my-vacancies .my-vacancies-content li ul li.system-analyst::before {
+        content: 'Job Title: ';
+        color: #953634;
+    }
+
+    .my-vacancies .my-vacancies-content li ul li.system-location::before {
+        content: 'Location: ';
+        color: #953634;
+    }
+
+    .my-vacancies .my-vacancies-content li ul li.date::before {
+        content: 'Posted On: ';
+        color: #953634;
+    }
+
+    .DegreeType::before {
+        content: 'Degree Type: ';
+        color: #953634;
+        width: 100%;
+    }
+
+    .Priority::before {
+        content: 'Priority: ';
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.aplcant-name::before {
+        content: 'Applicant Name: ';
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.aplied-date::before {
+        content: 'Applied On: ';
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.aplied-round::before {
+        content: 'Status: ';
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.aplcant-rating::before {
+        content: 'Score: ';
+        color: #953634;
+    }
+
+    ul.vacancy-app-list li.applicant-dtl ul li.setting-details::before {
+        content: 'Download: ';
+        color: #953634;
+        float: left !important;
+        font-weight: bold;
+    }
+
+    .r-title:before {
+        color: #953634;
+        content: "(";
+        font-weight: bold;
+    }
+
+    .w30.textright::before {
+        content: 'Weight(1-100): ';
+        color: #345E8E;
+        font-weight: bold;
+    }
+
+    .w30.floatright.textright::before {
+        content: '';
+    }
+
+    .reviewer-name.w10::before {
+        content: 'Date: ';
+        color: #953634;
+    }
+
+    span.reviewer-name.w10.textcenter:nth-child(1):before {
+        content: 'Start: ';
+        color: #953634;
+    }
+
+    span.reviewer-name.w10.textcenter:nth-child(2):before {
+        content: 'End: ';
+        color: #953634;
+    }
+
+    .reviewer-name.w40.text-left::before {
+        content: 'Interviewer: ';
+        color: #953634;
+    }
+
+    .w10.text-left::before {
+        content: 'Round: ';
+        color: #953634;
+    }
+
+    /*.w13.floatleft:before {
+        content: 'Date: ';
+        color: #953634;
+    }*/
+
+    .cntScheduleDate:before {
+        content: 'Schedule Date: ';
+        color: #953634;
+    }
+
+    .cntStartTime:before {
+        content: 'Start Time: ';
+        color: #953634;
+    }
+
+    .cntEndTime:before {
+        content: 'End Time: ';
+        color: #953634;
+    }
+
+    .cntInterviewers:before {
+        content: 'Interviewer(s): ';
+        color: #953634;
+    }
+
+    .cntRound:before {
+        content: 'Round: ';
+        color: #953634;
+    }
+
+    .cntScore:before {
+        content: 'Score: ';
+        color: #953634;
+    }
+
+    .SchStartTime:before {
+        Content: "- ";
+    }
+
+    .SchEndTime:before {
+        Content: "End Time: ";
+        color: #953634;
+    }
+
+    .SchReviewer:before {
+        Content: "Interviewer: ";
+        color: #953634;
+    }
+
+    .SchRound:before {
+        Content: "Round: ";
+        color: #953634;
+    }
+
+    .SchScore:before {
+        Content: "Score: ";
+        color: #953634;
+    }
+
+    .round-question-weight::before {
+        content: 'Weight(1-100): ' !important;
+        color: #345E8E;
+        font-weight: bold;
+    }
+
+    .round-question-type::before {
+        content: '(' !important;
+        color: #953634;
+        font-weight: bold;
+    }
+
+    .weight::before {
+        content: 'Weight(1-100): ' !important;
+        color: #345E8E;
+        font-weight: bold;
+    }
+
+    .canpromote:before {
+        content: 'Can Promote: ' !important;
+        color: #345E8E;
+        font-weight: bold;
+    }
+
+    .ScheduleDate:before {
+        Content: "Schedule Date: ";
+        color: #953634;
+    }
+
+    .AppStatusName:before {
+        color: #953634;
+        content: "Name: ";
+        width: 100%;
+    }
+
+    .AppStatusCategory:before {
+        color: #953634;
+        content: "Category: ";
+        width: 100%;
+    }
+
+    .ShowCandidateStatus:before {
+        color: #953634;
+        content: "Show to Applicant: ";
+        width: 100%;
+    }
+
+    .cntFileName::before {
+        content: "File Name:";
+    }
+
+    .cntDocumentType::before {
+        content: "Document Type: ";
+    }
+
+    .cntDateUploaded::before {
+        content: "Date Uploaded:";
+    }
+
+    .cntWeight::before {
+        content: "Weight";
+        color: #953634;
+    }
+
+    .cntCanPromote::before {
+        content: "Can Promote";
+        color: #953634;
+    }
+
+    .cntCanMakeAward::before {
+        content: "Can Make Award";
+        color: #953634;
+    }
+
+    .cntCanEditAward::before {
+        content: "Can Edit Award";
+        color: #953634;
+    }
+
+
+
+    .cntWeightBBlue::before {
+        content: "Weight: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntCanPromoteBBlue::before {
+        content: "Can Promote: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntCanMakeAwardBBlue::before {
+        content: "Can Make Award: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntCanEditAwardBBlue::before {
+        content: "Can Edit Award: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntNameBBlue::before {
+        content: "Name: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntDocumentTypeBBlue::before {
+        content: "Document Type: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntExtensionTypesBBlue::before {
+        content: "Extension Types: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+
+    .cntTypeBBlue:before {
+        content: "Type: ";
+        font-weight: bold;
+        color: #345E8E;
+    }
+}
+
+
+.lblNavCount:before, .lblRoundBraces:before {
+    content: '(';
+}
+
+.lblNavCount:after, .lblRoundBraces:after {
+    content: ')';
+}
+
+.GridCol2 .cntLocation::before {
+    content: "Program Office: ";
+    color: #953634;
+}
+
+.GridCol2 .cntPostedOn::before {
+    content: "PostedOn: ";
+    color: #953634;
+}

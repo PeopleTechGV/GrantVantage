@@ -1,0 +1,136 @@
+﻿@model ATS.BusinessEntity.TVacancyRound
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByRndTypeId(Model.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+}
+
+@using (Ajax.BeginForm("UpdateRoundConfig", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "InnerTVacRoundConfigSuccess(data,'" + Model.TVacRndId + "','" + Model.TVacId + "')",
+            OnFailure = "InnerTVacRoundConfigFailure",
+        }, new { id = "frmTVacRoundConfig", isFormChange = "false" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.TVacId)
+    @Html.HiddenFor(m => m.TVacRndId)
+
+    <div class="vacancy-Details" data-tvacrndconfigid="@Model.TVacRndId">
+        <div class="vacancy-quest-box">
+            <div class="std_width">
+                <div class="width-62">
+                    @Html.LanguageLabelFor(m => m.RndTypeId, new { @class = "round-config-lft " })
+                    @Html.DropDownListFor(m => m.RndTypeId, (SelectList)ViewBag.TRoundType, "--Select--", new { @id = "TReviewRound", @class = "round-slt-lft", @onchange = "CopyRndType(this);" })
+                </div>
+                <div id="RndConfig">
+                    @if (RndAttr != BERndAttr.OfferRound)
+                    {
+                        <div class="width-38">
+                            @Html.LanguageLabelFor(m => m.RoundWeight, new { @class = "round-config-rgt labelwidth-rgt1" })
+                            @Html.TextBoxFor(m => m.RoundWeight, new { @class = "round-rgt" })
+                        </div>
+                        <div class="width-62">
+                            @Html.LanguageLabelFor(m => m.PromoteCandidate, new { @class = "round-config-lft " })
+                            @Html.DropDownListFor(m => m.PromoteCandidate, (SelectList)ViewBag.YesNoDropDownPromoteCandidate, "- Select -", new { @class = "round-slt-lft" })
+                        </div>
+                        <div class="width-38">
+                            @Html.LanguageLabelFor(m => m.PromotionThresoldScore, new { @class = "round-config-rgt labelwidth-rgt1" })
+                            @Html.TextBoxFor(m => m.PromotionThresoldScore, new { @class = "round-rgt" })
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="box" style="border-bottom: 2px solid #953634;">
+                <button type="submit" class="prfle-button-save" onclick="return CheckSubmitOnValidation(this,'@ViewBag.PageMode');">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_SAVE)</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $('#TReviewRound').change(function () {
+        var TRndTypeId = $(this).val();
+        if (TRndTypeId != "") {
+            var TVacid = $(this).parents('.AccTVacDetails').parent().prev().attr('data-tvacid');
+            var TVacRndId = $('#TReviewRound').parents(".vacancy-Details").attr('data-tvacrndconfigid');
+            var dataLink = '@Html.Raw(@Url.Action("CheckForRoundNo", "TemplateVacancy", new { TRndTypeId = "_TRNDTYPEID_", TVacId  = "_TVACID_",TVacRndId = "_TVACRNDID_"}))';
+            dataLink = dataLink.replace("_TRNDTYPEID_", TRndTypeId);
+            dataLink = dataLink.replace("_TVACID_", TVacid);
+            dataLink = dataLink.replace("_TVACRNDID_", TVacRndId);
+            var _ele = $('#frmTVacRoundConfig').parent();
+            VacancyModel.CallGetMethod(dataLink, function (data) {
+                if (data != "")
+                    $(".lblRoundWeight").show();
+                else
+                    $(".lblRoundWeight").hide();
+                $(_ele).html('');
+                $(_ele).append(data);
+            });
+            CopyRndType(this);
+        }
+    });
+
+    function CheckSubmitOnValidation(element, mode) {
+        if (mode == '@ATS.BusinessEntity.PageMode.Update.ToString()') {
+            var currentRev = $(element).parent().prev().find('#ReqReviewer').val();
+            var existsRev = $(element).parents('.AccRounddetail:first').find("div[data-index='1']").find('.revCount').text();
+            $(element).parents('.AccRounddetail:first').find("div[data-index='1']").find('.revCount').attr('data-rndconfigrevcnt', currentRev);
+            if (existsRev.indexOf('(') < 0)
+                return true;
+
+            var existingRevCnt = existsRev.substring(existsRev.indexOf('(') + 1, existsRev.indexOf(')'));
+            if (parseInt(currentRev) < parseInt(existingRevCnt)) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', ConstantMsg.valReqReviewerRndConfEdit, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function InnerTVacRoundConfigSuccess(response, TrndId, TVacId) {
+        var jsonData = JSON.parse(response);
+        if (!jsonData.IsError) {
+            var _$TVacAcc = $("div[data-tvacidonly='" + TVacId + "']");
+            var $rndConfigAcc = $("div[data-vacroundid='" + TrndId + "']").next().find('.AccRoundDetail').find("div[data-index='3']");
+            $rndConfigAcc = $rndConfigAcc.next();
+            $rndConfigAcc.html("");
+            $rndConfigAcc.html(jsonData.Data);
+
+            var _CurrAcc = $("div[data-tvacidonly='" + TVacId + "']");
+            var active = $rndConfigAcc.closest('.AccRound').accordion("option", "active"); //getter
+            var drpSelected = $rndConfigAcc.find("#TReviewRound option:selected").text();
+            var txtWeight = $rndConfigAcc.find("#RoundWeight").val();
+            $("div[data-vacroundid='" + TrndId + "']").find("#rndweight").text(txtWeight);
+            $("div[data-vacroundid='" + TrndId + "']").find("#rndtype").text(drpSelected);
+            $rndConfigAcc.closest('.AccRound').accordion(VacancyModel.AccFirstAttr).accordion('refresh').accordion({ active: active });
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        var Savelink = $("span[data-roundConfigid='" + TrndId + "']").get(0);
+        VacancyModel.DisplayProfileCommonNotification(jsonData, $(Savelink));
+        return false;
+    }
+
+    function InnerTVacRoundConfigFailure() {
+        var jsonData = JSON.parse(response);
+        var Savelink = $("span[data-roundConfigid='" + rndId + "']").get(0);
+        VacancyModel.DisplayProfileCommonNotification(jsonData, $(Savelink));
+
+        return false;
+    }
+
+    function CopyRndType(changeVal) {
+        var cur = $(changeVal);
+        var text = "";
+        if (cur.val() != 0) {
+            text = cur.find('option:selected').text();
+        }
+        cur.closest('.acc-Content').prev().attr('data-qdatatype', cur.val());
+        $(cur).parents('.AccRoundDetail').parent().prev().children('p').children().first().children('#rndtype').text(text);
+    }
+
+</script>

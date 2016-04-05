@@ -1,0 +1,37 @@
+﻿@model  IEnumerable<ATS.BusinessEntity.SkillType>
+@using BESkillTypeConst = ATS.BusinessEntity.Common.SkillType
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w100">@Html.LanguageLabel(BESkillTypeConst.LST_SKILLTYPE)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.SkillType current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.SkillTypeId'>
+            <li class="w100 cntSkillType">@current.LocalName</li>
+            <li id="MobSkillType" class="ViewDetailsMob MobView" onclick="MobSkillType(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "SkillType")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var skilltypeId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "SkillType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", skilltypeId);
+        window.location = dLink;
+    });
+
+    function MobSkillType(element) {
+        var skilltypeId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "SkillType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", skilltypeId);
+        window.location = dLink;
+    }
+</script>

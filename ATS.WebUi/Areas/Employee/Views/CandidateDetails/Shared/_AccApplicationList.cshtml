@@ -1,0 +1,23 @@
+﻿@model IList<ATS.BusinessEntity.Application>
+
+@foreach (var _current in Model)
+{
+    <div class="acc-header">
+        <p class="prfle-tab-head-brown">           
+            <span class="VacNameOnAcc">
+                @_current.objCandidateApplications.objVacancy.JobTitle - @_current.objCandidateApplications.objVacancy.LocationText <span class='ttldb'>(@_current.CreatedOnText) </span>
+            </span>
+            <span class="lblAppStatus">
+                <span class="ttllbrown">Status:</span>
+                <span class="ttldblue">@Html.LanguageLabel(_current.AppState)</span>
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-inner">
+            <div class="CanInterview acc-sub">
+                @Html.Partial("Shared/_CanInterviewAcc", _current)
+            </div>
+        </div>
+    </div>
+}

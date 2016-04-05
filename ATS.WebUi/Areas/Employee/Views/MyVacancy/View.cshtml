@@ -1,0 +1,653 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using BEDocumentsConst = ATS.BusinessEntity.Common.DocumentsDetailsConst
+@using BEVacancyConst = ATS.BusinessEntity.Common.VacancyConstant
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.Vacancy>>
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string actionName = ViewBag.RedirectAction;
+}
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgMyVacancy24W"></div>
+        <a id="SearchJobs" class="navTitle" href="@Html.Raw(Url.Action("Index", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }))">
+            @Html.LanguageLabel(BEClient.Common.EmployeeMenuConstant.MNU_MY_VACANCIES)
+        </a>
+        <span class="chevron"></span>
+    </div>
+
+
+
+    @if (ViewBag.PageMode == BEClient.PageMode.Create)
+    {
+        <div class="NavItems">
+            <span class="navTitle">@Html.LanguageLabel(ATS.BusinessEntity.Common.NewVacancyOption.NEWVACANCY_CREATE_NEW).ToString().ToUpper()</span>
+            <span class="chevron"></span>
+        </div>
+    }
+    else
+    {
+        if (Model.objRecentViewedList != null && Model.objRecentViewedList.Count > 0)
+        {
+            <div class="NavItems hasDropdown MobDisable">
+                <span class="navTitle ActionVacancyName">@Model.ItemName</span>
+                <span class="chevron"></span>
+                <ul class="dropdownMenu menuAqua">
+                    @Html.Partial("_RecentViewed", Model.objRecentViewedList)
+                </ul>
+            </div>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(Model.ItemName))
+            {
+                <div id="NavRecViewedVac" class="NavItems HoverNone MobDisable">
+                    <span class="navTitle">@Model.ItemName</span>
+                    <span class="chevron"></span>
+                </div>
+            }
+        }
+    }
+}
+
+
+
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+<link type="text/css" rel="stylesheet" href="~/CLEditor/jquery.cleditor.css">
+<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>
+<style type="text/css">
+    .ddlVacStatusItems {
+        margin-top: 5px;
+    }
+
+    .bottom {
+        padding-bottom: 50px;
+    }
+
+    .detail-select2 {
+        -moz-appearance: none;
+        background: url("/content/images/ddlArrow.png") no-repeat scroll right center #ffffff;
+        border: 1px solid #bec0c4;
+        overflow: hidden;
+        text-indent: 0.01px;
+        text-overflow: "";
+        width: 300px;
+        color: #345E8E;
+        margin-left: 8px;
+        margin-top: 5px;
+        margin-bottom: 6px;
+    }
+</style>
+
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.obj.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmMyVacancies');
+        });
+    </script>
+}
+
+@if (ViewBag.PageMode != BEClient.PageMode.Create)
+{
+    @Html.Partial("Shared/_VacancyGearAction", Model)
+}
+else
+{
+    <div id="VacStatusMenuConf">
+        <div class="ActionBar"></div>
+    </div>
+}
+<div id="message1" style="display:none;" class="alert-box notice"><span id="copytext"></span><div class="floatright CursorPointer" onclick="CloseCopy();"><img src='@Url.Content("~/Content/images/remove_16.png")' alt="" border="0" /></div></div>
+<div id="VacancyAcc" class="SMContentBox">
+    <div class="acc-header" data-index="0" data-recordid="@Model.obj.obj.VacancyId">
+        <p class="prfle-tab-head">
+            Opportunity Details
+            <span class="notification" style="display:none;"></span>
+            <span class="Save" data-vacancyid='@Model.obj.obj.VacancyId' style="display:none;">
+                <button type="button" onclick="return outerSave(this);"></button>
+            </span>
+
+            @if (!Model.obj.obj.ConfirmVacancyDetails && Model.obj.obj.VacancyId != Guid.Empty)
+            {
+                <span class='ttllbrownConf'>
+                    @Html.LanguageLabel(BEVacancyConst.FRM_VAC_CONFIRM_REQUIRED)
+                </span>
+            }
+        </p>
+    </div>
+    <div class="acc-Content" name="vacancyDetail" data-mode="@ViewBag.PageMode">
+        @Html.Partial("Shared/_VacancyDetail", Model.obj)
+    </div>
+    <div class="acc-header" data-index="1" data-recordid="@Model.obj.obj.VacancyId">
+        <p class="prfle-tab-head">
+            Opportunity Description
+            <span class="notification" style="display:none;"></span>
+            <span class="Save" data-vacancyid='JobDesc_@Model.obj.obj.VacancyId' style="display:none;">
+                <button type="button" onclick="return outerSave(this);"></button>
+            </span>
+
+            @if (!Model.obj.obj.ConfirmJobDescription && Model.obj.obj.VacancyId != Guid.Empty)
+            {
+                <span class='ttllbrownConf'>
+                    @Html.LanguageLabel(BEVacancyConst.FRM_VAC_CONFIRM_REQUIRED)
+                </span>
+            }
+        </p>
+    </div>
+    <div class="acc-Content" name="jobdesc" data-mode="@ViewBag.PageMode">
+        @*@Html.Partial("Shared/_JobDescription", Model.obj)*@
+    </div>
+
+    <div class="acc-header" data-index="2" data-recordid="@Model.obj.obj.VacancyId">
+        <p class="prfle-tab-head">
+            Application Instructions
+            <span class="notification" style="display:none;"></span>
+            <span class="Save" data-vacancyid='Com_@Model.obj.obj.VacancyId' style="display:none;">
+                <button type="button" onclick="return outerSave(this);"></button>
+            </span>
+            @if (!Model.obj.obj.ConfirmCompensationInfo && Model.obj.obj.VacancyId != Guid.Empty)
+            {
+                <span class='ttllbrownConf'>
+                    @Html.LanguageLabel(BEVacancyConst.FRM_VAC_CONFIRM_REQUIRED)
+                </span>
+            }
+        </p>
+    </div>
+    <div class="acc-Content" name="cominfo" data-mode="@ViewBag.PageMode">
+        @Html.Partial("Shared/_CompensationInfo", Model.obj)
+    </div>
+
+    <div class="acc-header" data-index="6" data-recordid="@Model.obj.obj.VacancyId">
+        <p class="prfle-tab-head">
+            Automated Emails
+        </p>
+    </div>
+    <div class="acc-Content" name="cominfo" data-mode="@ViewBag.PageMode">
+
+    </div>
+
+    <div class="acc-header" data-index="3" data-recordid="@Model.obj.obj.VacancyId">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(BEVacancyConst.LST_AC_TITLE_APPLICANT_REVIEW_PROCESS)
+            <span id="vacrndcnt" class="ttldbrown">(Rounds: @Model.obj.obj.RndCount)</span>
+            <span class="notification" style="display:none;"></span>
+            <span class="Save" data-vacancyid='AppRev_@Model.obj.obj.VacancyId' style="display:none;">
+                <button type="button" onclick="return outerSave(this);"></button>
+            </span>
+            @if (!Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+            {
+                <span class='ttllbrownConf'>
+                    @Html.LanguageLabel(BEVacancyConst.FRM_VAC_CONFIRM_REQUIRED)
+                </span>
+            }
+        </p>
+    </div>
+
+    <div class="acc-Content ARPContent" name="applicationProcess" data-mode="@ViewBag.PageMode">
+        <div class="AccRound">
+
+        </div>
+        <div class="RoundConfigNewForm" style="display:none;">
+
+        </div>
+
+        <div class="acc-action">
+            @if (Model.obj.obj.ApplicantVacancyList == null || Model.obj.obj.ApplicantVacancyList.Count() == 0)
+            {
+                if (Model.obj.RecordPermissionType.Contains(BEClient.ATSPermissionType.Modify))
+                {
+                    <a title="" id="addRoundConfig" data-vacid="@Model.obj.obj.VacancyId" href='javascript:void(0);' data-url='@Url.Action("AddNewRoundConfig", "MyVacancy", new {@area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE})' class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_APP_REV_ADD)</a>
+                }
+                <div class="note"><span class="ttllbrown">(Note: This section will become uneditable after the first applicant applies for this program)</span></div>
+            }
+        </div>
+
+        @if (!Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+        {
+            if (Model.obj.RecordPermissionType.Contains(BEClient.ATSPermissionType.Modify))
+            {
+                <a href="javascript:void(0);" class="prfle-button-save CaseUpper" onclick="return ConfirmApplicationReview(this);">Confirm Applicant Review Process</a>
+            }
+        }
+    </div>
+
+    @if (Model.obj.obj.VacancyId != null && Model.obj.obj.VacancyId != Guid.Empty)
+    {
+        <div class="acc-header" data-index="4" data-recordid="@Model.obj.obj.VacancyId">
+            <p class="prfle-tab-head">
+                @Html.LanguageLabel(BEVacancyConst.FRM_VAC_VACANCY_APPLICATIONS)
+                <div class="ddlVacApplication">
+                    @Html.Partial("../Shared/_ApplicationStatusMenu")
+                </div>
+            </p>
+        </div>
+        <div class="acc-Content" style="display: block; padding-bottom:10px;" data-mode="@ViewBag.PageMode">
+            <div class="acc-inner">
+                @if (Model.obj.obj.ApplicantVacancyList != null)
+                {
+                    @*@Html.Partial("_ApplicantList", Model.obj.obj.ApplicantVacancyList)*@
+                }
+            </div>
+        </div>
+    }
+    <div class="acc-header headerVacHistory" data-index="5" data-recordid="@Model.obj.obj.VacancyId">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(BEVacancyConst.FRM_VAC_VACANCY_HISTORY)
+            <a class="printHistory" style="display:none;" href='javascript:void(0);' id="aPrintHistory">Print Full Audit Report</a>
+        </p>
+    </div>
+    <div id="divVacHistory" class="acc-Content" name="vac-history" data-mode="@ViewBag.PageMode">
+        <div class="acc-inner"></div>
+    </div>
+</div>
+<br clear="all" />
+<br clear="all" />
+
+@if (ViewBag.PageMode == BEClient.PageMode.Create)
+{
+    <script>
+        $(function () {
+            $('div.acc-header').not(':eq(0)').hide();
+        });
+    </script>
+}
+<script>
+    document.getElementById("obj_JobTitle").focus();
+    $(function () {
+        MyVacancy.AccGetVacQueCatByVacRndURL = '@Url.Action("AddVacQueCatModel", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.IsCandidateApplied = '@((Model.obj.obj.ApplicantVacancyList != null && Model.obj.obj.ApplicantVacancyList.Count()>0)?"true":"false")';
+
+        //VacancyAcc
+        MyVacancy.VacAccGetVacancyDetailsURL = '@Url.Action("GetVacancyDetails", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.VacAccGetJobDescriptionURL = '@Url.Action("GetJobDescription", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.VacAccGetCompensationInfoURL = '@Url.Action("GetCompensationInfo", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE})';
+        MyVacancy.VacAccGetApplicationProcessURL = '@Url.Action("GetApplicationProcess", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+
+        //AccRounddetail
+        MyVacancy.AccGetReviewersByVacancyRndURL = '@Url.Action("GetReviewersByVacancyRnd", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.AccGetQueByVacancyRndURL = '@Url.Action("GetQueByVacancyRnd", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.AccGetRoundConfigDetailURL = '@Url.Action("GetRoundConfigDetail", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.GetRequiredDocumentsURL = '@Url.Action("GetRequiredDocuments", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        //AccRound
+        MyVacancy.AccGetRevAndQueCountURL = '@Url.Action("GetRevAndQueCount", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE})';
+
+        MyVacancy.AddQuestionURL = '@Url.Action("AddVacQueModel", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        MyVacancy.AddReviewerURL = '@Url.Action("AddVacRevModel", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+
+        //AccvacQueCat
+        MyVacancy.AddVacQueCatURL = '@Url.Action("CreateVacQueCat", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+
+        //Anand :For Getting VacQue by VacQueCat
+        MyVacancy.AccGetQueByVacQueCatURL = '@Url.Action("GetQueByVacQueCat", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+
+        //Delete VacRnd
+        MyVacancy.RemoveVacRnd = '@Url.Action("RemoveVacRound", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+
+        //delete VacQueCat
+        MyVacancy.RemoveVacQueCat = '@Url.Action("RemoveVacQueCat", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+
+        MyVacancy.ChangeVacQueDropDownURL = '@Html.Raw(Url.Action("GetQueDetails", "MyVacancy", new { QueId = "_SELDATA_", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_", VacQueCatId = "_VACQUECATID_", newQueId = "_NEWVAL_" }))'
+
+        @*MyVacancy.ApplyTemplateURL = '@Url.Action("GetApplyTemplate", "MyVacancy", new { VacancyId = "_VACANCYID_" })';*@
+        MyVacancy.ApplyTemplateURL = '@Url.Action("GetApplyTemplate", "MyVacancy")';
+
+        MyVacancy.GetAllApplicationURL = '@Url.Action("GetAllApplication", "MyVacancy")';
+        MyVacancy.GetVacancyHistoryURL = '@Url.Action("GetVacancyHistoryByVacancyId", "VacancyHistory")';
+        MyVacancy.GetDeclinedAutoEmailURL = '@Url.Action("GetDeclinedAutoEmail", "MyVacancy")';
+
+        MyVacancy.GetMyVacancyGearActionURL = '@Url.Action("GetMyVacancyGearAction", "MyVacancy", new { VacancyId = "_VACID_" })';
+
+
+        $("a#addRoundConfig").tooltip({
+            track: false,
+            open: function (event, ui) {
+                setTimeout(function () {
+                    $(ui.tooltip).hide('toggle');
+                }, 8000);
+            },
+            position: { my: "left+200 top-70", at: "left top", collision: "flipfit" },
+            content: function (callback) {
+                callback("connecting......");
+                var _Link = '@Url.Action("GetARPHint", "MyVacancy")';
+                // here retrieve the id of the teacher
+                $.ajax({
+                    url: _Link,
+                    global: false,
+                    success: function (response) {
+                        response = JSON.parse(response);
+                        if (!response.IsError) {
+                            $(this).removeAttr("title");
+                            if ($.trim(response.Data) != "") {
+                                $(this).attr("title", "");
+                                callback(response.Data);
+                            }
+
+                        }
+                    }
+                });
+            }
+        });
+
+
+        $('#message1').hide();
+        $("#DivisionId").change(function () {
+            VacancyModel.AjaxPost('@Url.Action("JobLocationAutoComplete")', { term: "", displaytop: "", columnName: "", DivisionId: $("#DivisionId").val() }, "Success", "Error");
+        });
+
+        $("#StartDate,#EndDate").datepicker({
+            dateFormat: VacancyModel.DateFormat,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            showWeeks: true,
+            currentText: 'Now',
+            autoSize: true,
+            gotoCurrent: true,
+            highlightWeek: true
+
+        });
+    });
+
+    $('#addRoundConfig').live("click", function () {
+        var $that = $(this);
+        $that.parent().siblings('.ui-accordion').accordion({ active: false }).accordion("refresh");
+        var _VacId = $that.attr('data-vacid');
+
+        var $formdiv = $that.parent().prev();
+        if ($formdiv.find('form').length > 0) {
+            $formdiv.find('form').submit();
+            return false;
+        }
+        else {
+            $.ajax({
+                url: $that.attr("data-url") + '?VacancyId=' + _VacId,
+                cache: false,
+                success: function (response) {
+                    var jsonData = JSON.parse(response);
+                    if (!jsonData.IsError) {
+                        $('#addRoundConfig').hide();
+                        $('.note').hide();
+                        //$(jsonData.Data).find('.accNewReviewRound').accordion(VacancyModel.AccSecondAttr).accordion('refresh').accordion({ active: $(this).find(".acc-header").size() - 1 });
+                        $formdiv.html(jsonData.Data);
+                        $formdiv.find('.accNewReviewRound').accordion(VacancyModel.AccSecondAttr).accordion('refresh').accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    }
+                    else {
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    $formdiv.show();
+                }
+            });
+            return false;
+        }
+    });
+
+    function Success(IsError, Url, Data, Message) {
+
+        var DivisionIdDRp = $('#DivisionId option:selected').val();
+        var replaceQueryString = "?DivisionId=";
+        var LocationUrl = $("#LocationName").attr("autocomplete-url");
+
+        var downloadReplaceUrl = '';
+        if (LocationUrl.indexOf(replaceQueryString) > 0) {
+            downloadReplaceUrl = LocationUrl.substr(LocationUrl.indexOf(replaceQueryString));
+            LocationUrl = LocationUrl.replace(downloadReplaceUrl, '');
+        }
+        downloadReplaceUrl = replaceQueryString + DivisionIdDRp;
+        LocationUrl += downloadReplaceUrl;
+        $("#LocationName").attr("DivisionId", DivisionIdDRp);
+        $("#LocationName").attr("autocomplete-url", LocationUrl);
+    };
+
+    $("#CompanyName").change(function () {
+
+        VacancyModel.AjaxPost('@Url.Action("AppendJobTitle", "MyVacancy")', { CompanyId: $("#CompanyName").val() }, "companyChangeSuccess", "Error");
+    });
+
+    //$("#txt_TotalPosition").change(function () {
+
+    //    $("#txt_RemainingPosition").val($("#txt_TotalPosition").val());
+    //});
+
+    function setval(ele) {
+        var txt_TotalPosition = ele;
+        $(txt_TotalPosition).closest('.vacancy-Details').find("#txt_RemainingPosition").val(txt_TotalPosition.value)
+    }
+
+    function companyChangeSuccess(_IsError, _Url, _Data, _Message) {
+        if (_IsError == true) {
+        }
+        else {
+            var val = $("#obj_JobTitle").val() + " " + _Data;
+            var val = val.replace(val, val);
+            $("#obj_JobTitle").attr("value", val);
+        }
+    }
+
+    function GetJobLocationBasedOnUserAndDivision() {
+
+        var divisionId = document.getElementById('divisionId').value;
+        $.post("/MyVacancy/GetJobLocationBasedOnUserAndDivision", { divisionId: divisionId }, function (data) {
+            data = JSON.parse(data);
+            var sel = document.getElementById('joblocation');
+            $('#joblocation').empty();
+            var opt = document.createElement('option');
+            opt.innerHTML = '- Select -';
+            opt.value = '';
+            sel.appendChild(opt);
+
+            for (var i = 0; i < data.JobLocationId.length; i++) {
+                var opt = document.createElement('option');
+                opt.innerHTML = data.LocalName[i];
+                opt.value = data.JobLocationId[i];
+                sel.appendChild(opt);
+            }
+            //For positiontype
+            var sel1 = document.getElementById('positiontype');
+            $('#positiontype').empty();
+            var opt1 = document.createElement('option');
+            opt1.innerHTML = '- Select -';
+            opt1.value = '';
+            sel1.appendChild(opt1);
+
+            for (var i = 0; i < data.PositypeTypeId.length; i++) {
+                var opt1 = document.createElement('option');
+                opt1.innerHTML = data.LocalNamePosition[i];
+                opt1.value = data.PositypeTypeId[i];
+                sel1.appendChild(opt1);
+            }
+
+            //For PositionOwner
+            var sel2 = document.getElementById('PositionOwner');
+            $('#PositionOwner').empty();
+            var opt2 = document.createElement('option');
+            opt2.innerHTML = '- Select -';
+            opt2.value = '';
+            sel2.appendChild(opt2);
+
+            for (var i = 0; i < data.UserId.length; i++) {
+                var opt2 = document.createElement('option');
+                opt2.innerHTML = data.FullName[i];
+                opt2.value = data.UserId[i];
+                sel2.appendChild(opt2);
+            }
+            //For Onboarding MAnager
+
+            //var sel3 = document.getElementById('OnBoardingManager');
+            //$('#OnBoardingManager').empty();
+            //var opt3 = document.createElement('option');
+            //opt3.innerHTML = '- Select -';
+            //opt3.value = '';
+            //sel3.appendChild(opt3);
+
+            //for (var i = 0; i < data.OnboardManagerId.length; i++) {
+            //    var opt3 = document.createElement('option');
+            //    opt3.innerHTML = data.FullNameUsers[i];
+            //    opt3.value = data.OnboardManagerId[i];
+            //    sel3.appendChild(opt3);
+            //}
+
+
+        });
+    }
+
+
+    function GetVacancyReasonsBasedOnVacancyStatus() {
+        var VacancyStatus = document.getElementById('ddlVacancyStatus').value;
+        $.post("/MyVacancy/GetVacancyReasonsBasedOnVacancyStatus", { VacancyStatus: VacancyStatus }, function (data) {
+            data = JSON.parse(data);
+            var sel = document.getElementById('ddlStatusReason');
+            $('#ddlStatusReason').empty();
+            if (data.VacancyStatusID.length != 1) {
+                var opt = document.createElement('option');
+                opt.innerHTML = '- Select -';
+                opt.value = '';
+                sel.appendChild(opt);
+            }
+            for (var i = 0; i < data.VacancyStatusID.length; i++) {
+                var opt = document.createElement('option');
+                opt.innerHTML = data.VacancyStatusName[i];
+                opt.value = data.VacancyStatusID[i];
+                sel.appendChild(opt);
+            }
+        });
+    }
+
+    function ResumePreview(data) {
+        var Loc = $(data).attr('filepath');
+
+        var GoogleHref = 'http://docs.google.com/viewer?url=' + Loc + '&embedded=true';
+
+        $(data).parents('.std_width').next().children(':first').attr('src', GoogleHref)
+        $(data).parents('.std_width').next().children(':first').attr('src');
+    }
+
+    $("#btn-remove-vacancy").live("click", function () {
+
+        var VacancyCount = ""
+        var ApplicantCount = ""
+        var UserVacancyCount = ""
+
+        @if (Model.obj.obj.RecordExistsCount != null && Model.obj.obj.RecordExistsCount.Count > 0)
+       {
+           <text>
+
+        VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()
+            ApplicantCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Applicants").Select(x => x.Count).FirstOrDefault()
+            UserVacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "User Saved Vacancy").Select(x => x.Count).FirstOrDefault()
+            </text>
+
+
+       }
+         VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Opportunity", 350, "Are you sure you want to delete this Opportunity? <br /> The following records will also be deleted:<br />  Opportunities:" + VacancyCount + "</br> Applicants:" + ApplicantCount + "</br> Saved Opportunities:" + UserVacancyCount, "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Remove", "MyVacancy", new { id = @Model.obj.obj.VacancyId })'
+            window.location.href = deletelink;
+        }
+    }
+
+    function OpenCopy(isManager) {
+        @*var htmlvalue = '@Url.Action("EmployeeLogin", "Home", new { area = "", PublicCode = Model.obj.PublicCode, ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, ManagerLink = ATS.BusinessEntity.PublicCodelink.Manager , HttpContext.Current.Request.Url.Scheme})';*@
+        var htmlvalue = '@Url.Action("EmployeeLogin", "Home", new { area = "", PublicCode = Model.obj.obj.PublicCode, ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, ManagerLink = "_ISBOOL_" }, HttpContext.Current.Request.Url.Scheme)';
+        htmlvalue = '<b>Copy URL : </b>' + htmlvalue.replace("_ISBOOL_", isManager);
+        $('#copytext').html(htmlvalue);
+        $('#message1').show();
+    }
+
+    function CloseCopy() {
+        $('#message1').hide();
+    }
+
+    $(document).ready(function () {
+        SetHoursPerWeekVisibility();
+        $("body").bind("ajaxComplete", function (e, xhr, settings) {
+            SetHoursPerWeekVisibility();
+        });
+
+        $('#divisionId > option').each(function () {
+            $(this).html($(this).text());
+        });
+        //$("#divisionId option:selected").html($("#divisionId option:selected").text().trim());
+        //$('#divisionId').change(function () {
+        //    $("#divisionId option:selected").html($("#divisionId option:selected").text().trim());
+        //});
+
+    });
+    $("body").ajaxStop(function () {
+        $('#divisionId > option').each(function () {
+            $(this).html($(this).text());
+        });
+    });
+    function SetHoursPerWeekVisibility() {
+        var element = $('#obj_JobType');
+        var selectedvalue = $(element).val();
+        if (selectedvalue == "2") {
+            $('#divHrsPerWeek').show();
+            $('#divEndDate').show();
+        }
+        else {
+            $('#divHrsPerWeek').hide();
+            $('#divEndDate').hide(); //hide "End Date" if not part-time: G(skype)
+        }
+    }
+
+    $("#aPrintHistory").click(function (event) {
+        Popup($('#divVacHistory').html());
+        event.stopImmediatePropagation();
+    }
+    );
+    function Popup(data) {
+        var VacancyName = $('#obj_JobTitle').val();
+        data = "<style>.daysopen {position: absolute;right: 10px;top: 5px;}.previous-remarks { background: none repeat scroll 0 0 #ffffff;float: left;padding: 5px 1%;width: 98%;  color: #345E8E; font-family: Arial,Helvetica,sans-serif; font-size: 12px;}.previous-remarks ul{list-style:none;}</style>" +
+            "<span style='color: #345E8E; font-family: Arial,Helvetica,sans-serif;padding-left:50px;'><b>Vacancy: " + VacancyName + "</b></span><br/>" + data;
+        var mywindow = window.open('', 'Print Audit report', 'height=600,width=800');
+        mywindow.document.write(data);
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+</script>
+<script>
+    function DeleteVacRndConfirm(result, element) {
+        if (result) {
+            var _VacRndId = $(element).attr('data-pkid');
+            VacancyModel.CallPostMethod(MyVacancy.RemoveVacRnd + '?VacRoundId=' + _VacRndId, function (data, message) {
+                var _parentAcc = $(element).parents('#VacancyAcc');
+                var active = _parentAcc.accordion("option", "active");
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, 3000);
+                _parentAcc.accordion("option", "active", false).accordion("refresh");
+                _parentAcc.accordion("option", "active", active);
+                // For Remove new Add Round Section -- Start-- //
+                $(element).parents('.AccRound').next().html('');
+                $('#addRoundConfig').show();
+                $('.note').show();
+                //--End -- //
+            });
+        }
+    }
+
+    function ConfirmApplicationReview(element) {
+        var _ele = $(element);
+        var VacId = $(_ele).parent().prev().attr('data-recordid');
+        var _datalink = '@Html.Raw(Url.Action("ConfirmationRequired", "MyVacancy", new { VacancyId = "_VACID_", Index = 4 }))';
+        _datalink = _datalink.replace("_VACID_", VacId);
+        VacancyModel.CallPostMethod(_datalink, function (data) {
+            var accContent = $(_ele).parents('.acc-Content');
+            if ($('.ttllbrownConf').length > 0) {
+                MyVacancy.SetConformation(accContent);
+            }
+            $(_ele).remove();
+        })
+    }
+</script>
+@System.Web.Optimization.Scripts.Render("~/bundles/jMyVacancy")

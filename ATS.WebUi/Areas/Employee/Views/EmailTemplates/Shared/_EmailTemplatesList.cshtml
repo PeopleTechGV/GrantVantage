@@ -1,0 +1,36 @@
+﻿@model  IList<ATS.BusinessEntity.EmailTemplates>
+
+<div class="GridContainer">
+    <ul class="RowHeader">
+        @*<li class="w25">Email Name</li>*@
+        <li class="w25">Template Type</li>
+        <li class="w35">Subject</li>
+        <li class="w40">Description</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.EmailTemplates current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.EmailTemplateId'>
+            <li class="w25 cntTemplateType">@Html.Raw(current.EmailCategoryDisplay)</li>
+            <li class="w35 cntSubject">@current.Subject</li>
+            <li class="w40 cntDescription">@current.Description</li>
+            <li id="MobDegreeType" class="ViewDetailsMob MobView" onclick="ViewTemplate(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var EmailTemplateId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "EmailTemplates", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", EmailTemplateId);
+        window.location = dLink;
+    });
+
+    function MobDegreeType(element) {
+        var EmailTemplateId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "EmailTemplates", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", EmailTemplateId);
+        window.location = dLink;
+    }
+</script>

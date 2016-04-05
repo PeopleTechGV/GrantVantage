@@ -1,0 +1,18 @@
+﻿@model ATS.BusinessEntity.OfferAttachment
+@using HtmlHelpers.BeginCollectionItem
+
+@using (Html.BeginCollectionItem("OfferAttachmentList"))
+{
+    @Html.HiddenFor(m => m.Path)
+    <ul class="RowContent" data-attachmentid="@Model.OfferAttachmentId">
+        <li class="w80">@Model.FileName</li>
+        @if (Model.IsMandatory)
+        {
+            <li class="w20" style="padding-left: 32px;">@Html.CheckBoxFor(m => m.IsMandatory, new { @class = "chkIsMandatory", @OnClick = "return false;" })</li>
+        }
+        else
+        {
+            <li class="w20" style="padding-left: 32px;">@Html.CheckBoxFor(m => m.IsMandatory, new { @class = "chkIsMandatory" })</li>
+        }
+    </ul>
+}

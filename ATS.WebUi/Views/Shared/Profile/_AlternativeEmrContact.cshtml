@@ -1,0 +1,88 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.UserDetails
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        @Html.Label("Alternative info")
+        <span class="Save" recordid='@String.Format("EI{0}", Model.UserId)' style="display:none;"><button type="button" onclick="return outerSave(this);"></button></span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+<div class="acc-Content">
+    @using (Ajax.BeginForm("UpdateEmergencyInfo", "Profile", new { area = "" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "UserDetailsSuccess(data,'EI" + Model.UserId + "')",
+        OnFailure = "UserDetailsFailure",
+
+
+    }, new { id = "frmAlernateEmrContact", isFormChange = "false" }))
+    {
+        <text>
+            <script>
+                function outerSave(element) {
+                    var head = $(element).closest('.acc-header');
+                    var myform = $(head).next().children().get(0);
+                    var isvalidate = $(myform).valid();
+                    if (isvalidate) {
+                        $(myform).submit();
+                    }
+                    return false;
+                }
+                function UserDetailsSuccess(data, custom) {
+                    data = JSON.parse(data);
+                    var Savelink = $("span[recordid='" + custom + "']").get(0);
+                    VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+
+                }
+                function UserDetailsFailure(data) {
+                    data = JSON.parse(data);
+
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+
+            </script>
+        </text>
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            @Html.HiddenFor(m => m.UserId, new { @class = "ignore" })
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EmergencyContact1, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.EmergencyContact1, new { @class = "detail-input", @tabindex = "1" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EmergencyContact2, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.EmergencyContact2, new { @class = "detail-input", @tabindex = "3" })
+                            </div>
+
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EmergencyContact1Phone, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.EmergencyContact1Phone, new { @class = "detail-input", @tabindex = "2" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EmergencyContact2Phone, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.EmergencyContact2Phone, new { @class = "detail-input", @tabindex = "4" })
+                            </div>
+                        </div>
+                    </div>
+                    <br clear="all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper">Save Information</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

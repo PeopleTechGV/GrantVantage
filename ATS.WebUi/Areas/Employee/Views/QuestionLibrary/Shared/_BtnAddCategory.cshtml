@@ -1,0 +1,6 @@
+﻿@model ATS.BusinessEntity.SRPEntity.IDynamicSRP
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="Content ClearFloat">
+    <a id="addCategory" href='javascript:void(0);' data-url="@Url.Action("GetNewCategory", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE,@CatOrder = "_CATORDER_" })" class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_QUE_CAT_ADD)</a>
+</div>

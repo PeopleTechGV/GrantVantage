@@ -1,0 +1,27 @@
+﻿
+
+    <li>
+        <a href='@Url.Action("Index", "MyVacancy", new {@Status= "All", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+            <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyStatusConstant.VACSTATUS_ALL) </span><span class="lblNavCount">@ViewBag.cntAllStat</span>
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("Index", "MyVacancy", new { @Status = "Draft", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+            <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyStatusConstant.VACSTATUS_DRAFT) </span><span class="lblNavCount">@ViewBag.cntDraftStat</span>
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("Index", "MyVacancy", new { @Status = "Open", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+            <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyStatusConstant.VACSTATUS_OPEN) </span><span class="lblNavCount">@ViewBag.cntOpenStat</span>
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("Index", "MyVacancy", new { @Status = "Closed", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+            <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyStatusConstant.VACSTATUS_CLOSED) </span><span class="lblNavCount">@ViewBag.cntCloseStat</span>
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("Index", "MyVacancy", new { @Status = "Archive", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+            <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyStatusConstant.VACSTATUS_ARCHIVE) </span><span class="lblNavCount">@ViewBag.cntArchieveStat</span>
+        </a>
+    </li>

@@ -1,0 +1,47 @@
+﻿@using BELabel = ATS.BusinessEntity.Common.ClientLabel
+@using BESubscriptionLabel = ATS.BusinessEntity.Common.SubscriptionLabel
+@using BELanguage = ATS.BusinessEntity.Common.LanguageLabel
+@{
+    var contrName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["controller"]);
+    var actName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["action"]);
+    string className = "";
+}
+@{if (contrName.Equals("Client"))
+{
+    className = "active-left";
+}
+}
+<li>
+    <a class='@className' href='@Url.Action("Index", "Client", new { area = ATS.WebUi.Common.Constants.AREA_ADMIN })'>
+        <img src='@Url.Content("~/Content/images/My_Applications_24.png")' width="24" height="24" align="absmiddle" />
+        <span class="left_menu_space">@Html.LanguageLabel(BELabel.FRM_CLIENT)</span><span class="dumy-left"></span>
+    </a>
+</li>
+
+@{className = "";
+if (contrName.Equals("LanguageUploadDownload"))
+{
+    className = "active-left";
+}
+}
+<li>
+    <a class='@className' href='@Url.Action("Index", "LanguageUploadDownload", new { area = ATS.WebUi.Common.Constants.AREA_ADMIN })'>
+        <img src='@Url.Content("~/Content/images/My_Offers_24.png")' width="24" height="24" align="absmiddle" />
+        <span class="left_menu_space">@Html.LanguageLabel(BELanguage.FRM_LANGUAGE)</span><span class="dumy-left"></span>
+    </a>
+</li>
+@{className = "";
+if (contrName.Equals("Subscription"))
+{
+    className = "active-left";
+}
+}
+<li>
+    <a class='@className' href='@Url.Action("Index", "Subscription", new { area = ATS.WebUi.Common.Constants.AREA_ADMIN })'>
+        <img src='@Url.Content("~/Content/images/My_Placements_24.png")' width="24" height="24" align="absmiddle" />
+        <span class="left_menu_space">
+            @Html.LanguageLabel(BESubscriptionLabel.FRM_SUBSCRIPTION)
+        </span>
+        <span class="dumy-left"></span>
+    </a>
+</li>

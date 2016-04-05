@@ -1,0 +1,308 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@using BEMakeOfferConstant = ATS.BusinessEntity.Common.MakeOffer
+@model BEClient.VacancyOffer
+@System.Web.Optimization.Scripts.Render("~/bundles/jMakeOffer")
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@{
+
+    bool IsCandidate = false;
+    if (ViewBag.IsCandidate != null)
+    { IsCandidate = ViewBag.IsCandidate; }
+}
+
+@if (!IsCandidate)
+{
+    <script type="text/javascript">
+        $('#txtApplicantResponse').attr("readonly", true);
+    </script>
+    if (Model.OfferStatusId == Convert.ToInt32(BEClient.VacancyOfferStatus.Company_Confirmed))
+    {
+        <script>
+            $("#ddlPlacementType").attr("disabled", true);
+            $(".OfferMain input[type=checkbox]").attr("disabled", true);
+            $(".OfferMain select").attr("disabled", true);
+            $(".OfferMain input[type=text]").attr("readonly", true);
+            $("#txtApplicantNote").attr("readonly", true);
+        </script>
+    }
+}
+<script type="text/javascript">
+    $(function () {
+        var dates = $("#txtStartDate, #txtEndDate").datepicker({
+            onSelect: function (selectedDate) {
+                var option = this.id == "txtStartDate" ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = $.datepicker.parseDate(
+                instance.settings.dateFormat ||
+                $.datepicker._defaults.dateFormat,
+                selectedDate, instance.settings);
+                dates.not(this).datepicker("option", option, date);
+            }
+        });
+    });
+</script>
+
+@using (Ajax.BeginForm("InsertVacancyOffer", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+{
+    OnBegin = "RemoveComma()",
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnSuccess = "InsertVacancyOfferSuccess",
+    OnFailure = "InsertVacancyFailed"
+}, new { id = "frmMakeOffer" }))
+{
+    <script>
+        var form = $("#frmMakeOffer");
+        $.validator.unobtrusive.parse(form);
+    </script>
+    <input type="hidden" value='@Model.VacancyOfferId' name="VacancyOfferId" id="VacancyOfferId" />
+    <input type="hidden" value='@Model.OfferStatusText' id="OfferStatusText" />
+    @Html.HiddenFor(m => m.ApplicationId)
+    @Html.HiddenFor(m => m.OfferDate)
+    @Html.HiddenFor(m => m.CandidateName)
+    @Html.HiddenFor(m => m.JobTitle)
+    @Html.HiddenFor(m => m.OfferStatusId)
+    @Html.HiddenFor(m => m.OfferTypeId)
+    //CheckBox Hidden
+    @Html.HiddenFor(m => m.PlusBonus)
+    @Html.HiddenFor(m => m.PlusCommission)
+    @Html.HiddenFor(m => m.EnableCounterOffers)
+    @Html.HiddenFor(m => m.EmailToCandidate_EditContent)
+    @Html.HiddenFor(m => m.OfferLetterId_EditContent)
+    @Html.HiddenFor(m => m.PlacementType_EM)
+    @Html.HiddenFor(m => m.PlacementType_EC)
+    @Html.HiddenFor(m => m.JobType_EM)
+    @Html.HiddenFor(m => m.JobType_EC)
+    @Html.HiddenFor(m => m.PayRate_EM)
+    @Html.HiddenFor(m => m.PayRate_EC)
+    @Html.HiddenFor(m => m.RatePeriod_EM)
+    @Html.HiddenFor(m => m.RatePeriod_EC)
+    @Html.HiddenFor(m => m.SalaryType_EM)
+    @Html.HiddenFor(m => m.SalaryType_EC)
+    @Html.HiddenFor(m => m.HourlyWage_EM)
+    @Html.HiddenFor(m => m.HourlyWage_EC)
+    @Html.HiddenFor(m => m.SalaryOffered_EM)
+    @Html.HiddenFor(m => m.SalaryOffered_EC)
+    @Html.HiddenFor(m => m.HoursPerWeek_EM)
+    @Html.HiddenFor(m => m.HoursPerWeek_EC)
+    @Html.HiddenFor(m => m.Rate_EM)
+    @Html.HiddenFor(m => m.Rate_EC)
+    @Html.HiddenFor(m => m.Per_EM)
+    @Html.HiddenFor(m => m.Per_EC)
+    @Html.HiddenFor(m => m.BonusDescription_EM)
+    @Html.HiddenFor(m => m.AnnualBonusPotential_EM)
+    @Html.HiddenFor(m => m.AnnualBonusPotential_EC)
+    @Html.HiddenFor(m => m.BonusCap_EM)
+    @Html.HiddenFor(m => m.BonusCap_EC)
+    @Html.HiddenFor(m => m.CommissionDescriprion_EM)
+    @Html.HiddenFor(m => m.AnnualCommissionPotential_EM)
+    @Html.HiddenFor(m => m.AnnualCommissionPotential_EC)
+    @Html.HiddenFor(m => m.CommissionCap_EM)
+    @Html.HiddenFor(m => m.CommissionCap_EC)
+    @Html.HiddenFor(m => m.CandidateNoticePeriod_EM)
+    @Html.HiddenFor(m => m.CandidateNoticePeriod_EC)
+    @Html.HiddenFor(m => m.CandidateNoticePeriodType_EM)
+    @Html.HiddenFor(m => m.CandidateNoticePeriodType_EC)
+    @Html.HiddenFor(m => m.CompanyNoticePeriod_EM)
+    @Html.HiddenFor(m => m.CompanyNoticePeriod_EC)
+    @Html.HiddenFor(m => m.CompanyNoticePeriodType_EM)
+    @Html.HiddenFor(m => m.CompanyNoticePeriodType_EC)
+    @Html.HiddenFor(m => m.IncludeCandidateNotice)
+    @Html.HiddenFor(m => m.IncludeCompanyNotice)
+    @Html.HiddenFor(m => m.EmailToCandidateIdList)
+    @Html.HiddenFor(m => m.OfferLetterIdList)
+    @Html.HiddenFor(m => m.CandidateEmailId)
+    @Html.HiddenFor(m => m.IncludeAttachments)
+    @Html.HiddenFor(m => m.OfferTemplateId)
+
+    @Html.HiddenFor(m => m.SalaryOfferedMax)
+    @Html.HiddenFor(m => m.HourlyWageMax)
+    @Html.HiddenFor(m => m.RateMax)
+    //@Html.HiddenFor(m => m.ChargeRate)
+    @Html.HiddenFor(m => m.PayRateMax)
+    @Html.HiddenFor(m => m.AnnualCommissionPotentialMax, new { @id = "CommissionPotentialMax" })
+    @Html.HiddenFor(m => m.CommissionCapMax)
+    @Html.HiddenFor(m => m.AnnualBonusPotentialMax, new { @id = "BonusPotentialMax" })
+    @Html.HiddenFor(m => m.BonusCapMax)
+
+    @Html.HiddenFor(m => m.AwardAmountMax, new { @id = "AwardAmountMax" })
+    @Html.HiddenFor(m => m.AwardAmount_EM)
+    @Html.HiddenFor(m => m.AwardAmount_EC)
+    @Html.HiddenFor(m => m.CashMatchRequiredMax, new { @id = "CashMatchRequiredMax" })
+    @Html.HiddenFor(m => m.CashMatchRequired_EM)
+    @Html.HiddenFor(m => m.CashMatchRequired_EC)
+
+    @Html.ValidationSummary(true)
+    if (IsCandidate)
+    {
+        @Html.HiddenFor(m => m.SalaryType)
+        @Html.HiddenFor(m => m.PlacementType)
+        @Html.HiddenFor(m => m.OfferDeadlineDate)
+        @Html.HiddenFor(m => m.AwardIssueDate)
+    }
+
+    if (IsCandidate)
+    {
+        @Html.Partial("VacancyOffer/_MakeOfferCandidate", Model)
+    }
+    else
+    {
+        @Html.Partial("VacancyOffer/_MakeOfferEmployee", Model)
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        MakeOffer.GetEmailContentURL = '@Url.Action("GetEmailContent", "EmailTemplates", new {  area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, EmailTemplateId = "_EMAILTEMPLATEID_" })';
+        MakeOffer.GetOfferLetterContentURL = '@Url.Action("GetOfferLetterContent", "OfferLetters", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, OfferLetterId = "_OFFERLETTERID_" })';
+        MakeOffer.PlacementTypeChange("#ddlPlacementType");
+        $(".RegNumeric").keypress(function (e) {
+            if (e.which == 46) {
+                if ($(this).val().indexOf('.') > 0) {
+                    return false;
+                }
+            }
+            else if (e.which >= 37 && e.which <= 40) {
+                return true;
+            }
+            else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+
+        $(".ValueColumnEmp").keyup(function (e) {
+            if (e.which == 9 || (e.which >= 37 && e.which <= 40)) {
+                return true;
+            }
+            var maxValueCtlId = '#' + $(this).attr("id").replace('txt', '') + 'Max';
+            var maxValCtl = $(maxValueCtlId);
+            if ($(maxValCtl).val() != '' && parseFloat(($(this).val().replace(/\,/g, ''))) > parseFloat(($(maxValCtl).val().replace(/\,/g, '')))) {
+                $(this).val($(maxValCtl).val())
+                if ("txtCashMatchRequired" != $(this).attr("id"))
+                    alert('Sorry, this value cannot exceed $' + VacancyModel.commaSeparateNumberByValue($(maxValCtl).val()));
+                else
+                    alert('Sorry, this value cannot exceed ' + VacancyModel.commaSeparateNumberByValue($(maxValCtl).val()) + ' %');
+            }
+            VacancyModel.commaSeparateNumber(this);
+        });
+        $(".ValueColumnCandi").keyup(function (e) {
+            if (e.which == 9 || (e.which >= 37 && e.which <= 40)) {
+                return true;
+            }
+            var maxValueCtlId = '#' + $(this).attr("id").replace('txt', '') + 'Max';
+            var maxValCtl = $(maxValueCtlId);
+            if ($(maxValCtl).val() != '' && parseFloat(($(this).val().replace(/\,/g, ''))) > parseFloat(($(maxValCtl).val().replace(/\,/g, '')))) {
+                $(this).val($(maxValCtl).val())
+                if ("txtCashMatchRequired" != $(this).attr("id"))
+                    alert('Sorry, this value cannot exceed $' + VacancyModel.commaSeparateNumberByValue($(maxValCtl).val()));
+                else
+                    alert('Sorry, this value cannot exceed ' + VacancyModel.commaSeparateNumberByValue($(maxValCtl).val()) + ' %');
+            }
+            VacancyModel.commaSeparateNumber(this);
+        });
+
+        $(".ValueColumnEmp").each(function () {
+            VacancyModel.commaSeparateNumber(this);
+        });
+
+        $(".ValueColumnCandi").each(function () {
+            VacancyModel.commaSeparateNumber(this);
+        });
+
+    });
+
+    function SetConfirmButton() {
+        var validationError = false;
+        validationError = ChkValidation();
+
+        var Error = $(".OfferMain .OfferBox:visible").find(".input-validation-error").length;
+        if (Error != 0)
+            validationError = true;
+
+        if (validationError) {
+            return false;
+        }
+        else {
+            SetConfirmModel();
+            $("#btnConfirmOffer").show();
+            $("#btnMakeOffer").hide();
+        }
+    }
+
+    function InsertVacancyOfferSuccess(data) {
+        var Jsondata = JSON.parse(data);
+        if (!Jsondata.IsError) {
+            var _ele = $(this).parent();
+            var _active = '';
+            if ('@IsCandidate.ToString().ToLower()' == 'true') {
+                _active = $(_ele).closest('.AccApplication').children('.acc-header').size() - 1;
+                $(_ele).prev().parents('.acc-Content:first').parent('div').accordion(VacancyModel.AccSecondAttr).accordion('refresh').accordion({ active: _active });
+            }
+            else {
+                var curr = $(_ele).prev().parents('.acc-Content').size() - 2;
+                _active = $(_ele).prev().parent().parent().parent().parent().prevAll('.acc-Content').size();
+                $(_ele).prev().parents('.acc-Content:first').parent('div').accordion(VacancyModel.AccSecondAttr).accordion('refresh').accordion({ active: _active });
+            }
+            MakeOffer.CloseAllPopup();
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', Jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', Jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+
+    function InsertVacancyFailed(data) {
+        alert("Failed To Insert Opportunity Award, Try agin Later");
+    }
+
+    function ChkValidation() {
+        var _ele = [];
+        var error = false;
+        if ($('#ddlPlacementType').val() == '') {
+            error = true;
+            _ele.push($('#ddlPlacementType'));
+        }
+
+        if ($('#ddlNoteToCandidate').val() == '') {
+            error = true;
+            _ele.push($('#ddlNoteToCandidate'));
+        }
+
+        $(_ele).each(function () {
+            $(this).addClass('input-validation-error');
+        });
+        return error;
+    }
+
+    function SaveDraft() {
+        $("#ddlNoteToCandidate").rules('remove');
+    }
+
+    function RemoveAddValidation(btn) {
+        if (btn == 1) {
+            $("#ddlOfferLetter").rules('remove');
+            $("#ddlOfferLetter").removeClass('input-validation-error');
+        }
+        else {
+            if ($("#ddlOfferLetter").val() == '') {
+                $("#ddlOfferLetter").rules('add', { required: true });
+                $("#ddlOfferLetter").addClass('input-validation-error');
+            }
+        }
+    }
+    function RemoveComma() {        
+        $(".ValueColumnEmp").each(function () {
+            var value = $(this).val().replace(/,/g, "");
+            $(this).val(value)
+        });
+
+        $(".ValueColumnCandi").each(function () {
+            var value = $(this).val().replace(/,/g, "");
+            $(this).val(value)
+        });
+    }
+
+</script>
+
+<div class="cover">
+</div>

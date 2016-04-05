@@ -1,0 +1,6 @@
+﻿@model ATS.BusinessEntity.TVacancyRound
+
+<div class="width-38">
+    @Html.LanguageLabelFor(m => m.RoundWeight, new { @class = "round-config-rgt labelwidth-rgt" })
+    @Html.TextBoxFor(m => m.RoundWeight, new { @class = "round-rgt", @onchange = "CopyRndWeight(this);" })
+</div>

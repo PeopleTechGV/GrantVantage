@@ -1,0 +1,25 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.Objective
+
+<div>
+    <div id="topPersonalInfo" class="HomePersonalInfo">
+        <div id="btomPersonalInfo">
+            <div style="float: left; width: 100%; margin-bottom: 10px;">
+                <div class="head_resum_aa">
+                    @Html.LanguageLabelFor(m => m.ObjectiveDetails, new { @class = "label" })
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="vacancy-Details">
+                                <div class="box">
+                                    @Model.ObjectiveDetails
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

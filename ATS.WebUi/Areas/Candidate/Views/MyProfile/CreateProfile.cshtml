@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "CreateProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using RootModels = ATS.WebUi.Models
+@model RootModels.BreadScrumbModel<ATS.BusinessEntity.Profile>
+
+@{
+    string ext = @Model.obj.ExtensionTypes;
+}
+
+<br />
+<div id="ErrorMessage">
+</div>
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon MenuItemIcon bgMyProfile24W"></div>
+        <span class="navTitle CaseUpper">@Model.DisplayName</span>
+        <span class="chevron"></span>
+    </div>
+}
+@using (Html.BeginForm("IndexProfile", "MyProfile", new { allowParse = false, FromWhere = "CreateProfile" }, FormMethod.Post, new { enctype = "multipart/form-data", @id = "form1" }))
+{
+    @Html.HiddenFor(m => m.obj.ExtensionTypes, new { @id = "hdnExtensionTypes" })
+    @Html.HiddenFor(m => m.obj.DocumentTypeId)
+    @Html.HiddenFor(m => m.obj.DocCategoryType)
+    <div id="profileMaker" class="vacancy-Details">
+        <div class="w50">
+
+            <div class="box">
+                <div>
+                    @Html.LanguageLabelFor(m => m.obj.ProfileName, new { @class = "label" })
+                    <br />
+                    @Html.TextBoxFor(m => m.obj.ProfileName, new { @id = "txtProfilename", @class = "detail-input w50" })
+                </div>
+                <div style="margin-left: 2px;">
+                    <label style="margin-top:5px;" class="label">Upload Resume</label>
+                    <br clear="all" />
+                    <input type="file" value="Browse" name="documentFile" id="uploadResume" />
+                </div>
+                <span id="exfile"></span>
+            </div>
+        </div>
+        <br />
+        <div class="w50">
+            <input type="Submit" value="Create Profile" id="btnSub" class="btn-add-new CaseUpper" onclick="return uploadFile();" />
+        </div>
+    </div>
+    <br />
+    if (ViewBag.IsError != null)
+    {
+        <script>
+            VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        </script>
+    }
+    if (ViewBag.Message != null)
+    {
+        <script>
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+        </script>
+    }
+}
+<script>
+
+    $(document).ready(function () {
+        $("#exfile").text("(Ex:" + ' ' + '@Model.obj.ExtensionTypes' + ')');
+    });
+    function uploadFile() {
+        var filename = $('#uploadResume').val();
+        var ext = '@Model.obj.ExtensionTypes';
+        var obj = VacancyModel.ValidateDocumentType(filename, ext, true);
+        if (obj.IsError) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', obj.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            $('#uploadResume').addClass('input-validation-error');
+            return false;
+        }
+        else {
+            $('#uploadResume').removeClass('input-validation-error');
+        }
+    }
+</script>

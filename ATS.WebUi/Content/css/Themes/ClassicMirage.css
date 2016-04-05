@@ -1,0 +1,181 @@
+﻿header {
+    background-color: #2b3d50;
+}
+
+/*#region TOP NAVIGATION BAR */
+.NavigationBar {
+    background-color: #1A2530;
+    padding-left: 156px;
+}
+
+    .NavigationBar > .NavItems > .navTitle {
+        font-size: 10pt;
+        float: left;
+        height: 40px;
+        color: #FFFFFF;
+        font-weight: normal;
+        padding: 10px 0;
+    }
+
+ul.dropdownMenu {
+    padding: 0px;
+    box-shadow: 2px 2px 2px #888;
+    background-color: #2b3d50;
+}
+
+
+    ul.dropdownMenu > li {
+        background-color: #2b3d50;
+        margin-bottom: 0;
+        border-bottom: 1px solid #334558;
+    }
+
+        ul.dropdownMenu > li > a {
+            opacity: 0.65;
+            padding: 12px 16px;
+        }
+
+            ul.dropdownMenu > li > a.activeMenu {
+                background-color: #223447;
+                opacity: 1;
+            }
+
+                ul.dropdownMenu > li > a:hover, ul.dropdownMenu > li > a.activeMenu:hover {
+                    background-color: #223447;
+                    color: #FFF;
+                    text-decoration: none;
+                    opacity: 1;
+                }
+
+ul.MenuRight {
+    box-shadow: -2px 2px 2px #888;
+}
+
+.hasDropdown:hover {
+    background-color: #111c27;
+}
+
+    .hasDropdown:hover > .navTitle {
+        color: #FFFFFF;
+    }
+
+ul.menuAqua > li > a {
+    background-color: #2B3D50;
+    padding: 10px;
+}
+
+    ul.menuAqua > li > a:hover {
+        background-color: #223447;
+    }
+
+ul.menuPurple > li > a {
+    background-color: #2B3D50;
+    padding: 10px;
+}
+
+    ul.menuPurple > li > a:hover {
+        background-color: #223447;
+    }
+
+ul.hasIcon > li > a {
+    padding-left: 36px;
+}
+
+.dropdownMenu > .dropdownInfo {
+    border-bottom: medium none;
+    color: #75879a;
+    padding-top: 4px;
+    text-indent: 4px;
+}
+
+ul.multiColumns {
+    width: 460px;
+}
+
+    ul.multiColumns > li:nth-child(2n+1) {
+        border-right: 1px solid #334558;
+        margin-right: 0;
+    }
+
+/*#endregion */
+
+.contnt-left {
+    background-color: #2B3D50;
+    display: block;
+    float: left;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 155px;
+    z-index: 10;
+}
+
+.contnt-right {
+    width: calc(100% - 155px);
+}
+
+ul.LeftMenu > li {
+    background-color: #2b3d50;
+    display: block;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    width: 155px;
+    border-bottom: 1px solid #334558;
+}
+
+    ul.LeftMenu > li > a {
+        background-position: center 15px;
+        background-size: 20px 20px;
+        color: #ffffff;
+        display: block;
+        font-size: 10pt;
+        height: auto;
+        padding: 42px 0 14px;
+        text-align: center;
+        opacity: 0.65;
+    }
+
+        ul.LeftMenu > li > a.activeMenu {
+            background-color: #223447;
+            border-color: #1A2530;
+            color: #FFFFFF;
+            opacity: 1;
+        }
+
+            ul.LeftMenu > li > a:hover, ul.LeftMenu > li > a.activeMenu:hover {
+                background-color: #223447;
+                border-color: #1A2530;
+                color: #FFFFFF;
+                opacity: 1;
+            }
+
+.btn-upload-resume {
+    background: url("/content/images/Upload_Documents_white_24.png") no-repeat 95% center #00A65A;
+    border: medium none;
+    bottom: 50px;
+    color: #FFF;
+    display: block;
+    font-size: 12px;
+    left: -135px;
+    margin: 0 auto;
+    padding: 8px 42px 8px 8px;
+    position: fixed;
+    text-align: left;
+    width: 175px;
+    transition: all .75s ease;
+}
+
+    .btn-upload-resume:hover {
+        transition: all .75s ease;
+        left: 0;
+        background-color: #00A65A;
+    }
+
+#UploadPhotoSideForm {
+    display: none;
+}
+
+.user-image > img {
+    border: 3px solid #47596c;
+    border-radius: 40px;
+}

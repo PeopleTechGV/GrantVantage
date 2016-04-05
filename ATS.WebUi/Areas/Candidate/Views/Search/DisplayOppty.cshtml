@@ -1,0 +1,96 @@
+﻿@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.Vacancy>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BEToolTipConstantConst = ATS.BusinessEntity.Common.TooltipConstant
+@{ List<Guid> objApplicationlst = (List<Guid>)ViewBag.ApplicationApply; }
+@{
+    ViewBag.Title = "DisplayOppty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <span class="MenuItemIcon bgFeaturedJob16W"></span>
+        <a id="FeatureJobs" class="navTitle" href="@Html.Raw(Url.Action("Index","Home",new { @area = ATS.WebUi.Common.Constants.AREA_CANDIDATE }))">FEATURED OPPORTUNITIES</a>@*</span>*@
+        <span class="chevron"></span>
+    </div>
+
+    @if (Model.objRecentViewedList != null)
+    {
+        <div class="NavItems hasDropdown">
+            <span class="navTitle">@Model.obj.JobTitle, @Model.obj.LocationText</span>
+            <span class="chevron"></span>
+            <ul class="dropdownMenu menuAqua">
+                @Html.Partial("_RecentViewed", Model.objRecentViewedList)
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="NavItems">
+            <span class="navTitle">@Model.obj.JobTitle, @Model.obj.LocationText</span>
+            <span class="chevron"></span>
+        </div>
+    }
+}
+
+@if (ViewBag.Notification != null)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Notification', 3000)
+    </script>
+}
+@using (Html.BeginForm("SaveAndApplyJobByVacancyId", "Search", FormMethod.Post, new { @id = "frmmain" }))
+{
+    <input type="hidden" id="Save_JobId" name="Save_JobId" />
+    <input type="hidden" id="hdnActionType" name="hdnActionType" />
+    <ul class="ActionBar ResizableAction" style="min-height:29px;">
+        @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient != null)
+        {
+            if (objApplicationlst != null && !objApplicationlst.Contains(new Guid(Model.obj.StrVacancyId)))
+            {
+            <li>
+                <a class="bgFlag16B" id="applyJob" href='javascript:void(0)' onclick="javascript: window.location = '@Url.Action("ApplyVacancy", "Candidate", new { area = ATS.WebUi.Common.Constants.AREA_ROOT, VacancyId = Model.obj.StrVacancyId.ToString() })'" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_APPLY_JOB)' dialog-width="400" dialog-close-button="false" dialog-title='@Html.LanguageLabel(BECommonConstantConst.ACTION_APPLY)' dialog-companyname="Test" title=@BECommonConstantConst.ACTION_DRAFT>Apply Now</a>
+            </li>
+                if (ViewBag.ShowSaveJob != "0")
+                {
+                    List<Guid> objUservacancylst = (List<Guid>)ViewBag.SaveJob;
+            @*if (!objUservacancylst.Contains(new Guid(Model.obj.StrVacancyId)))
+                {
+                    <li>
+                        <a class="bgHeart16B" onclick="SaveJob('@Model.obj.StrVacancyId.ToString()','SaveJob');" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SAVE_TO_MY_JOB)'>@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SAVE_TO_MY_JOB)</a>
+                    </li>
+                }*@
+                }
+            }
+            else
+            {
+                if ((string)ViewBag.CandidateVacancyStatus == "Draft")
+                {
+            <li>
+                <a id="applyNowDraft" class="bgNext16" href='javascript:void(0);' onclick="javascript: window.location = '@Url.Action("ApplyVacancy", "Candidate", new { area = ATS.WebUi.Common.Constants.AREA_ROOT, VacancyId = Model.obj.StrVacancyId.ToString() })'" title='Continue Application'>Continue Application</a>
+            </li>
+                }
+            <li>
+                <a id="withdrawApplication" class="bgWithdraw16B" href='javascript:void(0);' onclick="javascript: window.location = '@Url.Action("WithdrawApplication", "MyApplications", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ApplicationId = (string)ViewBag.CandidateApplicationId })'" title='Withdraw Application'>Withdraw Application</a>
+            </li>
+            }
+        }
+        else
+        {
+            <li>
+                <a id="applyNowNew" class="bgFlag16B" href='javascript:void(0)' onclick="javascript: window.location = '@Url.Action("AnonymousUserProfile", "Account", new { area = ATS.WebUi.Common.Constants.AREA_ROOT, VacancyId = Model.obj.StrVacancyId.ToString() })'" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_APPLY_JOB)'>Apply Now</a>
+            </li>
+        }
+    </ul>
+    <div class="DisplayJob w80 SMW100 MDW100">
+        @Html.Partial("Search/_DisplayJob", Model.obj)
+    </div>
+}
+
+<script type="text/javascript">
+    function SaveJob(JobId, ActionType) {
+        document.getElementById("hdnActionType").value = ActionType;
+        document.getElementById("Save_JobId").value = JobId;
+        document.getElementById("frmmain").submit();
+    }
+</script>

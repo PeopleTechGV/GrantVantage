@@ -1,0 +1,252 @@
+﻿@using BECommon = ATS.BusinessEntity.Common;
+@System.Web.Optimization.Styles.Render("~/Content/cssSalaryRange")
+@System.Web.Optimization.Scripts.Render("~/bundles/jSalaryRange")
+
+@{
+    String selectone = Html.LanguageLabel(BECommon.DropDownConstant.DRP_SELECT_ONE).ToString();
+    String any = Html.LanguageLabel(BECommon.DropDownConstant.DRP_ANY).ToString();
+    String dmin = String.Format("{0}, {1}, {2}", Model.DefaultMinDate.ToString("yy"), Model.DefaultMinDate.Month - 1, Model.DefaultMinDate.Day);
+    String dmax = String.Format("{0}, {1}, {2}", Model.DefaultMaxDate.ToString("yy"), Model.DefaultMaxDate.Month - 1, Model.DefaultMaxDate.Day);
+    bool allowdtRange = true;
+    String valueLabels = "show";
+    if (dmin.Equals(dmax))
+    {
+        allowdtRange = false;
+        valueLabels = "hide";
+
+    }
+    String min = String.Format("{0}, {1}, {2}", Model.MinDate.ToString("yy"), Model.MinDate.Month - 1, Model.MinDate.Day);
+    String max = String.Format("{0}, {1}, {2}", Model.MaxDate.ToString("yy"), Model.MaxDate.Month - 1, Model.MaxDate.Day);
+    bool allowSalRange = true;
+    String salvalueLabels = "show";
+    if (Model.DefaultMinSalary.Equals(Model.DefaultMaxSalary))
+    {
+        salvalueLabels = "hide";
+    }
+    var dsstep = ATS.BusinessLogic.SolrBase.SolrResultMaker.GetZeroRoundOfSalary(Convert.ToString(Model.DefaultMaxSalary - Model.DefaultMinSalary), false);
+}
+<style>
+    .input-container {
+        font-weight: normal;
+    }
+
+    .job-input {
+        font-weight: normal;
+    }
+
+    .input-container {
+        overflow: visible;
+    }
+
+    #lstJobType option {
+        text-transform: capitalize !important;
+    }
+
+    .ui-rangeSlider {
+        padding-top: 8%;
+    }
+</style>
+@model ATS.BusinessEntity.SolrEntity.SolrSearchObject
+<script>
+    $(document).ready(function () {
+        $("#lstSalaryRange").slider({ from: @Model.DefaultMinSalary, to: @Model.DefaultMaxSalary, step: 1, smooth: true, round: 0, dimension: '&nbsp;@String.Format("{0}",ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol)', skin: "plastic" });
+        var fromLeft = $(".jslider-pointer")[0].style.left;
+        if(fromLeft== "100%")
+        {
+            $(".jslider-pointer").css('z-index', 10);
+            $(".jslider-pointer-to").css('z-index', 1);
+        }
+
+        $("#date-range").dateRangeSlider({
+            formatter:function(val){
+                var days = val.getDate(),
+                month = val.getMonth() + 1,
+                year = val.getYear();
+                return VacancyModel.Pad(month,2) + "/" + VacancyModel.Pad(days,2) + "/" + year;
+            },
+            enabled: ("@allowdtRange"=="True")?true:false
+                ,
+            valueLabels:'@valueLabels'
+                ,
+            bounds: {
+                min: new Date(@dmin),
+                max: new Date(@dmax)
+            },
+            defaultValues: {
+                min: new Date(@min),
+                max: new Date(@max)
+            },
+            step:{
+                days: 0
+            },
+        });
+
+        $("#date-range").dateRangeSlider({arrows:true});
+
+        $("#date-range").bind("valuesChanged", function(e, data){
+            var mindt =  data.values.min;
+            var maxdt =  data.values.max;
+
+            var mindays = mindt.getDate(),
+                minmonth = mindt.getMonth() + 1,
+                minyear = mindt.getYear();
+
+            var minVal = VacancyModel.Pad(minmonth,2) + "/" + VacancyModel.Pad(mindays,2) + "/" + minyear;
+
+            var maxdays = maxdt.getDate(),
+                maxmonth = maxdt.getMonth() + 1,
+                maxyear = maxdt.getYear();
+
+            var maxVal = VacancyModel.Pad(maxmonth,2) + "/" + VacancyModel.Pad(maxdays,2) + "/" + maxyear;
+
+            $("#lstDateRange").val(minVal+";"+maxVal);
+
+        });
+
+        var dateValues = $("#date-range").dateRangeSlider("values");
+
+        var defaultmindt =  dateValues.min;
+        var defaultmaxdt =  dateValues.max;
+
+        var defaultmindays = defaultmindt.getDate(),
+            defaultminmonth = defaultmindt.getMonth() + 1,
+            defaultminyear = defaultmindt.getYear();
+
+        var defaultminVal = VacancyModel.Pad(defaultminmonth,2) + "/" + VacancyModel.Pad(defaultmindays,2) + "/" + defaultminyear;
+
+        var defaultmaxdays = defaultmaxdt.getDate(),
+            defaultmaxmonth = defaultmaxdt.getMonth() + 1,
+            defaultmaxyear = defaultmaxdt.getYear();
+
+        var defaultmaxVal = VacancyModel.Pad(defaultmaxmonth,2) + "/" + VacancyModel.Pad(defaultmaxdays,2) + "/" + defaultmaxyear;
+
+        $("#lstDateRange").val(defaultminVal+";"+defaultmaxVal);
+
+        $("#lstLocation").dropdownchecklist({
+            emptyText: '@selectone',
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+
+            }
+        });
+
+
+        $("#lstPositionType").dropdownchecklist({
+            emptyText: '@selectone',
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+                $('#PositionType').val(values);
+            }
+        });
+
+        $("#lstJobType option").each(function(){
+            $(this).css('textTransform', 'capitalize');
+        });
+    });
+
+    $(function(){
+        $('#lstFtPt option[value="Any"]').remove();
+    });
+
+</script>
+
+@Html.Hidden("lstDateRange")
+
+<style>
+    span.ui-dropdownchecklist {
+        width: 97% !important;
+    }
+
+    div.ui-dropdownchecklist {
+        width: 86% !important;
+    }
+
+    .ui-dropdownchecklist-item > input[type=checkbox] {
+        margin: 2px 5px 2px 2px !important;
+        float: left;
+    }
+
+    .jslider {
+        display: block;
+        font-family: Arial,sans-serif;
+        height: 1em;
+        position: relative;
+        top: 1.5em;
+        width: 96%;
+        float: left;
+    }
+
+    .ui-rangeSlider {
+        clear: both;
+        padding-top: 0;
+        top: 1.5em;
+        width: 96% !important;
+    }
+</style>
+
+@{
+    String skillSearch = ViewBag.txtFreeSearch.ToString();
+}
+
+<div class="job-search">
+    <div class="Search-Job-Box bgJobLocation32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_JOB_LOCATION)</span>
+        @Html.ListBox("lstLocation", ViewBag.drpJobLocation as MultiSelectList, new { @style = "width: 100%;" })
+    </div>
+
+    <div class="Search-Job-Box bgFullPartTime32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_FULLT_PARTT)</span>
+        @Html.DropDownList("lstFtPt", ViewBag.drpFtpt as SelectList, any, new { @class = "job-input" })
+        @Html.HiddenFor(m => m.FpTime)
+    </div>
+
+    <div class="Search-Job-Box bgPositionType32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_POSITION_TYPE)</span>
+        @Html.ListBox("lstPositionType", ViewBag.drpPositionType as MultiSelectList, new { @style = "width: 100%;" })
+        @Html.HiddenFor(m => m.PositionType)
+    </div>
+
+    <div class="Search-Job-Box bgEmploymentType32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_EMPLOYEMENT_TYPE)</span>
+        @Html.DropDownList("lstJobType", ViewBag.drpJobType as SelectList, any, new { @class = "job-input" })
+        @Html.HiddenFor(m => m.JobType)
+    </div>
+
+    <div class="Search-Job-Box bgSalaryRange32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_SALARY_RANGE)</span>
+        @Html.TextBox("lstSalaryRange", String.Format("{0};{1}", Model.MinSalary, Model.MaxSalary), new { type = "slider" })
+    </div>
+
+    <div class="Search-Job-Box bgSkill32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_SKILL_RANGE)</span>
+        @Html.TextBox("SkillSearch", skillSearch, new { @style = "width:97%; color:#345E8E;" })
+    </div>
+
+    <div class="Search-Job-Box bgDatePosted32B">
+        <span class="Box-Title">@Html.LanguageLabel(BECommon.SearchConstant.FRM_SER_DATE_POSTED)</span>
+        <div id="date-range" style="width: 90%;"></div>
+    </div>
+
+    <div class="job-type">
+        <div class="job-icon"><button class="search-listing CaseUpper" name="btn_Search" type="submit" onclick="GetDrpValue();">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageButtonConstant.LANG_BTN_SEARCH_SEARCHLISTING)</button></div>
+        @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+        {
+            <div class="job-icon-right"><button class="set-as-my-default CaseUpper" name="btn_SaveDefault" onclick="GetDrpValue();" type="submit">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageButtonConstant.LANG_BTN_SEARCH_SETASMYDEFAULT)</button></div>
+        }
+    </div>
+</div>

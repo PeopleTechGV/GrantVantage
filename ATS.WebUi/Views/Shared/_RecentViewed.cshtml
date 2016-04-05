@@ -1,0 +1,17 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.RecentlyViewed>
+
+@if (Model.Count == 0)
+{
+    <li class="dropdownInfo">No Recently viewed</li>
+}
+else
+{
+    <li class="dropdownInfo">Recently viewed</li>
+    foreach (BEClient.RecentlyViewed _Current in Model)
+    {
+        <li>
+            <a href="@_Current.URL" data-id='@_Current.URL'>@_Current.DisplayText</a>
+        </li>
+    }
+}

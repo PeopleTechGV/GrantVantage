@@ -1,0 +1,106 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.RndType>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string action = ViewBag.RedirectAction;
+    ViewBag.MenuDisplayName = "Review Rounds";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+@using (Html.BeginForm(action, "RndType", FormMethod.Post, new { id = "frmRndType" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.RndTypeId, new { Id = "RndTypeId" })
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DefaultName, new { @class = "detail-input", placeholder = "Default Name Show to Employer" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.ShowToCandidate, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.ShowToCandidate, new { @class = "detail-input", placeholder = "Default Name Show to Applicant" })
+        </div>
+        @for (int i = 0; i < Model.obj.obj.RndTypeEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.RndTypeEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                <span class="label">@languageame: &nbsp;</span>@Html.LanguageLabelFor(m => m.obj.obj.DefaultName, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.RndTypeEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.obj.obj.RndTypeEntityLanguage[i].LocalName, new { @class = "detail-input", placeholder = "Show to Employer" })
+            </div>
+            <div class="form-group w50">
+                <span class="label">@languageame: &nbsp;</span>@Html.LanguageLabelFor(m => m.obj.obj.ShowToCandidate, new { @class = "label" })
+                @Html.TextBoxFor(m => m.obj.obj.RndTypeEntityLanguage[i].ShowToCandidate, new { @class = "detail-input", placeholder = "Show to Applicant" })
+            </div>
+        }
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.RoundAttributesId, new { @class = "label w90" })
+            @Html.DropDownListFor(m => m.obj.obj.RoundAttributesId, (SelectList)ViewBag.RoundAttributes, "--Select--", new { @id = "ddlRoundAttributes", @class = "detail-select" })
+        </div>
+        @Html.Partial("Shared/_VacQueType")
+        @if (ViewBag.IsEdit == 1)
+        {
+            <div class="form-group w50">
+                @Html.CheckBoxFor(m => m.obj.obj.IsActive, new { @id = "isActive" }) @Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)
+            </div>
+        }
+    </div>
+}
+
+<script>
+    function OnClickValidate() {
+        $('#frmRndType').submit();
+    }
+</script>
+
+<script>
+    $(".btn-remove-vacancy").live("click", function () {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Round Type", 300, "Are you sure want to delete this Round Type ?", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "RndType", new { id = @Model.obj.obj.RndTypeId })';
+            window.location.href = deletelink;
+        }
+    }
+
+    $('#ddlRoundAttributes').on('change', function () {
+        $('#QueChk input[type=checkbox]').attr('checked', false);
+        var RoundAttributesId = $(this).val();
+        if (RoundAttributesId != "") {
+            var dataLink = '@Html.Raw(@Url.Action("GetQuestionTypeByRoundAttributesId", "RndType", new { RoundAttributesId = "_ROUNDATTRIBUTESID_" }))';
+            dataLink = dataLink.replace("_ROUNDATTRIBUTESID_", RoundAttributesId);
+            VacancyModel.CallGetMethod(dataLink, function (data) {
+                var QuestionType = data;
+                var ArrQType = QuestionType.split(",");
+                $('#QueChk input[type=checkbox]').each(function () {
+                    if (ArrQType.indexOf($(this).val()) > -1) {
+                        $(this).attr('checked', true);
+                    }
+                });
+            });
+        }
+    });
+</script>
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

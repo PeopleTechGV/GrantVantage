@@ -1,0 +1,10 @@
+﻿@model ATS.BusinessEntity.RequiredDocument
+@using HtmlHelpers.BeginCollectionItem
+
+@using (Html.BeginCollectionItem("ATSResumeIdList"))
+{
+    @Html.HiddenFor(m => m.VacRndId)
+    @Html.HiddenFor(m => m.IsResume)
+    @Html.HiddenFor(m => m.RequiredDocumentId)
+    @Html.HiddenFor(m => m.ATSResumeId, new { @class = "txtFileList" })
+}

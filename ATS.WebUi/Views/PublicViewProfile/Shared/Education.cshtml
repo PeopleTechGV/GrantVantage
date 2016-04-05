@@ -1,0 +1,22 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.EducationHistory>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.StartDate.ToString("MMM", System.Globalization.CultureInfo.InvariantCulture) @v.StartDate.ToString("yyyy") - @v.EndDate.ToString("MMM", System.Globalization.CultureInfo.InvariantCulture) @v.EndDate.ToString("yyyy") </h3>
+        @{
+    var drpValue = string.Empty;
+    if (v.DegreeType != Guid.Empty)
+    {
+        drpValue = ((SelectList)ViewBag.DegreeTypeName).Where(r => r.Value.Equals(v.DegreeType.ToString())).Select(r => r.Text).FirstOrDefault().ToString();
+    }
+        }
+
+        <p>
+            @v.InstitutionName, @v.City, @v.Country<br />
+            <em>@drpValue</em>
+        </p>
+    </div>
+}

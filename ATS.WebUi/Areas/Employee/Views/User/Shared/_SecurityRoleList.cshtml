@@ -1,0 +1,99 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@model ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<ATSModel>>
+@using BEUserPrivilegesConst = ATS.BusinessEntity.Common.UserPrivilegesConst
+
+
+<div class="acc-Content floatleft w20">
+    <div class="ats-roles-box" id="securityroles">
+
+        <div class="roles-title spctop-btm">
+            @Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_SELECTSECROLES)
+        </div>
+        @{@*string[] value = ViewBag.DisableSecurityRoles;*@
+            var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns);
+            if (ViewBag.IsHorizontal == 1)
+            {
+                htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 3, new { @class = "styled_list", id = "RoleChk" });
+            }
+            else
+            {
+                htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 1, new { @class = "styled_list", id = "RoleChk" });
+            }
+
+            @Html.CheckBoxListFor(Model => Model.obj.obj.objATSSecurityRolePrivilagesMaster.SRP_Ids,
+                                  Model => ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.SecurityRoles.FirstOrDefault().AtsSecurityRole == ATS.BusinessEntity.ATSSecurityRole.SystemAdministrator ? Model.obj.obj.AvailableSecurityRoleList : Model.obj.obj.AvailableSecurityRoleList.Where(roles => roles.SqNo != Convert.ToInt32(ATS.BusinessEntity.ATSSecurityRole.SystemAdministrator)),
+                                  divis => divis.SRP_Id,
+                                  divis => divis.RoleLocalName,
+                                  Model => Model.obj.obj.SelectedSecurityRoleList, new { @class = "styled_checkbox" }, htmlListInfo, null, x => new { @onclick = "GetAllATSRolePrivileges(this);" })
+        }
+
+        <div style="margin-top: 10px;">
+            @Html.ActionLink("Add Security Role", "View", "ATSSecurity", null, new { @class = "btn CaseUpper" })
+        </div>
+
+    </div>
+
+</div>
+@*<div>
+       @Html.ListBoxFor(m => m.obj.obj.AdHocPrivilegeList, (SelectList)ViewBag.AvailableRolelist)
+    </div>*@
+<script type="text/javascript">
+
+    function GetAllATSRolePrivileges(element) {
+        var _ele = $(element);
+        var _allChkBox = $(_ele).parent().children('.styled_checkbox:checked');
+        var strId = "";
+        $(_allChkBox).each(function () {
+            strId += $(this).attr('value') + ",";
+        });
+        strId = strId.substring(0, strId.length - 1);
+        if (strId != "") {
+            var _dataLink = '@Url.Action("GetAllAtsrolePrivilegsbyRoles", "User", new { Roles = "_ROLES_" })';
+            _dataLink = _dataLink.replace("_ROLES_", strId);
+            $.ajax({
+                url: _dataLink,
+                type: "GET",
+                cache: false,
+                success: function (response) {
+                    var jsondata = JSON.parse(response)
+                    if (!jsondata.IsError) {
+                        $("#RolePrivileges").html(jsondata.Data);
+                        MakeATSPrvilegeDisable();
+                    }
+                    else {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+            });
+        }
+
+    }
+
+
+    function OnClickValidate() {
+        if ($("#frmUser").attr('id') != undefined && !$("#frmCompanySetup").valid()) {
+            $("#frmUser").submit();
+            var validator = $("#frmUser").validate();
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', validator.errorList[0].message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+
+
+        }
+        var securityRole = document.getElementsByName('obj.obj.objATSSecurityRolePrivilagesMaster.SRP_Ids');
+        var checkedSecurityRole = 0;
+        for (var v = 0; v < securityRole.length; v++) {
+            if (securityRole[v].checked == true)
+            { checkedSecurityRole += 1; }
+        }
+        if (checkedSecurityRole == 0) {
+
+            VacancyModel.DisplayErrorMeesage('#commonMessage', 'Select atleast one security role.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            return false;
+        }
+        else { return true; }
+    }
+</script>

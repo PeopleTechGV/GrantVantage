@@ -1,0 +1,57 @@
+﻿@using ATS.WebUi.Models
+@using ATS.WebUi.Helpers;
+@model ATS.BusinessEntity.SolrEntity.SolrSearchObject
+
+<div id="selectable1" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w50">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_JOBTITLE)</li>
+        <li class="w20">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_LOCATION)</li>
+        <li class="w20">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_POSTEDON)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.SolrEntity.SolrSearchFields current in Model.SearchData)
+    {
+        <ul class="RowContent col1 ui-selectee CursorPointer" data-id='@current.StrVacancyId'>
+            <li class="w50">@current.JobTitle</li>
+            <li class="w20">@current.Location</li>
+            <li class="w20">@current.LocalPostedOn.ToString("MMM dd, yyyy")</li>
+            <li class="w10">
+                <ul class="GearButtonAbsRight">
+                    @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+                    {
+                        Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "Candidate", showSaveJob = 1 });
+                    }
+                    else
+                    {
+                        Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "", showSaveJob = 0 });
+                    }
+                </ul>
+            </li>
+        </ul>
+    }
+</div>
+
+<script>
+    var divPodbl = $(".RowContent");
+    divPodbl.dblclick(function () {
+        var dpId = $(this).attr("data-id");
+        var dpLink = '@Url.Action("DisplayOppty", "Search", new { OpptyID =  "_DATAID_" })';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#selectable1").selectable({
+            cancel: '#selectable1 > .ui-selected, #Upload',
+
+            selecting: function (e, ui) {
+                $("#selectable1 ul").removeClass('ui-selected');
+                $(this).addClass('ui-selected');
+            },
+            selected: function (e, ui) {
+                $("#btnApplyNow").show(300);
+                $("#hdnVacancyId").val($(this).find(".ui-selected").attr("data-id"));
+            }
+        });
+    });
+</script>

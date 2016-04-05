@@ -1,0 +1,55 @@
+﻿@model ATS.BusinessEntity.Master.Subscription
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.PageName</h2>
+<br />
+<div id="Messages">
+</div>
+@{
+    string actionName = ViewBag.RedirectAction;
+}
+@using (Html.BeginForm(actionName, "Subscription", FormMethod.Post, new { id = "frmSubscription" }))
+{
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(m => m.SubscriptionId)
+     <button class="btn-save-vacancy" type="submit" name="btnSave"  style="height:45px;">
+                    @Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.SAVE)</button>
+     @Html.Partial("Buttons/_BackBtn")
+    <div class="vacancy-Details">
+    
+        <div class="left-div">
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.UserLimit, new { @class = "label" })
+                <br />
+                @Html.TextBoxFor(m => m.UserLimit, new { @class = "detail-input", @value = "" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.Price, new { @class = "label" })
+                <span class="label"> &nbsp;( $ )</span>
+                <br />
+                @Html.TextBoxFor(m => m.PriceText, new { @class = "detail-input", @value = "", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+            </div>
+        </div>
+        
+    </div>
+
+}
+@if (ViewBag.IsError != null)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.Message != null)
+{
+    
+    <script>
+
+
+
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+        
+    </script>
+}

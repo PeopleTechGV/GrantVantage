@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.CandidateProfile
+@{
+    String Controllername = @ViewBag.Controller;
+    string _path = HttpContext.Current.Request.Url.AbsoluteUri.Substring(0, HttpContext.Current.Request.Url.AbsoluteUri.IndexOf("/Employee"));
+}
+
+@if (Model.ObjApplicationDocuments != null && Model.ObjApplicationDocuments.Count > 0)
+{
+    foreach (ATS.BusinessEntity.ApplicationDocuments objDoc in Model.ObjApplicationDocuments)
+    {
+        <li><a class="WithIcon bgResume16" target="_blank" href='@_path@objDoc.Path.Replace("~","")'>@objDoc.RequiredDocumentName</a></li>
+    }
+}
+<li><a class="WithIcon bgPdf16" onclick="downloadFullProfilePDF(this);" page-url='@Url.Action("PrintFullProfile", "MyVacancy", new { URL = "/Employee/CandidateDetails?ApplicationId=" + HttpContext.Current.Request.QueryString["ApplicationId"], ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, UserId = Model.objUserDetails.UserId })'>@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_VAC_FULLPROFILE)</a></li>
+<li><a class="WithIcon bgZip16" href='@Url.Action("DownloadAllAppDocsZipByApplicationId", "MyVacancy", new { ApplicationId = HttpContext.Current.Request.QueryString["ApplicationId"], UserId = Model.objUserDetails.UserId })'>All (zip file)</a></li>
+
+<script>
+    function downloadFullProfilePDF(element) {
+        var url = $(element).attr('page-url');
+        window.location.href = url;
+    }
+</script>

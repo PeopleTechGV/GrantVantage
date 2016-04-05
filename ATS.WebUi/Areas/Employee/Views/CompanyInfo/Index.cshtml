@@ -1,0 +1,28 @@
+﻿@using RootModels = ATS.WebUi.Models
+@using BEClient = ATS.BusinessEntity
+@using BESrp = ATS.BusinessEntity.SRPEntity;
+@model RootModels.BreadScrumbModel<BESrp.DynamicSRP<BEClient.CompanyInfo>>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@Html.Partial("_EditCompanyInfo",Model.obj)
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

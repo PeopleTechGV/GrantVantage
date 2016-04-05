@@ -1,0 +1,221 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@model BEClient.AnonymousUser
+
+<div id="CADirectApply" class="CanAccountForm w70 SMW100">
+    @Html.Partial("CreateAccount/CAStep1", Model)
+</div>
+
+<script>
+    $("#radio").buttonset();
+    $("input[name='radio']").on("change", function () {
+        document.getElementById('hdnFileUploadType').value = this.value;
+        $(".DivFileUploader").hide();
+        if (this.value == '@BEClient.UploadFileType.LocalDevice') {
+            $("#DivLocalDevice").show();
+        }
+        if (this.value == '@BEClient.UploadFileType.MSDropBox') {
+            $("#DivMSDropbox").show();
+        }
+        if (this.value == '@BEClient.UploadFileType.GoogleDrive') {
+            $("#DivGoogleDrive").show();
+        }
+    });
+</script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+<script src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
+<script>
+    function newPicker() {
+        google.load('picker', '1', { "callback": onApiLoad });
+    }
+
+    function onApiLoad() {
+        gapi.load('auth', { 'callback': onAuthApiLoad });
+        gapi.load('picker');
+    }
+    function onAuthApiLoad() {
+        window.gapi.auth.authorize({
+            'client_id': '591477896020-cd3k1o1c3atjrdakdbcqgsjed9m5725v.apps.googleusercontent.com',
+            'scope': ['https://www.googleapis.com/auth/drive.file']
+        }, handleAuthResult);
+    }
+    var oauthToken;
+    function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+            oauthToken = authResult.access_token;
+            createPicker();
+        }
+    }
+    function createPicker() {
+        var picker = new google.picker.PickerBuilder()
+            .addView(google.picker.ViewId.DOCUMENTS)
+            .setOAuthToken(oauthToken)
+            .setDeveloperKey('AIzaSyCthyi8ZRxWATilBLmwYLYQwIUAXKdWWMM')
+            .setCallback(pickerCallback)
+            .build();
+        picker.setVisible(true);
+    }
+
+    function pickerCallback(data) {
+        var url = 'nothing';
+        if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+            var doc = data[google.picker.Response.DOCUMENTS][0];
+            url = doc[google.picker.Document.URL];
+            var fileId = data.docs[0].id;
+            document.getElementById('hplFileGD').innerHTML = data.docs[0].name;
+            document.getElementById('hplFileGD').href = "https://docs.google.com/uc?export=download&id=" + data.docs[0].id;
+            document.getElementById('hdnDropBoxUrl').value = "https://docs.google.com/uc?export=download&id=" + data.docs[0].id;
+            document.getElementById('hdnDropBoxName').value = data.docs[0].name;
+            //getDownloadUrl(fileId);
+        }
+    }
+
+    //function getDownloadUrl(fileId) {
+    //    var request =
+    //        gapi.client.request({
+    //            'path': '/drive/v2/files/' + fileId,
+    //            'params': { 'maxResults': '1000' },
+    //            callback: function (responsejs, responsetxt) {
+    //                var fileDownloadUrl = responsejs.webContentLink; //using this downloadUrl you will be able to download Drive File Successfully
+    //                document.getElementById('hdnDropBoxUrl').value = fileDownloadUrl;
+    //            }
+    //        });
+    //}
+
+
+</script>
+<script>
+    $('#loginhereLink').click(function () {
+        VacancyModel.CloseDialog();
+        $("#slideit").click();
+    });
+    function uploadFile() {
+        var filename = $('#uploadResume').val();
+
+        if (filename == '') {
+            $('#uploadResume').addClass('input-validation-error');
+            return false;
+        }
+        else {
+            $('#uploadResume').removeClass('input-validation-error');
+            return true;
+        }
+    }
+
+    function aSignupSuccess(result) {
+        if (result.IsError == true) {
+            var $signupform = $('#AnonymousSignupForm');
+            VacancyModel.DisplayErrors($signupform, [result.Message]);
+        }
+        else {
+
+            window.location = result.Url;
+        }
+    }
+
+    function fileUpload() {
+
+        document.getElementById('ErrorMessage').innerHTML = '';
+        if (document.getElementById('upload_iframe')) {
+            $('#upload_iframe').remove();
+        }
+        var form = document.getElementById('frmUp');
+        // Create the iframe...
+        var txt = "";
+        var opt = 0;
+        var action_url = $('#frmUp').attr('action');
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("id", "upload_iframe");
+        iframe.setAttribute("name", "upload_iframe");
+        iframe.setAttribute("width", "0");
+        iframe.setAttribute("height", "0");
+        iframe.setAttribute("border", "0");
+        iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+        // Add to document...
+        form.parentNode.appendChild(iframe);
+        window.frames['upload_iframe'].name = "upload_iframe";
+        iframeId = document.getElementById("upload_iframe");
+        // Add event...
+        var eventHandler = function () {
+
+            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+            else iframeId.removeEventListener("load", eventHandler, false);
+            var content = '';
+            // Message from server...
+            if (iframeId.contentDocument) {
+                content = iframeId.contentDocument.body.innerHTML;
+                var result = jQuery.parseJSON($(content).html()).IsError
+                var Link = jQuery.parseJSON($(content).html()).Url
+                if (result) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', jQuery.parseJSON($(content).html()).Message, 1500)
+                }
+                else {
+                    window.location.href = Link;
+                }
+            } else if (iframeId.contentWindow) {
+                content = iframeId.contentWindow.document.body.innerHTML;
+                VacancyModel.DisplayErrorMeesage('#commonMessage', content, 1500)
+            } else if (iframeId.document) {
+                content = iframeId.document.body.innerHTML;
+                VacancyModel.DisplayErrorMeesage('#commonMessage', content, 1500)
+            }
+        }
+
+        if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+        //if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+        // Set properties of form...
+        form.setAttribute("target", "upload_iframe");
+        form.setAttribute("action", action_url);
+        form.setAttribute("method", "post");
+        form.setAttribute("enctype", "multipart/form-data");
+        form.setAttribute("encoding", "multipart/form-data");
+
+        // Submit the form...
+        var UploadType = document.getElementById('hdnFileUploadType').value
+        var filename = "";
+        if (UploadType == '@BEClient.UploadFileType.LocalDevice' || UploadType == "") {
+            filename = $('#uploadResume').val();
+        }
+        else if (UploadType == '@BEClient.UploadFileType.MSDropBox') {
+            filename = $('#hdnDropBoxName').val();
+        }
+        else if (UploadType == '@BEClient.UploadFileType.GoogleDrive') {
+            filename = $('#hdnDropBoxName').val();
+        }
+
+        var obj = VacancyModel.ValidateFile(filename, true);
+        if (obj.IsError) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', obj.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            if (UploadType == '@BEClient.UploadFileType.LocalDevice') {
+                $('#uploadResume').addClass('input-validation-error');
+            }
+            else if (UploadType == '@BEClient.UploadFileType.MSDropBox') {
+                $('#btnDropBox').addClass('input-validation-error');
+            }
+            else if (UploadType == '@BEClient.UploadFileType.GoogleDrive') {
+                $('#btnGoogleDrive').addClass('input-validation-error');
+            }
+            return false;
+        }
+        else {
+            $('#uploadResume').removeClass('input-validation-error');
+            $('#btnDropBox').removeClass('input-validation-error');
+        }
+        form.validate();
+
+        $('#frmUp').form({
+            success: function (data) {
+            }
+        });
+
+        form.submit(function (event) {
+            var isvalidate = $("#frmUp").valid();
+            if (isvalidate) {
+                e.preventDefault();
+
+            }
+        });
+    }
+
+</script>

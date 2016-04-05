@@ -1,0 +1,47 @@
+﻿@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div id="ErrorMessage">
+</div>
+<div id="profileMaker">
+    <div class="left-div" style="width: 96%;">
+        <div class="box" style="width:100%">
+            <span>@Html.LanguageLabel(BECommonConstantConst.SEARCH_QUERY_NAME)</span>
+            <input type="text" id="searchName" maxlength="15" class="detail-input" placeholder="@Html.LanguageLabel(BECommonConstantConst.SEARCH_QUERY_NAME)" />
+        </div>
+    </div>
+</div>
+<div class="popup_btn_save">
+    <button class="btn-save-vacancy" id="btnSub" title="Save">
+        @Html.LanguageLabel(BECommonConstantConst.SAVE_QUERY_BTN)
+    </button>
+</div>
+<script>
+
+    $('#btnSub').click(function () {
+        var SearchQueryName = document.getElementById('searchName').value;
+        if (SearchQueryName == '') {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', 'Query Name should be required.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            document.getElementById('searchName').setAttribute('class', 'detail-input input-validation-error');
+            return false;
+        }
+        else {
+            $.post("SearchResume/CheckSearchQueryNameExists", { SearchQueryName: SearchQueryName }, function (data) {
+                data = JSON.parse(data);
+                if (data == '') {
+                    location.href = "SearchResume/GetValue?SearchQueryName=" + SearchQueryName;
+                }
+                else {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    document.getElementById('searchName').setAttribute('class', 'detail-input input-validation-error');
+                    return false;
+                }
+                return true;
+            });
+        }
+    });
+
+    $('#searchName').focus(function () {
+        document.getElementById('searchName').setAttribute('class', 'detail-input');
+    });
+
+</script>

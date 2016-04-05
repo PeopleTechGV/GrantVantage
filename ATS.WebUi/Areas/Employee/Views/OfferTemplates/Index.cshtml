@@ -1,0 +1,39 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using OfferTemplateConstants = ATS.BusinessEntity.Common.OfferTemplateConstant
+@System.Web.Optimization.Scripts.Render("~/bundles/jTemplateOffer")
+@model  ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<List<BEClient.OfferTemplates>>>
+
+@{
+    ViewBag.Title = "Award Templates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+<div id="Messages" style="width: auto; float: left; position: inherit; margin-left: 25px;">
+</div>
+
+<div class="accOfferTemplates SMContentBox">
+    @Html.Partial("Shared/_AccOfferTemplatesList", Model.obj)
+</div>
+
+@if (Model.obj.UserPermissionWithScope != null)
+{
+    if (Model.obj.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0)
+    {
+        <div class="Content">
+            <a id="btnAddTemplate" href='javascript:void(0);' class="btn CaseUpper">@Html.LanguageLabel(OfferTemplateConstants.BTN_ADD_TEMPLLATE)</a>
+        </div>
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        TemplateOffer.GetNewOfferTemplateURL = '@Url.Action("GetNewOfferTemplate", "OfferTemplates")';
+        TemplateOffer.GetOfferTemplateByIdURL = '@Url.Action("GetOfferTemplateById", "OfferTemplates", new { OfferTemplateId="_OFFERTEMPLATEID_" })';
+        TemplateOffer.DeleteOfferTemplateURL = '@Url.Action("DeleteOfferTemplate", "OfferTemplates", new { OfferTemplateId = "_OFFERTEMPLATEID_" })'
+        TemplateOffer.DeleteOfferAttachmentURL = '@Url.Action("DeleteAttachment", "OfferTemplates", new { OfferAttachmentId = "_OFFERATTACHMENTID_" })'
+    });
+</script>

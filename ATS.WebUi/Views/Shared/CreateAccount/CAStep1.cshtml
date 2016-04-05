@@ -1,0 +1,76 @@
+﻿@model ATS.BusinessEntity.AnonymousUser
+
+<style>
+    .CreateAccountTitle {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .bgCreateAccount24 {
+        background-image: url("/content/images/Create_A_New_Account_red_24.png");
+    }
+
+    .bgSecureSignIn24 {
+        background-image: url("/content/images/Secure_Sign_In_24.png");
+    }
+
+    .CreateAccountTitle > span {
+        background-position: left center;
+        background-repeat: no-repeat;
+        display: block;
+        font-size: 10pt;
+        font-weight: bold;
+        padding: 8px 8px 8px 32px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("#Upload").hide();
+        $("#lblSidebarText").hide();
+        $("#lblSidebarText1").hide();
+    });
+</script>
+
+@{
+    Boolean HasVacancyModel = true;
+    if (Model.ObjVacancy == null)
+    {
+        HasVacancyModel = false;
+    }
+}
+
+@if (HasVacancyModel == true)
+{
+    <div class="CanAccountLeft SMContentBox">
+        <div class="CanAccountTitle">
+            <span class="MainTitle">Step 1: Create your Account</span>
+        </div>
+        @Html.Partial("CreateAccount/_CARegistration", Model)
+    </div>
+    <div class="CanAccountRight SMContentBox">
+        <div class="CanLoginTitle">
+            Already have a Profile? Login here
+        </div>
+        @Html.Partial("CreateAccount/_CALoginForm", new ATS.WebUi.Models.LogOnModel())
+    </div>
+}
+else
+{
+    <div class="CanAccountLeft SMContentBox">
+        <div class="CreateAccountTitle">
+            <span class="bgSecureSignIn24 lblBblue">
+                SECURE SIGN IN:
+            </span>
+        </div>
+        @Html.Partial("CreateAccount/_CALoginForm", new ATS.WebUi.Models.LogOnModel())
+    </div>
+    <div class="CanAccountRight SMContentBox">
+        <div class="CreateAccountTitle">
+            <span class="bgCreateAccount24 lblBbrown">
+                OR CREATE A FREE ACCOUNT:
+            </span>
+        </div>
+        @Html.Partial("CreateAccount/_CARegistration", Model)
+    </div>
+}

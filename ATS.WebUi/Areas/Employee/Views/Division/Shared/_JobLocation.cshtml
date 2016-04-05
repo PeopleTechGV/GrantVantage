@@ -1,0 +1,85 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.Division>>
+@{
+    bool AllowAdd = Model.obj.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0 ? true : false;
+}
+
+<div class="GridContainer" class="w50">
+    <ul class="RowHeader">
+        <li class="w30">Job Location</li>
+        <li class="w30">Location Manager</li>
+        <li class="w20">Onboarding Manager</li>
+    </ul>
+    @foreach (BEClient.JobLocation _curr in Model.obj.obj.SelectedJobLocationList)
+    {
+        <ul class="RowContent">
+            <li class="w30">@_curr.LocalName</li>
+            <li class="w30">@_curr.LocationManagerName</li>
+            <li class="w30">@_curr.OnBoardingManagerName &nbsp;</li>
+            @if (_curr.PermissionType != null && _curr.PermissionType.Contains(BEClient.ATSPermissionType.Delete))
+            {
+                <li class="w10"><a href="Javascript:void(0);" class="btn-16 bgDelete16B" onclick="return DeleteLocationDivision(this);" data-locationdivid="@_curr.LocationDivisionId"></a></li>
+            }
+        </ul>
+    }
+</div>
+
+<div class="ats-roles-box floatright w50">
+    @{
+        if (Model.obj.obj.AvailableJobLocationList.Count > 0)
+        {
+            string[] value = ViewBag.DisableDivision;
+            var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 3, new { @class = "styled_list", id = "RoleChk" });
+            @Html.CheckBoxListFor(M => M.obj.obj.objJobLocation.JobLocationId,
+                           M => M.obj.obj.AvailableJobLocationList,
+                           divis => divis.JobLocationId,
+                           divis => divis.LocalName,
+                           M => M.obj.obj.SelectedJobLocationList, new { @class = "styled_checkbox chkboxJobLocation", @onclick = "AvalJobLocation();" }, htmlListInfo, value, x => new { })
+        }
+
+    }
+</div>
+
+<div id="EditSection"></div>
+
+@if (AllowAdd)
+{
+    <div class="IBP8">
+        <a id="addJobLocation" href='javascript:void(0);' class="btn CaseUpper">ADD PROGRAM OFFICE</a>
+    </div>
+}
+
+
+<script>
+    var checkboxCount = 0;
+    var inputTags = $('.chkboxJobLocation');
+    for (var i = 0, length = inputTags.length; i < length; i++) {
+        if (inputTags[i].type == 'checkbox') {
+            checkboxCount++;
+        }
+    }
+    $(document).ready(function () {
+        if (document.getElementById("SelectJobLocation").value == "") {
+            AvalJobLocation();
+        }
+    });
+    function AvalJobLocation() {
+        var totalValue = '';
+        $(inputTags).each(function (index, value) {
+            if ($(this).attr('checked'))
+                totalValue += $(this).val() + ';';
+        });
+        totalValue = totalValue.substring(0, totalValue.length - 1);
+        document.getElementById("SelectJobLocation").value = totalValue;
+    }
+
+    function DeleteLocationDivision(element) {
+        var _locdivId = $(element).attr("data-locationdivid");
+        var _dataLink = '@Html.Raw(Url.Action("DeleteLocationDivision", "Division", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, LocationDivisionId = "_LOCDIVID_" }))';
+        _dataLink = _dataLink.replace("_LOCDIVID_", _locdivId);
+        VacancyModel.CallPostMethod(_dataLink, function (data) {
+            $('#DivisionAcc').accordion("destroy").accordion(VacancyModel.AccFirstAttr).accordion({ active: 1 })
+
+        });
+    }
+</script>

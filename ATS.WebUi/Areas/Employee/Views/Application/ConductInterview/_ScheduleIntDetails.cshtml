@@ -1,0 +1,34 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.InterViewProcess
+<div class="spctop-btm w98" style="display: inline-block; margin: 0 1%; border-bottom: 1px solid #345E8E;">
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Applicant: </div>
+        <div class="std_hlfwdth aplyjob-content">@Model.objConductInterviewDetails.CandidateName</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Applicant Total Score: </div>
+        <div class="std_hlfwdth aplyjob-content" id="candidatescore">@Model.objConductInterviewDetails.TotalScore</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Interviewer: </div>
+        <div class="std_hlfwdth aplyjob-content">@ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.FullName</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Current Round Weight: </div>
+        <div class="std_hlfwdth aplyjob-content">@Model.objConductInterviewDetails.RoundWeight</div>
+    </div>
+    <div class="aplyjob-hlf" id="intdate">
+        <div class="std_hlfwdth aplyjob-label">Interview Date/Time: </div>
+        <div class="std_hlfwdth aplyjob-content EditInterview" style="height:17px;">
+            <span>@Model.objConductInterviewDetails.InterviewDate</span>
+            <span class="floatleft" style="margin-left:5px;">
+                <a id="edit" class="bgEdit16B" href='@Url.Action("GetConductScheduleIntById", "Application", new { ScheduleIntId = Model.ScheduleIntId, AppId = Model.objConductInterviewDetails.ApplicationId })' onclick="return VacancyModel.OpenPostRequestForm(this)" title="Edit Time" dialog-width="450px" dialog-close-button="false" dialog-title="Edit Interview Date/time">
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Current Round Score: </div>
+        <div class="std_hlfwdth aplyjob-content" id="rndscore">@Model.objConductInterviewDetails.RoundScore</div>
+    </div>
+</div>

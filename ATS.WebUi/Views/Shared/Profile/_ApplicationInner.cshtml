@@ -1,0 +1,219 @@
+﻿@*Accordian Style*@
+@using BEClient = ATS.BusinessEntity
+@model BEClient.CandidateProfile
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<script type="text/javascript">
+    var icons = {
+        header: "iconOpen",
+        activeHeader: "iconClosed"
+    };
+    var icons12 = {
+        header: "iconOpen12",
+        activeHeader: "iconClosed12"
+    };
+    var QueAccAttr =
+      {
+          icons: icons12,
+          heightStyle: "content",
+          collapsible: true,
+          active: false,
+          animate: true,
+          collapsible: true
+      };
+    var firstAccAttr =
+        {
+            icons: icons,
+            heightStyle: "content",
+            collapsible: true,
+            active: false,
+            animate: true,
+            collapsible: true,
+            beforeActivate: function (event, ui) {
+                var _curAcc = $.trim(ui.newPanel.attr("data-id"));
+                $.ajax({
+                    type: "POST",
+                    url: '../../Employee/Question/GetQuestionByCategory?QueCatId=' + _curAcc,
+                    cache: false,
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (!data.IsError) {
+                            $(ui.newPanel).children().find(".list").html("");
+                            $(ui.newPanel).children().find(".search-heading").append(data.Data);
+                        }
+                        else {
+                        }
+                    }
+                });
+            }
+        };
+    $(function () {
+        $(".accordionCat").accordion(firstAccAttr);
+
+    });
+</script>
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Interviews")
+    </p>
+
+</div>
+
+<div class="acc-Content">
+   
+    <div class="accordionCat">
+        <div class="acc-header" style="height:25px;">
+            <div class="interview-dtl-list">
+                <div class="interview-date interview-list">6/21/2014</div>
+                <div class="interview-strt-end interview-list">10:00am</div>
+                <div class="interview-strt-end interview-list">11:00am</div>
+                <div class="interview-taker interview-list">Steve Harrison, VP</div>
+                <div class="interview-round interview-list">10</div>
+                <div class="interview-score interview-list">00.0</div>
+            </div>
+        </div>
+        <div class="acc-Content">
+
+            
+                <div class="std_width">
+                    <div class="vacancy-quest-box">
+                        <div class="width-40">
+                            <label class="intrview-dtl-lbl">Status :&nbsp;</label>
+                            <span class="intrview-dtl-value">Confirmed by both parties</span>
+                        </div>
+                        <div class="width-60">
+                            <label class="intrview-dtl-lbl">Location :&nbsp;</label>
+                            <span class="intrview-dtl-value">South Jordan Office, Delta Conf room</span>
+                        </div>
+                        <div class="width-40">
+                            <label class="intrview-dtl-lbl">Type :&nbsp;</label>
+                            <span class="intrview-dtl-value">In-Person</span>
+                        </div>
+                        <div class="width-60">
+                            <label class="intrview-dtl-lbl">Notes :&nbsp;</label>
+                            <span class="intrview-dtl-value">any internal meeting notes would go here</span>
+                        </div>
+                        <div class="std_width intrview-dtl">
+                            <h4>Interview Questions and Comments</h4>
+                            <button id="" class="beign-intrvw">Beign Interview</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="acc-header" style="height:25px;">
+            <div class="interview-dtl-list">
+                <div class="interview-date interview-list">6/21/2014</div>
+                <div class="interview-strt-end interview-list">10:00am</div>
+                <div class="interview-strt-end interview-list">11:00am</div>
+                <div class="interview-taker interview-list">Steve Harrison, VP</div>
+                <div class="interview-round interview-list">10</div>
+                <div class="interview-score interview-list">00.0</div>
+            </div>
+        </div>
+        <div class="acc-Content">
+
+
+            <div class="std_width">
+                <div class="vacancy-quest-box">
+                    <div class="width-40">
+                        <label class="intrview-dtl-lbl">Status :&nbsp;</label>
+                        <span class="intrview-dtl-value">Confirmed by both parties</span>
+                    </div>
+                    <div class="width-60">
+                        <label class="intrview-dtl-lbl">Location :&nbsp;</label>
+                        <span class="intrview-dtl-value">South Jordan Office, Delta Conf room</span>
+                    </div>
+                    <div class="width-40">
+                        <label class="intrview-dtl-lbl">Type :&nbsp;</label>
+                        <span class="intrview-dtl-value">In-Person</span>
+                    </div>
+                    <div class="width-60">
+                        <label class="intrview-dtl-lbl">Notes :&nbsp;</label>
+                        <span class="intrview-dtl-value">any internal meeting notes would go here</span>
+                    </div>
+                    <div class="std_width intrview-dtl">
+                        <h4>Interview Questions and Comments</h4>
+                        <button id="" class="beign-intrvw">Beign Interview</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="acc-header" style="height:25px;">
+            <div class="interview-dtl-list">
+                <div class="interview-date interview-list">6/21/2014</div>
+                <div class="interview-strt-end interview-list">10:00am</div>
+                <div class="interview-strt-end interview-list">11:00am</div>
+                <div class="interview-taker interview-list">Steve Harrison, VP</div>
+                <div class="interview-round interview-list">10</div>
+                <div class="interview-score interview-list">00.0</div>
+            </div>
+        </div>
+        <div class="acc-Content">
+
+
+            <div class="std_width">
+                <div class="vacancy-quest-box">
+                    <div class="width-40">
+                        <label class="intrview-dtl-lbl">Status :&nbsp;</label>
+                        <span class="intrview-dtl-value">Confirmed by both parties</span>
+                    </div>
+                    <div class="width-60">
+                        <label class="intrview-dtl-lbl">Location :&nbsp;</label>
+                        <span class="intrview-dtl-value">South Jordan Office, Delta Conf room</span>
+                    </div>
+                    <div class="width-40">
+                        <label class="intrview-dtl-lbl">Type :&nbsp;</label>
+                        <span class="intrview-dtl-value">In-Person</span>
+                    </div>
+                    <div class="width-60">
+                        <label class="intrview-dtl-lbl">Notes :&nbsp;</label>
+                        <span class="intrview-dtl-value">any internal meeting notes would go here</span>
+                    </div>
+                    <div class="std_width intrview-dtl">
+                        <h4>Interview Questions and Comments</h4>
+                        <button id="" class="beign-intrvw">Beign Interview</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="acc-header" style="height:25px;">
+            <div class="interview-dtl-list">
+                <div class="interview-date interview-list">6/21/2014</div>
+                <div class="interview-strt-end interview-list">10:00am</div>
+                <div class="interview-strt-end interview-list">11:00am</div>
+                <div class="interview-taker interview-list">Steve Harrison, VP</div>
+                <div class="interview-round interview-list">10</div>
+                <div class="interview-score interview-list">00.0</div>
+            </div>
+        </div>
+        <div class="acc-Content">
+            <div class="std_width">
+                <div class="vacancy-quest-box">
+                    <div class="width-40">
+                        <label class="intrview-dtl-lbl">Status :&nbsp;</label>
+                        <span class="intrview-dtl-value">Confirmed by both parties</span>
+                    </div>
+                    <div class="width-60">
+                        <label class="intrview-dtl-lbl">Location :&nbsp;</label>
+                        <span class="intrview-dtl-value">South Jordan Office, Delta Conf room</span>
+                    </div>
+                    <div class="width-40">
+                        <label class="intrview-dtl-lbl">Type :&nbsp;</label>
+                        <span class="intrview-dtl-value">In-Person</span>
+                    </div>
+                    <div class="width-60">
+                        <label class="intrview-dtl-lbl">Notes :&nbsp;</label>
+                        <span class="intrview-dtl-value">any internal meeting notes would go here</span>
+                    </div>
+                    <div class="std_width intrview-dtl">
+                        <h4>Interview Questions and Comments</h4>
+                        <button id="" class="beign-intrvw">Beign Interview</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<a id="addJobHistory" href='@Url.Action("AddJobHistoryModel", "Profile", new { @area = "", @currentProfileId = Model.objProfile.ProfileId, @userId = Model.objUserDetails.UserId })' class="btn">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_COMPANY)</a>*@
+    </div>
+</div>

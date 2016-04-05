@@ -1,0 +1,19 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.RndType>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+<div class="ats-roles-box" style="display: none; visibility:hidden;">
+    <div class="security-title">
+        @Html.Label("Select Vacancy Question Type")
+    </div>
+    @{
+        string[] value = ViewBag.DisableDivision;
+        var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 3, new { @class = "styled_list", id = "QueChk" });
+        @Html.CheckBoxListFor(Model => Model.obj.obj.objBindEnumDropDown.enumId,
+                              Model => Model.obj.obj.AllQuestionTypeList,
+                                       divis => divis.Value,
+                                       divis => divis.Text,
+                                                Model => Model.obj.obj.QuestionTypeList,
+                                                                            new { @class = "styled_checkbox" }, htmlListInfo, value, x => new { })
+
+    }
+</div>

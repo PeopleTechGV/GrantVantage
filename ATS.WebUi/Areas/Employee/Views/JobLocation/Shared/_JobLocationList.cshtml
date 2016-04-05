@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ATS.BusinessEntity.JobLocation>
+@using BEJobLocationConst = ATS.BusinessEntity.Common.JobLocation
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w40">@Html.LanguageLabel(BEJobLocationConst.LST_JOB_JOBNAME)</li>
+        <li class="w60">@Html.LanguageLabel(BEJobLocationConst.LST_JOB_DIVNAME)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.JobLocation current in Model)
+    {
+        ATS.BusinessEntity.PageMode pageMode = ATS.WebUi.Common.CommonFunctions.GetPageMode(current.PermissionType, ViewBag.PageMode);
+        string strPermissionType = current.PermissionType != null ? string.Join(",", current.PermissionType) : "";
+        if (pageMode != ATS.BusinessEntity.PageMode.Other)
+        {
+            <ul class="RowContent CursorPointer" data-id="@current.JobLocationId" data-auth="@strPermissionType">
+                <li class="w40 cntLocation">@current.LocalName</li>
+                <li class="w60 cntDivision">@current.DivisionName</li>
+                <li id="btnLocationMob" class="ViewDetailsMob MobView" onclick="btnLocationMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+            </ul>
+        }
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "JobLocation")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var jlId = $(this).attr("data-id");
+        var jlLink = '@Url.Action("View", "JobLocation", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id ="_DATAID_"})';
+        jlLink = jlLink.replace("_DATAID_", jlId);
+        window.location = jlLink;
+    });
+
+    function btnLocationMob(element) {
+        var jlId = $(element).parents(".RowContent").attr("data-id");
+        var jlLink = '@Url.Action("View", "JobLocation", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id ="_DATAID_"})';
+        jlLink = jlLink.replace("_DATAID_", jlId);
+        window.location = jlLink;
+    }
+</script>

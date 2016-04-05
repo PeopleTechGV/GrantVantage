@@ -1,0 +1,207 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@model  ATS.WebUi.Models.BreadScrumbModel < BESrp.DynamicSRP < ATSModel >>
+@using BEUserPrivilegesConst = ATS.BusinessEntity.Common.UserPrivilegesConst
+
+<div class="security-detail">
+    <div class="std-width">
+        <ul class="std-width security-dtl-hd spctop-btm">
+            <li class="sys-entity-hd">@Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_SYSTEMENTITY)</li>
+            <li class="ats-create-hd">@Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_CREATE)</li>
+            <li class="ats-create-hd">@Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_VIEW)</li>
+            <li class="ats-create-hd">@Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_MODIFY)</li>
+            <li class="ats-create-hd">@Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_DELETE)</li>
+        </ul>
+        <div id="AllPrivilege">
+            @foreach (var v in Model.obj.obj.objPrevilegList)
+            {
+                <ul class="ats-details">
+                    <a href="#">
+                        <li class="sys-entity" id='@v.SRP_Id'>@v.RoleLocalName</li>
+                        <li class="ats-create" id="1_@v.SRP_Id">&nbsp;</li>
+                        <li class="ats-create" id="2_@v.SRP_Id">&nbsp;</li>
+                        <li class="ats-create" id="3_@v.SRP_Id">&nbsp;</li>
+                        <li class="ats-create" id="4_@v.SRP_Id">&nbsp;</li>
+                    </a>
+                </ul>
+                <ul class="dropdown" id='Name_@v.SRP_Id'>
+                    <li id="All">
+                        <ul class="ats-catgry">
+                            <li class="catgry-title">All Divisions</li>
+                            <li class="catgry-check" id="C">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','C')" />&nbsp;</li>
+                            <li class="catgry-check" id="V">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','V')" />&nbsp;</li>
+                            <li class="catgry-check" id="M">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','M')" />&nbsp;</li>
+                            <li class="catgry-check" id="D">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','D')" />&nbsp;</li>
+                        </ul>
+                    </li>
+                    <li id="Sis">
+                        <ul class="ats-catgry">
+                            <li class="catgry-title">Sis Divisions</li>
+                            <li class="catgry-check" id="C">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','C')" />&nbsp;</li>
+                            <li class="catgry-check" id="V">
+                                <input type="checkbox" disabled="disabled"  onclick="GetRole('@v.SRP_Id','V')"/>&nbsp;</li>
+                            <li class="catgry-check" id="M">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','M')" />&nbsp;</li>
+                            <li class="catgry-check" id="D">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','D')"/>&nbsp;</li>
+                        </ul>
+                    </li>
+                    <li id="Chi">
+                        <ul class="ats-catgry">
+                            <li class="catgry-title">Child Divisions</li>
+                            <li class="catgry-check" id="C">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','C')" />&nbsp;</li>
+                            <li class="catgry-check" id="V">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','V')" />&nbsp;</li>
+                            <li class="catgry-check" id="M">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','M')"/>&nbsp;</li>
+                            <li class="catgry-check" id="D">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','D')" />&nbsp;</li>
+                        </ul>
+                    </li>
+                    <li id="Own">
+                        <ul class="ats-catgry">
+                            <li class="catgry-title">Own Divisions</li>
+                            <li class="catgry-check" id="C">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','C')" />&nbsp;</li>
+                            <li class="catgry-check" id="V">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','V')"/>&nbsp;</li>
+                            <li class="catgry-check" id="M">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','M')"/>&nbsp;</li>
+                            <li class="catgry-check" id="D">
+                                <input type="checkbox" disabled="disabled" onclick="GetRole('@v.SRP_Id','D')" />&nbsp;</li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ShowPermissionAsLabel(id, cin, All, Sis, Chl, Own) {
+        var SL = '&nbsp;';
+        document.getElementById(cin + '_' + id).innerHTML = '';
+
+        if (All.children[0].children[cin].children[0].checked == true) {
+            document.getElementById(cin + '_' + id).innerHTML = 'A';
+        }
+        else {
+            if (Sis.children[0].children[cin].children[0].checked == true) {
+                if (SL == '&nbsp;') {
+                    SL = 'S';
+                }
+                else {
+                    SL += ',S';
+                }
+            }
+            if (Chl.children[0].children[cin].children[0].checked == true) {
+                if (SL == '&nbsp;') {
+                    SL = 'C';
+                }
+                else {
+                    SL += ',C';
+                }
+            }
+            if (Own.children[0].children[cin].children[0].checked == true) {
+                if (SL == '&nbsp;') {
+                    SL = 'O';
+                }
+                else {
+                    SL += ',O';
+                }
+            }
+            document.getElementById(cin + '_' + id).innerHTML = SL;
+        }
+    }
+
+    function GetRole(id, Entity) {
+        var objList = document.getElementById('Name_' + id);
+        var All = objList.children[0];
+        var Sis = objList.children[1];
+        var Chl = objList.children[2];
+        var Own = objList.children[3];
+        var cin;
+        if (Entity == 'C') {
+            cin = 1;
+            SetAllToCheckedOrNot(cin, All, Sis, Chl, Own);
+            ShowPermissionAsLabel(id, cin, All, Sis, Chl, Own);
+        }
+        else if (Entity == 'V') {
+            cin = 2;
+            SetAllToCheckedOrNot(cin, All, Sis, Chl, Own);
+            ShowPermissionAsLabel(id, cin, All, Sis, Chl, Own);
+        }
+        else if (Entity == 'M') {
+            cin = 3;
+            SetAllToCheckedOrNot(cin, All, Sis, Chl, Own);
+            ShowPermissionAsLabel(id, cin, All, Sis, Chl, Own);
+        }
+        else if (Entity == 'D') {
+            cin = 4;
+            SetAllToCheckedOrNot(cin, All, Sis, Chl, Own);
+            ShowPermissionAsLabel(id, cin, All, Sis, Chl, Own);
+        }
+    }
+
+    function SetAllToCheckedOrNot(cin, All, Sis, Chl, Own) {
+        var typ = document.createAttribute("style");
+        typ.nodeValue = "outline: 2px solid RED";
+        var typ1 = document.createAttribute("style");
+        typ1.nodeValue = "outline: 2px solid RED";
+        var typ2 = document.createAttribute("style");
+        typ2.nodeValue = "outline: 2px solid RED";
+        var typ3 = document.createAttribute("style");
+        typ3.nodeValue = "outline: 2px solid RED";
+
+        if (this.document.activeElement.checked == true) {
+            this.document.activeElement.attributes.setNamedItem(typ);
+        }
+        else {
+            this.document.activeElement.attributes.removeNamedItem("style");
+        }
+
+        if (this.document.activeElement.checked == true) {
+            if (this.document.activeElement.parentNode.parentNode.parentNode.id == "All") {
+                if (Sis.children[0].children[cin].children[0].disabled == false) {
+                    Sis.children[0].children[cin].children[0].checked = true;
+                    Sis.children[0].children[cin].children[0].attributes.setNamedItem(typ1);
+                }
+                if (Chl.children[0].children[cin].children[0].disabled == false) {
+                    Chl.children[0].children[cin].children[0].checked = true;
+                    Chl.children[0].children[cin].children[0].attributes.setNamedItem(typ2);
+                }
+                if (Own.children[0].children[cin].children[0].disabled == false) {
+                    Own.children[0].children[cin].children[0].checked = true;
+                    Own.children[0].children[cin].children[0].attributes.setNamedItem(typ3);
+                }
+            }
+        }
+        else {
+            if (this.document.activeElement.parentNode.parentNode.parentNode.id == "All") {
+                if (Sis.children[0].children[cin].children[0].disabled == false) {
+                    Sis.children[0].children[cin].children[0].checked = false;
+                    Sis.children[0].children[cin].children[0].attributes.removeNamedItem("style");
+                }
+                if (Chl.children[0].children[cin].children[0].disabled == false) {
+                    Chl.children[0].children[cin].children[0].checked = false;
+                    Chl.children[0].children[cin].children[0].attributes.removeNamedItem("style");
+                }
+                if (Own.children[0].children[cin].children[0].disabled == false) {
+                    Own.children[0].children[cin].children[0].checked = false;
+                    Own.children[0].children[cin].children[0].attributes.removeNamedItem("style");
+                }
+            }
+            else {
+                if (All.children[0].children[cin].children[0].checked == true) {
+                    All.children[0].children[cin].children[0].checked = false;
+                    All.children[0].children[cin].children[0].attributes.removeNamedItem("style");
+                }
+            }
+        }
+    }
+</script>

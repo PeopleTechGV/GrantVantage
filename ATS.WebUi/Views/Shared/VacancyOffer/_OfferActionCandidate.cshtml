@@ -1,0 +1,153 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@using BEOfferStatus = ATS.BusinessEntity.VacancyOfferStatus;
+@model BEClient.VacancyOffer
+@{
+    var PDFPartialUrl = "/Resume/OfferPDF/pdf-" + Model.VacancyOfferId.ToString() + ".pdf";
+    if (Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed))
+    {
+        PDFPartialUrl = "/Resume/OfferPDF/OfferLetter-" + Model.VacancyOfferId.ToString() + ".pdf";
+    }
+    var PDFUrl = "http://" + Prompt.Shared.Utility.Library.Methods.GetAppSettingValue("DomainName") + PDFPartialUrl;
+    BEOfferStatus OfferStatus = (BEOfferStatus)Model.OfferStatusId;
+    bool EnableCounter = Model.EnableCounterOffers;
+    var greyButttonClass = "";
+    var disableControl = "";
+    if (Model.OfferDeadlineDate != DateTime.MinValue && Convert.ToDateTime(Model.OfferDeadlineDateText) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+    {
+        greyButttonClass = "OfferActionGrey";
+        disableControl = "disabled = 'disabled'";
+        if (OfferStatus != BEOfferStatus.Draft && OfferStatus != BEOfferStatus.Retracted && OfferStatus != BEOfferStatus.Company_Confirmed)
+        {
+            <span class="lblBbrown" style="margin-right:10px;">Opportunity Award has been Expired.</span>
+        }
+    }
+}
+
+@if (OfferStatus == BEOfferStatus.Offer_Made || OfferStatus == BEOfferStatus.Company_Countered)
+{
+    <input id="btnAccept" type="button" class="offerbtn @greyButttonClass" value="Accept Award" onclick="CandidateAcceptModel()" @disableControl>
+    <input id="btnDecline" type="button" class="offerbtn @greyButttonClass" value="Decline Award" onclick="CandidateDeclineModel()" @disableControl>
+    if (EnableCounter)
+    {
+        <input id="btnCounter_1" type="button" class="offerbtn @greyButttonClass" name="CandidateAction" value="Counter Award" onclick="AllowReviseOffer()" @disableControl>
+    <input id="btnCounter" type="button" class="offerbtn @greyButttonClass" name="CandidateAction" value="Update Counter Award" onclick="CandidateCounterModel()" @disableControl>
+        @*<input id="btnCounter" type="button" class="offerbtn" value="Counter Award" onclick="CandidateCounterModel()">*@
+    }
+}
+
+@if (OfferStatus == BEOfferStatus.Candidate_Declined)
+{
+    <input id="btnAccept" type="button" class="offerbtn" value="Accept Award" onclick="CandidateAcceptModel()" @disableControl>
+    if (EnableCounter)
+    {
+        <input id="btnCounter_1" type="button" class="offerbtn @greyButttonClass" name="CandidateAction" value="Counter Award" onclick="AllowReviseOffer()" @disableControl>
+    <input id="btnCounter" type="button" class="offerbtn @greyButttonClass" name="CandidateAction" value="Update Counter Award" onclick="CandidateCounterModel()" @disableControl>
+    }
+}
+
+@if (OfferStatus == BEOfferStatus.Candidate_Countered)
+{
+    <input id="btnDecline" type="button" class="offerbtn @greyButttonClass" value="Retract Counter" onclick="CandidateRetractAcceptanceModel()" @disableControl>
+    if (EnableCounter)
+    {
+        <input id="btnCounter_1" type="button" class="offerbtn @greyButttonClass" name="CandidateAction" value="Counter Award" onclick="AllowReviseOffer()" @disableControl>
+    <input id="btnCounter" type="button" class="offerbtn @greyButttonClass" name="CandidateAction" value="Update Counter Award" onclick="CandidateCounterModel()" @disableControl>
+    }
+}
+
+@if (OfferStatus == BEOfferStatus.Candidate_Accepted)
+{
+    <input id="btnDecline" type="button" class="offerbtn @greyButttonClass" value="Retract Acceptance" onclick="CandidateRetractAcceptanceModel()" @disableControl>
+}
+
+@if (OfferStatus != BEOfferStatus.Retracted && System.IO.File.Exists(Server.MapPath(PDFPartialUrl)))
+{
+    <a href='@PDFUrl' class="btnMakeOffer floatleft" style="width: 115px;" target="_blank">
+        View Award PDF
+    </a>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ddlPlacementType").attr("disabled", true);
+        $(".OfferMain select.CanRevise").attr("disabled", true);
+        $(".OfferMain input.CanRevise[type=text]").attr("readonly", true);
+
+        $('.OfferMain input[type=text][readonly]').addClass("greyColor");
+        $("select:disabled").addClass("greyColor");
+        $(".OfferMain input:disabled").addClass("greyColor");
+    });
+</script>
+@if ((OfferStatus == BEOfferStatus.Offer_Made) || OfferStatus == BEOfferStatus.Candidate_Declined
+    || OfferStatus == BEOfferStatus.Candidate_Countered || OfferStatus == BEOfferStatus.Company_Countered)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnCounter_1").show();
+            $("#btnCounter").hide();
+        });
+
+        function AllowReviseOffer() {
+            $("#btnCounter_1").hide();
+            $("#btnCounter").show();
+
+            $("#ddlPlacementType").attr("disabled", false);
+            $(".OfferMain select.CanRevise").attr("disabled", false);
+            $(".OfferMain input.CanRevise[type=text]").attr("readonly", false);
+
+            $('.OfferMain input[type=text]:not([readonly])').removeClass("greyColor");
+            $("select:enabled").removeClass("greyColor");
+            $(".OfferMain input:enabled").removeClass("greyColor");
+
+        }
+    </script>
+}
+
+<script>
+    function CandidateAcceptModel() {
+        $("#CandidateAcceptanceModel").css("display", "block");
+        $(".cover").css("display", "block");
+    }
+
+    function CloseCandidateAcceptModel() {
+        $("#CandidateAcceptanceModel").css("display", "none");
+        $(".cover").css("display", "none");
+    }
+
+    function CandidateDeclineModel() {
+        $("#CandidateDeclineModel").css("display", "block");
+        $(".cover").css("display", "block");
+    }
+
+    function CloseCandidateDeclineModel() {
+        $("#CandidateDeclineModel").css("display", "none");
+        $(".cover").css("display", "none");
+    }
+
+    function CandidateCounterModel() {
+        $("#CandidateCounterModel").css("display", "block");
+        $(".cover").css("display", "block");
+    }
+
+    function CloseCandidateCounterModel() {
+        $("#CandidateCounterModel").css("display", "none");
+        $(".cover").css("display", "none");
+    }
+    function RemoveReadonly() {
+        $(".OfferMain input[type=checkbox]").attr("disabled", false);
+        $("#Location").attr("disabled", false);
+        $("#JobType").attr("disabled", false);
+        $("#ddlNotification").attr("disabled", false);
+        $("#txtApplicantNote").attr("readonly", false);
+    }
+    function CloseVacOfferModel() {
+        var dummy = "";
+    }
+    function CandidateRetractAcceptanceModel() {
+        $("#CandidateRetractAcceptanceModel").css("display", "block");
+        $(".cover").css("display", "block");
+    }
+    function CloseCandidateRetractAcceptanceModel() {
+        $("#CandidateRetractAcceptanceModel").css("display", "none");
+        $(".cover").css("display", "none");
+    }
+</script>

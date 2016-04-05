@@ -1,0 +1,6 @@
+﻿@model List<ATS.BusinessEntity.Reviewers>
+
+@foreach (var _cureent in Model)
+{
+    @Html.Partial("Profile/_Reviewer", _cureent)
+}

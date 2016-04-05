@@ -1,0 +1,78 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.InterViewProcess
+
+<style>
+    #declineStatus, #SecTerminateInterview {
+        display: none;
+        /*visibility: hidden;*/
+    }
+</style>
+
+<span class="floatleft lblBbrown w100">Are you sure you want to terminate this interview?</span>
+
+<div class="ConfirmButton floatleft w100" style="margin: 6px 0;">
+    <button id="btnYes" class="btn-normal lbln">Yes</button>
+    <button id="btnNo" class="btn-normal">No</button>
+</div>
+
+<div id="declineStatus" class="IBP8">
+    @Html.Label("Applicant Decline Status:", new { @class = "Label lblBbrown" })
+    @Html.DropDownListFor(m => m.ApplicationBasedStatusId, (SelectList)ViewBag.AppStatList, "----Please Select----", new { @id = "drpDeclineStatus", @class = "w100" })
+</div>
+
+<div id="SecTerminateInterview" class="floatleft" style="margin: 6px 0;">
+    <button id="btnTerminate" class="btn-normal">Terminate</button>
+    <button id="btnTerminateAndDecline" class="btn-normal">Terminate And Decline</button>
+    <button id="btncancel" class="btn-normal">Cancel</button>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnTerminateAndDecline").hide();
+    });
+    $("#btnYes").click(function () {
+       
+        $("#declineStatus").css("display", "block");
+        $("#SecTerminateInterview").css("display", "block");
+        $(".ConfirmButton").css("display", "none");
+        //$("#SecTerminateInterview").css("visibility", "inline");
+    });
+
+    $("#drpDeclineStatus").change(function () {
+        var _value = $(this).val();
+        if (_value == "") {
+            $("#btnTerminateAndDecline").hide();
+        }
+        else {
+            $("#btnTerminateAndDecline").show();
+        }
+    });
+    $("#btnNo").click(function () { $(".ui-dialog-titlebar-close").click() });
+
+    $("#btncancel").click(function () { $(".ui-dialog-titlebar-close").click() });
+
+
+    $("#btnTerminate").click(function () {
+        var _dataLink = '@Html.Raw(Url.Action("UpdateStatusOfInterview", "Application", new { ScheduleIntId = @Model.ScheduleIntId, VacRndId = @Model.VacRndId, InterviewStatus = Convert.ToInt32(BEClient.InterviewStatus.Terminate) }))';
+        VacancyModel.CallPostMethod(_dataLink, function (data) {
+            window.location.href = $("#conductIntBack").attr("href");
+        });
+    });
+
+    $("#btnTerminateAndDecline").click(function () {
+
+
+        @*var _VacRndId = '@Model.VacRndId';
+        var _ScheduleId = '@Model.ScheduleIntId';
+        var _IntStat = parseInt('@BEClient.InterviewStatus.Terminate', 10);*@
+        var _appstat = $("#drpDeclineStatus option:selected").val();
+        var _dataLink = '@Html.Raw(Url.Action("UpdateStatusOfInterview", "Application", new { ScheduleIntId = @Model.ScheduleIntId, VacRndId = @Model.VacRndId, InterviewStatus = Convert.ToInt32(BEClient.InterviewStatus.TerminateAndDecline), ApplicationId = @Model.ApplicationId, ApplicationBasedStatusId = "_APPSTAT_"}))';
+        _dataLink = _dataLink.replace("_APPSTAT_", _appstat)
+        VacancyModel.CallPostMethod(_dataLink, function (data) {
+            window.location.href = $("#conductIntBack").attr("href");
+        });
+    });
+
+</script>

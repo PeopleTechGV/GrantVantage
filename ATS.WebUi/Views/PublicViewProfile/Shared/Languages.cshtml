@@ -1,0 +1,29 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.Languages>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.LanguageCode</h3>
+        <p>
+            @if (v.Write == true)
+            { <text>@Html.LanguageLabelFor(m => v.Write),</text>}
+            @if (v.Read == true)
+            { <text>@Html.LanguageLabelFor(m => v.Read),</text>}
+            @if (v.Speak == true)
+            { <text>@Html.LanguageLabelFor(m => v.Speak)</text>}
+            <br />
+        </p>
+        <ul class="info">
+            <li>
+                @if (@v.Comments.ToString() != "[RESUME_LANGUAGE]")
+                {
+                    @v.Comments
+                }
+            </li>
+
+
+        </ul>
+
+    </div>
+}

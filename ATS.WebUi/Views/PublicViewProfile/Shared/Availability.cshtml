@@ -1,0 +1,104 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.Availability
+<div class="content">
+    <h3></h3>
+    <p>
+        @Html.LanguageLabelFor(m => m.DateAvailability)
+        <br />
+        <em>@Model.DateAvailabilityText</em>
+    </p>
+    <p>
+        @Html.LanguageLabelFor(m => m.TargetIncome)
+        <br />
+
+        <em>@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol @Model.TargetIncomeText</em>
+    </p>
+    @if (Model.EmploymentPreference != 0)
+    {
+        <p>
+            @Html.LanguageLabelFor(m => m.EmploymentPreference)
+            <br />
+            @{
+        var drpValue = string.Empty;
+
+        {
+            drpValue = ((SelectList)ViewBag._EmploymentPreferenceList).Where(r => r.Value.Equals(Model.EmploymentPreference.ToString())).Select(r => r.Text).FirstOrDefault().ToString();
+            <em>@drpValue</em>
+        }
+            }
+        </p>
+    }
+    <p>
+        @Html.LanguageLabelFor(m => m.RelativesWorkingInCompany)
+        <br />
+        <em>
+            @if (Model.RelativesWorkingInCompany == false)
+            { <text>No</text>}
+            else
+            { <text>@Model.RelativesIfYes</text>}
+        </em>
+    </p>
+    <p>
+        @Html.LanguageLabelFor(m => m.SubmittedApplicationBefore)
+        <br />
+        <em>
+            @if (Model.SubmittedApplicationBefore == false)
+            { <text>No</text>}
+            else
+            { <text>@Model.AppicationSubmision</text>}
+        </em>
+    </p>
+    @if (!String.IsNullOrEmpty(Model.HearAboutThePosition))
+    {
+        <p>
+
+            @Html.LanguageLabelFor(m => m.HearAboutThePosition)
+            <br />
+            <em>
+                @Model.HearAboutThePosition
+            </em>
+        </p>
+    }
+
+    <p>
+        @Html.LanguageLabelFor(m => m.HowOld)
+        <br />
+        <em>
+            @if (Model.HowOld == false)
+            { <text>No</text>}
+            else
+            { <text>Yes</text>}
+        </em>
+    </p>
+    <p>
+        @Html.LanguageLabelFor(m => m.WillingToWorkOverTime)
+        <br />
+        <em>
+            @if (Model.WillingToWorkOverTime == false)
+            { <text>No</text>}
+            else
+            { <text>Yes</text>}
+        </em>
+    </p>
+    @if (!String.IsNullOrEmpty(Model.ReferredBy))
+    {
+        <p>
+            @Html.LanguageLabelFor(m => m.ReferredBy)
+            <br />
+            <em>
+                @Model.ReferredBy
+            </em>
+        </p>
+    }
+    <p>
+        @Html.LanguageLabelFor(m => m.EligibleToWorkInUS)
+        <br />
+        <em>
+            @if (Model.EligibleToWorkInUS == false)
+            { <text>No</text>}
+            else
+            { <text>Yes</text>}
+        </em>
+    </p>
+
+</div>

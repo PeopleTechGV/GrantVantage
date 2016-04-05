@@ -1,0 +1,153 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BEVacancyConstant = ATS.BusinessEntity.Common.VacancyConstant
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.Vacancy>>
+<script src="~/Content/js/Actionbar.js"></script>
+
+<ul class="ActionBar ResizableAction" data-vacid="@Model.obj.obj.VacancyId">
+    @if (Model.obj.obj.ConfirmVacancyDetails && Model.obj.obj.ConfirmJobDescription && Model.obj.obj.ConfirmCompensationInfo && Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+    {
+        if (Model.obj.obj.ShowOnWeb == BEClient.VacancyStatusDrp.Draft.ToString())
+        {
+            <li class="floatleft">
+                <a class="WithIcon bgOpen16" onclick="UpdateVacStatus(this)" data-nextstatus=@BEClient.VacancyStatusDrp.Open>
+                    @Html.LanguageLabel(BEVacancyConstant.FRM_VAC_OPEN_VAC)
+                </a>
+            </li>
+        }
+    }
+    @if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.obj.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.obj.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Delete, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.obj.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+    {
+        if (@Model.obj.obj.IsVacancyConfirmed)
+        {
+            <li id="ChangeStatusList">
+                <a class="ComboDropdown bgChange16B" href='#'>CHANGE STATUS</a>
+                <ul class="DropMenu ActionOptions" data-id="@Model.obj.obj.VacancyId">
+                    <li>
+                        <a href="#"><img src="/content/images/Down_Chevron_8.png" /></a>
+                        <ul class="MobRight">
+
+                            @if (Model.obj.obj.ShowOnWeb != BEClient.VacancyStatusDrp.Draft.ToString())
+                            {
+                                <li>
+                                    <a class="WithIcon bgDraft16" onclick="UpdateVacStatus(this)" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DRAFT_VAC)' data-nextstatus=@BEClient.VacancyStatusDrp.Draft>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DRAFT_VAC)</a>
+                                </li>
+                            }
+
+                            @if (Model.obj.obj.ShowOnWeb != BEClient.VacancyStatusDrp.Open.ToString())
+                            {
+                                if (Model.obj.obj.ConfirmVacancyDetails && Model.obj.obj.ConfirmJobDescription && Model.obj.obj.ConfirmCompensationInfo && Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+                                {
+                                    <li>
+                                        <a class="WithIcon bgOpen16" onclick="UpdateVacStatus(this)" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_OPEN_VAC)' data-nextstatus=@BEClient.VacancyStatusDrp.Open>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_OPEN_VAC)</a>
+                                    </li>
+                                }
+                            }
+
+                            @if (Model.obj.obj.ShowOnWeb != BEClient.VacancyStatusDrp.Close.ToString())
+                            {
+                                if (Model.obj.obj.ConfirmVacancyDetails && Model.obj.obj.ConfirmJobDescription && Model.obj.obj.ConfirmCompensationInfo && Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+                                {
+                                    <li>
+                                        <a class="WithIcon bgClose16" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CLOSE_VAC)'>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CLOSE_VAC)<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /> </a>
+                                        <ul class="RightMenu">
+                                            @foreach (var vacancy in (SelectList)ViewBag.VacancyClosedStatus)
+                                            {
+                                                <li><a onclick="UpdateVacStatus(this)" id='btnClose' vacancyvalue='@vacancy.Value' data-nextstatus=@BEClient.VacancyStatusDrp.Close>@vacancy.Text</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+
+                            @if (Model.obj.obj.ShowOnWeb != BEClient.VacancyStatusDrp.Archive.ToString())
+                            {
+                                if (Model.obj.obj.ConfirmVacancyDetails && Model.obj.obj.ConfirmJobDescription && Model.obj.obj.ConfirmCompensationInfo && Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+                                {
+                                    <li>
+                                        <a class="WithIcon bgArchive16" href="javascript:void(0);" onclick="UpdateVacStatus(this)" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_ARC_VAC)' data-nextstatus=@BEClient.VacancyStatusDrp.Archive>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_ARC_VAC)</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        if (!Model.obj.obj.VacancyId.Equals(Guid.Empty) && ViewBag.IsDelete == true && Model.obj.obj.ApplicantVacancyList.Count == 0)
+        {
+            <li>
+                <a id="btn-remove-vacancy1" class="WithIcon bgDelete16B" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DEL_VAC)' onclick="DeleteVacancy();">@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DEL_VAC)</a>
+            </li>
+        }
+    }
+
+    @if (Model.obj.obj.PublicCode > 0)
+    {
+        if (Model.obj.obj.ConfirmVacancyDetails && Model.obj.obj.ConfirmJobDescription && Model.obj.obj.ConfirmCompensationInfo && Model.obj.obj.ConfirmApplicationreview && Model.obj.obj.VacancyId != Guid.Empty)
+        {
+            <li>
+                <a class="WithIcon bgCandidateLink16B" onclick="OpenCopy('@String.Format("{0}",((Int32)ATS.BusinessEntity.PublicCodelink.Candidate).ToString())');" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CAN_LINK)'>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CAN_LINK)</a>
+            </li>
+            <li>
+                <a class="WithIcon bgManagerLink16B" onclick="OpenCopy('@String.Format("{0}",((Int32)ATS.BusinessEntity.PublicCodelink.Manager).ToString())');" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_MAN_LINK)' id="CopyVacancyManager">@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_MAN_LINK)</a>
+            </li>
+        }
+    }
+
+
+</ul>
+
+<script>
+    function UpdateVacStatus(element) {
+        var VacancyId = $(element).parents('.ActionBar').attr('data-vacid');
+        var VacancyStatus = $(element).attr('data-nextstatus');
+        var VacancyReason = "";
+        if (VacancyStatus == "Close")
+            VacancyReason = $(element).attr('vacancyvalue');
+        else
+            VacancyReason = "";
+        var _dataLink = '@Html.Raw(Url.Action("UpdateVacStatus", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, VacancyId = "_VacancyId_", VacancyStatus = "_VacancyStatus_", VacancyReason = "_VacancyReason_" }))';
+
+        _dataLink = _dataLink.replace("_VacancyId_", VacancyId);
+        _dataLink = _dataLink.replace("_VacancyStatus_", VacancyStatus);
+        _dataLink = _dataLink.replace("_VacancyReason_", VacancyReason);
+        $.ajax({
+            url: _dataLink,
+            type: "POST",
+            success: function (response) {
+                var JsonData = JSON.parse(response);
+                VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                var RedirectTo = '@Url.Action("View", "MyVacancy", new { Id = "_VACID_" })';
+                RedirectTo = RedirectTo.replace("_VACID_", VacancyId);
+                setTimeout(function () {
+                    window.location.href = RedirectTo;
+                }, 1000);
+            }
+        });
+    }
+
+    function DeleteVacancy() {
+        var VacancyCount = ""
+        var ApplicantCount = ""
+        var UserVacancyCount = ""
+        @if (Model.obj.obj.RecordExistsCount != null && Model.obj.obj.RecordExistsCount.Count > 0)
+        {
+            <text>
+        VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()
+           ApplicantCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Applicants").Select(x => x.Count).FirstOrDefault()
+           UserVacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "User Saved Vacancy").Select(x => x.Count).FirstOrDefault()
+           </text>
+        }
+       VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Opportunity", 350, "Are you sure you want to delete this Opportunity? <br /> The following records will also be deleted:<br />  Opportunities:" + VacancyCount + "</br> Applicants:" + ApplicantCount + "</br> Saved Opportunities:" + UserVacancyCount, "Yes", "Cancel", "DeleteVac", this, "test");
+        return false;
+    }
+
+    function DeleteVac(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Remove", "MyVacancy", new { id = @Model.obj.obj.VacancyId })'
+            window.location.href = deletelink;
+        }
+    }
+</script>

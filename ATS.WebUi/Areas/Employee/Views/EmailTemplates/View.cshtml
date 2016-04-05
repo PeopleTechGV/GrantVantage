@@ -1,0 +1,174 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.EmailTemplates>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuDisplayName = ATS.BusinessEntity.Common.CompanySetupMenu.CSMNU_EMAILTEMPLATES;
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<style>
+    .iframeHeight {
+        height: 0.7in !important;
+    }
+
+    .cleditorMain {
+        float: left;
+        background-color: white;
+        border: 1px solid #999;
+        padding: 0 1px 1px;
+        width: 100% !important;
+    }
+
+        .cleditorMain textarea {
+            width: 100% !important;
+        }
+
+        .cleditorMain, .cleditorPopup, .cleditorMain * {
+            box-sizing: border-box;
+        }
+
+    .cleditorIdentifier {
+        background: url("/CLEditor/images/addidentifier.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+        float: left;
+        height: 24px;
+        margin: 1px 0;
+        width: 150px !important;
+        background-position: 0px !important;
+    }
+
+    .cleditorPreview {
+        background: url("/CLEditor/images/preview.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+        float: left;
+        height: 24px;
+        width: 24px !important;
+        background-position: 4px !important;
+    }
+
+    .cleditorMain > iframe {
+        width: 100% !important;
+    }
+
+    .CLE-textareaPDFHead {
+        height: 70px !important;
+    }
+
+    .atsPopup {
+        z-index: 10 !important;
+        margin-left: 4px;
+    }
+</style>
+
+
+<link type="text/css" rel="stylesheet" href="~/CLEditor/jquery.cleditor.css">
+<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".CLE-textareaPDFHead").cleditor({
+            controls:
+        "source | bold italic underline | font size color | bullets numbering | outdent " +
+        "indent | alignleft center alignright justify | " +
+        "link unlink image ",
+        });
+        $(".CLE-textarea").cleditor({
+            controls:
+        "source | bold italic underline | font size color | bullets numbering | outdent " +
+        "indent | alignleft center alignright justify | " +
+        "link unlink image | undo redo | copy pastetext preview | identifier ",
+            height: "700px",
+        });
+
+        //Set PDF Header contrl's height
+        var headerEditor = $(".cleditorMain:eq(1)");
+        $(headerEditor).find("iframe").addClass("iframeHeight");
+        headerEditor.removeAttr("style");
+        headerEditor.attr("style", "width: 100% !important; height:1in !important;");
+    });
+</script>
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(Model.obj.ActionName, "EmailTemplates", FormMethod.Post, new { id = "frmEmailTemplate" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.EmailTemplateId)
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    <div class="form-default">
+        <div class="form-group w80">
+            @Html.LanguageLabelFor(m => m.obj.obj.EmailTemplateId, new { @class = "label" })
+            <br />
+            <label>@Model.obj.obj.EmailCategoryDisplay - </label>
+            <label>@Model.obj.obj.Description</label>
+
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Subject, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.Subject, new { @class = "detail-input w50" })
+        </div>
+
+        <div class="form-group w80">
+            @Html.LanguageLabelFor(m => m.obj.obj.EmailDescription, new { @class = "label", @style = "float: left" })<br />
+            @Html.TextAreaFor(m => m.obj.obj.EmailDescription, new { @class = "text-data CLE-textarea", style = "width:100% !important;" })
+        </div>
+
+        @if (Model.obj.obj.CategoryNo == Convert.ToInt32(BEClient.EmailTemplateCateogory.Offers))
+        {
+            <div class="form-group w80">
+                @Html.LanguageLabelFor(m => m.obj.obj.PdfHeader, new { @class = "label" })<br />
+                @Html.TextAreaFor(m => m.obj.obj.PdfHeader, new { @class = "text-data CLE-textareaPDFHead", style = "width:100% !important;" })
+            </div>
+        }
+    </div>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    function OnClickValidate() {
+        $('#frmEmailTemplate').submit();
+    }
+
+    function Success(IsError, Url, Data, Message) {
+        debugger;
+        if (IsError != 'true') {
+            $("#NewLanguage").html($(Data).find("#NewLanguage").html());
+            $("#ParentDivisionDrp").html($(Data).find("#ParentDivisionDrp").html());
+            $("#DivisionDescription").html($(Data).find("#DivisionDescription").html());
+        }
+    }
+    function GetImage() {
+        var formdata = new FormData(); //FormData object
+        var fileInput = document.getElementById('fileinput');
+
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+        var httprequest = new XMLHttpRequest();
+        var dataLink = '@Html.Raw(Url.Action("GetImage","OfferLetters"))';
+        var reUrl = "";
+        httprequest.onreadystatechange = function () {
+            if (httprequest.readyState == 4) {
+                reUrl = JSON.parse(httprequest.responseText);
+            }
+        }
+        httprequest.open('Post', dataLink, false);
+        httprequest.send(formdata);
+        return reUrl;
+    }
+</script>

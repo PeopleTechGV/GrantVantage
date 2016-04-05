@@ -1,0 +1,10 @@
+﻿@model List<ATS.BusinessEntity.AnsOpt>
+@using BEClient = ATS.BusinessEntity;
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var _current in Model)
+    {
+        @Html.Partial("Shared/_AnswerAcc", _current)
+    }
+}
+

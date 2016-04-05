@@ -1,0 +1,39 @@
+﻿@model ATS.BusinessEntity.VacancyRound
+
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+
+
+@using (Ajax.BeginForm("AddRoundConfig", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "RoundSuccess",
+            OnFailure = "RoundFailure",
+        }, new { id = "frmRoundConfig", isFormChange = "false" }))
+{
+    <script>
+        var form = $("#frmRoundConfig");
+        $.validator.unobtrusive.parse(form);
+    </script>
+    <div class="accNewReviewRound">
+        <div class="acc-header">
+            <p class="prfle-tab-head-brown">
+                <span class="w50" style="float:left;">
+                    <span class='lblRndType ttldblue'>New Round <span class="cntRound"></span></span>
+                </span>
+                <span class="w30">
+                    <label></label>
+                </span>
+                <span class="lblRoundWeight w30">
+                    <span class="ttllbrown">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+                    <span class="lblRndWeight ttldblue" id="rndweight">50</span>
+                </span>
+            </p>
+        </div>
+
+        <div class="acc-Content">
+            @Html.Partial("Shared/_RoundConfig", Model)
+        </div>
+    </div>
+}

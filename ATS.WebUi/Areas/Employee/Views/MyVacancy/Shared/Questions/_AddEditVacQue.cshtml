@@ -1,0 +1,167 @@
+﻿@model ATS.BusinessEntity.VacancyQuestion
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@System.Web.Optimization.Scripts.Render("~/bundles/jMultiSelectDropdown")
+
+@using (Ajax.BeginForm("AddUpdateVacQue", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "RoundQuestionSuccess(data,'" + Model.VacQueId + "')",
+            OnFailure = "RoundQuestionFail",
+            UpdateTargetId = "frmVacQue"
+        }, new { id = "frmVacQue" }))
+{
+
+    @Html.HiddenFor(m => m.RndTypeId)
+    @Html.HiddenFor(m => m.VacQueCatId)
+    @Html.HiddenFor(m => m.QueTypeLocalName)
+    @Html.HiddenFor(m => m.VacQueId)
+    <div class="std_width reviewer-fld ARPVacQueForm">
+        @if (ViewBag.PageMode == "Update")
+        {
+            <div id="ARPQuestion" class="reviewer-name w50 ARPBox" style="min-height: 15px; position: relative;" data-pkid="@Model.QueId">
+                @Html.DropDownListFor(m => Model.QueId, (SelectList)ViewBag.QuestionsList, new { @id = "peopleC", @class = "detail-select ddlsingleselect" })
+                @Html.HiddenFor(m => m.QueId)
+            </div>
+
+            <div id="ARPQueType" class="reviewer-name w20 textcenter ARPBox" style="min-height: 15px;">
+                <label class="LableBox">@Model.QueTypeLocalName</label>
+            </div>
+            <div id="ARPQueWt" class="reviewer-weight w20 textcenter ARPBox">
+                @Html.TextBoxFor(m => m.Weight, new { @class = "r-wght", @style = "width:50%;", @autocomplete = "off" })
+            </div>
+        }
+        else
+        {
+            <div id="ARPQueType" class="reviewer-name w99 ARPBox" style="min-height: 15px; position: relative;">
+                @Html.ListBoxFor(m => m.ListQueId, ViewBag.QuestionsList as MultiSelectList, new { @class = "detail-select ddlMultiSelect" })
+            </div>
+        }
+
+        <div class="vacancy-Details ARPInlineAction">
+            <button type="submit" class="prfle-button-save CaseUpper" onclick="return ValidateForm(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_SAVE)</button>
+            @if (Model.VacQueId == Guid.Empty)
+            {
+                <button type="button" id="RemoveVacQue" class="prfle-button-delete CaseUpper" onclick="RemoveQueFunction(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_REMOVE)</button>
+            }
+        </div>
+    </div>
+    <script>
+        function ValidateForm(element) {
+            var _drp = $(".ddlsingleselect").length;
+            if (_drp > 0) {
+                return true;
+            }
+            else {
+                var chkLenght = $("div.ui-dropdownchecklist").find("input[type=checkbox]:checked").length;
+                if (chkLenght == 0) {
+                    $("#ddcl-ListQueId").addClass("input-validation-error");
+                    return false;
+                }
+                else {
+                    $("#ddcl-ListQueId").removeClass("input-validation-error");
+                    return true;
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $("#Weight").keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+                if (charCode == 190 || charCode == 110) {
+                    return false;
+                }
+                else { return true; }
+            });
+
+            $(".ddlMultiSelect").dropdownchecklist({
+
+                emptyText: "Select One",
+                onItemClick: function (checkbox, selector) {
+                    var values = "";
+                    for (i = 0; i < selector.options.length; i++) {
+                        if (selector.options[i].selected && (selector.options[i].value != "")) {
+                            if (values != "")
+                                values += ",";
+                            values += selector.options[i].value;
+                        }
+                    }
+                }
+            });
+        });
+
+        function RoundQuestionSuccess(data, id) {
+
+            var jsonResponse = JSON.parse(data);
+            var $Quebtn = MyVacancy.AddQuestionBtn;
+            var oldCount = $("#frmVacQue").parents('.acc-Content').prev().find('.lblVacQueCount').text();
+            var newCount = parseInt(oldCount) + parseInt(jsonResponse.Data[1]);
+
+            var oldCountVQue = $("#frmVacQue").parents('.acc-Content').prev().find(".lblTotalQueCount").text();
+            var newCountVQue = parseInt(oldCountVQue) + parseInt(jsonResponse.Data[1]);
+
+            var vacQid = $('<div>' + jsonResponse.Data + '</div>').find('div:first').attr('data-pkid');
+            var qid = $('<div>' + jsonResponse.Data + '</div>').find('div:first').attr('data-queid');
+            var existing = $("#frmVacQue").parent().hasClass('reviewer-fld');
+
+            if (existing) {
+                var $selected = $("#frmVacQue").parent();
+                $selected.html($('<div>' + jsonResponse.Data + '</div>').find('div:first').html());
+                $selected.attr('data-queid', qid);
+                $selected.attr('data-pkid', vacQid);
+                if ($("#frmVacQue").length <= 0) {
+                    $selected.parents('.QuestionDetails').next().append($Quebtn);
+                }
+            }
+            else {
+                $("#frmVacQue").parents('.acc-Content').prev().find('.lblVacQueCount').text(newCount);
+                $("#frmVacQue").parents('.acc-Content').prev().find(".lblTotalQueCount").text(newCountVQue);
+                var $qAccorEle = $("#frmVacQue").parent().prev().find('.Content');
+                $qAccorEle = $qAccorEle.append(jsonResponse.Data);
+
+                $('#frmVacQue').remove();
+                if ($qAccorEle.find("#frmVacQue").length <= 0) {
+                    $qAccorEle.parents('.QuestionDetails').next().append($Quebtn);
+                }
+            }
+
+            var _parentAcc = $('.AccRoundDetail');
+            var _rndacc = $('.VacQueCat');
+            var _rndactive = _rndacc.accordion("option", "active");
+            _parentAcc.find(_rndacc).accordion("option", "active", false);
+            _parentAcc.find(_rndacc).accordion("option", "active", _rndactive);
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonResponse.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+
+        function ValidateFunction(element) {
+            var $form = $(element).parents('form');
+            var _IsError = false;
+            if ($form.find('select#peopleC option:selected').val() != '') {
+                $form.find('select#peopleC').next().removeClass('input-validation-error');
+            }
+            else {
+                _IsError = true;
+                $form.find('select#peopleC').next().addClass('input-validation-error');
+            }
+            if ($form.find('#Weight').val() != '' && parseInt($form.find('#Weight').val()) > 0 && parseInt($form.find('#Weight').val()) <= 100) {
+                $form.find('#Weight').removeClass('input-validation-error');
+            }
+            else {
+                _IsError = true;
+                $form.find('#Weight').addClass('input-validation-error');
+            }
+            return !_IsError;
+        }
+
+        function RemoveQueFunction(element) {
+            var $ele = $(element).parents('.Content');
+            var $QueBtn = MyVacancy.AddQuestionBtn;
+            $(element).closest("form").remove();
+            $ele.append($QueBtn);
+        }
+
+        function RoundQuestionFail() {
+            alert('RoundQuestionFail');
+        }
+    </script>
+}

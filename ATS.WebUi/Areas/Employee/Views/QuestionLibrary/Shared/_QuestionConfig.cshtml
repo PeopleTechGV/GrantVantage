@@ -1,0 +1,11 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.Question>>
+@using BEClient = ATS.BusinessEntity;
+@using BECommonConstant = ATS.BusinessEntity.Common.CommonConstant
+@if (Model != null && Model.obj.Count() > 0)
+{
+    foreach (var _current in Model.obj)
+    {
+        @Html.Partial("Shared/_QuestionAcc", _current)
+    }
+}
+

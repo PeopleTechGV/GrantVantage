@@ -1,0 +1,82 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BESrp = ATS.BusinessEntity.SRPEntity;
+@model  ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<List<BEClient.TVac>>>
+@System.Web.Optimization.Scripts.Render("~/bundles/jTemplatevacancy")
+<link type="text/css" rel="stylesheet" href="~/CLEditor/jquery.cleditor.css">
+<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>
+
+@{
+    ViewBag.Title = "Opportunity Template";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="Messages" style="width: auto; float: left; position: inherit; margin-left: 25px;">
+</div>
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div class="TVacAccordian SMContentBox">
+    @Html.Partial("Shared/_TVacConfig", Model.obj)
+</div>
+
+@Html.Partial("Shared/_BtnAddTVac", Model.obj)
+
+<script>
+    $(document).ready(function () {
+        $("body").bind("ajaxComplete", function (e, xhr, settings) {
+            SetHoursPerWeekVisibility2();
+        });
+        $(".innerTVac").accordion(VacancyModel.AccFirstAttr).accordion(({ active: $(this).find(".acc-header").size() - 1 }));
+        TemplateMyVacancy.AccGetVacQueCatByVacRndURL = '@Url.Action("AddTVacQueCatModel", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.AccGetRevAndQueCountURL = '@Url.Action("GetRevAndQueCount", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.AddReviewerURL = '@Url.Action("AddVacRevModel", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.AccGetReviewersByVacancyRndURL = '@Url.Action("GetReviewersByVacancyRnd", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.AccGetQueByVacancyRndURL = '@Url.Action("GetQueCatByVacRnd", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.AccGetTRoundConfigDetailURL = '@Url.Action("GetTRoundConfigDetail", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.GetRequiredDocumentsURL = '@Url.Action("GetRequiredDocuments", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.AddTQuestionURL = '@Url.Action("AddTVacQueModel", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.GetTVacRoundByTVacId = '@Url.Action("GetApplicationProcess", "TemplateVacancy", new { TvacId = "_TVacID_" })';
+        TemplateMyVacancy.AddTVacQueCatURL = '@Url.Action("CreateTVacQueCat", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.ChangeVacQueDropDownURL = '@Html.Raw(Url.Action("GetQueDetails", "TemplateVacancy", new { QueId = "_SELDATA_", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_", VacQueCatId = "_VACQUECATID_", newQueId = "_NEWVAL_", TVacId = "_TVACID_" }))'
+        TemplateMyVacancy.AccGetQueByVacQueCatURL = '@Url.Action("GetQueByVacQueCat", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.GetTemplateUrl = '@Url.Action("GetTvacByTvacId", "TemplateVacancy", new { TVacId = "_TVACID_" })'
+        TemplateMyVacancy.TVacAccGetVacancyDetailsURL = '@Url.Action("GetTVacancyDetails", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.TVacAccGetJobDescriptionURL = '@Url.Action("GetTJobDescription", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        TemplateMyVacancy.TVacAccGetCompensationInfoURL = '@Url.Action("GetTCompensation", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+        //Rutul Patel
+        TemplateMyVacancy.AccTvac = '@Url.Action("GetTvacByTvacId", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })';
+    });
+
+    function DeleteTVac(Result, element) {
+        if (Result) {
+            var _TVactId = $(element).attr('data-id');
+            var _dataLink = '@Html.Raw(@Url.Action("RemoveTVac", "TemplateVacancy", new { TVacId = "_TVacId_" }))';
+            _dataLink = _dataLink.replace("_TVacId_", _TVactId)
+            var ele = $(element);
+            VacancyModel.CallPostMethod(_dataLink, function (data, message) {
+                var _parentAcc = $(ele).parents('.TVacAccordian');
+                var remHeaderdiv = $(ele).closest('.acc-header');
+                var remContentdiv = $(remHeaderdiv).next();
+                $(remContentdiv).remove();
+                $(remHeaderdiv).remove();
+                $(_parentAcc).accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", false);
+                var count = ($(_parentAcc).find("div[data-tvacidonly]").length);
+                $('#lblCount').text(count);
+                $("#Count_CSMNU_VACANCYTEMPLATES").text(count);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, 3000);
+            });
+        }
+    }
+
+    function SetHoursPerWeekVisibility2() {
+        var element = $('#obj_JobType');
+        var selectedvalue = $(element).val();
+        if (selectedvalue == "2") {
+            $('#divHrsPerWeek').show();
+        }
+        else {
+            $('#divHrsPerWeek').hide();
+        }
+    }
+</script>  

@@ -1,0 +1,76 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@model BEClient.AnonymousUser
+
+@using CaptchaMvc.HtmlHelpers
+@System.Web.Optimization.Styles.Render("~/Content/qCss")
+@System.Web.Optimization.Scripts.Render("~/bundles/jquery2")
+
+<div id="slidepanel-signup">
+    <div class="topbox">
+        @using (Ajax.BeginForm("CASaveAnonymsUserDetails", "Account", new { returnUrl = ViewBag.ReturnURL }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "SignupSuccess",
+            OnFailure = "SignupFailed"
+        }, new { @id = "SignupForm" }))
+        {
+            <text>
+                <div>
+                    @Html.ValidationSummary(true)
+                </div>
+                <fieldset>
+                    <ul class="signup LoginForm">
+                        <li>
+                            @Html.LanguageLabelFor(m => m.ObjCandidate.objUserDetails.FirstName)
+                            @Html.TextBoxFor(m => m.ObjCandidate.objUserDetails.FirstName, new { @class = "input" })
+                        </li>
+                        <li>
+                            @Html.LanguageLabelFor(m => m.ObjCandidate.objUserDetails.LastName)
+                            @Html.TextBoxFor(m => m.ObjCandidate.objUserDetails.LastName, new { @class = "input" })
+                        </li>
+                        <li>
+                            @Html.LanguageLabelFor(m => m.ObjUser.Username)
+                            @Html.TextBoxFor(m => m.ObjUser.Username, new { @class = "input" })
+                        </li>
+                        <li>
+                            @Html.LanguageLabelFor(m => m.ObjUser.Password) @Html.LanguageLabel("(min 8 Characters)")
+                            @Html.PasswordFor(m => m.ObjUser.Password, new { @class = "input" })
+                        </li>
+                        <li>
+                            @Html.LanguageLabelFor(m => m.ObjUser.ConfirmPassword)
+                            @Html.PasswordFor(m => m.ObjUser.ConfirmPassword, new { @class = "input" })
+                        </li>
+
+                        <li>
+                            <div>
+                                <span>&nbsp;</span>
+                                <input id="lockText" type="hidden" value="Slide the bar to the right to submit the form. Press the lock icon if using an iPad">
+                                <input id="unlockText" type="hidden" value="Yeah! You're not a robot!">
+                                <div class="QapTcha" style="width: 202px;">
+                                </div>
+                            </div>
+                            <button class="btn-login-new" disabled="disabled" type="submit" id="btnSubmit"></button>
+                        </li>
+                    </ul>
+                </fieldset>
+            </text>
+        }
+    </div>
+    <br class="clear" />
+</div>
+<script>
+    $(document).ready(function () {
+        // Simple call
+        $('.QapTcha').QapTcha({
+            autoSubmit: true,
+            autoRevert: true
+        });
+    });
+
+
+    function SubmitSignup() {
+        $('#signupForm').submit();
+    }
+</script>

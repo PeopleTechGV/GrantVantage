@@ -1,0 +1,40 @@
+﻿@model ATS.BusinessEntity.Vacancy
+@using BEClient = ATS.BusinessEntity;
+@using BEToolTipConstantConst = ATS.BusinessEntity.Common.TooltipConstant
+@using BEVacancyConst = ATS.BusinessEntity.Common.VacancyConstant
+
+@{
+    ATS.BusinessEntity.PageMode pageMode = ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.PermissionType, ATS.BusinessEntity.PageMode.Update);
+}
+
+@if (pageMode != ATS.BusinessEntity.PageMode.Other)
+{
+
+    <div class="my-vacancies-content">
+        <li class="lft-detail">
+            <ul data-id='@Model.VacancyId' pagemode='@pageMode' public-code='@Model.PublicCode'>
+                <li class="system-analyst">@Model.JobTitle</li>
+                <li class="system-location">@Model.LocationText</li>
+                <li class="date">@Model.PostedOn.ToString(ATS.WebUi.Common.Constants.VACANCY_DATE_FORMAT)</li>
+                <li id="MyVacDetails" class="MyVacDetails MobView" style="z-index:0 !important;" onclick="MyVacDetails(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+                <li class="std-width">
+                    <div class="id">@Html.LanguageLabel(BEVacancyConst.LST_VAC_ID):<span>@Model.PositionID</span></div>
+                    <div class="id">@Html.LanguageLabel(BEVacancyConst.LST_VAC_STATUS):<span>@Model.VacancyStatusText</span></div>
+                    <div class="id">@Html.LanguageLabel(BEVacancyConst.LST_VAC_APPLICANTS):<span id="TApplicants">@Model.Applicants</span></div>
+                    <div class="id">@Html.LanguageLabel(BEVacancyConst.LST_VAC_OWNER):<span>@Model.CreatedByName</span></div>
+                    @*<div class="id">@Html.LanguageLabel(BEVacancyConst.LST_VAC_OFFERS) :<span>0</span></div>
+                        <div class="id">@Html.LanguageLabel(BEVacancyConst.LST_VAC_PLACEMENT):<span>0</span></div>*@
+                    <div class="id" style="display:none;">Confirm:<span id="TIsConfirmed">@Model.IsVacancyConfirmed</span></div>
+
+                    @Html.HiddenFor(m => m.ShowOnWeb)
+                    @Html.HiddenFor(m => m.IsVacancyConfirmed)
+                </li>
+            </ul>
+        </li>
+        <li class="rgt-detail">
+            <ul id="VacStatus" data-id='@Model.VacancyId' pagemode='@pageMode'>
+                @Html.Partial("Shared/_VacancyStatusMenu", Model)
+            </ul>
+        </li>
+    </div>
+}

@@ -1,0 +1,203 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+@using BECommon = ATS.BusinessEntity
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ATS- Offer Letter</title>
+    @System.Web.Optimization.Styles.Render("~/Content/SCCss")
+    @System.Web.Optimization.Styles.Render("~/Content/css1")
+</head>
+<body style="background-color: transparent !important;">
+    @if (Model.PdfHeader != null && Model.PdfHeader != string.Empty)
+    {
+       @Html.Raw(Model.PdfHeader)
+    }
+    else
+    { 
+    <div id="divPDFHeader" style="border-bottom: 3px solid #345E8E; width: 100%;">
+        <table style="width: 100%;" border="0">
+            <tr>
+                <td style="vertical-align: bottom; font-size: 20px;"><span style="color: #953634;">Offer Letter</span></td>
+                <td style="vertical-align: bottom;"></td>
+                <td style="height: 31px;">
+                    <div style="float: right;">
+                        <img src="/Content/images/splashtrack_logo_2.png" alt="SplashTrack" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    }
+    <br />
+    <div class="OfferMainPDF">
+        <div class="OfferHeader">
+            @Model.JobTitle : Offer Letter
+        </div>
+        <div class="OfferContent" style="width:100%;">
+            <div class="OfferDetails">
+                <div class=" offerbox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CandidateName):</span>
+                    <span class="CandDetailsRight48">@Model.CandidateName</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.OfferTypeText):</span>
+                    <span class="CandDetailsRight48">@Model.OfferTypeText</span>
+                </div>
+                <br />
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.JobTitle):</span>
+                    <span class="CandDetailsRight48">@Model.JobTitle</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.OfferStatusText):</span>
+                    <span class="CandDetailsRight48">@Model.OfferStatusText</span>
+                </div>
+                <br />
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.OfferDate):</span>
+                    <span class="CandDetailsRight48">@Model.OfferDate.ToString("MM/dd/yyyy")</span>
+                </div>
+                <div class="OfferBox OW48">
+                </div>
+                <hr class="BreakLine" />
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.PlacementType):</span>
+                    <span id="lblPlacementType" class="CandDetailsRight48">@Model.PlacementTypeText</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.StartDate):</span>
+                    <span id="lblStartDate" class="CandDetailsRight48">@Model.StartDateText</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.Location):</span>
+                    <span id="lblLocation" class="CandDetailsRight48">@Model.LocationText</span>
+                </div>
+                @if (Model.PlacementType != Convert.ToInt32(BECommon.PlaceMentType.Permanent).ToString())
+                {
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.EndDate):</span>
+                        <span id="lblEndDate" class="CandDetailsRight48">@Model.EndDateText</span>
+                    </div>
+                }
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.JobType):</span>
+                    <span id="lblJobType" class="CandDetailsRight48">@Model.JobTypeText</span>
+                </div>
+            </div>
+
+            <div class="OfferDetails">
+                <span>Offer Details</span>
+            </div>
+            @if (Model.PlacementType == Convert.ToInt32(BECommon.PlaceMentType.Permanent).ToString())
+            {
+                if (Model.SalaryType == Convert.ToInt32(BECommon.SalaryType.Salary))
+                {
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.SalaryType):</span>
+                        <span id="lblSalaryType" class="CandDetailsRight48">@Model.SalaryTypeText</span>
+                    </div>
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.SalaryOffered):</span>
+                        <span id="lblSalaryOffered" class="CandDetailsRight48">$@Model.SalaryOffered</span>
+                    </div>
+                }
+                else if (Model.SalaryType == Convert.ToInt32(BECommon.SalaryType.Hourly))
+                {
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.SalaryType):</span>
+                        <span id="lblSalaryType" class="CandDetailsRight48">@Model.SalaryTypeText</span>
+                    </div>
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.HoursPerWeek):</span>
+                        <span id="lblSalaryOffered" class="CandDetailsRightAuto">@Model.HoursPerWeek</span>
+                        <br />
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.HourlyWage):</span>
+                        <span id="lblSalaryOffered" class="CandDetailsRightAuto">$@Model.HourlyWage</span>
+                    </div>
+                }
+                else if (Model.SalaryType == Convert.ToInt32(BECommon.SalaryType.PieceType))
+                {
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.SalaryType):</span>
+                        <span id="lblSalaryType" class="CandDetailsRight48">@Model.SalaryTypeText</span>
+                    </div>
+                    <div class="OfferBox OW48">
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.Rate):</span>
+                        <span id="lblSalaryOffered" class="CandDetailsRightAuto">$@Model.Rate</span>
+                        <br />
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.Per):</span>
+                        <span id="lblSalaryOffered" class="CandDetailsRight48">@Model.Per</span>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.PayRate):</span>
+                    <span id="lblPayRate" class="CandDetailsRight48">$@Model.PayRate</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.RatePeriod):</span>
+                    <span id="lblRatePeriod" class="CandDetailsRight48">@Model.RatePeriodText</span>
+                </div>
+            }
+            @if (Model.PlusCommission)
+            {
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CommissionDescriprion):</span>
+                    <span id="lblCommission" class="CandDetailsRight48">@Model.CommissionDescriprion</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.AnnualCommissionPotential):</span>
+                    <span id="lblCommPotential" class="CandDetailsRight48">$@Model.AnnualCommissionPotential</span>
+                    <br />
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CommissionCap):</span>
+                    <span id="lblCommPotential" class="CandDetailsRight48">$@Model.CommissionCap</span>
+                </div>
+            }
+            @if (Model.PlusBonus)
+            {
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.BonusDescription):</span>
+                    <span id="lblBonus" class="CandDetailsRight48">@Model.BonusDescription</span>
+                </div>
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.AnnualBonusPotential):</span>
+                    <span id="lblBonus" class="CandDetailsRightAuto">$@Model.AnnualBonusPotential</span>
+                    <br />
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.BonusCap):</span>
+                    <span id="lblBunusPotential" class="CandDetailsRightAuto">$@Model.BonusCap</span>
+                </div>
+            }
+            @if (Model.IncludeCandidateNotice)
+            {
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CandidateNoticePeriod):</span>
+                    <span id="lblCandidateNotice" class="CandDetailsRightAuto">@Model.CandidateNoticePeriodText</span>
+                    @if (Model.CandidateNoticePeriod != 1)
+                    {
+                        <br />
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CandidateNoticePeriodType):</span>
+                        <span id="lblCompanyNotice" class="CandDetailsRightAuto">@Model.CandidateNoticePeriodTypeText</span>
+                    }
+                </div>
+            }
+            @if (Model.IncludeCompanyNotice)
+            {
+                <div class="OfferBox OW48">
+                    <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CompanyNoticePeriod):</span>
+                    <span id="lblCanNoticeIn" class="CandDetailsRight48">@Model.CompanyNoticePeriodText</span>
+                    @if (Model.CompanyNoticePeriod != 1)
+                    {
+                        <br />
+                        <span class="CandDetailsLeft48">@Html.LanguageLabelFor(m => m.CompanyNoticePeriodType):</span>
+                        <span id="lblComNoticeIn" class="CandDetailsRight48">@Model.CompanyNoticePeriodTypeText</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

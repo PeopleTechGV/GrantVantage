@@ -1,0 +1,478 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.InterViewProcess
+
+
+@{
+    ViewBag.Title = "Conduct Interview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+<div class="NavItems">
+    <div class="MenuItemIcon bgInterview16W"></div>
+    <span class="navTitle">CONDUCT INTERVIEW</span>
+    <span class="chevron"></span>
+</div>
+}
+<style>
+    #intComp, #headerIntSec, #RemoveRound {
+        visibility: hidden;
+    }
+
+    #intdate:hover span {
+        display: inline-block !important;
+    }
+</style>
+
+@Html.HiddenFor(m => m.ScheduleIntId, new { @id = "hdnScheduleIntId" })
+@Html.HiddenFor(m => m.VacRndId, new { @id = "hdnVacRndId" })
+@Html.HiddenFor(m => m.objConductInterviewDetails.ApplicationId, new { @id = "hdnApplicationId" })
+@Html.Hidden("IsInterviewComplet", false, new { @id = "IsInterComp" })
+
+
+<ul class="ActionBar">
+    <li>
+        @if (Model.objConductInterviewDetails.ReturnUrl == "Candidate")
+        {
+        <a id="conductIntBack" class="bgBack16 ComboDropdown" href='@Url.Action("Index","MyCandidates")'>
+            BACK
+        </a>
+        }
+        else
+        {
+        <a id="conductIntBack" class="bgBack16 ComboDropdown" href='@Url.Action("GetCandidateProfile", "MyCandidates", new { ApplicationId = @Model.objConductInterviewDetails.ApplicationId })'>
+            BACK
+        </a>
+        }
+    </li>
+    <li>
+        <a class="bgTerminateInterview16 ComboDropdown" href='@Url.Action("TerminateConductInterview", "Application", new { VacRndId = @Model.VacRndId,ScheduleIntId = @Model.ScheduleIntId,ApplicationId = @Model.objConductInterviewDetails.ApplicationId })' onclick="return VacancyModel.OpenPostRequestForm(this);" title="Terminate Interview" dialog-width="450px" dialog-close-button="false" dialog-title="Terminate Interview">
+            TERMINATE INTERVIEW
+        </a>
+    </li>
+    <li>
+        <a class="bgFinishLater16 ComboDropdown" href="javascript:void(0);" data-url='@Url.Action("UpdateStatusOfInterview", "Application", new { ScheduleIntId = @Model.ScheduleIntId, VacRndId = @Model.VacRndId, InterviewStatus = Convert.ToInt32(BEClient.InterviewStatus.FinishLater) })' onclick="return UpdateInterviewstatus(this);" '>
+            FINISH LATER
+        </a>
+    </li>
+    <li style="display:none;" id="linkintcomp">
+        <a class="bgCompleteInterview16 ComboDropdown" href='javascript:void(0);' onclick="return Conductintcomp(this);">
+            INTERVIEW COMPLETE
+        </a>
+    </li>
+    <li style="display:none;" id="linkprintque">
+        <a class="bgPrint16 ComboDropdown" href='javascript:void(0);' onclick="PrintQue();">
+            PRINT QUESTIONS
+        </a>
+    </li>
+</ul>
+
+<div style="clear: both; width: 100%; margin: 8px 0; display: inline-block;" class="lblBblue">CONDUCT INTERVIEW</div>
+
+<div style="clear: both; width: 100%; margin: 8px 0; display: inline-block;">
+
+    <div class="ClearFloat w100" style=" display: inline-block; border-bottom: 2px solid #953634;">
+        <span class="floatleft">
+            <span class="lblBbrown">@Model.objConductInterviewDetails.VacancyName @*HR Admin Assistant - 1000070 - Ahmedabad*@</span>
+            <span class="lblNblue">@Model.objConductInterviewDetails.VacancyPostedDate</span>
+        </span>
+        <span class="floatright">
+            <span class="lblNbrown">Status: </span>
+            <span class="lblNblue">@Model.objConductInterviewDetails.RoundName</span>
+        </span>
+    </div>
+
+    <div id="ConductInterviewdetails">
+        @Html.Partial("ConductInterview/_ScheduleIntDetails", Model)
+    </div>
+    @if (Model.ObjQueCat != null)
+    {
+    <div class="ClearFloat w98" style=" display: inline-block; margin: 0 1%;">
+        <span class="floatleft">
+            <span class="lblBblue">Interview Questions & Comments</span>
+        </span>
+
+        <span class="floatright">
+            <a id="btnExpandView" class="bgAccExpand12 lblBblue" is-expand="false" style="background-position: left center;background-repeat: no-repeat;padding: 4px 4px 4px 18px;">Show Expanded View</a>
+        </span>
+    </div>
+    <div id="ConductInterviewSection" class="interviewSection ClearFloat w98" style=" display: inline-block; margin: 0 1%;" data-scheduleintid="@Model.ScheduleIntId">
+        <div id="QuestionCategory">
+            @Html.Partial("InterViewQuestions/_InterViewSections", Model)
+        </div>
+    </div>
+    <div id="ConductInterviewSection1" class="interviewSection1 ClearFloat w98" style=" display: inline-block; margin: 0 1%;" data-scheduleintid="@Model.ScheduleIntId">
+        <div id="QuestionCategory">
+
+        </div>
+    </div>
+    }
+    else
+    {
+    <br /><br />
+    <div style="text-align: center;"><h3 class="lblBbrown">No Interview Question(s) found.</h3></div>
+    }
+</div>
+@if (Model.ObjQueCat != null)
+{
+<script>
+    $(function () {
+        var _dlink = '@Html.Raw(Url.Action("GetConductInterviewQueCat", "Application", new { VacRndId = Model.VacRndId, QueCatId = Model.ObjQueCat.QueCatId, ScheduleIntId = Model.ScheduleIntId, Row = 1 }))';
+        $.ajax({
+            type: "POST",
+            url: _dlink,
+            dataType: "html",
+            success: function (result) {
+                $("#Questions").html("");
+                $("#Questions").append(result);
+                var htmlcat = $('#QuestionCategory');
+
+                if ($(htmlcat).find('next-hd-disable').length == 0) {
+                    if ($("#Questions").find('.next-disable').length > 0) {
+                        if ($("#Questions").prev().find('.next-hd-disable').length > 0) {
+                            $("#linkintcomp").removeAttr("style");
+                            $("#IsInterComp").val("true");
+                        }
+                        else {
+                            var cathtml = $(htmlcat).find('#Questions').prev().find('#CatNext').parent().clone();
+                            $(cathtml).find('#CatNext').attr('class', 'next-active');
+                            $(cathtml).find('#CatNext').text('Next');
+                            $(htmlcat).find('.next-disable').parent().html($(cathtml).html());
+                        }
+                    }
+                }
+                $("#score").slider(VacancyModel.ScaleScore);
+                if ($("#AnsScore").length > 0) {
+                    $("#AnsScore").slider(VacancyModel.ScaleScore);
+                }
+                //$("#intComp").remove();
+            },
+            error: function (result) {
+            }
+        });
+    });
+</script>
+}
+<script type="text/javascript">
+
+    $("#btnExpandView").toggle(function () {
+        $(this).switchClass("bgAccExpand12", "bgAccCollapse12", 1000, "easeInOutQuad");
+        $(this).text("Show Collapsed View");
+        $(this).attr("is-expand", "true");
+        var VacRndId = '@Model.VacRndId';
+        var ScheduleIntId = '@Model.ScheduleIntId';
+
+        var dataLink = '@Html.Raw(Url.Action("GetExpandedViewQueAns", "Application", new { VacRndId = "_VACRNDID_", ScheduleIntId = "_SCHEDULEINTID_" }))';
+        dataLink = dataLink.replace("_VACRNDID_", VacRndId);
+        dataLink = dataLink.replace("_SCHEDULEINTID_", ScheduleIntId);
+
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+            $("#ConductInterviewSection").hide();
+            $("#ConductInterviewSection1").html('');
+            var styles = '<style> #loading{display:none !important; visibility:hidden;}</style>';
+            $("#ConductInterviewSection1").append(styles + data);
+        });
+        $("#linkprintque").css("display", "block");
+        $("#linkintcomp").css("display", "block");
+
+    }, function () {
+        window.location = window.location.href;
+        return;
+        $("#ConductInterviewSection1").html('');
+        $("#ConductInterviewSection").show();
+
+        $(this).switchClass("bgAccCollapse12", "bgAccExpand12", 1000, "easeInOutQuad");
+        $(this).text("Show Expanded View");
+
+
+        //if ($('#QueNext').length > 0)
+        //    QueNext2($('#QueNext'));
+        //else
+        //{
+        //    if($('#CatNext:last').length > 0)
+        //        QueNext2($('#CatNext:last'));
+        //}
+
+        $(this).attr("is-expand", "false");
+        $("#linkprintque").css("display", "none");
+        var _queexist = $("#ConductInterviewSection").children().find('#SectionId').next().find('.next-disable')
+        if ($(_queexist).length > 0) {
+            $("#linkintcomp").css("display", "block");
+        }
+        else if ($("#IsInterComp").val() == "true") {
+
+            $("#linkintcomp").css("display", "block");
+        }
+        else {
+            $("#linkintcomp").css("display", "none");
+        }
+    });
+
+
+    function ValidateCheckBox(form) {
+        var allow = false;
+        allow = VacancyModel.ValidateQuestionAnswer(form);
+        return !allow;
+    }
+    $('#CatNext').live('click', function () {
+        var ele = $(this);
+        if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+            if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                $('#frmAddEditAnswer').submit();
+                GetScore(this);
+                CatNext(this);
+            }
+        }
+
+        var Qele = $("#Questions");
+        if ($(Qele).children().find('.prev-next:last').find('.next-disable').length > 0) {
+            $("#linkintcomp").removeAttr("style");
+        }
+    });
+
+    $('#CatPrev').live('click', function () {
+        if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+            if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                $('#frmAddEditAnswer').submit();
+                GetScore(this);
+                CatNext(this);
+            }
+        }
+    });
+
+    $('#QueNext').live('click', function () {
+        if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+            if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                $('#frmAddEditAnswer').submit();
+                GetScore(this);
+                QueNext(this);
+            }
+        }
+    });
+
+    $('#QuePrev').live('click', function () {
+        if (ValidateCheckBox($('#frmAddEditAnswer'))) {
+            if ($('#frmAddEditAnswer').find('.input-validation-error').length <= 0) {
+                $('#frmAddEditAnswer').submit();
+                GetScore(this);
+                QueNext(this);
+            }
+        }
+    });
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    function QueNext2(element) {
+
+        var ele = $(element);
+        var _url = $("#hdncur-data-url").val();
+        var _scheduleintid = getParameterByName("ScheduleIntId");
+        _url = _url.replace("_SCHEDULEINTID_", _scheduleintid);
+        $.ajax({
+            type: "get",
+            url: _url,
+            async: false,
+            dataType: "html",
+            success: function (result) {
+
+                var Jsonrespon = JSON.parse(result);
+
+
+                //var Qele = ele.parents('#Questions');
+                //$(Qele).html('dfgdfsgdfsgds');
+
+                //$(Qele).append(Jsonrespon.Data);
+                var Qele = $("#ConductInterviewSection").children().find("#Questions")
+                Qele.html('');
+                Qele.html(Jsonrespon.Data);
+                if ($queRes.find('.prev-disable').length > 0) {
+                    var cathtml = ele.parents('#Questions').prev().find('#CatPrev').parent().clone();
+                    $(cathtml).find('#CatPrev').attr('class', 'prev-active');
+                    $(cathtml).find('#CatPrev').text('Prev');
+                    $queRes.find('.prev-disable').parent().html($(cathtml).html());
+                }
+                if ($queRes.find('.next-disable').length > 0) {
+                    var cathtml = ele.parents('#Questions').prev().find('#CatNext').parent().clone();
+                    $(cathtml).find('#CatNext').attr('class', 'next-active');
+                    $(cathtml).find('#CatNext').text('Next');
+                    $queRes.find('.next-disable').parent().html($(cathtml).html());
+                }
+
+
+                Qele.find("#score").slider(VacancyModel.ScaleScore);
+                if (Qele.find("#AnsScore").length > 0) {
+                    Qele.find("#AnsScore").slider(VacancyModel.ScaleScore);
+                }
+
+                if ($(Qele).find('.next-disable').length > 0 && $(Qele).prev().find('.next-hd-disable').length > 0) {
+                    $("#linkintcomp").removeAttr("style");
+                    $("#IsInterComp").val("true");
+                }
+            },
+            error: function (result) {
+                alert('Get Error');
+            }
+        });
+
+        VacancyModel.CallGetMethod(_url, function (data) {
+            var $queRes = $('<div>' + data + '</div>');
+            if ($queRes.find('.prev-disable').length > 0) {
+                var cathtml = ele.parents('#Questions').prev().find('#CatPrev').parent().clone();
+                $(cathtml).find('#CatPrev').attr('class', 'prev-active');
+                $(cathtml).find('#CatPrev').text('Prev');
+                $queRes.find('.prev-disable').parent().html($(cathtml).html());
+            }
+            if ($queRes.find('.next-disable').length > 0) {
+                var cathtml = ele.parents('#Questions').prev().find('#CatNext').parent().clone();
+                $(cathtml).find('#CatNext').attr('class', 'next-active');
+                $(cathtml).find('#CatNext').text('Next');
+                $queRes.find('.next-disable').parent().html($(cathtml).html());
+            }
+            var Qele = ele.parents('#Questions');
+            Qele.html('');
+            Qele.html($queRes);
+            Qele.find("#score").slider(VacancyModel.ScaleScore);
+            if (Qele.find("#AnsScore").length > 0) {
+                Qele.find("#AnsScore").slider(VacancyModel.ScaleScore);
+            }
+
+            if ($(Qele).find('.next-disable').length > 0 && $(Qele).prev().find('.next-hd-disable').length > 0) {
+                $("#linkintcomp").removeAttr("style");
+                $("#IsInterComp").val("true");
+            }
+        });
+    }
+
+    function QueNext(element) {
+        var ele = $(element);
+        var _scheduleintid = $(ele).parents('.interviewSection').attr('data-scheduleintid');
+        var _url = $(element).attr('data-url');
+        _url = _url.replace("_SCHEDULEINTID_", _scheduleintid);
+        VacancyModel.CallGetMethod(_url, function (data) {
+            var $queRes = $('<div>' + data + '</div>');
+            if ($queRes.find('.prev-disable').length > 0) {
+                var cathtml = ele.parents('#Questions').prev().find('#CatPrev').parent().clone();
+                $(cathtml).find('#CatPrev').attr('class', 'prev-active');
+                $(cathtml).find('#CatPrev').text('Prev');
+                $queRes.find('.prev-disable').parent().html($(cathtml).html());
+            }
+            if ($queRes.find('.next-disable').length > 0) {
+                var cathtml = ele.parents('#Questions').prev().find('#CatNext').parent().clone();
+                $(cathtml).find('#CatNext').attr('class', 'next-active');
+                $(cathtml).find('#CatNext').text('Next');
+                $queRes.find('.next-disable').parent().html($(cathtml).html());
+            }
+            var Qele = ele.parents('#Questions');
+            Qele.html($queRes);
+            Qele.find("#score").slider(VacancyModel.ScaleScore);
+            if (Qele.find("#AnsScore").length > 0) {
+                Qele.find("#AnsScore").slider(VacancyModel.ScaleScore);
+            }
+
+            if ($(Qele).find('.next-disable').length > 0 && $(Qele).prev().find('.next-hd-disable').length > 0) {
+                $("#linkintcomp").removeAttr("style");
+                $("#IsInterComp").val("true");
+            }
+        });
+    }
+
+    function CatNext(element) {
+
+        var _QueRow = 1;
+        var ele = $(element);
+        var _scheduleintid = $(ele).parents('.interviewSection').attr('data-scheduleintid');
+        VacancyModel.CallGetMethod($(element).attr('data-url'), function (data) {
+
+            var vacRndId = VacancyModel.getUrlParameter(ele.attr('data-url'), 'VacRndId');
+            var htmlcat = $('<div>' + data + '</div>');
+            var quecatid = htmlcat.find('.question-section-hd').attr('data-pkid');
+            var link = '@Html.Raw(Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = "_VACRNDID_", QueCatId = "_QUECATID", ScheduleIntId = "_SCHEDULEINTID_", Row = "_ROW_" }))';
+            VacancyModel.LoadQueBasedonCat(link, vacRndId, quecatid, _scheduleintid, _QueRow, htmlcat, ele.parents('.interviewSection'));
+        });
+    }
+
+    function GetScore(element) {
+        var _ele = $(element);
+        var appid = $("#hdnApplicationId").val();
+        var vacrndid = $("#hdnVacRndId").val();
+        var vacqueid = $("#hdnQueId").val();
+        var vacquecatid = $("#Questions").prev().attr("data-pkid");
+        var dataLink = '@Html.Raw(Url.Action("GetAllScore","Application", new { AppId = "_APPID", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_" }))';
+        dataLink = dataLink.replace("_APPID", appid);
+        dataLink = dataLink.replace("_VACRNDID_", vacrndid);
+        dataLink = dataLink.replace("_VACQUEID_", vacqueid);
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+            var len = data.Data.length
+            for (var i = 0; i < len; i++) {
+                var obj = data.Data[i];
+                if (obj.Id.toLowerCase() == appid.toLowerCase()) {
+                    $('#candidatescore').text(obj.Score)
+                }
+                else if (obj.Id.toLowerCase() == vacrndid.toLowerCase()) {
+                    $('#rndscore').text(obj.Score)
+                }
+                else if (obj.Id.toLowerCase() == vacqueid.toLowerCase()) {
+                    //    $("#Questions").prev().find('div #catscore').text(obj.Score);
+                }
+                else {
+                    $("#Questions").prev().find('div #catscore').text(obj.Score);
+                }
+            }
+        });
+    }
+
+    function Conductintcomp(element) {        
+        var allQuestion = $("#ConductInterviewSection1").find('#frmAddEditAnswer');
+        var result = false;
+        for (var i = 0; i < allQuestion.length; i++) {
+
+            var returnResult = VacancyModel.ValidateQuestionAnswer(allQuestion[i]);
+            if (returnResult) {
+                result = true;
+            }
+
+        }
+        //var result = VacancyModel.ValidateQuestionAnswer($('#frmAddEditAnswer'));
+        if (!result) {
+            $('#frmAddEditAnswer').submit();
+            var _datalink = '@Html.Raw(@Url.Action("UpdateStatusOfInterview", "Application", new { ScheduleIntId = @Model.ScheduleIntId, VacRndId = @Model.VacRndId, InterviewStatus = Convert.ToInt32(BEClient.InterviewStatus.InterViewComplete) }))';
+            VacancyModel.CallPostMethod(_datalink, function (data) {
+                window.location.href = $("#conductIntBack").attr("href");
+            });
+        }
+        else
+        {
+            VacancyModel.NotificationDialog("ConfirmDiv", "Applicant's Answer Required", 340, "Applicant's Answer Required for the all the Question(s).", "Ok");
+        }
+
+    }
+
+    function UpdateInterviewstatus(element) {
+        var _dataLink = "";
+        var _ele = $(element);
+        _dataLink = $(_ele).attr('data-url');
+        VacancyModel.CallPostMethod(_dataLink, function (data) {
+            window.location.href = $("#conductIntBack").attr("href");
+        });
+    }
+
+    function PrintQue() {
+        var data = $('#ConductInterviewSection1').html();
+        var css = "<link href='/Content/css/style.css' rel='stylesheet'/> <link href='/Content/css/Desktop.css' rel='stylesheet'/>" +
+        "<style>.question-dtl-lbl, .question-head {color: #345e8e;}.intrvw-complete, .prev-next, .prev-hd-disable, .prev-hd-active, .next-hd-disable, .next-hd-active {display:none;}</style>";
+        data = '<html><head>' + css + '<title>Print Questions</title></head><body><div style="width:860px; padding: 30px;">' + data + '</div></body></html>'
+        var mywindow = window.open('', 'Interview Questions', 'height=770,width=960');
+        mywindow.document.write(data);
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+</script>

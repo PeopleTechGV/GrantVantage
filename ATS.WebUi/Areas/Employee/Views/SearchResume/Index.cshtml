@@ -1,0 +1,378 @@
+﻿@using BECommonConstantConstant = ATS.BusinessEntity.Common.CommonConstant
+@using BEMenuConstant = ATS.BusinessEntity.Common.EmployeeMenuConstant;
+@model ATS.BusinessEntity.SaveSearchResume
+@System.Web.Optimization.Styles.Render("~/Content/SCCss")
+@System.Web.Optimization.Scripts.Render("~/bundles/SCJs")
+
+@{
+    ViewBag.Title = "Search Resume";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+
+</style>
+
+@{
+    var SearchName = (Model == null ? "New Search" : Model.SearchQueryName);
+}
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgSearch16W"></div>
+        <span class="navTitle">
+            @Html.LanguageLabel(BEMenuConstant.MNU_SEARCH_RESUME)
+            @if (Model != null)
+            {<span>: </span> <span class="lblNgold CaseUpper">@SearchName</span>}
+        </span>
+        <span class="chevron"></span>
+        <ul class="dropdownMenu menuPurple">
+            @if (((SelectList)ViewBag.lstSaveSearch).Count() > 0)
+            {
+                foreach (SelectListItem _item in (SelectList)ViewBag.lstSaveSearch)
+                {
+                    <li>
+                        <a href='@Url.Action("Index", "SearchResume", new { @SearchQueryId = _item.Value, area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+                            @_item.Text
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+
+}
+
+
+<script>
+    var icons = {
+        header: "iconOpen",
+        activeHeader: "iconClosed"
+    };
+    var JsonString = '@ViewBag.JsonString';
+    if (JsonString != '') {
+        JsonString = JSON.parse(@Html.Raw(ViewBag.JsonString));
+    }
+    function mapJSONData() {
+        console.log('SearchResume.mapJSONData START');
+        SearchResume.Isvisisted = false;
+        var serverdata = '';
+
+        $.when($.post("SearchResume/GetFieldDetails", {}, function (data) {
+            console.log('SearchResume/GetFieldDetails START');
+            data = JSON.parse(data);
+            serverdata = data;
+
+            serverdata = serverdata.data;
+            search_groups = {};
+
+            var objcriteria = null;
+            var objfield = null;
+            for (var i = 0 ; i < serverdata.length ; i++) {
+                objcriteria = serverdata[i];
+                objcriteria.fields = {};
+                for (var j = 0 ; j < objcriteria.Fields.length ; j++) {
+                    objfield = objcriteria.Fields[j];
+                    objcriteria.fields[objfield.fieldName] = objfield;
+
+                }
+                delete objcriteria.Fields;
+                search_groups[objcriteria.header] = objcriteria;
+            }
+            console.log('SearchResume/GetFieldDetails END');
+            ApplyFunctions();
+        })).then(
+        function () {
+            console.log('SearchResume.mapJSONData call END AND JsonString');
+
+            if (JsonString != '') {
+                $.post("SearchResume/GetData", { data: JsonString }, function (data) {
+                    data = JSON.parse(data);
+                    var objarr1 = [];
+
+                    $(".search-results").parents('.acc-inner').parent().prev().find('.prfle-tab-head > span').html('(' + VacancyModel.commaSeparateNumberByValue(data.SearchResultCount) + ')');
+
+                    array = '[' + data.jsonString + ']';
+                    var myobj = JSON.parse(array);
+                    objarr1.push(myobj);
+
+                    SearchResume.loadSavedSearch(myobj[0].SearchParameters[0]);
+                });
+            }
+
+            console.log('END JsonString');
+        });
+    }
+
+    $(function () {
+        console.log('SearchResume.mapJSONData call');
+        mapJSONData();
+        console.log('SearchResume.mapJSONData END');
+        $("#accordion").accordion({
+            icons: icons,
+            heightStyle: "content",
+            collapsible: true,
+            active: 0,
+            animate: true,
+            collapsible: true,
+            beforeActivate: function (event, ui) {
+                var _curAcc = $.trim(ui.newHeader.text());
+                if ($(ui.oldPanel).find('.inclusions').length > 0 || $(ui.oldPanel).find('.exclusions').length > 0) {
+                    if ($(ui.oldPanel).find('.inclusions').find('.query-incomplete').length > 0) {
+                        VacancyModel.ProfileErrorMeesage($(ui.oldPanel).parent().find('.notification').first(), "Incomplete Query", 3000);
+                        event.preventDefault();
+                    }
+                    if ($(ui.oldPanel).find('.exclusions').find('.query-incomplete').length > 0) {
+                        VacancyModel.ProfileErrorMeesage($(ui.oldPanel).parent().find('.notification').last(), "Incomplete Query", 3000);
+                        event.preventDefault();
+
+                    }
+
+                }
+                if (_curAcc.indexOf('Search Results') >= 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '../../Employee/SearchResume/GetResult',
+                        cache: false,
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            if (!data.IsError)
+                                $(ui.newPanel).find('.acc-inner > .row').html(data.Data);
+                            else {
+                                $(ui.newPanel).find('.acc-inner > .row').html(data.Data);
+                            }
+                        },
+                        error: function (data) {
+                            data = JSON.parse(data);
+                        }
+                    });
+                }
+            }
+        });
+        VacancyModel.RegisterDialog('dialog', false, false, true);
+    });
+</script>
+
+<div id="search-resumes">
+    <ul class="ActionBar">
+        <li>
+            <a class="bgSearch16B" href='@Url.Action("StartNewSearch", "SearchResume", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' title="New Search">New Search</a>
+        </li>
+        @if (ViewBag.IsNewSearch == 1)
+        {
+        <li>
+            <a href='@Url.Action("SaveSearchResume", "SearchResume", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' onclick="return VacancyModel.OpenPostRequestForm(this)" title="Save Search" dialog-width="400" dialog-close-button="false" dialog-title='@Html.LanguageLabel(BECommonConstantConstant.SAVE_SEARCH_QUERY)' dialog-companyname="@ViewBag.ClientName" class="bgSave16B">Save Search</a>
+        </li>
+        }
+        @if (Model != null && !Model.SaveResumeSearchId.Equals(Guid.Empty))
+        {
+        <li>
+            <a href='@Url.Action("UpdateSaveResumeSearch", "SearchResume", new { SearchQueryId = @Model.SaveResumeSearchId, area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' title="Update Search" class="bgSave16B">Update Search</a>
+        </li>
+        }
+        @if (Model != null && !Model.SaveResumeSearchId.Equals(Guid.Empty))
+        {
+        <li>
+            <a id="deleteSearchresume" class="bgDelete16B" href='#' title="Delete Search">Delete Search</a>
+        </li>
+        }
+    </ul>
+    <div id="accordion" class="floatleft w100 SMContentBox">
+        <div class="acc-header">
+            <p class="prfle-tab-head">
+                @Html.Label("Search Inclusions")
+                <span id="inclusion-matches"></span>
+                <span class="notification" style="display:none;"></span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner">
+                <div id="results">
+                    <div class="row inclusions">
+                        <div class="content">
+                            <div class="query-block-group clearfix template">
+                                <div class="btn-select-grouping-container">
+                                    <a class="btn-select-grouping">*</a>
+                                    <ul class="options-dd grouping-type">
+                                        <li><a class="and">AND</a></li>
+                                        <li><a class="or">OR</a></li>
+                                        <li><a class="remove-grouping">Remove Grouping</a></li>
+                                    </ul>
+                                </div>
+                                <div class="query-blocks-container">
+                                </div>
+                                <a class="btn-delete-query-group">
+                                    <img src="~/Content/images/remove_16.png" align="absmiddle" height="16" width="16" />
+                                </a>
+                                <div class="matches">
+                                    <span class="count"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="query-block-sgl template clearfix">
+                                <div class="criteria-group-container">
+                                    <a href="javascript:;" class="btn-change-criteria-group">
+                                        <img src="" align="absmiddle" height="16" width="16" />
+                                        <span style="font-size: 10px;padding-left: 4px;vertical-align: middle;">&#9660;</span>
+                                    </a>
+                                    <ul class="new-criteria change-criteria options-dd">
+                                        <li class="template">
+                                            <a href="javascript:;">
+                                                <img src="" class="apply" alt="">
+                                                <span class="label"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="field-container">
+                                    <a href="javascript:;" class="btn-change-field">
+                                        <span class="field-label">Select Field</span>
+                                    </a>
+                                    <ul class="change-field options-dd">
+                                        <li class="template">
+                                            <a href="javascript:;">
+                                                <span class="label"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="operator-container">
+                                    <a href="javascript:;" class="btn-change-operator empty">
+                                        <span class="operator-label">Select Operator</span>
+                                    </a>
+                                    <ul class="change-operator options-dd">
+                                        <li class="template">
+                                            <a href="javascript:;">
+                                                <span class="label"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="input-container" style="">
+                                        <label class="input-value"></label>
+                                        <input type="text" id="datetimeinp" name="" />
+                                        <datalist id="selectval"></datalist>
+                                    </div>
+                                </div>
+                                <a class="btn-delete-query">
+                                    <img src="~/Content/images/remove_16.png" align="absmiddle" height="16" width="16" />
+                                </a>
+                                <div class="matches">
+                                    <span class="count">Fetching...</span>
+                                </div>
+
+                            </div>
+
+                            <div class="new-criteria-container">
+                                <a href="javascript:;" class="btn-new-criteria">
+
+                                    <img src='@Url.Content("~/Content/images/Add_New_24.png")' align="absmiddle" height="16" width="16" />
+                                    <span class="btn-label">Add New Criterion</span>
+                                </a>
+                                <ul class="new-criteria options-dd">
+                                    <li class="template">
+                                        <a href="javascript:;">
+                                            <img src="" class="apply" alt=""><span class="label"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="acc-header">
+            <p class="prfle-tab-head">
+                @Html.Label("Search Exclusions")
+                <span id="exclusion-matches"></span>
+                <span class="notification" style="display:none;"></span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner">
+                <div id="results">
+                    <div class="row exclusions">
+                        <div class="content">
+                            <div class="new-criteria-container">
+                                <a href="javascript:;" class="btn-new-criteria">
+                                    <img src='@Url.Content("~/Content/images/Add_New_24.png")' align="absmiddle" height="16" width="16" />
+                                    <span class="btn-label">Add New Criterion</span>
+                                </a>
+                                <ul class="new-criteria options-dd">
+                                    <li class="template">
+                                        <a href="javascript:;">
+                                            <img src="" class="apply" alt=""><span class="label"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="acc-header">
+            <p class="prfle-tab-head">
+                @Html.Label("Search Results")
+                <span id="total-matches"></span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner InnerSection">
+                <div class="row search-results">
+                    @if (Model != null)
+                    {
+                    @Html.Partial("Shared/_ISolrUserDetailsList", Model.objSolrEmployeeSearchFields)
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ConfirmDiv"></div>
+
+<div aria-labelledby="ui-id-1" aria-describedby="dialog" role="dialog" tabindex="-1" style="display: none;" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"><span class="ui-dialog-title" id="ui-id-1">&nbsp;</span><button title="close" aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button></div><div class="ui-dialog-content ui-widget-content" id="dialog">
+    </div>
+</div>
+
+<script type="text/javascript">
+    function actionClick(id) {
+        runEffect(id);
+        return false;
+    };
+
+    function runEffect(id) {
+        $("#" + id).slideToggle("slow");
+    }
+
+    function SaveJob(JobId) {
+        document.getElementById("Save_JobId").value = JobId;
+        document.getElementById("frmmain").submit();
+    }
+
+    $("#deleteSearchresume").live("click", function () {
+
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Search Query", 310, "Are you sure want to delete this Search Query ?", "Yes", "Cancel", "DeleteQuery", this, "test");
+        return false;
+    });
+
+    function DeleteQuery(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("DeleteSaveResumeSearch", "SearchResume", new { SearchQueryId = @Model.SaveResumeSearchId, area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'
+            window.location.href = deletelink;
+        }
+    }
+
+    $(function () {
+        $(".dumy-left").tooltip({
+            tooltipClass: "tooltip",
+            content: function () {
+                var element = $(this);
+                return element.attr('title');
+            }
+        });
+    });
+</script>

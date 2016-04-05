@@ -1,0 +1,44 @@
+﻿@model ATS.BusinessEntity.InterviewProcessQueModel
+@using HtmlHelpers.BeginCollectionItem
+
+@if (Model.ObjInterviewProcessQue.ObjQue.QueId != Guid.Empty)
+{
+    <div class="vacancy-quest-box">
+        <div class="std_width question-head">
+            <span class="red">Question @Model.ObjInterviewProcessQue.CurrentQue :</span>
+            @Model.ObjInterviewProcessQue.ObjQue.LocalName
+        </div>
+
+        <div class="w100 floatleft" style="margin-bottom: 3px;">
+            <div class="question-dtl-lbl">Question Type</div>
+            <div class="question-dtl-value">@Model.ObjInterviewProcessQue.ObjQue.QueText (@Model.ObjInterviewProcessQue.ObjQue.QueDataTypeText)</div>
+        </div>
+
+
+        @foreach (var _current in Model.Questions)
+        {
+            using (Html.BeginCollectionItem("Questions"))
+            {
+                <div class="w100 floatleft" style="margin-bottom: 3px;">
+                    @*<div class="question-dtl-lbl">Applicant's Answer</div>*@
+                    @Html.Partial("InterViewQuestions/_CreateQuestionInt", _current)
+                </div>
+                <div class="w100 floatleft" style="margin-bottom: 3px;">
+                    <div class="question-dtl-lbl">Comments</div>
+                    <div class="question-dtl-value">
+                        <div class="answerComment">
+                            @_current.Comment
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+else
+{
+    <div class="vacancy-quest-box">No Questions</div>
+}
+
+
+

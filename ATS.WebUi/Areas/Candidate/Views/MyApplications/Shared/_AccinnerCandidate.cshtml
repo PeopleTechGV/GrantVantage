@@ -1,0 +1,71 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model IList<BEClient.CandidateSurvey>
+<div class="AccCandidateSurveyInner">
+    @foreach (BEClient.CandidateSurvey item in Model)
+    {
+        <div class="acc-header" data-rndtypeid="@item.RndTypeId" data-quecnt="@item.QueCount">
+            <p class="prfle-tab-head">
+                @item.LocalName @if (@item.IsPending)
+                {
+                    <span class="ttldbrown"> (Pending)</span>
+                }
+                else
+                {
+                    if (item.SubmittedDate != DateTime.MinValue)
+                    {
+                        <span style="color: #808080; padding: 0 5px; font-weight:normal;"><i> - @item.SubmittedDate.ToString("MM/dd/yyyy")</i></span>
+                    }
+                    <span class="ttldbrown"> (Completed)</span>
+                }
+            </p>
+
+        </div>
+
+
+        <div class="acc-Content" style="margin-left: 2%; padding: 5px 0;">
+        </div>
+
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $(".AccCandidateSurveyInner").accordion(VacancyModel.AccSecondAttr);
+        $(".AccCandidateSurveyInner").on('accordionbeforeactivate', function (event, ui) {
+            AccCandidateSurvey(event, ui);
+            event.stopImmediatePropagation();
+        });
+    });
+    function AccCandidateSurvey(event, ui) {
+        if (ui.newHeader.length > 0) {
+            var AppId = $(ui.newHeader).parents(".ApplicationBox").find(".boxHeader").attr('data-applicationid');;
+            var _rndtypeId = $(ui.newHeader).attr("data-rndtypeid");
+            var dataLink = "";
+            var quecnt = parseInt($(ui.newHeader).attr("data-quecnt"));
+            dataLink = '@Html.Raw(Url.Action("GetAllCandidateAppQuestions", "MyApplications", new { ApplicationId = "_APPID_", RndTypeId = "_RNDTYPEID_" }))';
+            dataLink = dataLink.replace("_APPID_", AppId);
+            dataLink = dataLink.replace("_RNDTYPEID_", _rndtypeId);
+            if (quecnt == 0) {
+                $(ui.newPanel).html("");
+                var data = "No questions";
+                $(ui.newPanel).append(data);
+            }
+            else {
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).html("");
+                    $(ui.newPanel).append(data);
+                    var _form = $(ui.newPanel).find("form");
+                    var formCan = $(_form);
+                    $.validator.unobtrusive.parse(formCan);
+                    $(".AccQuestionCategory").accordion(VacancyModel.AccSecondAttr);
+                    $(".AccQuestionCategory").on('accordionbeforeactivate', function (event, ui) {
+                        event.stopImmediatePropagation();
+                    });
+                    event.stopImmediatePropagation();
+                });
+            }
+        }
+    }
+
+
+
+</script>

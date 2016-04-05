@@ -1,0 +1,13 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model IList<BEClient.VacancyRound> 
+
+@if (Model != null)
+{
+    int i=1;
+    foreach (BEClient.VacancyRound v in Model)
+    {
+        v.RndCnt = Model.Count();
+        v.RndOrder=i++;
+        @Html.Partial("Shared/_ApplicationProcess", v)
+    }
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    @System.Web.Optimization.Styles.Render("~/Content/css1")
+
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery1")
+
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery3")
+
+    <title>_Layout</title>
+    <script>
+
+        $(document).ready(function () {
+            VacancyModel.RegisterDialog('dialog', false, false, true);
+            ////Sticker function
+            //var s = $("#sticker");
+            //var pos = s.position();
+            //var b = $(".contnt-right");
+            
+            //$(window).scroll(function () {
+              
+            //    var windowpos = $(window).scrollTop();
+
+            //    if (windowpos > pos.top + 100) {
+            //        b.addClass("stick-body");
+            //        s.addClass("stick");
+            //    } else {
+            //        b.removeClass("stick-body");
+            //        s.removeClass("stick");
+            //    }
+            //});
+        });
+
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container_aa">
+            <div class="logo_aa">
+                <a href="#"><img title="logo" alt="logo" src="/Content/images/logo.png" /></a>
+            </div>
+            <div class="head-mid">
+                <div class="career">Career</div>
+                @if (ATS.WebUi.Common.CurrentSession.Instance != null)
+                {
+                    <div class="welcome">
+                        <h3>
+                            <span class="candidate">
+                                @Html.LanguageLabel("Welcome") <a id="my-filter" href="#divmyvacancy">
+                                @String.Format("{0}", ATS.WebUi.Common.CurrentSession.Instance.VerifiedUserMaster.UserName)
+                                @* <img src="/Content/images/down-arrow.jpg">*@
+                            </a>
+                            @*<div id="divmyvacancy" class=" " style="display: none;">
+                                    <ul>
+                                        <li>Joe Candidate</li>
+                                        <li>Joe Candidate</li>
+                                        <li>Joe Candidate</li>
+                                        <li>Joe Candidate</li>
+                                    </ul>
+                                </div>*@
+                        </span>
+                    </h3>
+                </div>
+                }
+            </div>
+            <div class="hdmenu_aa">
+                <div class="std_width" style="height:45px; "><img alt="powered by" src="/Content/images/GrantVantage_logo.png" /></div>
+                <div class="std_width hdmenu_bottom">
+                </div>
+                @*  <div id="HeaderText" class="career">
+                    Header text</div>*@
+                @if (ATS.WebUi.Common.CurrentSession.Instance == null)
+                {
+                    <div class="std_hlfwdth"><input type="button" class="logout-butn" style="color: #fff; font-size: 15px;" value='@Html.LanguageLabel(ATS.BusinessEntity.Common.LoginConstant.LOGIN)' id="slideit" /> </div>
+                    @*@{Html.RenderAction("LanguageList", "Account", new { area = "" });}*@
+
+                    <div class="language-box"></div>
+                    @*/ @Html.LanguageLabel("Signup")*@
+                    <div class="aside">
+                        @Html.Partial("_Login")
+                    </div>
+                }
+                else
+                {
+                    <div class="std_hlfwdth"><input type="button" class="logout-butn" style="color: #fff; font-size: 15px;" value="Logout" onclick="javascript:window.location='@Url.Action("LogOut", "Home", new { area = "Admin" })'" /></div>
+                    <div class="language-box">
+                        @*          @{Html.RenderAction("LanguageList", "Account", new { area = "" });}*@
+                    </div>
+
+
+                }
+
+
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container_aa bottom">
+            <div class="contnt-left" id="sticker">
+                @if (ATS.WebUi.Common.CurrentSession.Instance != null)
+                {
+
+                    <div id="nav-bar">
+                        <ul>
+                            @Html.Partial("_LeftMenu")
+                        </ul>
+                    </div>
+                    <div class="aside" id="sticker">
+                        @Html.Partial("_SideBar")
+                    </div>
+                }
+            </div>
+            <section class="contnt-right">
+
+                @RenderBody()
+
+            </section>
+
+        </div>
+    </section>
+    <div id="dialog">
+    </div>
+    <div id="ConfirmDiv">
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

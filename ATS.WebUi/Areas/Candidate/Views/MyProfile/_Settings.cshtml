@@ -1,0 +1,130 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.CandidateProfile
+<script src="~/Content/js/Actionbar.js"></script>
+@System.Web.Optimization.Scripts.Render("~/bundles/jAjaxFileUpload")
+
+@using (Html.BeginForm("UploadProfilePhoto", "MyProfile", FormMethod.Post, new { id = "UploadPhotoForm" }))
+{
+    <ul class="ActionBar ResizableAction">
+        <li>
+            <a class="bgAdd16B" href='@Url.Action("CreateProfileNav", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE})' id="Uplo id=" upload"
+               title="Create Profile" dialog-width="400" dialog-close-button="false" dialog-title="Change Profile" dialog-companyname="@ViewBag.ClientName">Create Profile</a>
+        </li>
+        <li>
+            <a class="bgSave16B" href='@Url.Action("GetUpdateProfile", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ProfileId = Model.objProfile.ProfileId })' id="Upload"
+               title="Update Profile" dialog-width="400" dialog-close-button="false" dialog-title="Update Profile" dialog-companyname="@ViewBag.ClientName">Update Profile</a>
+        </li>
+        @if (!Model.objProfile.IsDefault)
+        {
+            <li>
+                <a class="bgDelete16B" href='@Url.Action("DeleteProfile", "MyProfile", new { ProfileId = Html.ValueFor(m => m.objProfile.ProfileId) })' id="DeleteMyCurrentProfile"
+                   title="Delete Profile">Delete Profile</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="bgDelete16B" href="javascript:void(0);" onclick="return notify();" title="Delete Profile">Delete Profile</a>
+            </li>
+        }
+        <li>
+            @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.ProfileImage == "")
+            {
+                <a id="aProfileImg" class="bgCandidate16" href="javascript:void(0);" onclick="UploadPhoto()" title="Upload Profile Photo">Upload Profile Photo</a>
+            }
+            else
+            {
+                <a id="aProfileImg" class="bgCandidate16" href="javascript:void(0);" onclick="UploadPhoto()" title="Change Profile Photo">Change Profile Photo</a>
+            }
+            <input type="file" id="UploadPhoto" name="myfile[]" multiple class="file-upload" style="position:fixed; top: -999%;">
+        </li>
+        @if (!Model.objProfile.IsDefault)
+        {
+            <li>
+
+                <a href='@Url.Action("SetAsDefault", "MyProfile", new { ProfileId = Html.ValueFor(m => m.objProfile.ProfileId) })' id="SetAsDefaultCurrentProfile"
+                   title="Set as Default" class="bgSatDefault16B">
+                    Set As Default
+                </a>
+
+            </li>
+        }
+
+    </ul>
+}
+<script>
+    function notify() {
+        var _title = "Delete Profile";
+        var _profilename = '@Model.objProfile.ProfileName';
+        VacancyModel.NotificationDialog("ConfirmDiv", _title, 320, _profilename + " is default profile.Please select another profile as default and try again.", "OK");
+        return false;
+    }
+
+    function UploadPhoto() {
+        $('#UploadPhoto').click();
+    }
+
+    $('#UploadPhoto').change(function (click) {
+        filename = $(this).val().replace(/.*(\/|\\)/, '');
+        var result = ValidateImage(filename)
+        if (result && filename.length > 0) {
+            $('#UploadPhotoForm').submit();
+        }
+    });
+
+    function ValidateImage(filename) {
+        var _filename = filename;
+        var ext = _filename.split('.').pop();
+        ext = ext.toLowerCase();
+        if (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg" || _filename.length <= 0) {
+            return true
+        } else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', "Invalid Image!! Allow only .png,.jpg,.jpeg, .gif", 6000)
+            return false;
+        }
+    }
+
+    (function () {
+        $('#UploadPhotoForm').ajaxForm({
+            beforeSend: function () {
+                $(".Uploading").show();
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+
+            },
+            success: function () {
+                $(".Uploading").hide();
+            },
+            complete: function (xhr) {
+                $("#profileImg").attr("src", JSON.parse(xhr.responseText));
+                $("#aProfileImg").attr("title", "Change Profile Photo");
+                $("#aProfileImg").html("Change Profile Photo");
+            }
+        });
+    })();
+</script>
+
+<style>
+    .Uploading {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
+        display: none;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 99;
+    }
+
+        .Uploading > div {
+            left: 48%;
+            position: fixed;
+            top: 49%;
+        }
+</style>
+
+<div class="Uploading">
+    <div>
+        <img src="/Content/images/Processing.GIF" />
+    </div>
+</div>

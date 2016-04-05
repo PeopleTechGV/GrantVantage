@@ -1,0 +1,15 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.Objective
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        @Html.LanguageLabel(ATS.BusinessEntity.Common.ObjectiveConstant.FRM_TITL_OBJECTIVEDETAILS)
+    </p>
+</div>
+
+<div class="w100">
+    <div style="color: #345E8E; margin: 5px 2px;">
+        @Html.DisplayFor(m => m.ObjectiveDetails, new { @class = "executiveclass" })
+    </div>
+</div>
+<br clear="all" />

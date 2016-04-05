@@ -1,0 +1,48 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.SpeakingEventHistory
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.Title)</span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Title, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Title, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EventType, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EventType, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Location, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Location, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.StartDate, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.StartDateText, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EventName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EventName, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Link, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Link, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

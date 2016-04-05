@@ -1,0 +1,135 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Areas.Candidate.Models.JobApplication<ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateApplications>>
+@using BEApplicationDetailsConstantConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@using CommonFunction = ATS.WebUi.Common.CommonFunctions
+
+@{
+    Boolean HasRequiredDocs = CommonFunction.CheckForRequiredDocuments(Model.mainObject.obj.ApplicationId);
+    string Title = "Step 2: Application Questions";
+    if (HasRequiredDocs)
+    {
+        Title = "Step 3: Application Questions";
+    }
+    BEClient.NavCount NavCount = CommonFunction.CandidateNavigationCount();
+}
+
+@using (Ajax.BeginForm("SubmitApplication", "JobApplication", new { returnUrl = ViewBag.ReturnURL }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "Post",
+            OnSuccess = "SubmitApplicationSuccess",
+            OnFailure = "SubmitApplicationFailed"
+        }, new { @id = "frmApplication" }))
+{
+    @Html.HiddenFor(m => m.mainObject.obj.ApplicationId);
+    <div class="CanAccountLeft w80 SMW100">
+        <div class="CanAccountTitle">
+            <span class="MainTitle">@Title</span>
+            <span class="SubTitle">The following questions are required as part of this job application:</span>
+        </div>
+
+        <div class="jobapp-textarea QuestionForm" style="width: 100%;">
+            @Html.Partial("Question/_CreateQuestions", Model)
+        </div>
+        <div class="box CAAction SpaceBetween">
+            @if (HasRequiredDocs)
+            {
+                <a href="javascript:void(0);" class="btn-icon24 bgBack24 SMboxButton" id="btnBack">BACK</a>
+            }
+            @if (Model.mainObject.obj.ApplicationStatus == ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant.APP_STAT_SUBMIT)
+            {
+                <a id="btnNextToComplete" class="btn-icon24-right bgNext24 SMboxButton" href="javascript:void(0);">NEXT</a>
+            }
+            else
+            {
+                <button class="btn-icon24 bgSave24 SMboxButton" name="submitButton" value="SaveForLater" onclick="return Pass(this);">SAVE FOR LATER</button>
+                <button class="btn-icon24 bgSubmitApplication24 floatright SMboxButton" name="submitButton" value="SubmitApplication" onclick="return SubmitApp(this);">SUBMIT APPLICATION</button>
+            }
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".AccQuestionCategory").accordion(VacancyModel.AccFirstAttr);
+        $(".LeftMenu").find(".lblMyAppCount").html(@NavCount.MyApplication);
+        $("#btnNextToComplete").click(function () {
+            var dataLink = '@Url.Action("GetCompleteProfile", "ApplyVacancy")';
+            VacancyModel.CallGetMethod(dataLink, function (data) {
+                $("#CADirectApply").html('');
+                $("#CADirectApply").html(data);
+            });
+        });
+    });
+
+
+    $(document).ready(function () {
+        $("#btnBack").click(function () {
+            var AnVacid = $('#AnVacancyId').val();
+            var dataLink = '@Url.Action("BackToUploadDocuments", "ApplyVacancy", new { VacancyId = "_VACID_" })';
+            var dataLink = dataLink.replace("_VACID_", AnVacid);
+            VacancyModel.CallGetMethod(dataLink, function (data) {
+                $("#CADirectApply").html('');
+                $("#CADirectApply").html(data);
+            });
+        });
+    });
+
+    function SaveLater() {
+        window.Location.href = '@Url.Action("Index", "Home")'
+    }
+
+    function SubmitApp(element) {
+        if (window["CheckBeforeSubmitApp"] == '') {
+            return true;
+        }
+        else {
+            return window["CheckBeforeSubmitApp"]();
+        }
+    }
+
+    function SubmitApplicationSuccess(result) {
+        result = JSON.parse(result);
+        if (result.IsError == true) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', result.Message, 3000);
+        }
+        else {
+            if (result.Message == "SaveForLater") {
+                window.location = result.Url;
+            }
+            else {
+                $("#CADirectApply").html('');
+                $("#CADirectApply").html(result.Data);
+                VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy Applied Successfully...!", 3000);
+            }
+        }
+    }
+
+    function SubmitApplicationFailed(result) {
+        VacancyModel.DisplayErrorMeesage('#commonMessage', result.Message, 3000);
+    }
+    function Pass(ctl) {
+        $(ctl).turnOffValidation(jQuery('#frmApplication'));
+        return true;
+    }
+    (function ($) {
+        $.fn.turnOffValidation = function (form) {
+            var settings = form.validate().settings;
+            for (var ruleIndex in settings.rules) {
+                delete settings.rules[ruleIndex];
+            }
+        };
+    })(jQuery);
+
+    $(document).ready(function () {
+        $('#sticker').addClass("GrayScale");
+        $('#sticker').find("button").hide();
+        $('#sticker').find("a").click(function (e) {
+            e.preventDefault();
+        });
+        $('#sticker').find("#profileImg").hide();
+        $('#sticker').find("#lblClickToUpload").hide();
+    });
+</script>

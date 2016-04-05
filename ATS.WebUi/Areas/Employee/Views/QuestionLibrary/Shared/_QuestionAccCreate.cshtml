@@ -1,0 +1,19 @@
+﻿@model ATS.BusinessEntity.Question
+@using BEClient = ATS.BusinessEntity;
+@using BECommonConstant = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+<div class="acc-header" data-qdatatype="@Model.QueDataType" data-pkid="@Model.QueId" data-quecatid="@Model.QueCatId">
+    <p class="prfle-tab-head-brown" style="overflow:hidden;">
+        <span class="ttldb">@Model.LocalName</span>
+        <span class="ttlb QueTypeInText"></span>
+        <span style="float:right">
+            <span class="ttldblue">@Html.LanguageLabel(BeQl.FRM_WEIGHT): </span>
+            <span id="rndweight" class="ttllbrown">@Model.Weight</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content" data-queid="@Model.QueId" data-quecatid="@Model.QueCatId">
+    <span class="editsection">
+        @Html.Partial("Shared/_AddEditQuestion", Model)
+    </span>
+</div>

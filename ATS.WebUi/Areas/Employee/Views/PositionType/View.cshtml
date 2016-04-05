@@ -1,0 +1,115 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.PositionType>>
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuDisplayName = "Program Types";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.obj.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmPositionType');
+        });
+    </script>
+}
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(Model.obj.ActionName, "PositionType", FormMethod.Post, new { id = "frmPositionType" }))
+{
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(m => m.obj.obj.PositionTypeId)
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    @Html.Partial("Buttons/_ViewGear", Model.obj)
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DefaultName, new { @class = "detail-input" })
+        </div>
+        @for (int i = 0; i < Model.obj.obj.PositionTypeEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.PositionTypeEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.PositionTypeEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.obj.obj.PositionTypeEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+
+        @if (ViewBag.IsEdit == 1)
+        {
+            <div class="form-group w50">
+                @Html.CheckBoxFor(m => m.obj.obj.IsActive, new { @id = "isActive" }) @Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)
+            </div>
+        }
+    </div>
+    
+<div>
+    @Html.Partial("Shared/_DivisionList", Model)
+</div>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    function OnClickValidate()
+    {
+        $('#frmPositionType').submit();
+    }
+
+    $(function () {
+        $("#isActive").click(function () {
+            var vacancycount, msg
+            vacancycount = @Model.obj.obj.VacancyCount
+            msg = "Are you sure you want to deactivate this Program Type?There are currently " + vacancycount + " Active Opportunities associated with this Program Type. These will be deactivated and no longer accessible in the system. "
+            VacancyModel.DeactivationConfirm(this, msg);
+        });
+    });
+
+    function Deactivate(Result) {
+        if (Result == true)
+        { $('#isActive').attr('checked', false); }
+        else
+        { $('#isActive').attr('checked', true); }
+    }
+</script>
+
+<script>
+
+    $(".btn-remove-vacancy").live("click", function () {
+        var VacancyCount =""
+        var ApplicantCount=""
+        var UserSaveCount=""
+        if(@Model.obj.obj.RecordExistsCount.Count > 0)
+        {
+            VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()
+            ApplicantCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Applicants").Select(x => x.Count).FirstOrDefault()
+            UserSaveCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "User Saved Vacancy").Select(x => x.Count).FirstOrDefault()
+            }
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Program Type", 310, "Are you sure want to delete this Program Type ?<br /> The following records will also be deleted:<br />" + VacancyCount +" Opportunities <br />" + ApplicantCount + " Applicant <br /> " + UserSaveCount +" User Save Opportunities", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "PositionType", new { id = @Model.obj.obj.PositionTypeId })'
+            window.location.href = deletelink;
+        }
+    }
+</script>

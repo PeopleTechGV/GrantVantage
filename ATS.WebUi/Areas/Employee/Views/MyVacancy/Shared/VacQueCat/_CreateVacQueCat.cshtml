@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.VacQueCat
+@using BEClient = ATS.BusinessEntity;
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+
+<div class="acc-header" data-pkid='@Model.VacQueCatId' data-catidonly="@Model.QueCatId">
+    <p class="prfle-tab-head-brown" style="overflow:hidden;">
+        <span class="ttldblue lblNewCat">New Category</span>
+        @*<span class="edit" style="display:none;"><a href='javascript:void(0);' id="editCategory" data-url='@Url.Action("GetVacQueCat", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacQueCatId = Model.VacQueCatId})' data-id='@Model.VacQueCatId' onclick="return editVacQueCat(this);"><img src="~/Content/images/Edit_16.png" /></a></span>*@
+
+        <span class="notification" style="display:none;"></span>
+        <span style="float:right">
+            <span class="ttllbrown">@Html.LanguageLabel(BeQl.FRM_WEIGHT): </span>
+            <span id="rndweight" class="ttldblue lblCatWeight">@Model.Weight</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <span class="editsection">
+        @Html.Partial("Shared/VacQueCat/_AddEditVacQueCat", Model)
+    </span>
+</div>

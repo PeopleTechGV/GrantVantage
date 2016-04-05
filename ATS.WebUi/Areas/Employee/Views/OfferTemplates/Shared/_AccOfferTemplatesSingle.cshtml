@@ -1,0 +1,24 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.OfferTemplates
+
+<div class="acc-header" data-offertemplateid="@Model.OfferTemplateId">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        <span class="ttldb" style="float:left;">
+            <span class="lblNamePrefix"></span>
+            <span class="lblTemplateName">@Model.OfferTemplateName</span>
+        </span>
+        <span class="ansoption">
+            @if (Model.PermissionType.Contains(BEClient.ATSPermissionType.Delete))
+            {
+                <span id="DeleteTVac" class="delete"><a href='javascript:void(0);' onclick="TemplateOffer.DeleteOfferTemplateConfirm(this)"><img src="~/Content/images/delete_16.png" width="13" height="13" /></a></span>
+            }
+        </span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <div class="AccOfferTemplateDetails">
+
+    </div>
+</div>

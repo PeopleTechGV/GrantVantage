@@ -1,0 +1,37 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.InterviewCalender>>>
+@using BEVacancyMDLConst = ATS.BusinessEntity.Common.ModelConstant
+@using BECompanySetupMenuConst = ATS.BusinessEntity.Common.CompanySetupMenu
+@using BEVacancyConstant = ATS.BusinessEntity.Common.VacancyConstant
+@using BECommonCons = ATS.BusinessEntity.Common.CommonConstant
+@using BEClient = ATS.BusinessEntity
+<script src="~/Content/js/Actionbar.js"></script>
+<div class="Searchbox">
+    <input id="txtSearch" class="txtSearch" type="text" name="txtSearch" value="@ViewBag.SearchText" placeholder="Search Interview" />
+
+    @if (ViewBag.SearchTextImg == "Search")
+    {
+        <a href="javascript:void(0);" title="Search"><img src="/Content/images/Search_Jobs_16.png" onclick="Search()" alt="" /></a>
+    }
+    else
+    {
+        <a href="javascript:void(0);" title="Clear Search"><img src="/Content/images/Close_Model_16.png" onclick="Clear()" alt="" /></a>
+    }
+</div>
+<ul class="ActionBar ResizableAction RightMenu">
+    <li class="ShowOnSingle">
+        <a class="bgInterview16 ComboDropdown" href='javascript:void(0);'>
+            BEGIN INTERVIEW
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+                <ul id="BeginInterview" class="MobRight AutoWidth"></ul>
+            </li>
+        </ul>
+    </li>
+    <li class="ShowOnSingle">
+        <a id ="cancelInt" class="bgInterview16" href='javascript:void(0);' data-scheduleid="">
+            Cancel Interview
+        </a>
+    </li>
+</ul>

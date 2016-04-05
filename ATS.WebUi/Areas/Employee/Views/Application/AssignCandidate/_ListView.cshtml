@@ -1,0 +1,40 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.Reviewers
+@using HtmlHelpers.BeginCollectionItem
+@using (Html.BeginCollectionItem("objReviewers"))
+{
+    <div class="drAssignCandidate">
+        @Html.HiddenFor(x => x.UserId)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.ApplicationId)
+        @Html.HiddenFor(m => m.RndTypeId)
+        @Html.HiddenFor(m => m.FullName)
+        @Html.HiddenFor(m => m.RndAttribute)
+        @Html.HiddenFor(m => m.VacancyReviewMemberId)
+        <div style="float: left;" class="ddAssignCandidate w20">
+            @Html.CheckBoxFor(m => m.IsAssignedReviewer, new { @class = "chkAssigned" })
+            @Model.FullName
+        </div>
+        @if (@ViewBag.IsOfferRound)
+        {
+            <div class="ddAssignCandidate w20">@Html.TextBoxFor(m => m.Weight, new { @class = "txtWeight", @id = "Weight" })</div>
+            <div class="ddAssignCandidate w20">@Html.CheckBoxFor(m => m.CanPromote)</div>
+            <div class="ddAssignCandidate w20">@Html.CheckBoxFor(m => m.CanMakeOffers, new { @id = "CanMakeOffers" })</div>
+            <div class="ddAssignCandidate w20">@Html.CheckBoxFor(m => m.CanEditOffers)</div>
+        }
+        else if (@ViewBag.IsOnlyOfferRound)
+        {
+            <div class="ddAssignCandidate w20">@Html.CheckBoxFor(m => m.CanMakeOffers, new { @id = "CanMakeOffers" })</div>
+            <div class="ddAssignCandidate w20">@Html.CheckBoxFor(m => m.CanEditOffers)</div>
+            @Html.HiddenFor(m => m.CanPromote)
+            @Html.HiddenFor(m => m.Weight)
+        }
+        else
+        {
+            <div class="ddAssignCandidate w20">@Html.TextBoxFor(m => m.Weight, new { @class = "txtWeight", @id = "Weight" })</div>
+            <div class="ddAssignCandidate w20">@Html.CheckBoxFor(m => m.CanPromote)</div>
+            @Html.HiddenFor(m => m.CanMakeOffers)
+            @Html.HiddenFor(m => m.CanEditOffers)
+        }
+    </div>
+}

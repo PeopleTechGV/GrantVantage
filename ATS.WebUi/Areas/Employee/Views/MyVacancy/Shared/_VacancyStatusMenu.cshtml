@@ -1,0 +1,77 @@
+﻿@model ATS.BusinessEntity.Vacancy
+@using BEStatus = ATS.BusinessEntity.VacancyStatusDrp;
+@using BEToolTipConstantConst = ATS.BusinessEntity.Common.TooltipConstant
+@using BEVacancyConstant = ATS.BusinessEntity.Common.VacancyConstant
+
+@{
+    var SetIcon = "";
+    var jFunction = "UpdateVacStatus(this)";
+    if (Model.ShowOnWeb == BEStatus.Draft.ToString())
+    {
+        SetIcon = "/Content/images/Draft_Vacancy_32.png";
+    }
+    if (Model.ShowOnWeb == BEStatus.Open.ToString())
+    {
+        SetIcon = "/Content/images/Open_Vacancy_32.png";
+    }
+    if (Model.ShowOnWeb == BEStatus.Close.ToString())
+    {
+        SetIcon = "/Content/images/Close_Vacancy_32.png";
+        jFunction = "ConfirmUpdateVacStatus(this);";
+    }
+    if (Model.ShowOnWeb == BEStatus.Archive.ToString())
+    {
+        SetIcon = "/Content/images/Archive_Vacancy_32.png";
+    }
+}
+
+<li>
+    <a onmouseover="setStatusMenuPosition(this,'#ulstatusmenu')" href="javascript:void(0);"><img src='@SetIcon' style="height: 32px; width: 32px;" border="0" /></a>
+    <ul id="ulstatusmenu">
+        @if (Model.ShowOnWeb != BEStatus.Draft.ToString())
+        {
+            <li>
+                <a class="WithIcon bgDraft16" href="javascript:void(0);" onclick="UpdateVacStatus(this)" data-nextstatus=@BEStatus.Draft>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DRAFT_VAC)</a>
+            </li>
+        }
+
+        @if (Model.ShowOnWeb != BEStatus.Open.ToString())
+        {
+            <li>
+                <a class="WithIcon bgOpen16" href="javascript:void(0);" onclick='@jFunction' data-nextstatus=@BEStatus.Open>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_OPEN_VAC)</a>
+            </li>
+        }
+
+        @if (Model.ShowOnWeb != BEStatus.Close.ToString())
+        {
+            <li>
+                <a onmouseover="setMenuPosition(this,'#ulDeclineReasons', '0')" class="WithIcon bgClose16" href="javascript:void(0);">@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CLOSE_VAC)<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /> </a>
+                <ul id="ulDeclineReasons" style="width: 150px; z-index: 999 !important;">
+                    @foreach (var vacancy in (SelectList)ViewBag.VacancyStatusList)
+                    {
+                        <li><a href="javascript:void(0);" onclick="UpdateVacStatus(this)" id='btnClose' vacancyvalue='@vacancy.Value' data-nextstatus=@BEStatus.Close>@vacancy.Text</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (Model.ShowOnWeb != BEStatus.Archive.ToString())
+        {
+            <li>
+                <a class="WithIcon bgArchive16" href="javascript:void(0);" onclick="UpdateVacStatus(this)" data-nextstatus=@BEStatus.Archive>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_ARC_VAC)</a>
+            </li>
+        }
+    </ul>
+</li>
+
+
+@if (Model.ShowOnWeb == BEStatus.Open.ToString())
+{
+    if (Model.FeaturedOnWeb)
+    {
+        <li class="img-featured-location ui-selected" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SHOW_NOT_FEATURE)'></li>
+    }
+    else
+    {
+        <li class="img-featured-location-inactive ui-selected" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SHOW_FEATURE)'></li>
+    }
+}

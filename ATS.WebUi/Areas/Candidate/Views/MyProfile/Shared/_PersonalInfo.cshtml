@@ -1,0 +1,150 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.UserDetails
+
+
+
+@{
+    <text>
+        <script>
+            $(document).ready(function () {
+                $("#dateofbirth").datepicker({
+                    dateFormat: VacancyModel.DateFormat,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    showWeeks: true,
+                    currentText: 'Now',
+                    autoSize: true,
+                    gotoCurrent: true,
+                    highlightWeek: true
+                });
+                $(".RegNumeric").keypress(function (e) {
+                    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        VacancyModel.ProfileErrorMeesage($(this).parents('.acc-Content').prev().find('.notification'), "Please Enter Only Digits", 100);
+                        return false;
+                    }
+                });
+            });
+            function outerSave(element) {
+                var head = $(element).closest('.acc-header');
+                var myform = $(head).next().children("form").get(0);
+                var isvalidate = $(myform).valid();
+                if (isvalidate) {
+                    $(myform).submit();
+                }
+                return false;
+            }
+            function PersonalInfoSuccess(data, custom) {
+                data = JSON.parse(data);
+                var Savelink = $("span[recordid='" + custom + "']").get(0);
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+            function PersonalInfofailure(data) {
+                data = JSON.parse(data);
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+
+        </script>
+    </text>
+}
+<table>
+    <tr>
+        <td>
+            <div class="vacancy-Details">
+                <div class="left-div">
+                    @Html.HiddenFor(m => m.UserId)
+                    @*<div class="box">
+                            @Html.LanguageLabelFor(m => m.Affix, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Affix, new { @class = "detail-input", @id = "BusinessPhoneNo", @tabindex = "1" })
+                        </div>*@
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.ProfileName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.ProfileName, new { @class = "detail-input", @id = "BusinessPhoneNo", @tabindex = "2" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.FirstName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "detail-input", @id = "BusinessPhoneNo", @tabindex = "2" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.MiddleName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.MiddleName, new { @class = "detail-input", @tabindex = "3" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.LastName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "detail-input", @tabindex = "4" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.Address, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Address, new { @class = "detail-input", @tabindex = "5" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.City, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.City, new { @class = "detail-input", @tabindex = "6" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.State, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.State, new { @class = "detail-input", @tabindex = "7" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.Zip, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Zip, new { @class = "detail-input", @tabindex = "8" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.PostOfficeBox, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.PostOfficeBox, new { @class = "detail-input", @tabindex = "9" })
+                    </div>
+                </div>
+                <div class="right-div">
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.BusinessPhoneNo, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.BusinessPhoneNo, new { @class = "detail-input", @tabindex = "10" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.HomePhone, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.HomePhone, new { @class = "detail-input", @tabindex = "11" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.MobilePhone, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.MobilePhone, new { @class = "detail-input", @tabindex = "12" })
+                    </div>
+                    @*CR-2*@
+                    @*<div class="box">
+                        @Html.LanguageLabelFor(m => m.Pager, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Pager, new { @class = "detail-input", @tabindex = "13" })
+                    </div>*@
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.Fax, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Fax, new { @class = "detail-input", @tabindex = "14" })
+                    </div>
+                    @*CR-2*@
+                    @*<div class="box">
+                        @Html.LanguageLabelFor(m => m.Website, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Website, new { @class = "detail-input", @tabindex = "15" })
+                    </div>*@
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.HomeEmail, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.HomeEmail, new { @class = "detail-input", @tabindex = "16" })
+                    </div>
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.WorkEmail, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.WorkEmail, new { @class = "detail-input", @tabindex = "17" })
+                    </div>
+                    @*CR-2*@
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.OrganizationID, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.OrganizationID, new { @class = "detail-input", @tabindex = "18" })
+                    </div>
+                </div>
+            </div>
+            <br clear="all" />
+        </td>
+    </tr>
+    <tr>
+        <td class="tdSaveButton">
+            <div style="border-top: 2px solid #953634;">
+                <button type="submit" class="prfle-button-save CaseUpper">Save Personal Info</button>
+            </div>
+        </td>
+    </tr>
+</table>

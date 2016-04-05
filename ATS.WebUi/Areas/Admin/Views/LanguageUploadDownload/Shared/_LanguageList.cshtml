@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ATS.BusinessEntity.Master.Language>
+@using BELanguageLabel = ATS.BusinessEntity.Common.LanguageLabel
+<div class="search-result-detail">
+    <div class="search-heading" >
+        <div class="location">
+            @Html.LanguageLabel(BELanguageLabel.FRM_LANGUAGE)
+        </div>
+        <div class="location">
+            @Html.LanguageLabel(BELanguageLabel.FRM_LANGUAGE_CULTURE)
+        </div>
+        <div class="location">
+            &nbsp;
+        </div>
+        <div class="location">
+            &nbsp;
+        </div>
+    </div>
+    @foreach (ATS.BusinessEntity.Master.Language current in Model)
+    {
+        <div>
+            <ul id="selectable" class="search-row default">
+                <li class="text-details">
+                    <ul data-id="@current.LanguageId">
+                        <li class="detail-location">@current.LanguageName</li>
+                        <li class="detail-location">@current.LanguageCulture</li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $("#selectable").dblclick(function () {
+        var clientId = $(this).find('ul').attr("data-id");
+        var dLink = '@Url.Action("View", "LanguageUploadDownload", new { area = ATS.WebUi.Common.Constants.AREA_ADMIN, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", clientId);
+        window.location = dLink;
+    });
+</script>

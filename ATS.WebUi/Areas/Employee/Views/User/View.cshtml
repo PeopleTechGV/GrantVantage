@@ -1,0 +1,317 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.SRPEntity.DynamicSRP<BEClient.UserDivisionSecurityRole>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuDisplayName = "Users";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<style>
+    .ui-state-default,
+    .ui-state-active {
+        background: transparent;
+        border: 0px solid #aaaaaa;
+    }
+
+    .ui-state-hover,
+    .ui-state-focus {
+        background: #FFEBAF;
+        border: 0px solid #999999;
+    }
+</style>
+
+<script type="text/javascript">
+    /*Set Accordian*/
+    var icons = {
+        header: "iconOpen",
+        activeHeader: "iconClosed"
+    };
+    $(function () {
+        $("#accordion").accordion({
+            icons: icons,
+            heightStyle: "content",
+            active: 0,
+            animate: true,
+            collapsible: true,
+            activate: function (event, ui) {
+                //Create function which you want while accordian change
+
+            }
+
+        });
+
+        //aria-expanded="true"
+    });
+
+    $(function(){
+        MakeATSPrvilegeDisable();
+    });
+
+</script>
+
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.obj.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            //VacancyModel.MakeFormReadOnly('frmUser');
+        });
+    </script>
+}
+<div id="Messages" class="TopNotification">
+</div>
+@using (Html.BeginForm(Model.obj.ActionName, "User", FormMethod.Post, new { id = "frmUser" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.UserId, new { Id = "UserId" })
+    @Html.Partial("Shared/_Header")
+    @Html.Partial("Buttons/_ViewGear", Model.obj)
+
+    <div class="cmpSetup-inner">
+
+        <article class="std_width spctop-btm">
+            <div id="accordion">
+                <div class="acc-header">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_TTL_PERSONAL_INFO)
+
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="acc-inner">
+                        @Html.Partial("~/Areas/Employee/Views/CompanySetup/Shared/_PersonalInfo.cshtml", Model)
+                    </div>
+                </div>
+                <div class="acc-header">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(BEUserConst.FRM_USER_TTL_LOGIN_DETAILS)
+                    </p>
+                </div>
+                <div class="acc-Content">
+
+                    <div class="acc-inner">
+                        @Html.Partial("Shared/Credential", Model)
+                    </div>
+                </div>
+                <div class="acc-header">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(BEUserConst.FRM_USER_TTL_DIVISION)
+                    </p>
+                </div>
+                <div class="acc-Content" style="overflow:visible">
+                    <div class=" acc-inner">
+                        @Html.Partial("Shared/_DivisionList", Model)
+                    </div>
+                </div>
+                <div class="acc-header">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(BEUserConst.FRM_USER_TTL_SECURITYROLE)
+                    </p>
+                </div>
+                <div class="acc-Content">
+
+                    <div class="acc-inner">
+                        @Html.Partial("Shared/_SecurityRoleList", Model)
+                        @*@if (Model.obj.obj.objPrevilegList != null)
+                            {*@
+                        <div id="RolePrivileges" class="Privilege" style="display: inline-block; float: right; width: 80%;">
+                            @if (Model.obj.obj.LstATSRolePrivilege != null)
+                            {
+                                @*@Html.Partial("Shared/_Privilege", Model)*@
+                                @Html.Partial("_ATSSecurityRole", Model.obj.obj.LstATSRolePrivilege)
+                            }
+                        </div>
+                        @*}*@
+                    </div>
+                </div>
+            </div>
+            @*</div>*@
+        </article>
+    </div>
+}
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        $(function(){
+            var _msg = '@ViewBag.Message'
+            if( _msg == "106")
+            {
+                VacancyModel.ConfirmDialog("ConfirmDiv", "Deactvate Candidate", 300, "The username you have entered already exists as a Candidate. Would you like to deactivate this Candidate record now?", "Yes", "Cancel", "DeactivateCandidate", this, "test");
+            }
+            else
+            {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+
+        function DeactivateCandidate(Result)
+        {
+            if(Result)
+            {
+                var _Username = $("#txtUserName").val();
+                var _datalink = '@Url.Action("DeactivateCandidate", "User", new { @UserName = "_UserName_" })'
+                _datalink = _datalink.replace("_UserName_",_Username);
+                $.ajax({url:_datalink,
+                    cache: false,
+                    success: function (response){
+                        var jsondata = JSON.parse(response)
+                        if(!jsondata.IsError)
+                        {
+                            VacancyModel.DisplaySuccessMeesage('#commonMessage', jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        }
+                        else
+                        {
+                            VacancyModel.DisplayErrorMeesage('#commonMessage', jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        }
+                    }
+                });
+            }
+        }
+
+
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    function OnClickValidate()
+    {
+        //var IsValidate = "";
+
+        if(@ViewBag.IsEdit == "1")
+        {
+
+        }
+        else
+        {
+            var IsValidate =  ValidateNewEmployee();
+            if(!IsValidate)
+            {
+                return false;
+            }
+        }
+
+        var _form=$('#frmUser');
+
+        if(_form.valid()){
+            if($("#securityroles input:checked").length == 0){
+                VacancyModel.DisplayErrorMeesage('#commonMessage', 'Please select at least one security role.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+        }
+       
+        _form.submit();
+    }
+
+
+    function ValidateNewEmployee()
+    {
+        var IsValidate = "123";
+        var _Username = $("#txtUserName").val();
+        var _datalink = '@Url.Action("ValidateUser", "User", new { @UserName = "_UserName_" })'
+        _datalink = _datalink.replace("_UserName_",_Username);
+        $.ajax({url:_datalink,
+            type: "Get",
+            cache: false,
+            async:false,
+            success: function (response){
+                var jsondata = JSON.parse(response)
+
+                if(!jsondata.IsError)
+                {
+                    IsValidate = true;
+                }
+                else
+                {
+
+                    IsValidate = false;
+                    if(jsondata.Message == "106")
+                    {
+                        VacancyModel.ConfirmDialog("ConfirmDiv", "Deactvate Candidate", 300, "The username you have entered already exists as a Candidate. Would you like to deactivate this Candidate record now?", "Yes", "Cancel", "DeactivateCandidate", this, "test");
+                    }
+                    else
+                    {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+            }
+        });
+        return IsValidate;
+    }
+
+
+
+    function DeactivateCandidate(Result)
+    {
+        if(Result)
+        {
+            var _Username = $("#txtUserName").val();
+            var _datalink = '@Url.Action("DeactivateCandidate", "User", new { @UserName = "_UserName_" })'
+            _datalink = _datalink.replace("_UserName_",_Username);
+            $.ajax({url:_datalink,
+                cache: false,
+                success: function (response){
+                    var jsondata = JSON.parse(response)
+                    if(!jsondata.IsError)
+                    {
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else
+                    {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', jsondata.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+            });
+        }
+    }
+
+    $(".btn-remove-vacancy").live("click", function () {
+        var VacancyCount =""
+        var AdHocPrivilegeCount =""
+        var SecurityRoleCount=""
+        var SaveResumeSearchCount=""
+        var UserVacancyCount=""
+        var BlockCandidateCount=""
+        var SearchCount=""
+
+        if(@Model.obj.obj.RecordExistsCount.Count > 0)
+        {
+            VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()
+            AdHocPrivilegeCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Ad Hoc Privilege").Select(x => x.Count).FirstOrDefault()
+            SecurityRoleCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "User Security Role").Select(x => x.Count).FirstOrDefault()
+            SaveResumeSearchCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Save Resume Search").Select(x => x.Count).FirstOrDefault()
+            UserVacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "UserVacancy").Select(x => x.Count).FirstOrDefault()
+            BlockCandidateCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Block Candidate").Select(x => x.Count).FirstOrDefault()
+            SearchCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Search").Select(x => x.Count).FirstOrDefault()
+            }
+
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete User", 300, "Are you sure want to delete this User ?  <br /> The following records will also be deleted:<br />" + VacancyCount +" Vacancies <br />" + AdHocPrivilegeCount + " Ad-Hoc Privilege <br />" + SecurityRoleCount + " Security Role <br /> " + SaveResumeSearchCount +" Save Search Candidate <br />" + UserVacancyCount + " Saved User Vacancy <br />"+ BlockCandidateCount +" Block Candidate <br />"+ SearchCount +" Search Candidate ", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "User", new { id = @Model.obj.obj.objUser.UserId })'
+            window.location.href = deletelink;
+        }
+    }
+
+    function MakeATSPrvilegeDisable() {
+        var _currCheck = $(".catgry-check");
+        $(_currCheck).each(function () {
+            var _singlepriv = $(this).children();
+            $(_singlepriv).attr("disabled", true);
+        });
+    }
+</script>
+

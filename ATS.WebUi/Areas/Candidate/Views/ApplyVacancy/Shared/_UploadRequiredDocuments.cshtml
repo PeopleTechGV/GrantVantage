@@ -1,0 +1,157 @@
+﻿@model ATS.BusinessEntity.ApplicationDocuments
+@using HtmlHelpers.BeginCollectionItem
+@System.Web.Optimization.Scripts.Render("~/bundles/jAjaxFileUpload")
+
+@{
+    string SubmitButtonClass = "btn-icon24 bgNext24 btn-icon24-right floatright";
+    string SubmitButtonText = "NEXT";
+    if (ViewBag.ScreeningQue == false)
+    {
+        SubmitButtonClass = "btn-icon24 bgSubmitApplication24 floatright";
+        SubmitButtonText = "SUBMIT APPLICATION";
+    }
+}
+
+<div id="DocSection">
+    @foreach (var _CurrentItem in Model.ListRequiredDocuments)
+    {
+        @Html.Partial("Shared/_RequiredDocumentList", _CurrentItem)
+    }
+</div>
+
+@using (Ajax.BeginForm("ApplyJob", "ApplyVacancy", new { PageMode = @ViewBag.CAStep2Mode }, new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "POST",
+                OnSuccess = "ApplyJobSuccess",
+                OnFailure = "ApplyJobFailed"
+            }, new { @id = "frmApplyJobExistingResume" }))
+{
+    @Html.HiddenFor(m => m.VacancyId)
+    foreach (var _CurrentItem in Model.ListRequiredDocuments)
+    {
+        @Html.Partial("Shared/_UploadDocumentSingle", _CurrentItem)
+    }
+
+    <div class="box">
+        <button id="btnCAApplyJob" type="button" class='@SubmitButtonClass'>@SubmitButtonText</button>
+    </div>
+}
+
+<script>
+    function ApplyJobSuccess(result) {
+        result = JSON.parse(result);
+        if (result.IsError == true) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', result.Message, 3000);
+        }
+        else {
+            $("#CADirectApply").html('');
+            $("#CADirectApply").html(result.Data);
+        }
+    }
+
+    function ApplyJobFailed() {
+        alert("Failed");
+    }
+</script>
+
+<script>
+    $("#btnCAApplyJob").click(function (e) {
+        var isError = false;
+        var index = 0;
+        $("#DocSection").find(".ddlFile").each(function () {
+            var value = $(this).val();
+            if (value == "" || value == undefined) {
+                if (!$(this).hasClass('ddlOptional')) {
+                    isError = true;
+                    $(this).addClass("input-validation-error");
+                }
+            }
+            else {
+                $(this).removeClass("input-validation-error");
+            }
+            $("#frmApplyJobExistingResume").find(".txtFileList").eq(index).val(value);
+            index = index + 1;
+        });
+
+        if (isError == false) {
+            $("#frmApplyJobExistingResume").submit();
+        }
+
+    });
+
+    $('.frmUploadDocument').submit(function () { return true; });
+
+    (function () {
+        function ValidateDocument(filename, extensions) {
+            var _filename = filename;
+            var ext = _filename.split('.').pop();
+            if (extensions.indexOf(ext) != -1) {
+                return true;
+            } else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', "Invalid File Type!! allow only " + extensions, 1500)
+                return false;
+            }
+        }
+
+        $('.btnUpload').click(function (event) {
+            $(this).siblings('.txtFileUpload').click();
+        });
+
+        $('.txtFileUpload').change(function (click) {
+            filename = $(this).val().replace(/.*(\/|\\)/, '');
+            if (filename == "") {
+                return false;
+            }
+            var extensions = $(this).attr("data-extensions");
+            var result = ValidateDocument(filename, extensions);
+            if (result) {
+                $(this).closest('.frmUploadDocument').submit();
+            }
+        });
+
+        $('.frmUploadDocument').ajaxForm({
+            beforeSend: function () {
+                $("#loading").show();
+            },
+            success: function (html, status, xhr, CurrentForm) {
+                data = JSON.parse(xhr.responseText);
+                if (!data.IsError) {
+                    $(CurrentForm).find(".ddlFile").append($("<option></option>")
+                    .attr("value", JSON.parse(data.Data).ATSResumeId)
+                    .attr('selected', 'selected')
+                    .text(JSON.parse(data.Data).Name));
+                    $(CurrentForm).find(".ddlFile").removeClass("input-validation-error");
+                }
+                else {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+
+                $("#loading").hide();
+            }
+        });
+    })();
+</script>
+
+<style>
+    .frmUploadDocument > div.AddNewFile {
+        float: right;
+        width: 5%;
+    }
+
+    .btnUpload {
+        background-color: #fff;
+        background-image: url("/Content/images/add_new_16.png");
+        background-position: center center;
+        border: medium none;
+        height: 22px;
+        width: 22px;
+        cursor: pointer;
+        float: right;
+    }
+
+        .btnUpload:hover {
+            background-color: #345E8E;
+            background-image: url("/Content/images/add_new_white_16.png");
+        }
+</style>

@@ -1,0 +1,92 @@
+﻿@model ATS.BusinessEntity.ScheduleInt
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant;
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@System.Web.Optimization.Styles.Render("~/bundles/CalendricalCSS")
+@System.Web.Optimization.Scripts.Render("~/bundles/CalendricalJS")
+
+<div>
+    <script type="text/javascript">
+        $(function () {
+            $("#ScheduleDate").datepicker({
+                dateFormat: VacancyModel.DateFormat,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true
+            });
+        });
+
+        function RemoveScheduleConfig(element) {
+            $(element).parents('.edit-schedule').parent().prev().click();
+            $(element).closest("form").remove();
+            return false;
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#timepicker_start, #timepicker_end').calendricalTimeRange();
+        });
+    </script>
+</div>
+
+@using (Ajax.BeginForm("UpdateConductScheduleInt", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "ConductCRUScheduleIntSuccess(data,'" + Model.ApplicationId + "')",
+            OnFailure = "CRUScheduleIntFailure"
+        }, new { id = "frmCondSchInt" }))
+{
+    <script>
+        var formCondSchInt = $("#frmCondSchInt");
+        $.validator.unobtrusive.parse(formCondSchInt);
+    </script>
+    <div class="vacancy-Details InterviewForm w93" style="height:250px;">
+        <div class="box SchForm">
+            @Html.HiddenFor(m => m.ApplicationId)
+            @Html.HiddenFor(m => m.ScheduleIntId)
+            @Html.HiddenFor(m => m.VacRndId)
+
+
+            @*<div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.VacRndId, new { @class = "label w90" })
+                @Html.DropDownListFor(m => m.VacRndId, (SelectList)ViewBag.RoundType, "--Select--", new { @id = "ddlRoundType", @class = "detail-select", @style = "width:50%;", @disabled = "diabled" })
+                
+            </div>*@
+            <div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.ScheduleDate, new { @class = "label w90" })
+                @Html.TextBoxFor(m => m.ScheduleDateStr, new { @class = "detail-input", @id = "ScheduleDate", @readOnly = "readOnly", @style = "width:50%;" })
+            </div>
+            <div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.StartTime, new { @class = "label w90" })
+                @Html.TextBoxFor(m => m.StartTime, new { @class = "detail-input", @id = "timepicker_start", @readOnly = "readOnly", @style = "width:50%;" })
+            </div>
+            <div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.EndTime, new { @class = "label w90" })
+                @Html.TextBoxFor(m => m.EndTime, new { @class = "detail-input", @id = "timepicker_end", @readOnly = "readOnly", @style = "width:50%;" })
+            </div>
+        </div>
+        <div class="box SchFormAction">
+            <button type="submit" class="prfle-button-save CaseUpper">Save Interview</button>
+            <button type="button" id="RemoveRound" class="prfle-button-delete CaseUpper" onclick="RemoveScheduleConfig(this);">Remove Interview</button>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function ConductCRUScheduleIntSuccess(data, appid) {
+        var vacrndid = '@Model.VacRndId';
+        var schintid = '@Model.ScheduleIntId';
+        var response = JSON.parse(data);
+        if (!response.IsError) {
+                $("#ConductInterviewdetails").html('');
+                $("#ConductInterviewdetails").append(response.Data);
+                $(".ui-dialog-titlebar-close").click();
+        }
+    }
+</script>

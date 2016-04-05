@@ -1,0 +1,45 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.PositionType>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+
+<style>
+    .styled_list {
+        margin-right: 10px;
+    }
+</style>
+
+<span class="IBP8 lblBbrown w100" style="border-bottom: 2px solid #953634;">Divisions Associated with this Award Type</span>
+<br /><br />
+
+<div class="ats-roles-box">
+    @{
+        string[] value = ViewBag.DisableDivision;
+        var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 1, new { @class = "styled_list", id = "RoleChk1", @style = "line-height:30px;" });
+        @Html.CheckBoxListFor(Model => Model.obj.obj.objDivision.DivisionId,
+                              Model => Model.obj.obj.AvailableDivisionList,
+                              divis => divis.DivisionId,
+                              divis => divis.DivisionName,
+                              Model => Model.obj.obj.SelectedDivisionList,
+                              new { @class = "divisions_checkbox" },
+                              htmlListInfo,
+                              null, x => new
+                              {
+                                  @style = "margin-left:" + x.Level * 20 + "px !important;"
+                              })
+    }
+</div>
+
+@*pointer-events:" + (x.PermissionType == null ? "none;" : "auto;") + "opacity:" + (x.PermissionType == null ? "0.3;" : "1.0")*@
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $('.divisions_checkbox').each(function (inex, value) {
+                if ($(this).is("label")) {
+                    $(this).removeAttr("style");
+                }
+            });
+
+        });
+    });
+</script>

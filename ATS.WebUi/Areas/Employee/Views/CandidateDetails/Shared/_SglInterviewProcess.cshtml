@@ -1,0 +1,34 @@
+﻿@model ATS.BusinessEntity.InterViewProcess
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using VacRound = ATS.BusinessEntity.Common.VacancyRound;
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown" style="border-bottom-width:1px !important;">
+        <span class="w50" style="float:left;">
+            <span class='ttldblue Save'>Section<span class="cntSection"></span>:</span>
+            <span class='ttllbrown'>@Model.ObjQueCat.LocalName</span>
+        </span>
+        <span class="floatright">
+            <span class="ttldblue">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+            <span class="ttllbrown" id="rndweight">@Model.ObjQueCat.Weight</span>
+        </span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="reviewer-tab-head" style="margin: 6px 0; width: 100%; overflow: hidden; ">
+            <div class="w60 floatleft">@Html.LanguageLabel(VacRound.ROUND_QUESTIONS)</div>
+            <div class="w30 floatleft">@Html.LanguageLabel(VacRound.ROUND_WEIGHT)</div>
+            <div class="floatright">Score</div>
+        </div>
+    </div>
+    <div class="acc-inner">
+        <div class="AccQuestionDetail" style="width:100%;">
+            @foreach (ATS.BusinessEntity.InterviewProcessQue _currQue in Model.ObjInterviewProcesssQueList)
+            {
+                @Html.Partial("Shared/_Questions", _currQue)<br clear="all" />
+            }
+        </div>
+    </div>
+</div>

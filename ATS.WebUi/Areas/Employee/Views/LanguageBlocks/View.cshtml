@@ -1,0 +1,52 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.LanguageBlocks>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuDisplayName = "Language Blocks";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(Model.obj.ActionName, "LanguageBlocks", FormMethod.Post, new { id = "frmLanguageBlocks" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.LanguageBlockId, new { Id = "LanguageBlockId" })
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    @Html.HiddenFor(m => m.obj.obj.LanguageId)
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.LanguageBlockName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.LanguageBlockName, new { @readonly = "readonly" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.LanguageBlockDescription, new { @class = "label" })
+            @Html.TextAreaFor(m => m.obj.obj.LanguageBlockDescription)
+        </div>
+    </div>
+    <div id="ConfirmDiv"></div>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+<script>
+    function OnClickValidate() {
+        $('#frmLanguageBlocks').submit();
+    }
+</script>

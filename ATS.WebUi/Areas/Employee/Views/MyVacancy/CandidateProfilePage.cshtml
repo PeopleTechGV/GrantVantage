@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @System.Web.Optimization.Styles.Render("~/Content/css1")
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery1")
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery3")
+    
+    <title>CandidateProfilePage</title>
+   
+</head>
+<body>
+        
+        <div id="Messages" style="width: auto; float: left;margin-left:300px;">
+        </div>
+        <script>
+            $(function () {
+                $('#accordion button').hide();
+                $('#accordion a').hide();
+                checkOpen();
+                var h2data = '<div style="padding-left:10px;color:#951300;float:left;width:15%;">Resume Name   </div>'
+                $($("#frmMyProfileCandidate").find("h2").get(0)).html(h2data + '@Model.objProfile.ProfileName');
+
+            });
+            function checkOpen() {
+                // how many sections are open 
+                var openCount = $('#accordion .section:visible').length;
+                // how many sections are there 
+                var totalCount = $('#accordion .section').length;
+                // set closeOthers var based on if there are 1 or 0 sections open 
+                if (openCount < 2) closeOthers = true;
+                // change the text in the expand link based on if 
+                // there are more or less than half of the sections open 
+                if (openCount > totalCount / 2) {
+                    $('#accordion #expand').html("Collapse All");
+                }
+                else {
+                    $('#accordion #expand').html("Expand All");
+                }
+            }
+        </script>
+    <div class="container_aa">
+        
+        <div style="margin-top:50px;">
+            @Html.Partial("Profile/_Profile")
+        </div>
+    </div>
+</body>
+</html>

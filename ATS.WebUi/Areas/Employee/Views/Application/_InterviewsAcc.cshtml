@@ -1,0 +1,95 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.ScheduleInt>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant;
+
+@if (@ViewBag.IsPromotedInt)
+{
+    foreach (BEClient.ScheduleInt _Current in Model)
+    {
+        @Html.Partial("_Interview", _Current)
+    }
+}
+else
+{
+    <style>
+        .AccQue-header {
+            display: none;
+        }
+    </style>
+    <span id="noteInterview" class="ttldbrown" style="margin-left: 15px;">You must first promote this applicant into an interview round before you can schedule an interview.</span>
+}
+
+<script>
+    function DeleteConfirm(element, event) {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Interview", 350, "Are you sure you want to delete this Interview?", "Yes", "Cancel", "DeleteSchedule", element, null);
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        return false;
+    };
+
+    function DeleteSchedule(Result, element) {
+        if (Result == true) {
+            var $accContent = $(element).parents('.acc-Content:first');
+            var ScheduleIntId = $(element).attr('data-id');
+            var appid = $(element).parents('.acc-Content').prev('div[data-isdeclined]').attr('data-pkid');
+            var _dataLink = '@Url.Action("DeleteSchedule", "Application", new { ScheduleIntId = "_DATAID_" })';
+            _dataLink = _dataLink.replace("_DATAID_", ScheduleIntId)
+            $.ajax({
+                url: _dataLink,
+                type: "POST",
+                success: function (response) {
+                    var data = JSON.parse(response)
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        var _parentAcc = $(element).parents('.CanInterview');
+                        var active = _parentAcc.accordion("option", "active");
+                        _parentAcc.accordion("option", "active", false).accordion("refresh");
+                        _parentAcc.accordion("option", "active", active);
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', data.Message, 3000);
+                    }
+                    //Begin Interview 
+                    VacancyModel.GetBeginInterviews(appid);
+                    //End
+                }
+            });
+        }
+    }
+
+    function EditSchedule(element) {
+        var AppId = $(element).parents('.CanInterview').closest('.acc-inner').parent().prev().attr('data-pkid');
+        var ScheduleIntId = $(element).attr('data-id');
+        var _dataLink = '@Html.Raw(Url.Action("GetScheduleIntById", "Application", new { ScheduleIntId = "_DATAID_", AppId = "_APPID_" }))';
+        _dataLink = _dataLink.replace("_DATAID_", ScheduleIntId);
+        _dataLink = _dataLink.replace("_APPID_", AppId);
+        $.ajax({
+            url: _dataLink,
+            type: "GET",
+            async: "true",
+            success: function (response) {
+                var data = JSON.parse(response)
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                else {
+
+                    var _currHeader = $(element).closest(".acc-header");
+                    var $acc = $(element).closest(".acc-header").parent();
+                    var active = $acc.children('.acc-header').index(_currHeader);
+                    //var $that = $(element).closest(".Interviews").next(".CRUScheduleInt");
+                    //var $that = $(element).closest(".Interviews").next(".edit-schedule");
+                    var $that = $(element).closest(".acc-header").next().children(".edit-schedule");
+                    var $beginInt = $(element).closest(".acc-header").next().children(".acc-Content");
+                    var $addBtn = $(element).closest(".Interviews").next().next(".Content");
+                    $(element).closest(".Interviews").next(".CRUScheduleInt").html('');
+                    $beginInt.hide();
+                    //$addBtn.hide();
+                    $that.html(data.Data);
+                    $that.show();
+                    $acc.accordion("option", "active", parseInt(active));
+                }
+            }
+        });
+    }
+</script>

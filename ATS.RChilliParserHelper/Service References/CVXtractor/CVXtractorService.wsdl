@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="CVXtractorService" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsoap11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CVXtractorService" targetNamespace="CVXtractorService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="CVXtractorService">
+      <xsd:element name="SubmitToDX">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="event" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SubmitToDXResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="response" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessCV">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="document_url" type="xsd:base64Binary" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessCVResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="hrxml" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessJobOrder">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="document_url" type="xsd:base64Binary" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessJobOrderResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="vacxml" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ReformatCV">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="document_url" type="xsd:base64Binary" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="template" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="hrxml" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ReformatCVResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="doc" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PDF2Word">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="document_url" type="xsd:base64Binary" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PDF2WordResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="doc" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConvertCV">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="document_url" type="xsd:base64Binary" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConvertCVResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="convert" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessBatch">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="document_url" type="xsd:base64Binary" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessBatchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="Results" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="InstallLists">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="list_type" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="list_content" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="InstallListsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="return_message" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveLists">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="list_type" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveListsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="list_content" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateAccount">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="account" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="credentials" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateAccountResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="return_message" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ProcessCV_In">
+    <wsdl:part name="parameters" element="tns:ProcessCV" />
+  </wsdl:message>
+  <wsdl:message name="ProcessCV_Out">
+    <wsdl:part name="return" element="tns:ProcessCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessJobOrder_In">
+    <wsdl:part name="parameters" element="tns:ProcessJobOrder" />
+  </wsdl:message>
+  <wsdl:message name="ProcessJobOrder_Out">
+    <wsdl:part name="return" element="tns:ProcessJobOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReformatCV_In">
+    <wsdl:part name="parameters" element="tns:ReformatCV" />
+  </wsdl:message>
+  <wsdl:message name="ReformatCV_Out">
+    <wsdl:part name="return" element="tns:ReformatCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="PDF2Word_In">
+    <wsdl:part name="parameters" element="tns:PDF2Word" />
+  </wsdl:message>
+  <wsdl:message name="PDF2Word_Out">
+    <wsdl:part name="return" element="tns:PDF2WordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConvertCV_In">
+    <wsdl:part name="parameters" element="tns:ConvertCV" />
+  </wsdl:message>
+  <wsdl:message name="ConvertCV_Out">
+    <wsdl:part name="return" element="tns:ConvertCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessBatch_In">
+    <wsdl:part name="parameters" element="tns:ProcessBatch" />
+  </wsdl:message>
+  <wsdl:message name="ProcessBatch_Out">
+    <wsdl:part name="return" element="tns:ProcessBatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="InstallLists_In">
+    <wsdl:part name="parameters" element="tns:InstallLists" />
+  </wsdl:message>
+  <wsdl:message name="InstallLists_Out">
+    <wsdl:part name="return" element="tns:InstallListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveLists_In">
+    <wsdl:part name="parameters" element="tns:RetrieveLists" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveLists_Out">
+    <wsdl:part name="return" element="tns:RetrieveListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateAccount_In">
+    <wsdl:part name="parameters" element="tns:CreateAccount" />
+  </wsdl:message>
+  <wsdl:message name="CreateAccount_Out">
+    <wsdl:part name="return" element="tns:CreateAccountResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CVXtractor_PortType">
+    <wsdl:operation name="ProcessCV">
+      <wsdl:input name="ProcessCV_In" message="tns:ProcessCV_In" />
+      <wsdl:output name="ProcessCV_Out" message="tns:ProcessCV_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessJobOrder">
+      <wsdl:input name="ProcessJobOrder_In" message="tns:ProcessJobOrder_In" />
+      <wsdl:output name="ProcessJobOrder_Out" message="tns:ProcessJobOrder_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="ConvertCV">
+      <wsdl:input name="ConvertCV_In" message="tns:ConvertCV_In" />
+      <wsdl:output name="ConvertCV_Out" message="tns:ConvertCV_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="ReformatCV">
+      <wsdl:input name="ReformatCV_In" message="tns:ReformatCV_In" />
+      <wsdl:output name="ReformatCV_Out" message="tns:ReformatCV_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="PDF2Word">
+      <wsdl:input name="PDF2Word_In" message="tns:PDF2Word_In" />
+      <wsdl:output name="PDF2Word_Out" message="tns:PDF2Word_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessBatch">
+      <wsdl:input name="ProcessBatch_In" message="tns:ProcessBatch_In" />
+      <wsdl:output name="ProcessBatch_Out" message="tns:ProcessBatch_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="InstallLists">
+      <wsdl:input name="InstallLists_In" message="tns:InstallLists_In" />
+      <wsdl:output name="InstallLists_Out" message="tns:InstallLists_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveLists">
+      <wsdl:input name="RetrieveLists_In" message="tns:RetrieveLists_In" />
+      <wsdl:output name="RetrieveLists_Out" message="tns:RetrieveLists_Out" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateAccount">
+      <wsdl:input name="CreateAccount_In" message="tns:CreateAccount_In" />
+      <wsdl:output name="CreateAccount_Out" message="tns:CreateAccount_Out" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CVXtractor_Binding" type="tns:CVXtractor_PortType">
+    <wsoap11:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessCV">
+      <wsoap11:operation soapAction="CVXtractorService#ProcessCV" style="document" />
+      <wsdl:input name="ProcessCV_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="ProcessCV_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessJobOrder">
+      <wsoap11:operation soapAction="CVXtractorService#ProcessJobOrder" style="document" />
+      <wsdl:input name="ProcessJobOrder_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="ProcessJobOrder_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertCV">
+      <wsoap11:operation soapAction="CVXtractorService#ConvertCV" style="document" />
+      <wsdl:input name="ConvertCV_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="ConvertCV_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReformatCV">
+      <wsoap11:operation soapAction="CVXtractorService#ReformatCV" style="document" />
+      <wsdl:input name="ReformatCV_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="ReformatCV_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PDF2Word">
+      <wsoap11:operation soapAction="CVXtractorService#PDF2Word" style="document" />
+      <wsdl:input name="PDF2Word_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="PDF2Word_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessBatch">
+      <wsoap11:operation soapAction="CVXtractorService#ProcessBatch" style="document" />
+      <wsdl:input name="ProcessBatch_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="ProcessBatch_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InstallLists">
+      <wsoap11:operation soapAction="CVXtractorService#InstallLists" style="document" />
+      <wsdl:input name="InstallLists_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="InstallLists_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveLists">
+      <wsoap11:operation soapAction="CVXtractorService#RetrieveLists" style="document" />
+      <wsdl:input name="RetrieveLists_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="RetrieveLists_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateAccount">
+      <wsoap11:operation soapAction="CVXtractorService#CreateAccount" style="document" />
+      <wsdl:input name="CreateAccount_In">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="CreateAccount_Out">
+        <wsoap11:body use="literal" namespace="CVXtractorService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CVXtractor_Binding12" type="tns:CVXtractor_PortType">
+    <wsoap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessCV">
+      <wsoap12:operation soapAction="CVXtractorService#ProcessCV" style="document" />
+      <wsdl:input name="ProcessCV_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="ProcessCV_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessJobOrder">
+      <wsoap12:operation soapAction="CVXtractorService#ProcessJobOrder" style="document" />
+      <wsdl:input name="ProcessJobOrder_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="ProcessJobOrder_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertCV">
+      <wsoap12:operation soapAction="CVXtractorService#ConvertCV" style="document" />
+      <wsdl:input name="ConvertCV_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="ConvertCV_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReformatCV">
+      <wsoap12:operation soapAction="CVXtractorService#ReformatCV" style="document" />
+      <wsdl:input name="ReformatCV_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="ReformatCV_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PDF2Word">
+      <wsoap12:operation soapAction="CVXtractorService#PDF2Word" style="document" />
+      <wsdl:input name="PDF2Word_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="PDF2Word_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessBatch">
+      <wsoap12:operation soapAction="CVXtractorService#ProcessBatch" style="document" />
+      <wsdl:input name="ProcessBatch_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="ProcessBatch_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InstallLists">
+      <wsoap12:operation soapAction="CVXtractorService#InstallLists" style="document" />
+      <wsdl:input name="InstallLists_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="InstallLists_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveLists">
+      <wsoap12:operation soapAction="CVXtractorService#RetrieveLists" style="document" />
+      <wsdl:input name="RetrieveLists_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="RetrieveLists_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateAccount">
+      <wsoap12:operation soapAction="CVXtractorService#CreateAccount" style="document" />
+      <wsdl:input name="CreateAccount_In">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:input>
+      <wsdl:output name="CreateAccount_Out">
+        <wsoap12:body use="literal" namespace="CVXtractorService" encodingStyle="http://www.w3.org/2001/12/soap-encoding" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CVXtractor_Service">
+    <wsdl:documentation>WSDL File for CVXtractorService</wsdl:documentation>
+    <wsdl:port name="CVXtractor_Port" binding="tns:CVXtractor_Binding">
+      <wsoap11:address location="http://daxtractor-1.daxtra.com/cvvalid-bin/CVXtractorServiceSOAP.pl" />
+    </wsdl:port>
+    <wsdl:port name="CVXtractor_Port12" binding="tns:CVXtractor_Binding12">
+      <wsoap12:address location="http://daxtractor-1.daxtra.com/cvvalid-bin/CVXtractorServiceSOAP.pl" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

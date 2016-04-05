@@ -1,0 +1,59 @@
+﻿@model  ATS.WebUi.Models.Question.ATSCheckBox
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+<div class="one-div-full ATSCheckBox">
+    @Html.CheckBoxListFor(m => m.Answer,
+                              m => m.AllValues,
+                              divis => divis.Value,
+                              divis => divis.Text,
+                              m => m.SelectedList, Position.Vertical)
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("input[type='checkbox']").live('change', function (e) {
+            if ($(this).attr("contenteditable") == "false") {
+                e.preventDefault();
+                return false;
+            }
+            else {
+                var $self = $(this);
+                $checkboxlist = $self.parent();
+                var ansOptId = '';
+                $checkboxlist.find("input[type='checkbox']").each(function (index) {
+                    if ($(this).attr('checked') == 'checked') {
+                        $checkboxlist.removeClass('input-validation-error');
+                        var str = $(this).attr('value') + ",";
+                        ansOptId += str;
+                    }
+                });
+                //remove last inserted comma
+                if (ansOptId.substring(ansOptId.length - 1).length > 0) {
+                    ansOptId = ansOptId.substring(0, ansOptId.length - 1);
+                }
+                if ($.trim(ansOptId) == '') {
+                    $self.parents('form').find('#score').slider("value", 0);
+                    $checkboxlist.addClass('input-validation-error');
+                }
+                else {
+                    var dataLink = '@Url.Action("GetValue","Application",new {AnsOptId = "_ANSOPTID_" })';
+                    dataLink = dataLink.replace("_ANSOPTID_", ansOptId);
+                    VacancyModel.CallGetMethod(dataLink, function (data) {
+                        if ($self.parents('form').find('#score').length > 0) {
+                            $self.parents('form').find('#score').slider("value", data);
+                            var isExpandView = $("#btnExpandView").attr("is-expand");
+                            if (isExpandView == 'true') {
+                                var result = VacancyModel.ValidateQuestionAnswer($self.parents("form"));
+                                if (!result) {
+                                    $self.parents("form").submit()
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+
+    });
+</script>

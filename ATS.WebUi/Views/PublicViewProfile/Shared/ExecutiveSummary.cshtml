@@ -1,0 +1,25 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.ExecutiveSummary
+
+<div>
+    <div id="topPersonalInfo" class="HomePersonalInfo">
+        <div id="btomPersonalInfo">
+            <div style="float: left; width: 100%; margin-bottom: 10px;">
+                <div class="head_resum_aa">
+                    Executive Summary
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="vacancy-Details">
+                                <div class="box">
+                                    @Model.ExecutiveSummaryDetails
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

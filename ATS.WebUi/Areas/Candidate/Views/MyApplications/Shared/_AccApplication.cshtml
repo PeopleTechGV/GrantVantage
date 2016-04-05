@@ -1,0 +1,85 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@using BEApplicationMenuConstant = ATS.BusinessEntity.Common.ApplicationStatusMenuConstant
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BECommonApplicationDetailsConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@model BEClient.CandidateApplications
+
+<div class="AccApplication">
+    <div class="acc-header" data-index="1">
+        <p class="prfle-tab-head">
+            Application Details
+        </p>
+    </div>
+    <div class="acc-Content">
+
+    </div>
+    @if (Model.TotalInterviews > 0)
+    {
+        <div class="acc-header" data-index="2">
+            <p class="prfle-tab-head">
+                Interviews <span class="ttldbrown">(@Model.TotalInterviews)</span>
+            </p>
+        </div>
+        <div class="acc-Content">
+
+        </div>
+    }
+    @if (Model.ApplicationStatus == BEClient.Common.ApplicationStatusOptionsConstant.APP_STAT_SUBMIT && Model.ReqDocCount > 0)
+    {
+        <div class="acc-header" data-index="5">
+            <p class="prfle-tab-head">
+                Required Documents <span class="lblReqDocCount ttldbrown lblRoundBraces">@Model.ReqDocCount</span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner">
+                <div class="AccCandidaterequiredDocuments">
+                </div>
+            </div>
+        </div>
+    }
+    @if (Model.TotalAppQues > 0)
+    {
+        <div class="acc-header" data-index="4">
+            <p class="prfle-tab-head">  @*//CR-7*@
+                Application Questions<span class="ttldbrown">(@Model.TotalAppQues - @Model.Questioncounterperc% Complete)</span> 
+            </p>
+        </div>
+        <div class="acc-Content" style="margin-left: 2%; padding: 5px 0;">
+        </div>
+    }
+
+    @if (@Model.CanSurveyQueCnt > 0)
+    {
+        <div class="acc-header" data-index="6">
+            <p class="prfle-tab-head">
+                Required Information <span class="ttldbrown lblrequireinfo">(@Model.CanSurveyQueCnt)</span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner">
+                <div class="AccCandidateSurvey">
+                       
+                    
+                    
+                </div>
+            </div>
+        </div>
+    }
+    @if (Model.AppStatusAttrNo == Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.OfferRound) && Model.TotalOffers > 0)
+    {
+        <div class="acc-header" data-index="3">
+            <p class="prfle-tab-head">
+                Awards <span class="ttldbrown">(@Model.TotalOffers)</span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="acc-inner">
+                <div class="AccCandidateOffers">
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

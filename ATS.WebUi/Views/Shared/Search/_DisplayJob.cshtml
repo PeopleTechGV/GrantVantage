@@ -1,0 +1,139 @@
+﻿@model ATS.BusinessEntity.Vacancy
+
+@Html.HiddenFor(m => m.VacancyId, new { @id = "AnVacancyId" })
+
+<div class="std_width spctop-btm">
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Funding Oppty Number(FOA): </div>
+        <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.FundingOpptyNumber)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Announcement Date: </div>
+        @if (Model.AnnouncementDate != DateTime.MinValue)
+        {
+            <div class="std_hlfwdth aplyjob-content">@Model.AnnouncementDate.ToString("MMM dd, yyyy")</div>
+        }
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Announcement Type: </div>
+        <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.AnnouncementType)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Open Date: </div>
+        @if (Model.OpenDate != DateTime.MinValue)
+        {
+            <div class="std_hlfwdth aplyjob-content">@Model.OpenDate.ToString("MMM dd, yyyy")</div>
+        }
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Activity Code: </div>
+        <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.ActivityCode)</div>
+    </div>
+    <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Application Due Date: </div>
+        @if (Model.ApplicationDueDate != DateTime.MinValue)
+        {
+            <div class="std_hlfwdth aplyjob-content">@Model.ApplicationDueDate.ToString("MMM dd, yyyy")</div>
+        }
+    </div>
+
+    @if (Model.ShowOnWebSal)
+    {
+        <div class="aplyjob-hlf">
+            <div class="std_hlfwdth aplyjob-label">Salary Range: </div>
+            <div class="std_hlfwdth aplyjob-content">@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@Html.DisplayFor(m => m.SalaryMinText)-@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@Html.DisplayFor(m => m.SalaryMaxText)</div>
+        </div>
+    }
+    @if (Model.ShowonWebHour)
+    {
+        <div class="aplyjob-hlf">
+            <div class="std_hlfwdth aplyjob-label">Hourly Range: </div>
+            <div class="std_hlfwdth aplyjob-content">@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@Html.DisplayFor(m => m.HourlyMin)-@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@Html.DisplayFor(m => m.HourlyMax)/hour</div>
+        </div>
+    }
+    @*added this div for CR-20 Expected number of awards and Awards Selling*@
+   @* <div class="aplyjob-hlf">
+        <div class="std_hlfwdth aplyjob-label">Expected Number Of Awards: </div>
+        <div class="std_hlfwdth aplyjob-content">@Html.DisplayFor(m => m.FundingOpptyNumber)</div>
+    </div>*@
+</div>
+
+
+@if (Model.ShowOnWebJobDescription)
+{
+    <div class="aplyjob-title"> @Resources.Resources.LanguageDisplay(@ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_JOB_DESCRIPTION)</div>
+    <article class="detail-job-description TJob-Desc editorContent">
+        @Html.Raw(@Model.JobDescription)
+    </article>
+}
+
+@if (Model.ShowOnWebDuties)
+{
+    <br clear="all" />
+    <div class="aplyjob-title">
+        @Resources.Resources.LanguageDisplay(ATS.BusinessEntity.Common.RecordOfEmployementConstant.FRM_PRF_DUTIES_AND_RESPONSIBILITES)
+    </div>
+    <div class="editorContent">@Html.Raw(@Model.DutiesAndResponsibilities)</div>
+}
+@if (Model.ShowOnWebSkills)
+{
+    <br />
+    <div class="aplyjob-title">
+        @Resources.Resources.LanguageDisplay(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)
+    </div>
+    <div class="editorContent">@Html.Raw(@Model.SkillsAndQualification)</div>
+}
+
+
+@if (Model.ShowOnWebBenefits)
+{
+    <br />
+    <div class="aplyjob-title" style="clear:both;">
+        @Html.LanguageLabelFor(m => m.Benefits)
+    </div>
+
+    <div class="editorContent">@Html.Raw(@Model.Benefits)</div>
+}
+
+@if (Model.ShowOnWebCommission)
+{
+    <br />
+    <div class="aplyjob-title" style="clear:both;">
+        @Html.LanguageLabelFor(m => m.Commission)
+    </div>
+    <div class="editorContent">@Html.Raw(@Model.Commission)</div>
+}
+@if (Model.ShowOnWebBonus)
+{
+    <br />
+    <div class="aplyjob-title" style="clear:both;">
+        @Html.LanguageLabelFor(m => m.BonusPotential)
+    </div>
+    <div class="editorContent">@Html.Raw(@Model.BonusPotential)</div>
+}
+
+@if (Model.ShowOnWebAppInstruction)
+{
+    <br />
+    <div class="aplyjob-title" style="clear:both;">
+        @Html.LanguageLabelFor(m => m.ApplicationInstruction)
+    </div>
+    <div class="editorContent">@Html.Raw(@Model.ApplicationInstruction)</div>
+}
+
+@if (Model.ShowOnWebAppInstructionDoc && Model.objAppInstructionDocList != null && Model.objAppInstructionDocList.Count > 0)
+{
+    <br />
+    <div class="aplyjob-title" style="clear:both;">
+        Application Instruction Documents
+    </div>
+    foreach (ATS.BusinessEntity.AppInstructionDoc current in Model.objAppInstructionDocList)
+    {
+        <a class="floatleft w100" style="padding: 4px 0; font-size: 11px; text-decoration: underline;" href="@Url.Content(current.Path)" target="_blank">@current.FileName</a>
+    }
+}
+<script>
+    $(document).ready(function () {
+        $(".editorContent").find("a").attr("target", "_blank");
+    });
+</script>

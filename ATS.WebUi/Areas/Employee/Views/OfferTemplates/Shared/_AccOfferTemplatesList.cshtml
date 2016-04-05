@@ -1,0 +1,10 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model  ATS.BusinessEntity.SRPEntity.DynamicSRP<List<BEClient.OfferTemplates>>
+
+@if (Model != null && Model.obj != null && Model.obj.Count() > 0)
+{
+    foreach (var _current in Model.obj)
+    {
+        @Html.Partial("Shared/_AccOfferTemplatesSingle", _current)
+    }
+}

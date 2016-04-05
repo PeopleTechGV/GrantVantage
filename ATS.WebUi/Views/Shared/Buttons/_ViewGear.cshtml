@@ -1,0 +1,48 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model ATS.BusinessEntity.SRPEntity.IDynamicSRP
+<script>
+    function MyOnClickValidate() {
+        if (window["OnClickValidate"] == '') {
+            return true;
+        }
+        else {
+            return window["OnClickValidate"]();
+        }
+    }
+
+</script>
+@{
+    BEClient.PageMode _mymode = BEClient.PageMode.View;
+    bool ViewSaveBtn = false;
+    bool ViewRemoveBtn = false;
+}
+@if (ViewBag.PageMode != null)
+{
+    _mymode = (BEClient.PageMode)ViewBag.PageMode;
+}
+    @{
+        if (_mymode.Equals(BEClient.PageMode.Update) && ViewBag.IsDelete != null)
+        {
+            bool.TryParse(Convert.ToString(ViewBag.IsDelete), out ViewRemoveBtn);
+        }
+
+    }
+
+    @if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, _mymode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, _mymode))
+    {
+        ViewSaveBtn = true;
+    }
+
+    @if (ViewSaveBtn || ViewRemoveBtn)
+    {
+        <ul class="ActionBar">
+            @if (ViewSaveBtn)
+            {
+                <li><a id="Update" class="bgSave16B" href='javascript:void(0);' onclick='return MyOnClickValidate();'>@Html.LanguageLabel(Model.SaveBtnText)</a></li>
+            }
+            @if (ViewRemoveBtn)
+            {
+                <li><a id="Remove" href='javascript:void(0);' class="btn-remove-vacancy bgDelete16B">@Html.LanguageLabel(Model.RemoveBtnText)</a></li>
+            }
+        </ul>
+    }

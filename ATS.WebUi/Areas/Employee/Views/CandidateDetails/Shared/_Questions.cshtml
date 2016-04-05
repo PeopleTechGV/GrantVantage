@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.InterviewProcessQue
+
+<div class="acc-header QuestionHeader">
+    <span class="w60 floatleft">
+        <span class='ttllbrown'>@Model.ObjQue.LocalName</span>
+    </span>
+    <span class="w30 floatleft">
+        <span class="ttllbrown" id="rndweight">@Model.VacQueWeight</span>
+    </span>
+    <span class="floatright">
+        <span class="ttllbrown" id="rndscore">@Model.ObjQue.Score</span>
+    </span>
+</div>
+
+<div class="acc-Content">
+    <div class="AccReviewer" style="width:100%;">
+        @foreach (ATS.BusinessEntity.Reviewers _curr in Model.ObjReviewers)
+        {
+            @Html.Partial("Shared/_Reviewers", _curr)
+        }
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/EmailTemplates/_Layout.cshtml";
+}
+
+Thank you for registering on the @ViewBag.Domain Job Portal. 
+<br />
+<br />
+Just one more step to complete the process:
+<br />
+<a href="@ViewBag.Link">Click here to activate your account! </a>
+<br />
+<br />
+<br />
+Your Login: <br />
+User Name:  @ViewBag.UserName
+<br />
+<br />
+<br />
+**If your browser will not open the above link, please copy and paste the following link into your browser to activate your account:
+<br />@ViewBag.Link
+<br />
+<br />
+
+Best Regards,
+<br />
+@ViewBag.Domain

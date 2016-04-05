@@ -1,0 +1,50 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.Vacancy
+@Html.TextBoxFor(m => m.Location, new
+{
+    @AutoComplete_DisplayOption = "10"
+         ,
+    @SelectedValue = Model.Location
+         ,
+    @name = "Location"
+         ,
+    @AutoComplete_Url = @Url.Action("JobLocationAutoComplete", new { @DivisionId = Html.ValueFor(m => m.DivisionId) })
+        //,@AutoComplete_valueField = "LocalName"
+         ,
+    @DivisionId  = Guid.Empty,
+    @AutoComplete_textField = "LocalName"
+         ,
+    @AutoComplete_SelectedValueFun = "OnJobLocationSelect"
+        //,@style = "height:20px;font-size:15px; width:150px;padding:5px 2px;" 
+         ,
+    @onkeydown = "return runScript(event)"
+         ,
+    @class = "detail-input"
+    ,
+  
+
+})
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+
+        VacancyModel.AutoComplete(document.getElementById('Location'));
+        //VacancyModel.AutoComplete('#Location');
+    });
+    function runScript(e) {
+        var target = e.target;
+        if (e.keyCode == 46 || e.keyCode == 8) {
+            //Handle Delete Key and backspace
+            $(target).attr('SelectedValue', '');
+        }
+        return true;
+    }
+    function OnJobLocationSelect(value) {
+
+    }
+
+  
+   
+
+
+</script>

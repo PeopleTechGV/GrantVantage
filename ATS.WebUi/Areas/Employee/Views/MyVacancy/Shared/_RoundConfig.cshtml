@@ -1,0 +1,206 @@
+﻿@model ATS.BusinessEntity.VacancyRound
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(m => m.VacancyRoundId)
+@Html.HiddenFor(m => m.VacancyRoundId)
+@Html.HiddenFor(m => m.VacancyId)
+@Html.HiddenFor(m => m.AssignCandiadteToReviewerId)
+@Html.HiddenFor(m => m.ReqReviewer)
+@Html.HiddenFor(m => m.PromoteCandidate)
+
+@Html.HiddenFor(m => m.AssignCandidateBatches)
+
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByRndTypeId(Model.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+}
+<style>
+    .vacancy-quest-box {
+        float: left;
+        padding: 0;
+        width: 99%;
+    }
+</style>
+<div class="vacancy-Details">
+    <div class="vacancy-quest-box">
+        <div class="std_width">
+
+            @if (RndAttr != BERndAttr.OfferRound)
+            {
+                <div class="width-62 SMW100 ARPBox">
+                    @Html.LanguageLabelFor(m => m.RndTypeId, new { @class = "round-config-lft" })
+                    @Html.DropDownListFor(m => m.RndTypeId, (SelectList)ViewBag.RoundType, "--Select--", new { @id = "ReviewRound", @class = "round-slt-lft", @onchange = "CopyRndType(this);" })
+                </div>
+                <div id="RndConfig">
+
+                    <div class="width-38 SMW100 ARPBox">
+                        @Html.LanguageLabelFor(m => m.RoundWeight, new { @class = "round-config-rgt labelwidth-rgt" })
+                        @Html.TextBoxFor(m => m.RoundWeight, new { @class = "round-rgt", @onchange = "CopyRndWeight(this);" })
+                    </div>
+                    <div class="width-62 SMW100 ARPBox">
+                        @Html.LanguageLabelFor(m => m.PromoteCandidate, new { @class = "round-config-lft " })
+                        @Html.DropDownListFor(m => m.PromoteCandidate, (SelectList)ViewBag.YesNoDropDownPromoteCandidate, "- Select -", new { @class = "round-slt-lft" })
+                    </div>
+                    <div class="width-38 SMW100 ARPBox">
+                        @Html.LanguageLabelFor(m => m.PromotionThresoldScore, new { @class = "round-config-rgt labelwidth-rgt" })
+                        @Html.TextBoxFor(m => m.PromotionThresoldScore, new { @class = "round-rgt" })
+                    </div>
+                    <div class="width-62 SMW100 ARPBox" style="display:none;">
+                        @Html.DropDownListFor(m => m.OfferTemplateId, (SelectList)ViewBag.RoundType, "--Select--", new { @class = "round-slt-lft" })
+                    </div>
+                </div>
+            }
+            else
+            {
+
+                <div class="width-62" style="clear:both;">
+                    @Html.LanguageLabelFor(m => m.RndTypeId, new { @class = "round-config-lft", @style = "width:40% !important" })
+                    @Html.DropDownListFor(m => m.RndTypeId, (SelectList)ViewBag.RoundType, "--Select--", new { @id = "ReviewRound", @class = "round-slt-lft", @onchange = "CopyRndType(this);" })
+                </div>
+                <div class="width-62">
+                    @Html.LanguageLabelFor(m => m.OfferTemplateId, new { @class = "round-config-lft", @style = "width:40% !important" })
+                    @if (ViewBag.OfferTemplates != null)
+                    {
+                        @Html.DropDownListFor(m => m.OfferTemplateId, (SelectList)ViewBag.OfferTemplates, "--Select--", new { @class = "round-slt-lft" })
+                    }
+                </div>
+            }
+        </div>
+        <div class="box" style="margin-top:5px; border-bottom: 2px solid #953634; width: 100%;">
+            <button type="submit" class="prfle-button-save CaseUpper">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_SAVE)</button>
+            <button type="button" id="RemoveRound" class="prfle-button-delete CaseUpper" onclick="RemoveRoundConfig(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_REMOVE)</button>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $('#ReviewRound').change(function () {
+
+        var RndTypeId = $(this).val();
+
+        if (RndTypeId == "") {
+            return false;
+        }
+        else {
+            var Vacid = $('.AccRound').parent().prev().attr('data-recordid');
+            var VacRndId = $('#ReviewRound').parents(".vacancy-Details").attr('data-rndconfigid');
+            var dataLink = '@Html.Raw(@Url.Action("CheckForRoundNo", "MyVacancy", new { RndTypeId = "_RNDTYPEID_" ,VacId = "_VACId_",VacRndId = "_VACRNDID_"}))';
+            dataLink = dataLink.replace("_RNDTYPEID_", RndTypeId);
+            dataLink = dataLink.replace("_VACId_", Vacid);
+            dataLink = dataLink.replace("_VACRNDID_", VacRndId);
+            var _ele = $('#frmRoundConfig').find('.accNewReviewRound').children('.acc-Content');
+
+            VacancyModel.CallGetMethod(dataLink, function (data) {
+
+
+                if (data != "")
+                    $(".lblRoundWeight").show();
+                else
+                    $(".lblRoundWeight").hide();
+                _ele.html('');
+                _ele.append(data);
+            });
+            //CopyRndType(this);
+        }
+    });
+
+    function CopyRndType(changeVal) {
+
+        var cur = $(changeVal);
+        var text = "";
+        if (cur.val() != 0) {
+            text = cur.find('option:selected').text();
+
+        }
+        cur.closest('.acc-Content').prev().attr('data-qdatatype', cur.val());
+        VacancyModel.CopyDataToHeader(cur, "lblRndType", text);
+    }
+
+    function CopyRndWeight(changeVal) {
+        var cur = $(changeVal);
+        VacancyModel.CopyDataToHeader(cur, "lblRndWeight", cur.val())
+    }
+    var callEnd = false;
+    var _curElement;
+    function RoundSuccess(response) {
+        callEnd = true;
+        var _$VacAcc = $("#VacancyAcc");
+        var JsonData = JSON.parse(response);
+
+        if (!JsonData.IsError) {
+
+            _$VacAcc.find('.RoundConfigNewForm').html('');
+            _$VacAcc.find('.RoundConfigNewForm').hide();
+            var _$jsonData = $('' + JsonData.Data + '');
+            _$jsonData.find('.cntRound').text((_$VacAcc.find('.AccRound > .acc-header').size() + 1).toString());
+
+            var _vacRndId = $(JsonData.Data).attr('data-pkid');
+            var _parentAcc = $('#VacancyAcc');
+
+            var active = _parentAcc.accordion("option", "active");
+            _parentAcc.accordion("option", "active", false).accordion("refresh");
+            _parentAcc.accordion("option", "active", active);
+
+            var _newAcc = $('.AccRound').children('div[data-vacroundid = "' + _vacRndId + '"]');
+            _curElement = _vacRndId;
+
+
+            var Roundcount = $('.AccRound').parent().prev().children('p').find('#vacrndcnt').text();
+            var finalcount = parseInt(Roundcount.match(/[0-9]+/)[0], 10) + 1;
+            $('.AccRound').parent().prev().children('p').find('#vacrndcnt').text("(Rounds: " + finalcount + ")")
+            MyVacancy.IgnoreAccordianVacancyAccHeaderClick(_$VacAcc.find('.AccRound'));
+            if (finalcount > 0) {
+                _$VacAcc.find('.AccRound').accordion({ active: finalcount - 1 });
+            }
+
+            var _rounds = $('.AccRound').children('.acc-header');
+            $(_rounds).each(function (index, value) {
+                var _onloadelement = $(this).find('.onload');
+                if ($(_onloadelement).length > 0) {
+                    $(_onloadelement).each(function (index, value) {
+                        $(this).remove();
+                    });
+                }
+                var ordrno = parseInt($(this).attr('data-rndorderheader'));
+                var rndcnt = parseInt($(_rounds).length)
+                if (ordrno == 1 && rndcnt > 1) {
+                    $(this).find('#onSaveRndDown').removeAttr('style');
+                }
+                else if (ordrno == rndcnt && rndcnt > 1) {
+                    $(this).find('#onSaveRndUp').removeAttr('style');
+                }
+                else {
+                    if (rndcnt > 1) {
+                        $(this).find('#onSaveRndDown').removeAttr('style');
+                        $(this).find('#onSaveRndUp').removeAttr('style');
+                    }
+                }
+            });
+            $('#divTemplateChk').html('');
+            $('#divTemplateForm').html('');
+        }
+    }
+    function RemoveRoundConfig(element) {
+        $(element).closest("form").remove();
+        $('#addRoundConfig').show();
+        $('.note').show();
+        return false;
+    }
+    function RoundFailure() {
+        return false;
+    }
+    $("body").ajaxStop(function () {
+        if (callEnd) {
+            var _newAcc = $('.AccRound').children('div[data-vacroundid = "' + _curElement + '"]');
+            callEnd = false;
+            _newAcc.click();
+            callEnd = false;
+        }
+    });
+</script>

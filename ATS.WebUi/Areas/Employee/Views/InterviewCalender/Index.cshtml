@@ -1,0 +1,121 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.InterviewCalender>>>
+@using BEVacancyMDLConst = ATS.BusinessEntity.Common.ModelConstant
+@using BECompanySetupMenuConst = ATS.BusinessEntity.Common.CompanySetupMenu
+@using BEVacancyConstant = ATS.BusinessEntity.Common.VacancyConstant
+@using BECommonCons = ATS.BusinessEntity.Common.CommonConstant
+@using BEClient = ATS.BusinessEntity
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /*To Hide Loading image on row selection*/
+    #loading {
+        display: none !important;
+        visibility: hidden !important;
+    }
+</style>
+@System.Web.Optimization.Styles.Render("~/Content/GridMvcCSS")
+@System.Web.Optimization.Scripts.Render("~/bundles/GridMvcMyVacJS")
+@{
+    var totalCount = 0;
+    if (Model.obj.obj != null && Model.obj.obj.Count() > 0)
+    {
+        totalCount = Model.obj.obj.Count();
+    }
+    <text>
+        <script>
+            var _totalCount = @totalCount
+        </script>
+    </text>
+}
+@section Navigation{
+    @{
+        string _ConstantStatus = "INT_" + ViewBag.VacStatus;
+    }
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgInterviewCalender24W"></div>
+        <span class="navTitle">
+            @Html.LanguageLabel(BEClient.Common.EmployeeMenuConstant.MNU_INTERVIEW_CALENDER):
+            <span class="navSubTitle lblNgold CaseUpper">@Html.LanguageLabel(_ConstantStatus.ToUpper())</span>
+            <span class="lblNavCount">@totalCount</span>
+        </span>
+        <span class="chevron"></span>
+        <ul id="mnuMyApp" class="dropdownMenu menuPurple">
+            @Html.Partial("Shared/_DrpInterviewStat")
+        </ul>
+    </div>
+}
+@Html.Partial("Shared/_MyInterviewCalenderCommandBar", Model)
+<div class="my-vacancies" id="Vacancy_grid" style="padding-bottom:20px;">
+    @Html.Partial("Shared/_InterviewCalenderGrid", Model.obj.obj)
+</div>
+<script>
+
+    $(document).ready(function(){
+        $(".grid-mvc").gridmvc();
+    });
+
+    function Clear() {
+        var strFilter = window.location.search.substr(1).split('&');
+        var indexPath = window.location.protocol + "//" + window.location.host;
+        var path = indexPath + window.location.pathname.replace("#", "");
+        var qryString = "";
+        if (strFilter.length > 0) {
+            for (var i = 0; i < strFilter.length; i++) {
+                if (strFilter[i].indexOf("SearchText=") == -1 && strFilter[i] != "") {
+                    if (qryString == "")
+                        qryString = strFilter[i];
+                    else
+                        qryString += "&" + strFilter[i];
+                }
+            }
+        }
+        //window.location.href = indexPath + window.location.pathname + "?" + qryString;
+        //  window.location = window.location.protocol + "//" + window.location.host + window.location.pathname.replace("#", "");
+
+        if (qryString != "")
+            window.location.href = indexPath + window.location.pathname + "?" + qryString;
+        else
+            window.location.href = indexPath + window.location.pathname;
+
+    }
+    function Search() {
+        SearchCandidate();
+    }
+    $("#txtSearch").keyup(function (event) {
+        if (event.keyCode == 13) {
+            SearchCandidate();
+        }
+    });
+    function SearchCandidate() {
+        var indexPath = window.location.protocol + "//" + window.location.host;
+        var path = indexPath + window.location.pathname.replace("#", "");
+        if (window.location.pathname.search == "") {
+            if ($("#txtSearch").val() != "")
+                window.location = path + "?SearchText=" + $("#txtSearch").val();
+            else
+                window.location = path;
+        }
+        else {
+            var strFilter = window.location.search.substr(1).split('&');
+            var qryString = "";
+            if (strFilter.length > 0) {
+                for (var i = 0; i < strFilter.length; i++) {
+                    if (strFilter[i].indexOf("SearchText=") == -1 && strFilter[i] != "") {
+                        if (qryString == "")
+                            qryString = strFilter[i];
+                        else
+                            qryString += "&" + strFilter[i];
+                    }
+                }
+            }
+            if ($("#txtSearch").val() != "")
+                window.location = indexPath + window.location.pathname + "?SearchText=" + $("#txtSearch").val() + "&" + qryString;
+            else if (qryString != "")
+                window.location.href = indexPath + window.location.pathname + "?" + qryString;
+            else
+                window.location.href = indexPath + window.location.pathname;
+        }
+    }
+</script>

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ATS.BusinessEntity.PortalContent>
+<div class="search-result-detail">
+    <div class="search-heading">
+        <li class="location">Logo</li>
+        <li class="job-title">Right Text</li>
+        <li class="posted-on">&nbsp;</li>
+        <li class="action">Action</li>
+    </div>
+    @foreach (ATS.BusinessEntity.PortalContent current in Model)
+    {
+        <ul class="search-row">
+            <li class="text-details">
+                <ul data-id="@current.PortalContentId">
+                    <li class="detail-location"><img src='@current.Logo' height="20px" width="100px"/></li>
+                 </ul>
+            </li>
+            <li class="setting-details">
+                <div>
+                    <a class="applybtn">
+                        <img class="settings" src="/Content/images/Options_Gear_24.png" onclick="javascript:window.location='@Url.Action("View","PositionType", new {area = "Admin", id = @current.PositionTypeId })'" id="EditPosition" />
+                    </a>
+                </div>
+            </li>
+        </ul>
+    }
+</div>

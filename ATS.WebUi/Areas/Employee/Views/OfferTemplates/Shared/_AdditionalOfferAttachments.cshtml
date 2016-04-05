@@ -1,0 +1,154 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.OfferTemplates
+
+<div class="OfferDetails">
+    <div class="IncludeInOffer">
+        <span>Additional Offer Attachments</span>
+        <span class="AttachmentNotification" style="display:none;"></span>
+        <div class="RightAction">
+            @Html.CheckBoxFor(m => m.IncludeAttachments, new { @id = "chkIncludeAttachments", @class = "chkInclude" })
+            @Html.LanguageLabelFor(m => m.IncludeAttachments, new { @class = "label" })
+        </div>
+    </div>
+
+    <div class="IncludeOption">
+        <div class="OfferAttachments">
+            @if (Model.OfferAttachmentList.Count > 0)
+            {
+                @Html.Partial("Shared/_OfferAttachment", Model.OfferAttachmentList)
+            }
+        </div>
+        @using (Html.BeginForm("UploadAttachments", "OfferTemplates", FormMethod.Post, new { id = "UploadResumeid" }))
+        {
+            <input type="file" id="UploadResume" name="myfile[]" multiple class="file-upload floatleft">
+            <a id="REbtn-logo" class="btn CaseUpper" href="javascript:void(0);">Add Attachment</a>
+            <div class="REprogress">
+                <div class="REbar"></div>
+                <div class="REpercent"></div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    var bar = $('.bar');
+    var percent = $('.percent');
+    var REbar = $('.REbar');
+    var REpercent = $('.REpercent');
+    function RemoveClass() {
+        $(REpercent).removeClass('input-validation-error');
+        $("#objATSResume_ATSResumeId").removeClass('input-validation-error');
+        return true;
+    }
+    (function () {
+        $('#REbtn-logo').click(function (event) {
+            $("#objATSResume_ATSResumeId").prop('selectedIndex', 0);
+            $('.REpercent').removeClass('input-validation-error');
+            $("#objATSResume_ATSResumeId").removeClass('input-validation-error');
+            $('#UploadResume').click();
+        });
+
+        $('#UploadResume').change(function (click) {
+            var IsError = ValidateFiles();
+            if (IsError == true) {
+                var Message = "Invalid Document Type";
+                VacancyModel.DisplayErrorMeesage('#commonMessage', Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                $('#UploadResumeid').submit();
+            }
+        });
+
+        $('#UploadResumeid').submit(function () {
+            var OfferTemplateId = $('#OfferTemplateId').val();
+            var url = '@Url.Action("UploadAttachments", "OfferTemplates", new { OfferTemplateId = "_OFFERTEMPLATEID_" })';
+            url = url.replace("_OFFERTEMPLATEID_", OfferTemplateId);
+            $('#UploadResumeid').prop('action', url);
+            return true;
+        });
+
+        $('#UploadResumeid').ajaxForm({
+            beforeSend: function () {
+                $(".REprogress").show();
+                var percentVal = '0%';
+                REbar.width(percentVal)
+                REpercent.html("Uploading...");
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                REbar.width(percentVal)
+                REpercent.html('Uploading...' + percentVal);
+                console.log(percentVal + ",");
+                if (percentComplete >= 100)
+                    REpercent.html('Uploading...');
+
+            },
+            success: function (result) {
+                var percentVal = '100%';
+                REbar.width(percentVal);
+                REpercent.html(percentVal);
+                data = JSON.parse(result);
+                if (!data.IsError) {
+                    $(".OfferAttachments").html(data.Data);
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                else {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                $(".REprogress").hide();
+            }
+        });
+    })();
+
+    function ValidateFiles() {
+        var IsError = false;
+        var length = document.getElementById('UploadResume').files.length;
+        for (var i = 0; i < length; i++) {
+            var fname = document.getElementById('UploadResume').files[i].name;
+            var fext = fname.split('.').pop();
+            if (fext != 'doc' && fext != 'docx' && fext != 'pdf' && fext != 'csv' && fext != 'xls' && fext != 'xlsx' && fext != 'txt') {
+                IsError = true;
+            }
+        }
+        return IsError;
+    }
+
+    function RemoveHeader() {
+        if ($(".GridAttachment > .RowContent").length == 0) {
+            $(".GridAttachment > .RowHeader").hide();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $("#chkIncludeAttachments").click(function () {
+            $("#IncludeAttachments").val($(this).is(":checked"))
+        });
+    });
+</script>
+
+<style>
+    .progress, .REprogress {
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        float: left;
+        height: 33px;
+        margin-left: 10px;
+        position: relative;
+        width: 80%;
+        display: none;
+    }
+
+    .bar, .REbar {
+        background-color: #C9E4FF;
+        width: 0%;
+        height: 29px;
+    }
+
+    .percent, .REpercent {
+        display: inline-block;
+        left: 7px;
+        position: absolute;
+        top: 7px;
+    }
+</style>

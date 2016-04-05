@@ -1,0 +1,37 @@
+﻿@using BECommon = ATS.BusinessEntity.Common;
+@model ATS.WebUi.Models.BreadScrumbModel<DBNull>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div id="NavFeaturedJob" class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgFeaturedJob16W"></div>
+        <a class="navTitle" href="@Html.Raw(Url.Action("Index","Account",new { @area = ATS.WebUi.Common.Constants.AREA_ROOT }))">FEATURED OPPORTUNITIES</a>@*</span>*@
+        <span class="chevron"></span>
+    </div>
+}
+
+@{
+    Html.RenderAction("GetAllVacancyByCurrentClient", "Search", new { area = "" });
+}
+
+<script>
+    $(document).ready(function () {
+        $("#selectable").selectable({
+            cancel: 'ul.RowHeader, #selectable > .ui-selected, #Upload',
+
+            selecting: function (e, ui) {
+                $("#slidepanel-login").slideUp('slow').toggleClass('closed opened');
+                $("#slidepanel-signup").slideUp('slow').toggleClass('closed opened');
+                $("#selectable ul").removeClass('ui-selected');
+                $(this).addClass('ui-selected');
+            },
+            selected: function (e, ui) {
+                $("#btnApplyNow").show(300);
+                $("#hdnVacancyId").val($(this).find(".ui-selected").attr("data-id"));
+            }
+        });
+    });
+</script>

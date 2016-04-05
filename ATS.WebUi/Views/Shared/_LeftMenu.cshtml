@@ -1,0 +1,43 @@
+﻿@using BECommon = ATS.BusinessEntity.Common;
+
+@{
+    var contrName = string.Empty;
+    if (ATS.WebUi.Common.CurrentSession.Instance != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs != null)
+    {
+        contrName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.FirstOrDefault().Controller;
+    }
+}
+
+@if (contrName.Equals("Account"))
+{
+    <li>
+        <a class="activeMenu bgFeaturedJob24W" href='@Url.Action("Index", "Home", new { ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname })'>
+            @Html.LanguageLabel(BECommon.HomeConstant.FEATURED_JOBS)
+        </a>
+    </li>
+}
+else
+{
+    <li>
+        <a class="bgFeaturedJob24W" href='@Url.Action("Index", "Home", new { ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname })'>
+            @Html.LanguageLabel(BECommon.HomeConstant.FEATURED_JOBS)
+        </a>
+    </li>
+}
+
+@*@if (contrName.Equals("Search"))
+{
+    <li>
+        <a class="activeMenu bgSearch24W" href='@Url.Action("Index", "Search", new { area = "" })'>
+            @Html.LanguageLabel(BECommon.HomeConstant.SEARCH_JOBS)
+        </a>
+    </li>
+}
+else
+{
+    <li>
+        <a class="bgSearch24W" href='@Url.Action("Index", "Search", new { area = "" })'>
+            @Html.LanguageLabel(BECommon.HomeConstant.SEARCH_JOBS)
+        </a>
+    </li>
+}*@

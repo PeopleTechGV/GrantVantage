@@ -1,0 +1,95 @@
+﻿@model ATS.BusinessEntity.Application
+@*------------Reviews & Ratings Start------------*@
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class="w70 floatleft">
+            <span>@Html.LanguageLabel("Reviews and Ratings")</span>
+        </span>
+        <span class="floatright">
+            <span class="ttllbrown">Score:</span>
+            <span class="ttldblue">@Model.objGetScore.Score</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="AccRevRat w100">
+        @Html.Partial("Shared/ApplicationProcess", Model.objVacRndList)
+    </div>
+</div>
+
+@*------------Reviews & Ratings End------------*@
+
+@*------------Interviews Start------------*@
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Interviews")
+    </p>
+</div>
+
+<div class="acc-Content">
+    <div class="acc-inner section-height">
+        <div class="InterviewHeader std_width reviewer-tab-head-brown" style="margin-left: 3% !important; width:98.5%;">
+            <div class="ScheduleDate">Date</div>
+            <div class="SchStartTime">Start</div>
+            <div class="SchEndTime">End</div>
+            <div class="SchReviewer">Interviewer(s)</div>
+            <div class="SchRound">Round</div>
+            <div class="SchScore">Score</div>
+        </div>
+    </div>
+    <div class="acc-inner" style="margin: 0 2%;">
+        <div class="CRUScheduleInt">
+            @foreach (ATS.BusinessEntity.ScheduleInt _Current in Model.ObjScheduleInt)
+            {
+                @Html.Partial("Shared/_Interview", _Current)
+            }
+        </div>
+    </div>
+</div>
+<br clear="all" />
+
+
+@*------------Interviews End------------*@
+
+@*------------Comments Start------------*@
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Comments")
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="Comments">
+        @Html.Partial("Shared/_Comment", Model.ObjComment)
+    </div>
+</div>
+
+@*------------Comments End------------*@
+
+@*------------Comments Start------------*@
+@*<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Application")
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="Comments">
+        @Html.Partial("Shared/_ApplicationQuestions", Model.objApplicationQuestionsList)
+    </div>
+</div>*@
+@*------------Comments End------------*@
+
+@*------------History Start------------*@
+
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("History")
+    </p>
+</div>
+<div class="acc-Content">
+    <div>
+        @Html.Partial("Shared/_CandidateHistory", Model.objCandidateHistory)
+    </div>
+</div>
+@*------------History End------------*@

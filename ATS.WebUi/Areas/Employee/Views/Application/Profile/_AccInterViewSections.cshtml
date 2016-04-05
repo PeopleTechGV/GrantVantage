@@ -1,0 +1,5 @@
+﻿@model List<ATS.BusinessEntity.InterViewProcess>
+@foreach (var _cureent in Model)
+{
+    @Html.Partial("Profile/_SglInterViewSection", _cureent)
+}

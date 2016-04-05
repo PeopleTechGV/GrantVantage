@@ -1,0 +1,7 @@
+﻿@model List<ATS.BusinessEntity.InterviewProcessQue>
+
+@foreach (var _cureent in Model)
+{
+    @Html.Partial("Profile/_Question", _cureent)
+}
+

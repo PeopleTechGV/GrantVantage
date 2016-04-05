@@ -1,0 +1,29 @@
+﻿@model List<ATS.BusinessEntity.ApplicationDocuments>
+
+<div class="GridContainer AccGrid">
+    <ul class="RowHeader">
+        <li class="w40">Document Name</li>
+        <li class="w40">File Name</li>
+        @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.DivisionId == Guid.Empty)
+        {
+            <li class="w20">Upload Document</li>
+        }
+    </ul>
+    @foreach (var _Current in Model)
+    {
+        @Html.Partial("ApplicationDocuments/_ApplicationDocumentSingle", _Current)
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".btnUploadAppDocs").live("click", function () {
+            $(".RowEditing").removeClass("RowEditing");
+            $(this).parents(".RowContent").addClass("RowEditing");
+        });
+    });
+</script>
+
+<style>
+    
+</style>

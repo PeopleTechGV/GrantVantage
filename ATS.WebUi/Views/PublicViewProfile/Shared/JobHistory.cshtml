@@ -1,0 +1,21 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.EmploymentHistory>
+@using BERecordOfEmploymentConst = ATS.BusinessEntity.Common.RecordOfEmployementConstant
+
+@foreach (var v in Model)
+{
+    <div class="content">
+        @if ((v.StartMonth + v.EndMonth) > 0)
+        {
+            <h3>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName((int)v.StartMonth) @v.StartYear - @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName((int)v.EndMonth) @v.EndYear</h3>
+        }
+        <p>
+            @v.CompanyName, @v.Address , @v.City , @v.State <br />
+            <em>@v.MostRecentPosition</em>
+        </p>
+        <ul class="info">
+            <li>@v.DutiesAndResponsibilities</li>
+            <li>@v.ReasonForLeaving</li>
+        </ul>
+    </div>
+}

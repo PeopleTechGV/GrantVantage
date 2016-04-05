@@ -1,0 +1,408 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@model ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<ATSModel>>
+
+<style>
+    .btnSavePrivilege {
+        background-color: #ffffff;
+        border: medium none;
+        color: #345e8e;
+        cursor: pointer;
+        font-size: 9pt;
+        font-weight: 600;
+        margin-top: -3px;
+        padding: 0;
+    }
+
+    .ActionBar > li > a:hover > .btnSavePrivilege {
+        background-color: #C6E3FF;
+    }
+</style>
+
+<ul class="ActionBar">
+    <li>
+
+    </li>
+</ul>
+
+<div class="search">
+    @{
+        var mySecRole = string.Join(",", Model.obj.obj.SelectedSecurityRoleList.Select(x => x.SRP_Id.ToString()).ToArray());
+    }
+    @Html.HiddenFor(m => m.obj.obj.AdHocPrivilegeList, new { @id = "AdHocPrivilegeList" })
+</div>
+
+
+<script type="text/javascript">
+    var isFormReadOnly = false;
+
+
+    var MySecurityRole = '@mySecRole'
+
+    $(document).ready(function () {
+        //CommonPrivilege();
+    });
+
+    function ChangeUser() {
+        document.getElementById("frmUser").submit();
+    }
+
+    function Save() {
+        var AdHocPrivilegeList = GetAdHocRights();
+        var data = JSON.stringify(AdHocPrivilegeList);
+        document.getElementById('AdHocPrivilegeList').value = data;
+        var v = OnClickValidate();
+        if (v) {
+            document.getElementById("frmUser").submit();
+        }
+        else {
+            return false;
+        }
+    }
+
+    function ApplyAdHocRights(PrivilegeList) {
+        for (var v = 0; v < PrivilegeList.length; v++) {
+
+            var objList = document.getElementById("Name_" + PrivilegeList[v].PrivilegeId);
+            var All = objList.children[0];
+            var Sister = objList.children[1];
+            var Children = objList.children[2];
+            var Own = objList.children[3];
+
+            for (var c = 1; c <= 4; c++) {
+                if (c == 1) {
+                    RetrivePermissionListDetail('C', PrivilegeList, v, c, All, Sister, Children, Own);
+                }
+                else if (c == 2) {
+                    RetrivePermissionListDetail('V', PrivilegeList, v, c, All, Sister, Children, Own);
+                }
+                else if (c == 3) {
+                    RetrivePermissionListDetail('M', PrivilegeList, v, c, All, Sister, Children, Own);
+                }
+                else if (c == 4) {
+                    RetrivePermissionListDetail('D', PrivilegeList, v, c, All, Sister, Children, Own);
+                }
+            } //End of 2nd forloop
+            for (var i = 1; i <= 4; i++) {
+                ShowPermissionAsLabel(PrivilegeList[v].PrivilegeId, i, All, Sister, Children, Own);
+            }
+        } //End of main
+    }
+
+    function RetrivePermissionListDetail(Permission, PrivilegeList, v, c, All, Sister, Children, Own) {
+        for (var h = 0; h < PrivilegeList[v].PermissionList.length; h++) {
+            if (PrivilegeList[v].PermissionList[h].Permission == Permission) {
+                for (var d = 0; d < PrivilegeList[v].PermissionList[h].ScopeList.length; d++) {
+                    if (PrivilegeList[v].PermissionList[h].ScopeList[d].Scope == 'A') {
+
+                        if (All.children[0].children[c].children[0].disabled == false || isFormReadOnly) {
+                            All.children[0].children[c].children[0].checked = true;
+                            var typ5 = document.createAttribute("style");
+                            typ5.nodeValue = "outline: 2px solid RED";
+                            All.children[0].children[c].children[0].attributes.setNamedItem(typ5);
+                        }
+                    }
+                    else if (PrivilegeList[v].PermissionList[h].ScopeList[d].Scope == 'S') {
+                        if (Sister.children[0].children[c].children[0].disabled == false || isFormReadOnly) {
+                            Sister.children[0].children[c].children[0].checked = true;
+                            var typ6 = document.createAttribute("style");
+                            typ6.nodeValue = "outline: 2px solid RED";
+                            Sister.children[0].children[c].children[0].attributes.setNamedItem(typ6);
+                        }
+                    }
+                    else if (PrivilegeList[v].PermissionList[h].ScopeList[d].Scope == 'C') {
+                        console.log("Enter");
+                        console.log(Children.children[0].children[c].children[0].attributes);
+                        console.log(isFormReadOnly);
+                        if (Children.children[0].children[c].children[0].disabled == false || isFormReadOnly) {
+                            console.log("Enter1");
+                            Children.children[0].children[c].children[0].checked = true;
+                            console.log(Children.children[0].children[c].children[0].checked);
+                            var typ7 = document.createAttribute("style");
+                            typ7.nodeValue = "outline: 2px solid RED";
+                            Children.children[0].children[c].children[0].attributes.setNamedItem(typ7);
+                            console.log(Children.children[0].children[c].children[0].attributes);
+                            console.log("apply");
+                        }
+                    }
+                    else if (PrivilegeList[v].PermissionList[h].ScopeList[d].Scope == 'O') {
+                        if (Own.children[0].children[c].children[0].disabled == false || isFormReadOnly) {
+                            Own.children[0].children[c].children[0].checked = true;
+                            var typ8 = document.createAttribute("style");
+                            typ8.nodeValue = "outline: 2px solid RED";
+                            Own.children[0].children[c].children[0].attributes.setNamedItem(typ8);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function DisableAllCheckBox(All, Sister, Children, Own) {
+        for (var v = 1; v <= 4; v++) {
+            All.children[0].children[v].children[0].disabled = true;
+            Sister.children[0].children[v].children[0].disabled = true;
+            Children.children[0].children[v].children[0].disabled = true;
+            Own.children[0].children[v].children[0].disabled = true;
+        }
+    }
+
+    function UncheckedAllCheckBox(All, Sister, Children, Own) {
+        for (var v = 1; v <= 4; v++) {
+            All.children[0].children[v].children[0].checked = false;
+            if (All.children[0].children[v].children[0].attributes.getNamedItem("style") != null) {
+                All.children[0].children[v].children[0].attributes.removeNamedItem("style");
+            }
+            Sister.children[0].children[v].children[0].checked = false;
+            if (Sister.children[0].children[v].children[0].attributes.getNamedItem("style") != null) {
+                Sister.children[0].children[v].children[0].attributes.removeNamedItem("style");
+            }
+            Children.children[0].children[v].children[0].checked = false;
+            if (Children.children[0].children[v].children[0].attributes.getNamedItem("style") != null) {
+                Children.children[0].children[v].children[0].attributes.removeNamedItem("style");
+            }
+            Own.children[0].children[v].children[0].checked = false;
+            if (Own.children[0].children[v].children[0].attributes.getNamedItem("style") != null) {
+                Own.children[0].children[v].children[0].attributes.removeNamedItem("style");
+            }
+        }
+    }
+
+    function EnableEntity(DisableList, SelectedList) {
+
+        var Count = DisableList.length;
+        for (var v = 0; v < Count; v++) {
+            var objList = document.getElementById('Name_' + DisableList[v]);
+
+            if (objList != null) {
+                var All = objList.children[0];
+                var Sister = objList.children[1];
+                var Children = objList.children[2];
+                var Own = objList.children[3];
+
+                UncheckedAllCheckBox(All, Sister, Children, Own);
+                DisableAllCheckBox(All, Sister, Children, Own);
+
+                for (var h = 1; h <= 4; h++) {
+                    document.getElementById(h + '_' + DisableList[v]).innerHTML = '';
+                }
+
+                for (var c = 0; c < SelectedList.length; c++) {
+                    if (DisableList[v] == SelectedList[c].SRP_Id) {
+
+                        if (SelectedList[c].Scope == 201) {
+                            if (SelectedList[c].PermissionType == 101) {
+                                //var All_C =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //All.children[0].children[1].children[0].disabled = false;
+
+                                    if (All.children[0].children[1].children[0].hasAttribute("disabled") == true) {
+                                        All.children[0].children[1].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    All.children[0].children[1].children[0].checked = true;
+                                }
+
+                            }
+                            if (SelectedList[c].PermissionType == 102) {
+                                //var All_V =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //All.children[0].children[2].children[0].disabled = false;
+                                    if (All.children[0].children[2].children[0].hasAttribute("disabled") == true) {
+                                        All.children[0].children[2].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    All.children[0].children[2].children[0].checked = true;
+                                }
+
+                            }
+                            if (SelectedList[c].PermissionType == 103) {
+                                //var All_M =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    // All.children[0].children[3].children[0].disabled = false;
+                                    if (All.children[0].children[3].children[0].hasAttribute("disabled") == true) {
+                                        All.children[0].children[3].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    All.children[0].children[3].children[0].checked = true;
+                                }
+
+                            }
+                            if (SelectedList[c].PermissionType == 104) {
+                                //var All_D =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //All.children[0].children[4].children[0].disabled = false;
+                                    if (All.children[0].children[4].children[0].hasAttribute("disabled") == true) {
+                                        All.children[0].children[4].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    All.children[0].children[4].children[0].checked = true;
+                                }
+                            }
+                        }
+
+                        if (SelectedList[c].Scope == 202) {
+                            if (SelectedList[c].PermissionType == 101) {
+                                //var Sister_C =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Sister.children[0].children[1].children[0].disabled = false;
+                                    if (Sister.children[0].children[1].children[0].hasAttribute("disabled") == true) {
+                                        Sister.children[0].children[1].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Sister.children[0].children[1].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 102) {
+                                //var Sister_V =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Sister.children[0].children[2].children[0].disabled = false;
+                                    if (Sister.children[0].children[2].children[0].hasAttribute("disabled") == true) {
+                                        Sister.children[0].children[2].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Sister.children[0].children[2].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 103) {
+                                //var Sister_M =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Sister.children[0].children[3].children[0].disabled = false;
+                                    if (Sister.children[0].children[3].children[0].hasAttribute("disabled") == true) {
+                                        Sister.children[0].children[3].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Sister.children[0].children[3].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 104) {
+                                //var Sister_D =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Sister.children[0].children[4].children[0].disabled = false;
+                                    if (Sister.children[0].children[4].children[0].hasAttribute("disabled") == true) {
+                                        Sister.children[0].children[4].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Sister.children[0].children[4].children[0].checked = true;
+                                }
+                            }
+                        }
+
+                        if (SelectedList[c].Scope == 203) {
+                            if (SelectedList[c].PermissionType == 101) {
+                                //var Children_C =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Children.children[0].children[1].children[0].disabled = false;
+                                    if (Children.children[0].children[1].children[0].hasAttribute("disabled") == true) {
+                                        Children.children[0].children[1].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Children.children[0].children[1].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 102) {
+                                //var Children_V =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Children.children[0].children[2].children[0].disabled = false;
+                                    if (Children.children[0].children[2].children[0].hasAttribute("disabled") == true) {
+                                        Children.children[0].children[2].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Children.children[0].children[2].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 103) {
+                                //var Children_M =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Children.children[0].children[3].children[0].disabled = false;
+                                    if (Children.children[0].children[3].children[0].hasAttribute("disabled") == true) {
+                                        Children.children[0].children[3].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Children.children[0].children[3].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 104) {
+                                //var Children_D =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    // Children.children[0].children[4].children[0].disabled = false;
+                                    if (Children.children[0].children[4].children[0].hasAttribute("disabled") == true) {
+                                        Children.children[0].children[4].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Children.children[0].children[4].children[0].checked = true;
+                                }
+                            }
+                        }
+
+                        if (SelectedList[c].Scope == 204) {
+                            if (SelectedList[c].PermissionType == 101) {
+                                //var Own_C =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Own.children[0].children[1].children[0].disabled = false;
+                                    if (Own.children[0].children[1].children[0].hasAttribute("disabled") == true) {
+                                        Own.children[0].children[1].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Own.children[0].children[1].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 102) {
+                                //var Own_V =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Own.children[0].children[2].children[0].disabled = false;
+                                    if (Own.children[0].children[2].children[0].hasAttribute("disabled") == true) {
+                                        Own.children[0].children[2].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Own.children[0].children[2].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 103) {
+                                //var Own_M =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Own.children[0].children[3].children[0].disabled = false;
+                                    if (Own.children[0].children[3].children[0].hasAttribute("disabled") == true) {
+                                        Own.children[0].children[3].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Own.children[0].children[3].children[0].checked = true;
+                                }
+                            }
+                            if (SelectedList[c].PermissionType == 104) {
+                                //var Own_D =
+                                if (SelectedList[c].IsChecked == false && isFormReadOnly == false) {
+                                    //Own.children[0].children[4].children[0].disabled = false;
+                                    if (Own.children[0].children[4].children[0].hasAttribute("disabled") == true) {
+                                        Own.children[0].children[4].children[0].removeAttribute("disabled");
+                                    }
+                                }
+                                else if (SelectedList[c].IsChecked == true) {
+                                    Own.children[0].children[4].children[0].checked = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                for (var i = 1; i <= 4; i++) {
+                    ShowPermissionAsLabel(DisableList[v], i, All, Sister, Children, Own);
+                }
+            }
+        }
+    }
+</script>

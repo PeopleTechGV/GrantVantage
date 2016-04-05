@@ -1,0 +1,95 @@
+﻿@using ATS.WebUi.Helpers;
+@model ATS.BusinessEntity.SolrEntity.SolrSearchObject
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+
+<ul class="accGroupHeader sm-disabled">
+    <li class="w50">Opportunity Name</li>
+    <li class="w13 textright">@Html.LanguageLabel(BECommonConstantConst.FUND_AMOUNT)</li>
+    <li class="w13 textright">@Html.LanguageLabel(BECommonConstantConst.POSTED_ON)</li>
+    <li class="w13 textright">@Html.LanguageLabel(BECommonConstantConst.DEADLINE)</li>
+</ul>
+<div class="accFeaturedJobs SMContentBox">
+    @foreach (ATS.BusinessEntity.SolrEntity.SolrSearchFields current in Model.SearchData)
+    {
+        <div class="acc-header" data-vacancyid="@current.StrVacancyId">
+            <p class="prfle-tab-head" style="overflow:hidden;">
+                <span class="floatleft w50 SMW70 textEllipsis">@current.JobTitle</span>
+                <span class="floatleft w13 SMW30 textright">@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol @current.FundAmountText</span>
+                <span class="floatleft w13 textright sm-disabled">@current.LocalPostedOn.ToString("MM/dd/yyyy")</span>
+                <span class="floatleft w13 textright sm-disabled">@current.ApplicationDueDate.ToString("MM/dd/yyyy")</span>
+            </p>
+            <ul class="accApply sm-disabled">
+                @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+                {
+                    Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "Candidate", showSaveJob = 1 });
+                }
+                else
+                {
+                    Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "", showSaveJob = 0 });
+                }
+            </ul>
+
+        </div>
+        <div class="acc-Content">
+        </div>
+    }
+</div>
+@{
+    var contrName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["controller"]);
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".accApply").click(function (e) {
+            e.stopImmediatePropagation();
+        });
+
+        $(".accFeaturedJobs").accordion(VacancyModel.AccFirstAttr);
+        $(".accFeaturedJobs").live("accordionbeforeactivate", function (event, ui) {
+            if (ui.newHeader.length > 0) {
+                var VacancyId = $(ui.newHeader).attr("data-vacancyid");
+                var dataLink = '@Url.Action("GetVacancyDetails", "Search", new { VacancyId = "_VACANCYID_" })';
+                var dataLink = dataLink.replace("_VACANCYID_", VacancyId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    $(ui.newPanel).html('');
+                    $(ui.newPanel).html(data);
+                    var IsApplied = $(ui.newHeader).find("ul.accApply > li").attr("data-isapplied");
+                    if (IsApplied == "true") {
+                        $(ui.newPanel).find(".btnApplyNow").hide();
+                    }
+                });
+            }
+        });
+    });
+
+    var divPodbl = $(".RowContent");
+    divPodbl.dblclick(function () {
+        $("#btnApplyNow").hide();
+        var dpId = $(this).attr("data-id");
+        var dpLink = '@Url.Action("DisplayOppty", "Search", new { OpptyID = "_DATAID_" })';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    });
+
+    function btnVacDetailsMob(element) {
+        var dpId = $(element).parents('.RowContent').attr("data-id");
+        var dpLink = '@Url.Action("DisplayOppty", "Search", new { OpptyID = "_DATAID_" })';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    }
+
+    function actionClick(id) {
+        runEffect(id);
+        return false;
+    };
+
+    function runEffect(id) {
+        $("#" + id).slideToggle("slow");
+    }
+
+    function SaveJob(JobId, ActionType) {
+        document.getElementById("Save_JobId").value = JobId;
+        document.getElementById("hdnActionType").value = ActionType;
+        document.getElementById("frmmain").submit();
+    }
+</script>

@@ -1,0 +1,16 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.References>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.ReferenceName</h3>
+        <p>@v.ReferenceEmail
+            <br />
+            <em>@v.Relationship</em>
+        </p>
+        <ul class="info">
+            <li class="tel">@v.ReferencePhone</li>
+        </ul>
+    </div>
+}

@@ -1,0 +1,63 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.LicenceAndCertifications
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+
+<div class="acc-header" recordid='@Model.LicenceAndCertificationsId'>
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@String.Format("{0}", String.IsNullOrEmpty(Model.Name) ? "New Licence / Certification" : ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.Name))</span>
+    </p>
+</div>
+
+<div class="acc-Content">
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+
+                        @Html.HiddenFor(m => m.LicenceAndCertificationsId, new { @class = "ignore" })
+                        @Html.HiddenFor(m => m.UserId, new { @class = "ignore" })
+                        @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+                        @*<span class="subtitle"></span>*@
+                        <div class="std-width">
+                            <div class="left-div">
+                                <div class="box">
+                                    @Html.LanguageLabelFor(m => m.Name, new { @class = "label" })
+
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "detail-input", @onchange = "CopyName(this);", @tabindex = "13" })
+                                </div>
+                                <div class="box">
+                                    @Html.LanguageLabelFor(m => m.ValidFrom, new { @class = "label" })
+
+                                    @Html.TextBoxFor(m => m.ValidFromText, new { @class = "detail-input", @id = String.Format("{0}{1}", "licdatepick", Guid.NewGuid()), @tabindex = "15", @readOnly = "readOnly" })
+                                </div>
+                                <div class="box">
+                                    @Html.LanguageLabelFor(m => m.Description, new { @class = "label" })
+                                    @Html.TextAreaFor(m => m.Description, new { @class = "detail-input txtarea", @tabindex = "17" })
+                                </div>
+                            </div>
+                            <div class="right-div">
+                                <div class="box">
+                                    @Html.LanguageLabelFor(m => m.IssuingAuthority, new { @class = "label" })
+
+                                    @Html.TextBoxFor(m => m.IssuingAuthority, new { @class = "detail-input", @tabindex = "14" })
+                                </div>
+                                <div class="box">
+                                    @Html.LanguageLabelFor(m => m.ValidTo, new { @class = "label" })
+
+                                    @Html.TextBoxFor(m => m.ValidToText, new { @class = "detail-input", @id = String.Format("{0}{1}", "licdatepick", Guid.NewGuid()), @tabindex = "16", @readOnly = "readOnly" })
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <br clear="all" />
+                </td>
+            </tr>
+        
+        </table>
+
+
+</div>

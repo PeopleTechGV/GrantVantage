@@ -1,0 +1,18 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.Associations>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.StartDate.ToString("MMM", System.Globalization.CultureInfo.InvariantCulture) @v.StartDate.ToString("yyyy") - @v.EndDate.ToString("MMM", System.Globalization.CultureInfo.InvariantCulture) @v.EndDate.ToString("yyyy") </h3>
+        <p>
+            @v.Name - @v.AssociationType<br />
+            <em>@v.Role</em>
+        </p>
+        <ul class="info">
+            <li>@v.Link</li>
+
+        </ul>
+    </div>
+}

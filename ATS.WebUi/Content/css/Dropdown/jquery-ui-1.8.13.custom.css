@@ -1,0 +1,44 @@
+
+
+
+.ui-state-default, .ui-dropdownchecklist-dropcontainer.ui-widget-content .ui-state-default {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 23px;
+    color: #345E8E;
+    background: #FFF;
+    text-indent: 0.01px;
+    overflow: hidden;
+    border-left: medium none;
+    border-right: medium none;
+    border-bottom: medium none;
+}
+
+.ui-dropdownchecklist-dropcontainer {
+    width: 100% !important;
+    margin-left: 0px;
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+}
+
+.ui-dropdownchecklist-item:hover {
+    background-color: #3399FF !important;
+}
+
+span.ui-state-default {
+    background: url("/content/images/ddlArrow.png") no-repeat scroll right center #ffffff;
+}
+
+.job-type-left .job-content .input-container {
+    height: 50px;
+}
+
+.job-type-right .job-content .input-container {
+    height: 50px;
+}
+
+.ui-dropdownchecklist-text {
+    color: #345E8E;
+    padding-left: 6px;
+    padding-top: 4px;
+}

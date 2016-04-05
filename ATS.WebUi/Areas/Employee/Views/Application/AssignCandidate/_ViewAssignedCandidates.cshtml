@@ -1,0 +1,37 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.Application>
+
+
+<style>
+    .dgvModel {
+        border-bottom: 1px solid #999999;
+        overflow: hidden;
+        padding: 7px 0 2px 5px;
+    }
+
+    .lblGrey {
+        color: #555555;
+    }
+</style>
+
+<div class="dgvAssignCandidate">
+    @foreach (BEClient.Application _Current in Model)
+    {
+        <div class="drAssignCandidate" data-applicationid="@_Current.ApplicationId" data-vacancyid="@_Current.VacancyId">
+            @*<div style="float: left; padding: 1px 8px 0 0;"><img src="/Content/images/Candidates_Assigned_16.png" /></div>*@
+            <div style="float: left;" class="lblGrey">@_Current.CandidateName</div>
+        </div>
+    }
+</div>
+
+<script>
+    var divdbl = $(".drAssignCandidate");
+    divdbl.dblclick(function () {
+        var ApplicationId = $(this).attr("data-applicationid");
+        var VacancyId = $(this).attr("data-vacancyId");
+        var dLink = '@Html.Raw(Url.Action("GetCandidateProfile", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_APPID_", VacancyId = "_VACID_" }))';
+        dLink = dLink.replace("_APPID_", ApplicationId);
+        dLink = dLink.replace("_VACID_", VacancyId);
+        window.location = dLink;
+    });
+</script>

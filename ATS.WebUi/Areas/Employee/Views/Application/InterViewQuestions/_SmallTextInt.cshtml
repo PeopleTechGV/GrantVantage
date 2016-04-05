@@ -1,0 +1,26 @@
+﻿@model ATS.WebUi.Models.Question.ATSTextBox
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+
+
+<div class="one-div-full">
+    <div class="box ATSTextBox">
+        @Html.TextBoxFor(m => m.Answer, new { @class = "input-details IntSaveAnswer", @id = "SmallTextAns" })
+    </div>
+
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("#SmallTextAns").live('change', function () {
+            var $self = $(this);
+            var ansOptId = $self.val();
+            if ($.trim(ansOptId) != "") {
+                $self.removeClass('input-validation-error');
+            }
+            else {
+                $self.addClass('input-validation-error');
+
+            }
+        });
+    });
+</script>

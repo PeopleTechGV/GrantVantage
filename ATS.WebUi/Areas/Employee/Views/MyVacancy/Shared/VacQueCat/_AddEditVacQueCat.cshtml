@@ -1,0 +1,170 @@
+﻿@model ATS.BusinessEntity.VacQueCat
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@*@System.Web.Optimization.Scripts.Render("~/bundles/jSalaryRange")*@
+@System.Web.Optimization.Scripts.Render("~/bundles/jMultiSelectDropdown")
+
+@using (Ajax.BeginForm("AddSaveVacQueCat", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, PageMode = @ViewBag.PageMode }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "SaveVacQueCatSuccess",
+            OnFailure = "SaveVacQueCatSuccessFailed"
+        }, new { id = "frmVacQueCat" }))
+{
+    <script>
+        var formVQC = $("#frmVacQueCat");
+        $.validator.unobtrusive.parse(formVQC);
+    </script>
+    @Html.HiddenFor(m => m.VacQueCatId, new { Id = "VacQueCatId" })
+    @Html.HiddenFor(m => m.VacRndId, new { Id = "VacRndId" })
+    @Html.HiddenFor(m => m.DivisionId)
+
+    <div class="vacancy-Details" style="margin-left: 4%; width: 97%;">
+        @if (ViewBag.PageMode == "Update")
+        {
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.QueCatId, new { @class = "label" })
+                @Html.DropDownListFor(m => m.QueCatId, (SelectList)ViewBag.AllQueCat, new { @class = "detail-select ddlSelectSingleVacQueCat", @disabled = "disabled" })
+                @Html.HiddenFor(m => m.QueCatId)
+            </div>
+
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.Weight, new { @class = "label" })
+                @Html.TextBoxFor(m => m.Weight, new { @class = "detail-input", @onchange = "CopyWight(this);" })
+            </div>
+        }
+        else
+        {
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.QueCatId, new { @class = "label" })
+                @Html.ListBoxFor(m => m.ListQueCatId, ViewBag.AllQueCat as MultiSelectList, new { @class = "w100 detail-select ddlMultiSelect" })
+            </div>
+        }
+    </div>
+
+    <div class="vacancy-Details" style="margin-left: 4%; width: 97%;">
+        <div class="box">
+            <div class="box" style="border-bottom: 2px solid #953634; ">
+                <button type="submit" class="prfle-button-save CaseUpper" onclick="return ValidateForm(this);">@Html.LanguageLabel("Save Category")</button>
+                @if (Model.VacQueCatId == Guid.Empty)
+                {
+                    <button id="btnRemove" type="button" class="prfle-button-delete CaseUpper" onclick="return RemoveVacCategory(this);">Remove Category</button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function RemoveVacCategory(element) {
+
+            var that = $(element).parents('.VacQueCat').next();
+            $(element).closest("form").closest('.acc-Content').prev().remove();
+            $(element).closest("form").closest('.acc-Content').remove();
+            var _$addbtn = $(that).find('#addVacQueCat');
+            if (_$addbtn.length > 0) {
+                _$addbtn.show();
+            }
+            else {
+                $(that).append(MyVacancy.AddCategoryBtn);
+            }
+            return false;
+        }
+        function ValidateForm(element) {
+
+
+            var _drp = $(".ddlSelectSingleVacQueCat").length;
+            if (_drp > 0) {
+                return true;
+            }
+            else {
+
+                var chkLenght = $("div.ui-dropdownchecklist").find("input[type=checkbox]:checked").length;
+                if (chkLenght == 0) {
+                    $("#ddcl-ListQueCatId").addClass("input-validation-error");
+                    return false;
+                }
+                else {
+                    $("#ddcl-ListQueCatId").removeClass("input-validation-error");
+                    return true;
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $("#btnRemove").click(function () {
+                $("#frmVacQueCat").remove();
+            });
+        });
+
+        $(".ddlMultiSelect").dropdownchecklist({
+            emptyText: "Select One",
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+            }
+        });
+
+        function CopyQueCat(element) {
+            var cur = $(element);
+            var text = cur.find("option:selected").text();
+            $(element).parents(".acc-Content").prev().find(".lblNewCat").html(text);
+            var _QueCatId = $(element).find("option:selected").val();
+            _dataLink = '@Html.Raw(Url.Action("GetVacQueCatDetails", "MyVacancy", new { QueCatId = "_QUECATID_" }))'
+            _dataLink = _dataLink.replace("_QUECATID_", _QueCatId);
+            VacancyModel.CallGetMethod(
+                _dataLink, function (response) {
+                    if (cur.parents('.box').find('#Weight').length > 0) {
+                        cur.parents('.box').find('#Weight').val(response);
+                        CopyWight(cur.parents('.box').find('#Weight'));
+                    }
+                });
+        }
+
+        function CopyWight(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "lblCatWeight", cur.val())
+        }
+
+        function SaveVacQueCatSuccess(data) {
+            var $AddCatbtn = MyVacancy.AddCategoryBtn;
+            var jsonData = JSON.parse(data);
+            var VacQueCatAcc = ".VacQueCat";
+            var AccRound = ".AccRound";
+            var newJsonData = "<div>" + jsonData.Data + "</div>";
+            var _vacRndId = $(newJsonData).find(".acc-header").attr('data-roundid');
+
+            var $rndAcc = $(AccRound).find("div[data-pkid='" + _vacRndId + "']");
+
+            var _active = $(AccRound).accordion("option", "active");
+
+            var $VacQueCatAcc = $rndAcc.next().find("div[data-index='2']").next().find(VacQueCatAcc);
+
+            var parentAcc = $VacQueCatAcc.parent().prev();
+            if (!jsonData.IsError) {
+                $VacQueCatAcc.find("div[class^='acc-header'][aria-selected='true']").remove('div')
+                $VacQueCatAcc.find("div[class^='acc-Content'][style^='display: block;']").remove('div');
+
+                $(parentAcc).click();
+                $(parentAcc).click();
+
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+
+                MyVacancy.IgnoreAccordianVacancyAccHeaderClick($('.AccRound').find($VacQueCatAcc));
+            }
+            else {
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        }
+
+        function SaveVacQueCatSuccessFailed() {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', 'Failed', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');;
+        }
+    </script>
+}

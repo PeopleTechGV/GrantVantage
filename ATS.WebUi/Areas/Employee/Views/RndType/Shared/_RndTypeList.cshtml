@@ -1,0 +1,41 @@
+﻿@model  IEnumerable<ATS.BusinessEntity.RndType>
+@using BERoundTypeConst = ATS.BusinessEntity.Common.RoundType
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w30">@Html.LanguageLabel(BERoundTypeConst.LST_REVIEWROUNDS)</li>
+        <li class="w30">@Html.LanguageLabel(BERoundTypeConst.LST_ROUNDTYPE)</li>
+        <li class="w40">@Html.LanguageLabel(BERoundTypeConst.LST_SHOWTOCANDIDATE)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.RndType current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.RndTypeId'>
+            <li class="w30 SMW80 cntReviewRound">@current.DefaultName</li>
+            <li class="w30 SMW80 cntRndType">@current.RoundAttributesName</li>
+            <li class="w40 SMW80 cntShowToCand">@current.ShowToCandidate</li>
+            <li id="MobRndType" class="ViewDetailsMob MobView" onclick="MobRndType(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "RndType")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var RndTypeId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "RndType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", RndTypeId);
+        window.location = dLink;
+    });
+
+    function MobRndType(element) {
+        var RndTypeId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "RndType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", RndTypeId);
+        window.location = dLink;
+    }
+</script>

@@ -1,0 +1,86 @@
+﻿@model ATS.BusinessEntity.RequiredDocument
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@System.Web.Optimization.Scripts.Render("~/bundles/jMultiSelectDropdown")
+
+@using (Ajax.BeginForm("AddSaveRequiredDocument", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "SaveRequiredDocumentSuccess",
+            OnFailure = "SaveRequiredDocumentFailed"
+        }, new { id = "frmRequiredDocument" }))
+{
+    <script>
+        var form = $("#frmVacQueCat");
+        $.validator.unobtrusive.parse(form);
+    </script>
+
+    <div class="std_width reviewer-fld ARPInlineForm" style="border-bottom: 2px solid #953634;">
+        @Html.HiddenFor(m => m.RequiredDocumentId)
+        @Html.HiddenFor(m => m.VacRndId)
+        <div class="box">
+            @Html.LanguageLabelFor(m => m.DocumentTypeId, new { @class = "label" })
+            @Html.ListBoxFor(m => m.ListDocumentTypeId, ViewBag.drpDocumentTypeList as MultiSelectList, new { @class = "detail-select ddlMultiSelect" })
+        </div>
+        <div class="box">
+            <button type="submit" class="prfle-button-save CaseUpper" onclick="return ValidateForm(this);">Save Required Documents</button>
+            @if (Model.RequiredDocumentId == Guid.Empty)
+            {
+                <button id="btnRemove" type="button" class="prfle-button-delete CaseUpper">Remove Required Documents</button>
+            }
+        </div>
+    </div>
+}
+
+<script>
+    function ValidateForm(element) {
+        var chkLenght = $("div.ui-dropdownchecklist").find("input[type=checkbox]:checked").length;
+        if (chkLenght == 0) {
+            $("#ddcl-ListDocumentTypeId").addClass("input-validation-error");
+            return false;
+        }
+        else {
+            $("#ddcl-ListDocumentTypeId").removeClass("input-validation-error");
+            return true;
+        }
+    }
+
+    $("#btnRemove").click(function () {
+        $("#frmRequiredDocument").remove();
+    });
+
+    $(".ddlMultiSelect").dropdownchecklist({
+        emptyText: "Select One",
+        onItemClick: function (checkbox, selector) {
+            var values = "";
+            for (i = 0; i < selector.options.length; i++) {
+                if (selector.options[i].selected && (selector.options[i].value != "")) {
+                    if (values != "")
+                        values += ",";
+                    values += selector.options[i].value;
+                }
+            }
+        }
+    });
+
+    function SaveRequiredDocumentSuccess(data) {
+        var Jsondata = JSON.parse(data);
+        if (!Jsondata.IsError) {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', Jsondata.Message, 3000);
+            var Acc = $(this).closest('.AccRoundDetail');
+            $(this).remove();
+            var ActiveAcc = $(Acc).accordion("option", "active");
+            $(Acc).accordion("option", "active", false).accordion("refresh");
+            $(Acc).accordion("option", "active", ActiveAcc);
+
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', Jsondata.Message, 3000);
+        }
+    }
+
+    function SaveRequiredDocumentFailed() {
+        alert("Failed");
+    }
+</script>
+

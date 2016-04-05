@@ -1,0 +1,54 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@model BESrp.DynamicSRP<ATS.BusinessEntity.CompanyInfo>
+
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Edit", "CompanyInfo", FormMethod.Post, new { enctype = "multipart/form-data",id = "frmCompanyInfo" }))
+{
+
+    @Html.Partial("Buttons/_ViewGearAdmin", Model)
+        <div class="form-default">
+
+        @Html.HiddenFor(m => m.obj.CompanyInfoId)
+        @Html.HiddenFor(m => m.obj.ClientId)
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.CompanyName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.CompanyName, new { @class = "detail-input" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.EmailSenderAddress, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.EmailSenderAddress, new { @class = "detail-input" })
+        </div>
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.PortalBannerTitle, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.PortalBannerTitle, new { @class = "detail-input" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.Logo, new { @class = "label" })<br />
+            <input type="file" value="Browse" name="imgFile" id="uploadLogo" class="detail-Browse" />
+
+            
+
+        </div>
+    </div>
+}
+<script>
+
+    function OnClickValidate() {
+
+        //var uploadLogo = $('#uploadLogo').val();
+        //if (uploadLogo == '')
+        //{
+        //    $('#uploadLogo').addClass('input-validation-error');
+
+        //}
+        //else
+        //{
+            $('#frmCompanyInfo').submit();
+        //}
+    
+    }
+</script>
+

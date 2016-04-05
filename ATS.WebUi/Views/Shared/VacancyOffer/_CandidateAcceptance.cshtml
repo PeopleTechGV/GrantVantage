@@ -1,0 +1,32 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+
+<div id="CandidateAcceptanceModel" class="OfferMain borderedModel">
+    <div class="OfferHeader">
+        Accept Award
+        <a class="btnClosePopup" onclick="CloseCandidateAcceptModel();"></a>
+    </div>
+
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW100">
+                <span>Print Your Name</span>
+                @Html.TextBoxFor(m => m.CandidateName, new { @id = "txtConfCandidateName" })
+            </div>
+
+            <div class="OfferBox OW100">
+                <span>Confirm Your Email</span>
+                @Html.TextBoxFor(m => m.CandidateEmailId, new { @id = "txtConfCandidateEmail" })
+            </div>
+
+            <div class="OfferBox OW100">
+                <span>Note To Hiring Manager</span>
+                @Html.TextAreaFor(m => m.ResponseFromApplicant, new { @id = "txtApplicantResponse" })
+            </div>
+        </div>
+    </div>
+
+    <div class="OfferAction" style="margin-top: 15px;">
+        <input id="btnAcceptOffer" type="submit" name="CandidateAction" value="Accept Award">
+        <input id="btnClose" onclick="CloseCandidateAcceptModel(); return false;" type="button" value="Cancel">        
+    </div>
+</div>

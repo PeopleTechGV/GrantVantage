@@ -1,0 +1,68 @@
+﻿@model ATS.BusinessEntity.Company
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Employee/Views/CompanySetup/CompanySetUpMaster.cshtml";
+}
+
+
+@{
+    string action = ViewBag.RedirectAction;
+}
+@using (Html.BeginForm(action, "Company", FormMethod.Post, new { id = "frmJobLocations" }))
+{
+    @Html.HiddenFor(m => m.CompanyId)
+    @Html.HiddenFor(m => m.ClientId)
+
+    @*@Html.Partial("Buttons/_SaveBtn", Model)*@    <button class="btn-save-vacancy" style="height:45px;" type="submit">
+        Save
+    </button>
+    @Html.Partial("Buttons/_BackBtn")
+    <br /><br /><br /><br />
+    <text>
+        <div class="vacancy-Details">
+            <div class="left-div">
+                <div class="box">
+                    @Html.LanguageLabelFor(m => m.CompanyName, new { @class = "label" })
+                    @Html.TextBoxFor(m => m.CompanyName, new { @class = "detail-input" })
+                </div>
+
+                <div class="box">
+                    @Html.LanguageLabelFor(m => m.PhoneNo, new { @class = "label" })
+                    @Html.TextBoxFor(m => m.PhoneNo, new { @class = "detail-input" })
+                </div>
+
+                <div class="box">
+                    @Html.LanguageLabelFor(m => m.Address, new { @class = "label" })
+                    @Html.TextAreaFor(m => m.Address, new { @class = "detail-input" })
+                </div>
+
+                <div class="box">
+                    @Html.LanguageLabelFor(m => m.WebSite, new { @class = "label" })
+                    @Html.TextBoxFor(m => m.WebSite, new { @class = "detail-input" })
+                </div>
+
+                <div class="box">
+                    @Html.LanguageLabelFor(m => m.SuffixTitle, new { @class = "label" })
+                    @Html.TextBoxFor(m => m.SuffixTitle, new { @class = "detail-input" })
+                </div>
+
+                @if (ViewBag.IsEdit == 1)
+                {
+                <div class="security-title">
+                    <div class="box">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "label", @id = "isActive" }) @Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)
+                        
+                        
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </text>
+}
+
+
+
+
+
+

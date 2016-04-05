@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.TVacQueCat
+@using BEClient = ATS.BusinessEntity;
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+
+<div class="acc-header" data-pkid='@Model.TVacQueCatId' data-catidonly="@Model.QueCatId">
+    <p class="prfle-tab-head-brown" style="overflow:hidden;">
+        <span class="ttldb">New Category</span>
+        <span class="notification" style="display:none;"></span>
+        <span style="float:right">
+            <span class="ttllbrown">@Html.LanguageLabel(BeQl.FRM_WEIGHT): </span>
+            <span id="rndweight" class="ttldblue lblCatWeight">@Model.Weight</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <span class="editsection">
+        @Html.Partial("Shared/VacQueCat/_AddEditVacQueCat", Model)
+    </span>
+</div>
+
+

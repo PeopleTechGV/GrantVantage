@@ -1,0 +1,57 @@
+﻿@using BECommon = ATS.BusinessEntity.Common
+@model ATS.WebUi.Models.LogOnModel
+@using BECommonConst = ATS.BusinessEntity.Common.LoginConstant
+
+<div id="slidepanel-login">
+    <div class="topbox">
+        @using (Ajax.BeginForm("Login", "Home", new { returnUrl = ViewBag.ReturnURL }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "LoginSuccess",
+            OnFailure = "LoginFailed"
+        }, new { @id = "LoginForm" }))
+        {
+            <text>
+                <div>
+                    @Html.ValidationSummary()
+                </div>
+                <fieldset>
+                    <ul class="LoginForm">
+                        <li>
+                            @Html.LanguageLabelFor(m => m.UserName)
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "input w100" })
+                        </li>
+                        <li>
+                            @Html.LanguageLabelFor(m => m.Password)
+                            @Html.PasswordFor(m => m.Password, new { @class = "input w100" })
+
+                        </li>
+                        <li>
+                            <span class="SpanRememberMe">
+                                <input type="checkbox" name="RememberMe" value="Remember Me" />
+                                @Html.LanguageLabel(BECommonConst.FRM_REMEMBER_ME)
+                            </span>
+                            <button class="btn-login-new"></button>
+                        </li>
+                        <li>
+                            <a id="slideit1" href="#" style="position: relative;">
+                                <span style="position: relative; color: #FDD017; left: 0; float: right;">
+                                    @Html.LanguageLabel("Sign Up")
+                                    @Html.ActionLink(Html.LanguageLabel("Password Help").ToHtmlString(), "ForgotPassword", "Home", new { area = "" }, new { @class = "loginpass" })
+                                </span>
+                            </a>
+                            
+                        </li>
+                    </ul>
+                </fieldset>
+            </text>
+        }
+    </div>
+    <br class="clear" />
+</div>
+<script>
+    function SubmitLogin() {
+        $('#updateForm').submit();
+    }
+</script>

@@ -1,0 +1,45 @@
+﻿@model ATS.BusinessEntity.VacancyTemplate
+@using CommonConst = ATS.BusinessEntity.Common.CommonConstant;
+@using RevConst = ATS.BusinessEntity.Common.VacancyRound;
+
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByRndTypeId(Model.objTVacancyRound.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+}
+<div class="acc-inner">
+    <div class="Content ReviewrDetailsMain">
+        <div class="std_width reviewer-tab-head">
+            <div class="reviewer-name w30">@Html.LanguageLabel(RevConst.ROUND_REVIEWERS)</div>
+            <div class="reviewer-name w20">@Html.LanguageLabel(RevConst.ROUND_REVIEWERS_TITLE)</div>
+            @if (RndAttr == BERndAttr.OfferRound)
+            {
+                <div class="reviewer-name w20 textcenter">Can Edit Award</div>
+                <div class="reviewer-name w20 textcenter">Can Make Award</div>
+            }
+            else
+            {
+                <div class="reviewer-name w20 textcenter">@Html.LanguageLabel(RevConst.ROUND_WEIGHT)</div>
+                <div class="reviewer-name w20 textcenter">@Html.LanguageLabel(RevConst.ROUND_REVIEWERS_CANPROMOTE)</div>
+            }
+        </div>
+        @if (Model.objTReviewerslst != null)
+        {
+
+            foreach (var v in Model.objTReviewerslst)
+            {
+                @Html.Partial("Shared/Reviewers/_ReviewerList", v)
+            }
+        }
+
+
+    </div>
+    <div class="std_width" style="margin-left: 20px;">
+
+        <a id="addReviewers" href="javascript void();" class="btn CaseUpper">
+            @Html.LanguageLabel(CommonConst.FRM_APP_REV_REVIEWER_ADD)
+        </a>
+
+    </div>
+</div>

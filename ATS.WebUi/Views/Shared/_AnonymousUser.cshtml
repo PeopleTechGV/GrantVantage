@@ -1,0 +1,46 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.AnonymousUser>
+
+@{
+    ViewBag.Title = "Upload resume";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .ui-widget-header {
+        width: 93.5%;
+    }
+</style>
+
+@section Navigation{
+    @if (Model.obj.ObjVacancy != null)
+    {
+        <div class="NavItems hasDropdown">
+        <span class="MenuItemIcon bgFeaturedJob16W"></span>
+        <a id="FeatureJobs"class="navTitle" href="@Html.Raw(Url.Action("Index","Home",new { @area = ATS.WebUi.Common.Constants.AREA_CANDIDATE }))">FEATURED OPPORTUNITIES</a>@*</span>*@
+        <span class="chevron"></span>
+    </div>
+        <div class="NavItems">
+            <div class="MenuItemIcon bgFeaturedJob16W"></div>
+            <span class="navTitle">@Model.obj.ObjVacancy.JobTitle, @Model.obj.ObjVacancy.LocationText</span>
+            <span class="chevron"></span>
+        </div>
+    }
+    else
+    {
+        <div class="NavItems">
+            <div class="MenuItemIcon bgLogin16W"></div>
+            <span class="navTitle">SIGN IN</span>
+            <span class="chevron"></span>
+        </div>
+    }
+}
+
+@*@if (Model.obj.ObjVacancy != null && Model.obj.ObjVacancy.VacancyId != Guid.Empty)
+{
+    <div style="margin-left:1.6%;">
+        @Html.Partial("Search/_DisplayJob", Model.obj.ObjVacancy)
+    </div>
+    <br clear="all" />
+}*@
+
+@Html.Partial("AnonymousUser", Model.obj)

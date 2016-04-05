@@ -1,0 +1,50 @@
+﻿@model ATS.BusinessEntity.QueCat
+@using BEClient = ATS.BusinessEntity;
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+@*@{
+    bool AllowEdit = false;
+}*@
+<div class="acc-header" data-catidonly="@Model.QueCatId" data-roundattributeno="@Model.RoundAttributeNo">
+
+    <p class="prfle-tab-head" style="overflow:hidden;" data-order="@Model.Order">
+        <span class="floatleft w60 SMW90 ttldb">
+            @Model.LocalName
+            <span class="lblRoundAttributeName lblBbrown lblRoundBraces">@Model.RoundAttributeName</span>
+            <span class="lblBblue lblRoundBraces" id="quecnt">@Model.QueCount</span>
+        </span>
+        @*@if (ViewBag.QuestionPermission != null)
+        {
+            List<ATS.BusinessEntity.SRPEntity.UserPermissionWithScope> UserPermissionWithScope = ViewBag.QuestionPermission;
+
+            if (UserPermissionWithScope != null)
+            {
+                if (UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Modify)).Count() > 0)
+                {
+                    AllowEdit = true;
+                }
+            }
+        }*@
+        <span class="floatright sm-disabled" style="white-space: nowrap; padding-right: 2px;">
+            <span class="ttllbrown floatleft">@Html.LanguageLabel(BeQl.FRM_WEIGHT):&nbsp;</span>
+            <span id="rndweight" class="ttldblue floatright">@Model.Weight</span>
+        </span>
+        <span style="padding-right: 1%;padding-left: 1%;" class="ansoption">
+            @*@if (AllowEdit)
+            {*@
+                <span class="up sm-disabled" data-currorder="@Model.Order"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("QueCatReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId, @OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.Order - 1)' data-id='@Model.QueCatId' onclick="return SetQueCatOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("QueCatReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.Order + 1)' data-id='@Model.QueCatId' onclick="return SetQueCatOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                <span class="update sm-disabled" style="display:none;"><a href='javascript:void(0);' id="editCategory" data-url='@Url.Action("GetQuestion", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueId = Model.QueCatId })' data-id='@Model.QueCatId' onclick="return editCategory(this);"><img src="~/Content/images/Edit_16.png" /></a></span>
+            @*}*@
+            <span class="delete"><a href='javascript:void(0);' onclick="return DeleteConfirm(this);" data-url='@Url.Action("DeleteQueCat", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId }) ' id="deleteCategory"><img src="~/Content/images/delete_16.png" /></a></span>
+        </span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+<div class="acc-Content" data-catid="@Model.QueCatId">
+    <span class="" style="display:none;">
+    </span>
+    <div class="QueAccordian" style="width:98%; padding-left:2%;">
+    </div>
+    @Html.Partial("Shared/_BtnAddQuestion")
+</div>

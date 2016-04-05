@@ -1,0 +1,37 @@
+﻿@model  List<ATS.BusinessEntity.OfferLetters>
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w100">@Html.LanguageLabel(ATS.BusinessEntity.Common.OfferLetter.FRM_OFFERLETTERNAME)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.OfferLetters current in Model)
+    {
+        string strPermissionType = current.PermissionType != null ? string.Join(",", current.PermissionType) : "";
+        <ul class="RowContent CursorPointer" data-id='@current.OfferLetterId' data-auth="@strPermissionType">
+            <li class="w100 cntAwardLetter">@current.OfferLetterName</li>
+            <li id="MobOfferTemplate" class="ViewDetailsMob MobView" onclick="ViewOfferLetter(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "OfferLetters")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var OfferLetterId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "OfferLetters", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", OfferLetterId);
+        window.location = dLink;
+    });
+
+    function MobDegreeType(element) {
+        var OfferLetterId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "OfferLetters", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", OfferLetterId);
+        window.location = dLink;
+    }
+</script>

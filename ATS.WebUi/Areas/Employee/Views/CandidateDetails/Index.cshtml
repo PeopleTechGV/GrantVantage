@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ATS-Career Opportunities</title>
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery1")
+
+    <style>
+        .bgSave24 {
+            background-image: url("/Content/images/Save_24.png");
+        }
+
+        .bgPrint24 {
+            background-image: url("/Content/images/Print_24.png");
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ProfileAccordion input").attr("readonly", true);
+        });
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        function PrintElem(elem) {
+            Popup($(elem).html());
+        }
+
+        function Popup(data) {
+            var mywindow = window.open('', 'Applicant Profile', 'height=970,width=960');
+            data = data.replace("#e1e1e1", "transparent");
+            mywindow.document.write(data);
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+        function downloadPDF() {
+
+            var clientid = getParameterByName('ClientName');
+            var userid = getParameterByName('UserId');
+            var applicationId = getParameterByName('ApplicationId');
+            var url1 = '@Html.Raw(Url.Action("Index", "CandidateDetails", new { ApplicationId = "_APPID_" }))';
+            url1 = url1.replace("_APPID_", applicationId);
+
+            var url2 = '@Html.Raw(Url.Action("PrintFullProfile", "MyVacancy", new { URL = "_URL_", ClientName = "_CLIENTNAME_", UserId = "_USERID_" }))';
+            url2 = url2.replace("_URL_", url1);
+            url2 = url2.replace("_CLIENTNAME_", clientid);
+            url2 = url2.replace("_USERID_", userid);
+            window.location.href = url2;
+        };
+    </script>
+</head>
+
+<body>
+    <div class="ProfileMain">
+        <div class="ProfileAction">
+            <button id="btnPrintProfile" class="hideHeader btn-icon24 bgPrint24 bordered" style="float:none;" onclick="PrintElem('#idATSProfile')">PRINT</button>
+            <button id="btnCompleteProfile" class="hideHeader btn-icon24 bgSave24 bordered" style="margin-left:5px; float:none;" onclick="downloadPDF()">SAVE</button>
+        </div>
+
+        <div id="idATSProfile" class="ProfileContent">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+﻿
+@using ATS.WebUi.Models;
+@model ATS.WebUi.Models.PaginationInfo
+
+@*<link href="../../Content/css/Pagination.css" rel="stylesheet" type="text/css" />*@
+<div style="float:left;margin: 5px;">
+Results @(Model.FirstItemIndex) - @(Model.LastItemIndex) of <b>@(Model.TotalItemCount)</b>
+</div>
+
+<div class="pagination" style="text-align:right;">
+
+&nbsp;&nbsp;&nbsp;
+@if (Model.HasPrevPage) {
+<a href="@(Model.PrevPageUrl)" rel="nofollow">&laquo; Previous</a>
+} else {
+<span class="disabledPage">&laquo; Previous</span>
+}
+
+@foreach (var p in Model.Pages) {
+    if (p == Model.CurrentPage) {
+    <span class="currentPage">@(p)</span>
+    }
+    else if (p == 1)
+    {
+        <a href="@(Model.PageUrlFor(p))">@(p)</a>    
+    }
+    else
+    {    
+    <a href="@(Model.PageUrlFor(p))" rel="nofollow">@(p)</a>    
+    
+    }
+}
+
+@if (Model.HasNextPage)
+{
+<a href="@(Model.NextPageUrl)" rel="nofollow">Next &raquo;</a>
+}
+else
+{
+<span class="disabledPage">Next &raquo;</span>
+}
+</div>

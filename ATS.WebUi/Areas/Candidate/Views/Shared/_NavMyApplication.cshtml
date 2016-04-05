@@ -1,0 +1,9 @@
+﻿@foreach (SelectListItem item in (SelectList)ViewBag.ListAppStatus)
+{
+    <li>
+        <a href='@Url.Action("Index", "MyApplications", new {@Status = @item.Text.ToString() })'>
+            <span>@item.Text</span>
+            <span class="lblNavCount">@item.Value</span>
+        </a>
+    </li>
+}

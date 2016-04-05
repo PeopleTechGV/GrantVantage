@@ -1,0 +1,72 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECandidateMenuConstantConst = ATS.BusinessEntity.Common.CandidateMenuConstant
+
+@{
+    var contrName = string.Empty;
+    var activeclassname = String.Empty;
+    if (ATS.WebUi.Common.CurrentSession.Instance != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs != null)
+    {
+        contrName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.FirstOrDefault().Controller;
+    }
+    activeclassname = contrName.Equals("Home") ? "activeMenu" : string.Empty;
+    BEClient.NavCount NavCount = ATS.WebUi.Common.CommonFunctions.CandidateNavigationCount();
+}
+
+<li>
+    <a class='@activeclassname bgFeaturedJob24W' href='@Url.Action("Index", "Home", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE })'>
+        @Html.LanguageLabel(BECandidateMenuConstantConst.MNU_FEATURED_JOBS)
+    </a>
+</li>
+
+@{
+    activeclassname = contrName.Equals("Search") ? "activeMenu" : string.Empty;
+}
+@*<li>
+    <a class='@activeclassname bgSearch24W' href='@Url.Action("Index", "Search", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE })'>
+        @Html.LanguageLabel(BECandidateMenuConstantConst.MNU_SEARCH_JOBS)
+    </a>
+</li>*@
+
+@{
+    activeclassname = contrName.Equals("MyApplications") ? "activeMenu" : string.Empty;
+}
+<li>
+    <a class='@activeclassname bgMyApplication24W' href='@Url.Action("Index", "MyApplications", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE })'>
+        @Html.LanguageLabel(BECandidateMenuConstantConst.MNU_MYAPPLICATIONS)
+        <span class="lblMyAppCount lblNavCount">@NavCount.MyApplication</span>
+    </a>
+</li>
+
+@{
+    activeclassname = contrName.Equals("MyDocuments") ? "activeMenu" : string.Empty;
+}
+<li>
+    <a class='@activeclassname bgMyDocument24W' href='@Url.Action("Index", "MyDocuments", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE })'>
+        @Html.LanguageLabel(BECandidateMenuConstantConst.MNU_MYDOCUMENTS)
+        <span class="lblMyDocCount lblNavCount">@NavCount.MyDocument</span>
+    </a>
+</li>
+
+@{
+    activeclassname = contrName.Equals("MyProfile") ? "activeMenu" : string.Empty;
+}
+<li>
+    @*CR-2*@
+    @*<a class='@activeclassname bgMyProfile24W' href=@Url.Action("GetLatestProfile", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE })>
+        @Html.LanguageLabel(BECandidateMenuConstantConst.MNU_MYPROFILES)
+        <span class="lblNavCount">@NavCount.MyProfile</span>
+    </a>*@
+    <a class='@activeclassname bgMyProfile24W' href=@Url.Action("GetLatestProfile", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE })>
+            @*@Html.LanguageLabel(BECandidateMenuConstantConst.MNU_PEOPLE)*@
+        @Html.Label("People")
+            <span class="lblNavCount">@NavCount.MyProfile</span>
+        </a>
+   
+</li>
+<li>
+    <a class='@activeclassname bgMyProfile24W' href="#">
+        @*@Html.LanguageLabel(BECandidateMenuConstantConst.MNU_ORGANIZATIONS)*@
+        @Html.Label("Organizations")
+
+    </a>
+</li>

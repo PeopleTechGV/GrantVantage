@@ -1,0 +1,114 @@
+﻿@using ATSCommon = ATS.WebUi.Common
+@using BEClient = ATS.BusinessEntity
+@using System.Text.RegularExpressions
+@model ATS.BusinessEntity.VacancyOffer
+@if (Model != null && !String.IsNullOrEmpty(Model.OfferLetter))
+{
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##TODAY.DATE##", DateTime.Now.ToString("MMMM dd, yyyy"), RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.TITLE##", Model.JobTitle, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##CANDIDATE.FULLNAME##", Model.CandidateName, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.COMPANYNAME##", ATSCommon.CurrentSession.Instance.VerifiedClient.Clientname, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.MANAGERNAME##", Model.ManagerName, RegexOptions.IgnoreCase);
+
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##CANDIDATE.FIRSTNAME##", Model.CandidateFirstName, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##CANDIDATE.LASTNAME##", Model.CandidateLastName, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##CANDIDATE.FULLNAME##", Model.CandidateName, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.JOBTITLE##", Model.JobTitle, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.VACANCYNAME##", Model.JobTitle, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.STARTDATE##", Model.StartDateText, RegexOptions.IgnoreCase);
+    if (Model.EndDate > DateTime.MinValue)
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.ENDDATE##", Model.EndDateText, RegexOptions.IgnoreCase);
+    }
+    else
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.ENDDATE##", "", RegexOptions.IgnoreCase);
+    }
+
+
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.OFFERSTATUS##", Model.OfferStatusText, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.CREATEDBY##", Model.CreatedByName, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.CREATEDON##", Model.CreatedOn.ToString("MM/dd/yyyy hh:ss tt"), RegexOptions.IgnoreCase);
+    if (Model.UpdatedOn > DateTime.MinValue)
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.UPDATEDBY##", Model.UpdatedByName, RegexOptions.IgnoreCase);
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.UPDATEDON##", Model.UpdatedOn.ToString("MM/dd/yyyy hh:ss tt"), RegexOptions.IgnoreCase);
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.MODIFIEDBY##", Model.UpdatedByName, RegexOptions.IgnoreCase);
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.MODIFIEDON##", Model.UpdatedOn.ToString("MM/dd/yyyy hh:ss tt"), RegexOptions.IgnoreCase);
+    }
+    else
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.UPDATEDBY##", "", RegexOptions.IgnoreCase);
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.UPDATEDON##", "NA", RegexOptions.IgnoreCase);
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.MODIFIEDBY##", "", RegexOptions.IgnoreCase);
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.MODIFIEDON##", "NA", RegexOptions.IgnoreCase);
+    }
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.PLACEMENTTYPE##", Model.PlacementTypeText, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.JOBTYPE##", Model.JobTypeText, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##VACANCY.JOBTYPE##", Model.JobTypeText, RegexOptions.IgnoreCase);
+    if (Model.StartDate > DateTime.MinValue)
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.STARTDATE##", Model.StartDate.ToString("MM/dd/yyyy"), RegexOptions.IgnoreCase);
+    }
+    else
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.STARTDATE##", "NA", RegexOptions.IgnoreCase);
+    }
+
+    if (Model.PlacementType != Convert.ToInt32(BEClient.PlaceMentType.Permanent).ToString() && Model.EndDate > DateTime.MinValue)
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.ENDDATE##", Model.EndDate.ToString("MM/dd/yyyy"), RegexOptions.IgnoreCase);
+    }
+    else
+    {
+        Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.ENDDATE##", "NA", RegexOptions.IgnoreCase);
+    }
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.PLACEMENTLOCATION##", Model.LocationText, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.SALARYTYPE##", Model.SalaryTypeText, RegexOptions.IgnoreCase);
+
+    string _salaryOffered = "";
+    if (Model.PlacementType == Convert.ToInt32(BEClient.PlaceMentType.Permanent).ToString())
+    {
+        if (Model.SalaryType == Convert.ToInt32(BEClient.SalaryType.Salary))
+        {
+            _salaryOffered = "$" + Model.SalaryOffered.ToString("##,##,###.##");
+        }
+        else if (Model.SalaryType == Convert.ToInt32(BEClient.SalaryType.Hourly))
+        {
+            _salaryOffered = "Hours Per Week: " + Model.HoursPerWeek.ToString();
+            _salaryOffered = "  Hourly Wage: $" + Model.HourlyWage.ToString();
+        }
+        else if (Model.SalaryType == Convert.ToInt32(BEClient.SalaryType.PieceType))
+        {
+            _salaryOffered = "Rate $" + Model.Rate.ToString("##,##,###.##");
+            _salaryOffered = " Per " + Model.Per;
+        }
+    }
+    else
+    {
+        _salaryOffered = "Pay Rate: $" + Model.PayRate.ToString("##,##,###.##");
+        _salaryOffered = "  Rate Period: " + Model.RatePeriod.ToString();
+
+    }
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.SALARYOFFERED##", _salaryOffered, RegexOptions.IgnoreCase);
+
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.BONUSDESCRIPTION##", Model.BonusDescription, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.BONUSPOTENTIAL##", Model.AnnualBonusPotential.ToString("##,##,###.##"), RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.BONUSCAP##", Model.BonusCap.ToString("##,##,###.##"), RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.COMMISSIONDESCRIPTION##", Model.CommissionDescriprion, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.COMMISSIONPOTENTIAL##", Model.AnnualCommissionPotential.ToString("##,##,###.##"), RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.COMMISSIONCAP##", Model.CommissionCap.ToString("##,##,###.##"), RegexOptions.IgnoreCase);
+
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.CANDIDATENOTICEPERIOD##", Model.CandidateNoticePeriodText, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.CANDIDATENOTICEPERIODIN##", Model.CandidateNoticePeriodTypeText, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.COMPANYNOTICEPERIOD##", Model.CompanyNoticePeriodText, RegexOptions.IgnoreCase);
+
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.COMPANYNOTICEPERIODIN##", Model.CompanyNoticePeriodTypeText, RegexOptions.IgnoreCase);
+
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.COMPANYNAME##", ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, RegexOptions.IgnoreCase);
+    Model.OfferLetter = Regex.Replace(Model.OfferLetter, "##OFFER.MANAGERNAME##", Model.ManagerName, RegexOptions.IgnoreCase);
+
+    <div style="width:980px;">
+        @Html.Raw(Model.OfferLetter)
+    </div>
+}

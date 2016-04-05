@@ -1,0 +1,83 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.EducationHistory
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@{
+    SelectList degreetype = (SelectList)ViewBag.DegreeTypeName;
+}
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.InstitutionName)</span>
+        <span class='ttllbrown'>
+            <span class='ttll'>@String.Format("{0}", String.IsNullOrEmpty(Model.StartDateText) ? "" : Model.StartDateText)</span>
+            <span class='dash' style="display:none;">-</span>
+            <span class='ttlb'>@String.Format("{0}", String.IsNullOrEmpty(Model.EndDateText) ? "" : Model.EndDateText)</span>
+        </span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.InstitutionName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.InstitutionName, new { @class = "detail-input FullTextboxProfile" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.StartDateText, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.StartDateText, new { @class = "detail-input", @readOnly = "readOnly" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.DegreeType, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.DegreeType, (SelectList)ViewBag.DegreeTypeName, "---Please Select---", new { @class = "detail-select" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.City, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.City, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.State, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.State, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Country, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Country, new { @class = "detail-input" })
+                        </div>                        
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Description, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.Description, new { @class = "detail-input txtarea FullTextAreaProfile" })
+                        </div>
+                    </div>
+
+                    <div class="right-div right-div-margin">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EndDateText, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EndDateText, new { @class = "detail-input", @readOnly = "readOnly" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.MajorSubject, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.MajorSubject, new { @class = "detail-input" })
+                        </div>
+                        @*<div class="box">
+                            @Html.LanguageLabelFor(m => m.MeasureValue, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.MeasureValue, new { @class = "detail-input" })
+                        </div>*@
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.DegreeDate, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.DegreeDateText, new { @class = "detail-input", @readOnly = "readOnly" })
+                        </div>
+
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.MeasureSystem, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.MeasureSystem, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                </div>
+                <br clear="all" />
+            </td>
+        </tr>
+    </table>
+</div>

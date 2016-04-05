@@ -1,0 +1,27 @@
+﻿@model ATS.BusinessEntity.OfferTemplates
+@using BECommon = ATS.BusinessEntity.Common;
+@{
+    String selectone = Html.LanguageLabel(BECommon.DropDownConstant.DRP_SELECT_ONE).ToString();
+    
+}
+<span>@Html.LanguageLabelFor(m => m.OfferLetterId)</span>
+@Html.ListBoxFor(m => m.ListOfferLetterId, ViewBag.DRPOfferLetters as MultiSelectList, new { @id = "lstOfferLetters" })
+@Html.CheckBoxFor(m => m.OfferLetterId_EditContent)
+@Html.LanguageLabelFor(m => m.OfferLetterId_EditContent, new { @class = "label" })
+<script>
+    $(document).ready(function () {
+        $("#lstOfferLetters").dropdownchecklist({
+            emptyText: '@selectone',
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+            }
+        });
+    });
+</script>

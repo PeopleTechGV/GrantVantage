@@ -1,0 +1,62 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.CandidateProfile
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@{
+    ViewBag.Title = "ManualCreateProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+    $(document).ready(function () {
+        var icons = {
+            header: "iconOpen",
+            activeHeader: "iconClosed"
+        };
+        var icons12 = {
+            header: "iconOpen12",
+            activeHeader: "iconClosed12"
+        };
+        var subAccAttr =
+            {
+                icons: icons12,
+                heightStyle: "content",
+                collapsible: true,
+                active: false,
+                animate: true,
+                collapsible: true
+            };
+        $("#ManualProfileAccordion").accordion({
+            icons: icons,
+            heightStyle: "content",
+            collapsible: true,
+            active: -1,
+            animate: true,
+            collapsible: true,
+            activate: true
+        });
+    });
+</script>
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon bgMyProfile24W"></div>
+        <span class="navTitle CaseUpper">MY PROFILE</span>
+        <span class="chevron"></span>
+    </div>
+}
+<div id="ManualProfileAccordion">
+
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_TTL_PERSONAL_INFO)
+        </p>
+    </div>
+
+    <div class="acc-Content">
+        @using (Html.BeginForm("AddProfileManually", "MyProfile", new { allowParse = true }, FormMethod.Post, new { @id = "PersonalInfo" }))
+        {
+            @Html.Partial("Shared/_PersonalInfo", Model.objUserDetails)
+
+        }
+    </div>
+
+</div>

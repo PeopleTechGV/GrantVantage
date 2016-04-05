@@ -1,0 +1,112 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.Availability
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel(ATS.BusinessEntity.Common.AvailabilityConstant.FRM_PRF_TTL_AVAILIBILITY)
+    </p>
+</div>
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.DateAvailability, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.DateAvailabilityText, new { @class = "detail-input", @id = "DateAvailability", @readOnly = "readOnly" })
+                        </div>
+                    </div>
+
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.TargetIncome, new { @id = "lblTargetInc", @class = "label" })
+                            <span id="lblTargetIncCurr" class="label">&nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                            @Html.TextBoxFor(m => m.TargetIncomeText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+                        </div>
+                    </div>
+
+                    <div class="left-div" style="width:100%;">
+                        <div class="box" style="margin-bottom:6px;">
+                            <label class="label" for="ObjAvailability_HrsMon">Select the options you are available to work</label>
+                        </div>
+                        <div class="box" style="width:100%;">
+                            <div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsMon, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsMonName, new { @class = "hrs-input" })
+                            </div>
+                            <div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsTue, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsTueName, new { @class = "hrs-input" })
+                            </div><div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsWed, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsWedName, new { @class = "hrs-input" })
+                            </div><div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsThu, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsThuName, new { @class = "hrs-input" })
+                            </div><div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsFri, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsFriName, new { @class = "hrs-input" })
+                            </div><div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsSat, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsSatName, new { @class = "hrs-input" })
+                            </div><div class="hrs-box">
+                                @Html.LanguageLabelFor(m => m.HrsSun, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.HrsSunName, new { @class = "hrs-input" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="left-div">
+                        <div class="box">
+                            <label class="label">Availability Comments</label>
+                            @Html.TextBoxFor(m => m.AvailabilityComments, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EmploymentPreference, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.EmploymentPreference, (SelectList)ViewBag._EmploymentPreferenceList, "---Please Select---", new { @class = "detail-select", @tabindex = "18" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.RelativesWorkingInCompany, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.RelativesWorkingInCompany, (SelectList)ViewBag.YesNoDropDownRelativesWorkingInCompany, new { @class = "detail-select", @tabindex = "12" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.SubmittedApplicationBefore, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.SubmittedApplicationBefore, (SelectList)ViewBag.YesNoDropDownSubmittedApplicationBefore, new { @class = "detail-select", @tabindex = "14" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.HearAboutThePosition, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.HearAboutThePosition, new { @class = "detail-input", @tabindex = "16" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.HowOld, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.HowOld, (SelectList)ViewBag.YesNoDropDownyearsOld, new { @class = "detail-select", @tabindex = "18" })
+                        </div>
+                    </div>
+
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.WillingToWorkOverTime, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.WillingToWorkOverTime, (SelectList)ViewBag.YesNoDropDownWillingToWorkOverTime, new { @class = "detail-select" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.RelativesIfYes, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.RelativesIfYes, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.AppicationSubmision, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.AppicationSubmision, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.ReferredBy, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.ReferredBy, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EligibleToWorkInUS, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.EligibleToWorkInUS, (SelectList)ViewBag.YesNoDropDownEligibleToWorkInUS, new { @class = "detail-select" })
+                        </div>
+                    </div>
+                </div>
+                <br clear="all" />
+            </td>
+        </tr>
+    </table>
+</div>

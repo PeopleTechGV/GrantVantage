@@ -1,0 +1,145 @@
+﻿@model ATS.BusinessEntity.GetScore
+
+@*-- Reviews & Ratings Start --*@
+<div class="acc-header" data-index="2">
+    <p class="prfle-tab-head" style="overflow: hidden;">
+
+        <span class="w60 MobW65" style="float:left;">
+            <span>@Html.LanguageLabel("Reviews and Ratings")</span>
+        </span>
+        <span class="w10 MobW1 textright">
+            <span class="ttllbrown" id="rndweight"><label></label></span>
+        </span>
+        <span class="w30 MobW30 floatright textright">
+            <span class="ttllbrown">Score:</span>
+            <span class="ttldblue" id="rndscore">@Model.Score</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="AccRevRat">
+
+        </div>
+    </div>
+</div>
+@*-- Reviews & Ratings End --*@
+
+
+@*-- Interviews Start --*@
+<div class="acc-header" data-index="1">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Interviews")
+    </p>
+</div>
+
+<div class="acc-Content">
+    @if (ViewBag.IsDeclined)
+    {
+        <div>
+            Please Reactivate the Applicant
+        </div>
+    }
+    else
+    {
+        <div class="acc-inner" style="margin-left: 5px;">
+            <div class="AccQue-header">
+                <div class="w10 AccQue-headerCell lblBbrown">Date</div>
+                <div class="w10 AccQue-headerCell lblBbrown">Start</div>
+                <div class="w10 AccQue-headerCell lblBbrown">End</div>
+                <div class="w40 AccQue-headerCell lblBbrown">Interviewer(s)</div>
+                <div class="w13 AccQue-headerCell lblBbrown">Round</div>
+                <div class="w10 AccQue-headerCell lblBbrown">Score</div>
+                <div class="w7 AccQue-headerCell">&nbsp;</div>
+            </div>
+
+            <div class="Interviews ClearFloat" data-apprndid="">
+
+            </div>
+
+            <div class="CRUScheduleInt">
+
+            </div>
+
+            <div class="acc-action" style="clear:both;">
+                <a id="AddScheduleInt" class="btn CaseUpper" style="cursor:pointer;">Add Interview</a>
+            </div>
+        </div>
+    }
+</div>
+@*-- Interviews End --*@
+
+
+
+
+
+
+
+
+@*-- Comments Start --*@
+<div class="acc-header" data-index="3">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Comments")
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="Comments AppCommentSection">
+
+        </div>
+    </div>
+</div>
+@*-- Comments End --*@
+
+
+@*-- Application Start --*@
+<div class="acc-header" data-index="6">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Application")
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="AppQueSection">
+    </div>
+</div>
+@*-- Applications End --*@
+
+
+@*-- Required Documents --*@
+<div class="acc-header" data-index="5">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("Required Documents")
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="CandidateRequiredDocuments">
+
+        </div>
+    </div>
+</div>
+@*-- Required Documents End --*@
+
+
+
+
+
+
+
+
+
+
+@*-- History Start --*@
+<div class="acc-header" data-index="4">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel("History")
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="CandidateHistory">
+
+        </div>
+    </div>
+</div>
+@*-- History End --*@

@@ -1,0 +1,25 @@
+﻿@model List<ATS.BusinessEntity.AnsOpt>
+@using BELabel = ATS.BusinessEntity.Common.AnsOpt;
+@using BEClient = ATS.BusinessEntity;
+@if (Model != null && Model.Count() > 0)
+{
+    <div style="width: auto; white-space: nowrap;">
+        <p class="prfle-tab-head-brown">
+            Answer Values
+        </p>
+        <div class="one-div-full">
+            <div class="box" style="float:left;">
+                <ul>
+                    @foreach (ATS.BusinessEntity.AnsOpt _current in Model)
+                    {
+                        <text>
+                            <li style="list-style-type: square; margin-left: 13px;">
+                                @_current.DefaultName <span class="ttllbrown">(@_current.Weight)</span>
+                            </li>
+                        </text>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}

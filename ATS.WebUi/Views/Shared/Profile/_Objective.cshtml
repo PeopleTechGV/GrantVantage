@@ -1,0 +1,75 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.Objective
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        @Html.LanguageLabel(ATS.BusinessEntity.Common.ObjectiveConstant.FRM_TITL_OBJECTIVEDETAILS)
+        <span class="notification" style="display:none;"></span>
+        <span class="Save" recordid='@Model.ObjectiveId' style="display:none;"><button type="button" onclick="return outerSave(this);"></button></span>
+
+    </p>
+</div>
+<div class="acc-Content">
+    @using (Ajax.BeginForm("Objective", "Profile", new { area = "" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "ObjectiveSucess(data,'" + Model.ObjectiveId + "')",
+        OnFailure = "ObjectiveFailure"
+    }, new { id = "frmObjective", isFormChange = "false" }))
+    {
+        @Html.HiddenFor(m => m.ObjectiveId, new { @class = "ignore" })
+        @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+        <text>
+            <script>
+                function outerSave(element) {
+                    var head = $(element).closest('.acc-header');
+                    var myform = $(head).next().children().get(0);
+                    var isvalidate = $(myform).valid();
+                    if (isvalidate) {
+                        $(myform).submit();
+                    }
+                    return false;
+                }
+                function ObjectiveSucess(data, custom) {
+                    data = JSON.parse(data);
+                    var Savelink = $("span[recordid='" + custom + "']").get(0);
+                    VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+                }
+
+
+                function ObjectiveFailure(data) {
+                    data = JSON.parse(data);
+
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+
+            </script>
+        </text>
+        <table>
+            <tr>
+                <td>
+                    @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+                    @Html.HiddenFor(m => m.UserId, new { @class = "ignore" })
+                    @Html.HiddenFor(m => m.ObjectiveId, new { @class = "ignore" })
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.TextAreaFor(m => m.ObjectiveDetails, new { @class = "detail-input executiveclass" })
+                            </div>
+                        </div>
+                    </div>
+                    <br clear="all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper">Save Objective</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

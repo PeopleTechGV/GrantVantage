@@ -1,0 +1,17 @@
+﻿<div class="login-box1">
+    @{Html.RenderAction("Login", "Home", new {area = "Admin" });}
+</div>
+<script type="text/javascript">
+    function LoginSuccess(result) {
+        result = JSON.parse(result);
+        if (result.IsError == true) {
+
+            var $form = $('#LoginForm');
+            VacancyModel.DisplayErrors($form, [result.Message]);
+        }
+        else {
+
+            window.location = result.Url;
+        }
+    }
+</script>

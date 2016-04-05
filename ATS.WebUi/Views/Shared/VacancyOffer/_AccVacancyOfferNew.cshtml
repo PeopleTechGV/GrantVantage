@@ -1,0 +1,23 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+
+<div class="acc-header acc-newOffer" data-lastoffertype='@Model.OfferTypeId' data-vacofferid="@Model.VacancyOfferId" data-isrev='@Model.IsReviewer' data-offerno='@Model.RndNo' data-totaloffer='@Model.TotalOffer'>
+    <p class="prfle-tab-head-brown" style="border-bottom-width:1px !important; overflow: hidden;">
+        <span class='floatleft ttllbrown'>
+            Offer @Model.RndNo: &nbsp;<span class="ttldblue">@Model.OfferDate.ToString("MM/dd/yyyy")</span>
+            <span>@Model.OfferStatusText</span>
+        </span>
+        @if (Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Candidate_Accepted) || Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed))
+        {
+            <span class="floatleft" style="font-weight:normal; color:#808080; padding-left:5px;">
+                <i>- Accepted @Model.OfferAcceptedDate.ToString("MM/dd/yyyy")</i>
+                @if (Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed) && Model.OfferConfirmedDate != DateTime.MinValue)
+                {<i>, Confirmed @Model.OfferConfirmedDate.ToString("MM/dd/yyyy")</i>}
+            </span>
+        }
+        <span class='floatright ttllbrown' style="text-align: right;">@Model.OfferTypeText</span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    @Html.Partial("VacancyOffer/_MakeOffer", Model)
+</div>

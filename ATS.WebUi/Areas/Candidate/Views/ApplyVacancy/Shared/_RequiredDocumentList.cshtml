@@ -1,0 +1,30 @@
+﻿@model ATS.BusinessEntity.RequiredDocument
+@using HtmlHelpers.BeginCollectionItem
+
+
+@{
+    var ddlOptional = "ddlFile detail-select SMW92";
+    if (Model.IsOptional) { ddlOptional = "ddlFile detail-select SMW92 ddlOptional"; }
+}
+<div class="box">
+    <span class="AccountSpan">
+        @Model.DocumentTypeName
+    </span>
+    <span class="floatleft">@Model.objDocumentType.Description &nbsp;</span>
+    <span class="floatleft lblRoundBraces">Ex: @Model.objDocumentType.ExtensionTypes</span>&nbsp;
+    @if (Model.IsOptional)
+    { <span class="lblNbrown lblRoundBraces">Optional</span> }
+   
+    @using (Html.BeginForm("UploadDocument", "MyApplications", new { DocumentTypeId = Model.DocumentTypeId }, FormMethod.Post, new { @class = "frmUploadDocument" }))
+    {
+        ViewBag.SelectList = new SelectList(Model.ATSResumeList, "ATSResumeId", "UploadedFileName");
+        @Html.DropDownListFor(m => m.ATSResumeId, (SelectList)ViewBag.SelectList, "--Select--", new { @class = ddlOptional })
+        <div class="AddNewFile">
+            <input type="button" id="REbtn-logo" class="btnUpload">
+            <br />
+            @*CR-6*@
+            <input type="file" name="myfile[]" multiple class="txtFileUpload file-upload" data-extensions="@Model.objDocumentType.ExtensionTypes" accept="@Model.objDocumentType.ExtensionTypes">
+        </div>
+    }
+</div>
+

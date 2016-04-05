@@ -1,0 +1,25 @@
+﻿@model  Object
+@{
+    
+    switch (Model.GetType().Name)
+    {
+        case "ATSPickList":
+            @Html.Partial("Question/_PickList", Model)
+            break;
+        case "ATSCheckBox":
+        @Html.Partial("Question/_CheckList", Model)
+            break;
+        case "ATSTextArea":
+        @Html.Partial("Question/_LargeText", Model)
+            break;
+        case "ATSTextBox":
+        @Html.Partial("Question/_SmallText", Model)
+            break;
+        case "ATSYesNo":
+        @Html.Partial("Question/_YesNo", Model)
+            break;
+        case "ATSScale":
+        @Html.Partial("Question/_Scale", Model)
+            break;
+    }
+}

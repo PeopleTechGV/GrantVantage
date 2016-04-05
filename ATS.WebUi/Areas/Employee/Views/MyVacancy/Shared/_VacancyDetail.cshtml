@@ -1,0 +1,354 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.Vacancy>
+@using BEClient = ATS.BusinessEntity
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmVacancyDetails');
+        });
+    </script>
+}
+@using (Ajax.BeginForm("Create", "MyVacancy", new { area = "Employee" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "VacancyDetailsSucess(data,'" + Model.obj.VacancyId + "')",
+        OnFailure = "VacancyDetailsFailure"
+    }, new { id = "frmVacancyDetails", isFormChange = "false" }))
+{
+    <script>
+        $(document).ready(function () {
+            var formvac = $("#frmVacancyDetails");
+            $.validator.unobtrusive.parse(formvac);
+        });
+    </script>
+    <div id="Vacdetails" name="vacdet" data-vacid="@Model.obj.VacancyId">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="acc-Content">
+                        <div class="acc-inner">
+                            @Html.HiddenFor(model => model.obj.VacancyId)
+                            @Html.HiddenFor(model => model.obj.VacancyState)
+                            @Html.HiddenFor(model => model.obj.ClientId)
+                            @Html.HiddenFor(model => model.obj.LanguageId)
+                            @Html.HiddenFor(model => model.obj.PostedOn)
+                            @Html.HiddenFor(model => model.obj.PositionID)
+                            @Html.HiddenFor(model => model.obj.RndCount)
+                            <div class="vacancy-Details">
+                                <div class="left-div">
+                                    <div class="box">
+                                        
+                                        @Html.LanguageLabelFor(m => m.obj.JobTitle, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.JobTitle, new { @class = "detail-input" })
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.ShowOnWeb, new { @class = "label" })
+                                        @if (Model.obj.ConfirmVacancyDetails && Model.obj.ConfirmJobDescription && Model.obj.ConfirmCompensationInfo && Model.obj.ConfirmApplicationreview && Model.obj.VacancyId != Guid.Empty)
+                                        {
+                                            @Html.DropDownListFor(m => m.obj.ShowOnWeb, (SelectList)ViewBag.vacancystatusdrp, new { @class = "detail-select", @id = "ddlVacancyStatus", @onchange = "GetVacancyReasonsBasedOnVacancyStatus();" })
+                                        }
+                                        else if (Model.obj.VacancyId == Guid.Empty)
+                                        {
+
+                                            @Html.DropDownListFor(m => m.obj.ShowOnWeb, (SelectList)ViewBag.vacancystatusdrp, new { @class = "detail-select", @id = "ddlVacancyStatus", @onchange = "GetVacancyReasonsBasedOnVacancyStatus();" })
+
+                                        }
+                                        else
+                                        {
+                                            @Html.HiddenFor(m => m.obj.ShowOnWeb)
+                                            @Html.DropDownList("SowOnWeb", (SelectList)ViewBag.vacancystatusdrp, new { @class = "detail-select", @id = "ddlVacancyStatus", @onchange = "GetVacancyReasonsBasedOnVacancyStatus();", @disabled = "disabled" })
+                                        }
+
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.VacancyStatusId, new { @class = "label" })
+                                        @if (Model.obj.ConfirmVacancyDetails && Model.obj.ConfirmJobDescription && Model.obj.ConfirmCompensationInfo && Model.obj.ConfirmApplicationreview && Model.obj.VacancyId != Guid.Empty)
+                                        {
+                                            @Html.DropDownListFor(m => m.obj.VacancyStatusId, (SelectList)ViewBag.VacancyStatusList, new { @class = "detail-select", @id = "ddlStatusReason" })
+                                        }
+                                        else if (Model.obj.VacancyId == Guid.Empty)
+                                        {
+                                            @Html.DropDownListFor(m => m.obj.VacancyStatusId, (SelectList)ViewBag.VacancyStatusList, new { @class = "detail-select", @id = "ddlStatusReason" })
+                                        }
+                                        else
+                                        {
+                                            @Html.HiddenFor(m => m.obj.VacancyStatusId)
+                                            @Html.DropDownListFor(m => m.obj.VacancyStatusId, (SelectList)ViewBag.VacancyStatusList, new { @class = "detail-select", @id = "ddlStatusReason", @disabled = "disabled" })
+                                        }
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.DivisionId, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.DivisionId, (SelectList)ViewBag.Division, "- Select -", new { @class = "detail-select", @id = "divisionId", @onchange = "GetJobLocationBasedOnUserAndDivision();", @IsEditable = "NotEditable" })
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.PositionTypeId, new { @class = "label", @IsEditable = "NotEditable" })
+                                        @Html.DropDownListFor(m => m.obj.PositionTypeId, (SelectList)ViewBag.PositionType, "-Select-", new { @class = "detail-select", @id = "positiontype", @IsEditable = "NotEditable" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.Location, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.Location, (SelectList)ViewBag._JobLocationList, "- Select -", new { @class = "detail-select", @id = "joblocation", @IsEditable = "NotEditable" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.FundAmount, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.FundAmount, new { @class = "detail-input" })
+                                    </div>
+                                    @*<div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.StartDate, new { @class = "label" })
+                                            @Html.TextBoxFor(m => m.obj.StartDateText, new { @class = "detail-input", @id = "StartDate", @readOnly = "readOnly" })
+                                        </div>*@
+
+
+                                    @*<div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.PositionRequestedBy, new { @class = "label" })
+                                            @Html.DropDownListFor(m => m.obj.PositionRequestedBy, (SelectList)ViewBag.ContactsName, new { @class = "detail-select" })
+                                        </div>
+                                        <div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.OnBoardManagerId, new { @class = "label" })
+                                            @Html.DropDownListFor(m => m.obj.OnBoardManagerId, (SelectList)ViewBag.OnboardingUsers, "- Select -", new { @class = "detail-select", @id = "OnBoardingManager" })
+                                        </div>*@
+
+                                    @*<div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.ProgramOfficer, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.ProgramOfficer, (SelectList)ViewBag.ContactsName, new { @class = "detail-select" })
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.PositionOwner, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.PositionOwner, (SelectList)ViewBag.ContactsNameOwner, new { @class = "detail-select", @readonly = "true", @id = "PositionOwner" })
+                                    </div>*@
+                                    @*CR-35 MAX AND MIN FUNDING AMMOUNT BY MUNEENDRA START( get and binding the data)*@
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.MaxFundAmount, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.MaxFundAmount, new { @class = "detail-input" })
+
+                                        @*<input type="text" id="MAXAwardAmount" />*@
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.MinFundAmount, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.MinFundAmount, new { @class = "detail-input" })
+
+                                        @*<input type="text" id="MINAwardAmount" />*@
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.TotalFundedToDate, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.TotalFundedToDate, new { @class = "detail-input" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.TotalNumberOfAwards, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.TotalNumberOfAwards, new { @class = "detail-input" })
+                                    </div>
+                                     <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.RemainingFunds, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.RemainingFunds, new { @class = "detail-input" })
+                                    </div>
+                                    @*CR-35 END*@
+
+                                    @*<div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.TotalPositions, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.TotalPositions, new { @class = "detail-input", @id = "txt_TotalPosition", @onchange = "setval(this)" })
+                                    </div>*@
+                                </div>
+                                <div class="right-div">
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.PositionID, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.PositionIDText, new { @class = "detail-input", @id = "VacPositionId", @readonly = "readonly", @PlaceHolder = "auto-generated" })
+                                    </div>
+                                    @*<div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.JobType, new { @class = "label" })
+                                            @Html.DropDownListFor(m => m.obj.JobType, (SelectList)ViewBag.VacancyJobType, "- Select -", new { @class = "detail-select", @onchange = "SetHoursPerWeekVisibility();" })
+                                        </div>
+                                        <div class="box" id="divHrsPerWeek" style="display: none;">
+                                            @Html.LanguageLabelFor(m => m.obj.HoursPerWeek, new { @class = "label" })
+                                            @Html.DropDownListFor(m => m.obj.HoursPerWeek, new SelectList(Enumerable.Range(1, 150)), "- Select -", new { @class = "detail-select" })
+                                        </div>*@
+                                    @*<div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.EmploymentType, new { @class = "label" })
+                                            @Html.DropDownListFor(m => m.obj.EmploymentType, (SelectList)ViewBag._VacancyEmploymentType, "- Select -", new { @class = "detail-select" })
+                                        </div>*@
+                                    @*<div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.EndDate, new { @class = "label" })
+                                            @Html.TextBoxFor(m => m.obj.EndDateText, new { @class = "detail-input", @id = "EndDate", @readOnly = "readOnly" })
+                                        </div>*@
+                                    @*<div class="box">
+                                            @Html.LanguageLabelFor(m => m.obj.RemainingPositions, new { @class = "label" })
+                                            @Html.TextBoxFor(m => m.obj.RemainingPositions, new { @class = "detail-input", @readonly = "readonly", @id = "txt_RemainingPosition" })
+                                        </div>*@
+
+
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.ActivityCode, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.ActivityCode, new { @class = "detail-input" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.AnnouncementType, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.AnnouncementType, new { @class = "detail-input" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.FundingOpptyNumber, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.FundingOpptyNumber, new { @class = "detail-input" })
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.CashMatchRequirement, new { @class = "label" }) (percentage)
+                                        @Html.TextBoxFor(m => m.obj.CashMatchRequirement, new { @class = "detail-input" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.AnnouncementDateText, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.AnnouncementDateText, new { @class = "detail-input datePicker", @readonly = "readonly" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.OpenDateText, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.OpenDateText, new { @class = "detail-input datePicker", @readonly = "readonly" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.ApplicationDueDateText, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.ApplicationDueDateText, new { @class = "detail-input datePicker", @readonly = "readonly" })
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.ExpirationDateText, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.obj.ExpirationDateText, new { @class = "detail-input datePicker", @readonly = "readonly" })
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.FeaturedOnWeb, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.FeaturedOnWeb, (SelectList)ViewBag.YesNoDropDownFeaturedOnWeb, new { @class = "detail-select" })
+                                    </div>
+                                    @*CR-35 MAX AND MIN FUNDING AMMOUNT BY MUNEENDRA START( get and binding the data)*@
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.ProgramOfficer, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.ProgramOfficer, (SelectList)ViewBag.ContactsName, new { @class = "detail-select" })
+                                    </div>
+
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.obj.PositionOwner, new { @class = "label" })
+                                        @Html.DropDownListFor(m => m.obj.PositionOwner, (SelectList)ViewBag.ContactsNameOwner, new { @class = "detail-select", @readonly = "true", @id = "PositionOwner" })
+                                    </div>
+                                    @*CR-35 END*@
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            @if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Delete, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+            {
+                if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+                {
+                <tr>
+                    <td>
+                        <div style="border-top: 2px solid #953634;">
+                            @if (Model.obj.ConfirmVacancyDetails && Model.obj.VacancyId != Guid.Empty)
+                            {
+                                if (Model.obj.ConfirmVacancyDetails && Model.obj.ConfirmJobDescription && Model.obj.ConfirmCompensationInfo && Model.obj.ConfirmApplicationreview && Model.obj.VacancyId != Guid.Empty)
+                                {
+                                <button type="submit" class="prfle-button-save CaseUpper" name="btnSubmit" value="ConfirmRecord">Save Opportunity Details</button>
+                                }
+                            }
+                            else if (Model.obj.ConfirmVacancyDetails && Model.obj.VacancyId == Guid.Empty)
+                            {
+                                <button type="submit" class="prfle-button-save CaseUpper" name="btnSubmit" value="ConfirmRecord">Save Opportunity Details</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="prfle-button-save CaseUpper" name="btnSubmit" value="ConfirmRecord">Confirm Opportunity Details</button>
+                            }
+
+                        </div>
+                    </td>
+                </tr>
+                }
+            }
+        </table>
+    </div>
+
+    <script>
+        function outerSave(element) {
+            var head = $(element).closest('.acc-header');
+            var myform = $(head).next().children().get(0);
+            var isvalidate = $(myform).valid();
+            if (isvalidate) {
+                $(myform).submit();
+            }
+            return false;
+        }
+        function VacancyDetailsSucess(data, custom) {
+            data = JSON.parse(data);
+            if (!data.IsError) {
+                var VacancyDetails = $("div[name ='vacancyDetail']");
+                $(VacancyDetails).attr('data-mode', '@BEClient.PageMode.Update');
+                $(VacancyDetails).html("");
+                $(VacancyDetails).append(data.Data[0]);
+                if ($('.ttllbrownConf').length > 0) {
+                    MyVacancy.SetConformation(VacancyDetails);
+                }
+                else {
+                    $(".ActionBar").html('').html(data.Data[1]);
+                }
+                var vacancyId = $("div[name ='vacdet']").attr("data-vacid");
+                var url = window.location.href;
+                if ((url.indexOf(vacancyId) == -1)) {
+                    url = url + '/' + vacancyId;
+                    window.location.replace(url);
+                }
+                $('#addRoundConfig').attr('data-vacid', vacancyId);
+                $("[name='obj.VacancyId']").val(vacancyId);
+                $("div.acc-header").attr("data-recordid", vacancyId);
+                var objvacancyId = $(".acc-header").find("P").children().closest(".Save");
+                for (var k = 0; k < objvacancyId.length; k++) {
+                    if (objvacancyId[k].hasAttribute("data-vacancyid")) {
+                        var vIvalue = $(objvacancyId[k]).attr("data-vacancyid");
+                        var Id = vIvalue.split('_');
+                        if (Id.length >= 2) {
+                            $(objvacancyId[k]).attr("data-vacancyid", Id[0] + "_" + vacancyId);
+                        }
+                        else {
+                            $(objvacancyId[k]).attr("data-vacancyid", vacancyId);
+                        }
+                    }
+                }
+                if (data.IsError == false) {
+                    $('div.acc-header').show();
+                }
+            }
+            var Savelink = $("span[data-VacancyId='" + custom + "']").get(0);
+            if (MyVacancy.IsCandidateApplied == "true") {
+                MyVacancy.MakeFormReadOnly();
+            }
+            VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+        }
+        function VacancyDetailsFailure(data) {
+            data = JSON.parse(data);
+            if (data.IsError) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+
+    $(document).ready(function () {
+        var dates = $("#StartDate, #EndDate").datepicker({
+            //maxDate: '+7D',
+            onSelect: function (selectedDate) {
+                var option = this.id == "StartDate" ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = $.datepicker.parseDate(
+                instance.settings.dateFormat ||
+                $.datepicker._defaults.dateFormat,
+                selectedDate, instance.settings);
+                dates.not(this).datepicker("option", option, date);
+            }
+        });
+
+        $(".datePicker").each(function (index) {
+            $(this).datepicker();
+        });
+    });
+    </script>
+
+}

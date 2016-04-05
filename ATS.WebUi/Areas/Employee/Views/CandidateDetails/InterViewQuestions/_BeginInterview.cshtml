@@ -1,0 +1,42 @@
+﻿@model ATS.BusinessEntity.BeginInterView
+
+
+    <div class="std_width intrview-dtl">
+        @Html.HiddenFor(m => m.VacRndId)
+        @Html.HiddenFor(m => m.ScheduleIntId)
+        @Html.HiddenFor(m => m.TotalScore, new { @id = "TotalScore" })
+        <h4>Interview Questions and Comments</h4>
+        @if (Model.IsReviewer)
+        {
+            if (Model.IsComplete)
+            {
+                <button id="ReopenInt" class="beign-intrvw" onclick="return ReopenInterview(event, this);">Re-Open Interview</button>
+                
+                <div class="width-75">
+                    <span class="std_width red reopen-text">
+                        Interview Questions Completed on
+                        <span class="blue">@Model.IntEndOn</span>
+                        by
+                        <span class="blue">@Model.UserText</span>
+                    </span>
+                    <span class="std_width red reopen-text">
+                        Total Score :
+                        <span class="blue" id="rndscore">@Model.Score</span>
+                    </span>
+                </div>
+
+            }
+            else
+            {
+                <button id="addBeginInt" type="submit" class="beign-intrvw">Begin Interview</button>
+            }
+        }
+        else
+        {
+            <button id="addBeginInt" type="submit" class="beign-intrvw" disabled="disable">Begin Interview</button>
+        }
+
+
+    </div>
+
+

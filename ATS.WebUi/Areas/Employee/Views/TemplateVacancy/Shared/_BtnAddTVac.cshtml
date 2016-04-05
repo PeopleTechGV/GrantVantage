@@ -1,0 +1,12 @@
+﻿@model ATS.BusinessEntity.SRPEntity.IDynamicSRP
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using VacancyTemplateConstants = ATS.BusinessEntity.Common.VacancyTemplate
+@if (Model.UserPermissionWithScope != null)
+{
+    if (Model.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0)
+    {
+        <div class="Content" style="clear: both;display: inline-block;width: 100%;">
+            <a id="addTVac" href='javascript:void(0);' data-url="@Url.Action("GetNewTVac", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })" class="btn CaseUpper">@Html.LanguageLabel(VacancyTemplateConstants.FRM_VAC_ADD_TEMPLATE)</a>
+        </div>
+    }
+}

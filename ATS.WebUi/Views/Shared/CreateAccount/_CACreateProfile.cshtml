@@ -1,0 +1,316 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@model BEClient.AnonymousUser
+
+<script>
+    $(document).ready(function () {
+        $(".DivFileUploader").hide();
+        if ($('#radio1').is(':checked')) {
+            $("#DivLocalDevice").show();
+        }
+        if ($('#radio2').is(':checked')) {
+            $("#DivMSDropbox").show();
+        }
+        if ($('#radio3').is(':checked')) {
+            $("#DivGoogleDrive").show();
+        }
+        //Anand
+        $('#linkD').click(function () {
+            VacancyModel.CloseDialog();
+            $("#slideit").click();
+        });
+        //
+    });
+</script>
+
+@using (Html.BeginForm("SaveAnonymsUserDetails", "Account", new { allowParse = true }, FormMethod.Post, new { enctype = "multipart/form-data", @id = "frmUp" }))
+{
+
+    <div id="ErrorMessage">
+    </div>
+    @Html.HiddenFor(m => m.ObjVacancy.VacancyId)
+    
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjCandidate.objUserDetails.FirstName, new { @class = "label" })
+        @Html.TextBoxFor(m => m.ObjCandidate.objUserDetails.FirstName, new { @id = "txtFirstname", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjCandidate.objUserDetails.LastName, new { @class = "label" })
+        @Html.TextBoxFor(m => m.ObjCandidate.objUserDetails.LastName, new { @id = "txtLastname", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjUser.Username, new { @class = "label" })
+        @Html.TextBoxFor(m => m.ObjUser.Username, new { @id = "txtUsername", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjUser.Password, new { @class = "label", @id = "boxlabel20" })<span class="label" id="boxlabel20">&nbsp; @Html.Label("(min 8 characters)") </span>
+        @Html.PasswordFor(m => m.ObjUser.Password, new { @id = "txtPassword", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LabelFor(m => m.ObjUser.ConfirmPassword, new { @class = "label" })
+        @Html.PasswordFor(m => m.ObjUser.ConfirmPassword, new { @id = "txtConfirmname", @class = "detail-input" })
+    </div>
+    <div class="box" style="margin-bottom: 2%;">
+        <label class="label" style="display:none;">
+            Select File From
+        </label><br />
+        <div id="radio" style="display:none;">
+            <input type="radio" id="radio1" name="radio" value="@BEClient.UploadFileType.LocalDevice" checked="checked" /><label for="radio1">Local Device</label>
+            <input type="radio" id="radio2" name="radio" value="@BEClient.UploadFileType.MSDropBox" /><label for="radio2">Microsoft Dropbox</label>
+            <input type="radio" id="radio3" name="radio" value="@BEClient.UploadFileType.GoogleDrive" /><label for="radio3">Google Drive</label>
+        </div>
+        @Html.HiddenFor(m => m.ObjUser.FileUploadType, new { id = "hdnFileUploadType" })
+        @Html.HiddenFor(m => m.ObjUser.DropBoxFileName, new { id = "hdnDropBoxName" })
+        @Html.HiddenFor(m => m.ObjUser.DropBoxFileUrl, new { id = "hdnDropBoxUrl" })
+    </div>
+    <div id="DivLocalDevice" class="box">
+        @*DivFileUploader*@
+    <label class="label">
+        @Html.LanguageLabel(BECommonConstatnConst.SELECTRESUME)
+    </label><br clear="all" />
+    <input type="file" value="Browse" name="documentFile" id="uploadResume" class="detail-FileUpload" />
+</div>
+    <div id="DivMSDropbox" class="box DivFileUploader" style="display:none;">
+        <label class="label" style="width:90% !important;">
+            @Html.LanguageLabel(BECommonConstatnConst.SELECTRESUME) From Dropbox
+        </label>
+        <input id="btnDropBox" class="detail-btnFileUpload" type="button" value="Get File" onclick="GetDropbox();" />
+        <a id="hplFile" class="detail-Hyperlink">No file selected.</a>
+    </div>
+    <div id="DivGoogleDrive" class="box DivFileUploader" style="display:none;">
+        <label class="label" style="width:90% !important;">
+            @Html.LanguageLabel(BECommonConstatnConst.SELECTRESUME) From Google Drive
+            <br />(Please select file from PUBLIC folder)
+        </label>
+        <input id="btnGoogleDrive" class="detail-btnFileUpload" type="button" value="Get File" onclick="newPicker();" />
+        <a id="hplFileGD" class="detail-Hyperlink">No file selected.</a>
+    </div>
+
+    <div class="box">
+        <span class="loginlinkspan" style="display:none;">Already have a Profile? &nbsp;<a href="#" class="loginlink" id="loginhereLink"><span class="loginlinkspan">Login here</span></a> @*@Html.ActionLink("Login here", "", "", new { area = "" }, new { @id = "loginhere", style = "text-decoration:underline;color: #953634;" })</span>*@</span>
+        <button class="btn-save-vacancy" id="btnSub" type="submit" value="Upload Resume" title="Upload Resume" onclick="return fileUpload();">@Html.LanguageLabel(BECommonConstatnConst.UPLOADRESUME)</button>
+    </div>
+
+}
+
+<script>
+    $("#radio").buttonset();
+    $("input[name='radio']").on("change", function () {
+        document.getElementById('hdnFileUploadType').value = this.value;
+        $(".DivFileUploader").hide();
+        if (this.value == '@BEClient.UploadFileType.LocalDevice') {
+            $("#DivLocalDevice").show();
+        }
+        if (this.value == '@BEClient.UploadFileType.MSDropBox') {
+            $("#DivMSDropbox").show();
+        }
+        if (this.value == '@BEClient.UploadFileType.GoogleDrive') {
+            $("#DivGoogleDrive").show();
+        }
+    });
+</script>
+
+
+@* ---- Drop Box Script Start ---- *@
+<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8uiol6atfvrzcwe"></script>
+<script>
+    function GetDropbox() {
+        options = {
+            success: function (files) {
+                document.getElementById('hplFile').innerHTML = files[0].name;
+                document.getElementById('hplFile').href = files[0].link;
+                document.getElementById('hdnDropBoxUrl').value = files[0].link;
+                document.getElementById('hdnDropBoxName').value = files[0].name;
+            },
+            cancel: function () {
+
+            },
+            linkType: "direct",
+            multiselect: false,
+            extensions: ['.pdf', '.doc', '.docx'],
+        };
+        Dropbox.choose(options);
+    }
+</script>
+@* ---- Drop Box Script End ---- *@
+
+
+@* ---- Google Drive Script Start ---- *@
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+<script src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
+<script>
+    function newPicker() {
+        google.load('picker', '1', { "callback": onApiLoad });
+    }
+
+    function onApiLoad() {
+        return;
+        gapi.load('auth', { 'callback': onAuthApiLoad });
+        gapi.load('picker');
+    }
+    function onAuthApiLoad() {
+        window.gapi.auth.authorize({
+            'client_id': '591477896020-cd3k1o1c3atjrdakdbcqgsjed9m5725v.apps.googleusercontent.com',
+            'scope': ['https://www.googleapis.com/auth/drive.file']
+        }, handleAuthResult);
+    }
+    var oauthToken;
+    function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+            oauthToken = authResult.access_token;
+            createPicker();
+        }
+    }
+    function createPicker() {
+        var picker = new google.picker.PickerBuilder()
+            .addView(google.picker.ViewId.DOCUMENTS)
+            .setOAuthToken(oauthToken)
+            .setDeveloperKey('AIzaSyCthyi8ZRxWATilBLmwYLYQwIUAXKdWWMM')
+            .setCallback(pickerCallback)
+            .build();
+        picker.setVisible(true);
+    }
+
+    function pickerCallback(data) {
+        var url = 'nothing';
+        if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+            var doc = data[google.picker.Response.DOCUMENTS][0];
+            url = doc[google.picker.Document.URL];
+            var fileId = data.docs[0].id;
+            document.getElementById('hplFileGD').innerHTML = data.docs[0].name;
+            document.getElementById('hplFileGD').href = "https://docs.google.com/uc?export=download&id=" + data.docs[0].id;
+            document.getElementById('hdnDropBoxUrl').value = "https://docs.google.com/uc?export=download&id=" + data.docs[0].id;
+            document.getElementById('hdnDropBoxName').value = data.docs[0].name;
+        }
+    }
+</script>
+<script>
+    $('#loginhereLink').click(function () {
+        VacancyModel.CloseDialog();
+        $("#slideit").click();
+    });
+    function uploadFile() {
+        var filename = $('#uploadResume').val();
+        
+        if (filename == '') {
+            $('#uploadResume').addClass('input-validation-error');
+            return false;
+        }
+        else {
+            $('#uploadResume').removeClass('input-validation-error');
+            return true;
+        }
+    }
+
+    function aSignupSuccess(result) {
+        if (result.IsError == true) {
+            var $signupform = $('#AnonymousSignupForm');
+            VacancyModel.DisplayErrors($signupform, [result.Message]);
+        }
+        else {
+            window.location = result.Url;
+        }
+    }
+
+    function fileUpload() {
+        document.getElementById('ErrorMessage').innerHTML = '';
+        if (document.getElementById('upload_iframe')) {
+            $('#upload_iframe').remove();
+        }
+        var form = document.getElementById('frmUp');
+        // Create the iframe...
+        var txt = "";
+        var opt = 0;
+        var action_url = $('#frmUp').attr('action');
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("id", "upload_iframe");
+        iframe.setAttribute("name", "upload_iframe");
+        iframe.setAttribute("width", "0");
+        iframe.setAttribute("height", "0");
+        iframe.setAttribute("border", "0");
+        iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+        // Add to document...
+        form.parentNode.appendChild(iframe);
+        window.frames['upload_iframe'].name = "upload_iframe";
+        iframeId = document.getElementById("upload_iframe");
+        // Add event...
+        var eventHandler = function () {
+
+            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+            else iframeId.removeEventListener("load", eventHandler, false);
+            var content = '';
+            // Message from server...
+            if (iframeId.contentDocument) {
+                content = iframeId.contentDocument.body.innerHTML;
+                var result = jQuery.parseJSON($(content).html()).IsError
+                var Link = jQuery.parseJSON($(content).html()).Url
+                if (result) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', jQuery.parseJSON($(content).html()).Message, 1500)
+                }
+                else {
+                    window.location.href = Link;
+                }
+            } else if (iframeId.contentWindow) {
+                content = iframeId.contentWindow.document.body.innerHTML;
+                VacancyModel.DisplayErrorMeesage('#commonMessage', content, 1500)
+            } else if (iframeId.document) {
+                content = iframeId.document.body.innerHTML;
+                VacancyModel.DisplayErrorMeesage('#commonMessage', content, 1500)
+            }
+        }
+
+        if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+        form.setAttribute("target", "upload_iframe");
+        form.setAttribute("action", action_url);
+        form.setAttribute("method", "post");
+        form.setAttribute("enctype", "multipart/form-data");
+        form.setAttribute("encoding", "multipart/form-data");
+
+        // Submit the form...
+        var UploadType = document.getElementById('hdnFileUploadType').value
+        var filename = "";
+        if (UploadType == '@BEClient.UploadFileType.LocalDevice' || UploadType == "") {
+            filename = $('#uploadResume').val();
+        }
+        else if (UploadType == '@BEClient.UploadFileType.MSDropBox') {
+            filename = $('#hdnDropBoxName').val();
+        }
+        else if (UploadType == '@BEClient.UploadFileType.GoogleDrive') {
+            filename = $('#hdnDropBoxName').val();
+        }
+
+        var obj = VacancyModel.ValidateFile(filename, true);
+        if (obj.IsError) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', obj.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            if (UploadType == '@BEClient.UploadFileType.LocalDevice') {
+                $('#uploadResume').addClass('input-validation-error');
+            }
+            else if (UploadType == '@BEClient.UploadFileType.MSDropBox') {
+                $('#btnDropBox').addClass('input-validation-error');
+            }
+            else if (UploadType == '@BEClient.UploadFileType.GoogleDrive') {
+                $('#btnGoogleDrive').addClass('input-validation-error');
+            }
+            return false;
+        }
+        else {
+            $('#uploadResume').removeClass('input-validation-error');
+            $('#btnDropBox').removeClass('input-validation-error');
+        }
+        form.validate();
+
+        $('#frmUp').form({
+            success: function (data) {
+            }
+        });
+
+        form.submit(function (event) {
+            var isvalidate = $("#frmUp").valid();
+            if (isvalidate) {
+                e.preventDefault();
+
+            }
+        });
+    }
+</script>

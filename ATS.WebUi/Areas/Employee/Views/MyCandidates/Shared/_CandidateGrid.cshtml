@@ -1,0 +1,286 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using ATSCommon = ATS.WebUi.Common
+@using GridMvc.Html
+@model List<BEClient.VacancyApplicant>
+
+<style>
+    .table td {
+        vertical-align: middle;
+    }
+
+    input.form-control[type="checkbox"] {
+        width: auto !important;
+    }
+
+    .tdProfileImg > img {
+        border: 2px solid #345E8E;
+        border-radius: 2px;
+        vertical-align: middle;
+    }
+
+    .tdProfileImg > img {
+        -webkit-transition: all 1s ease; /* Safari and Chrome */
+        -moz-transition: all 1s ease; /* Firefox */
+        -ms-transition: all 1s ease; /* IE 9 */
+        -o-transition: all 1s ease; /* Opera */
+        transition: all 1s ease;
+        position: relative;
+    }
+
+        .tdProfileImg > img:hover {
+            -webkit-transform: scale(2.25); /* Safari and Chrome */
+            -moz-transform: scale(2.25); /* Firefox */
+            -ms-transform: scale(2.25); /* IE 9 */
+            -o-transform: scale(2.25); /* Opera */
+            transform: scale(2.25);
+            /*overflow:visible !important;*/
+            z-index: 999999 !important;
+        }
+</style>
+
+@{
+    string imgpath = HttpContext.Current.Request.Url.ToString().Substring(0, HttpContext.Current.Request.Url.ToString().IndexOf("/Employee"));
+}
+
+<div class="code-cut">
+    @Html.Grid(Model).Named("CandidateGrid").Columns(col =>
+       {
+           col.Add(c => c.IsNotViewable, true).Css("IsNotViewable");
+           col.Add(c => c.NewFileName, true).Css("filepath").RenderValueAs(o =>
+            @<text>
+                @String.Format("{0}{1}", ATS.WebUi.Common.ConfigurationMapped.Instance.ResumeURL, o.NewFileName)
+
+            </text>);
+           col.Add(c => c.ApplicationId, true);
+           col.Add(c => c.ProfileImage)
+                            .Titled("")
+                            .SetWidth("40px")
+                            .Css("tdProfileImg")
+                            .Sortable(false)
+                            .Encoded(false)
+                            .Filterable(false)
+                            .RenderValueAs(o =>
+                                @<text>
+                                    @if (o.ProfileImage != "")
+                                    {
+                                        <img src="@imgpath/UploadImages/ProfileImage/@o.ProfileImage" width="32" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@imgpath/UploadImages/ProfileImage/Candidate_32.png" width="32" />
+                                    }
+                                </text>);
+//manager flow applicant name to applicant by muneendra
+           //CR-34In Manager view “My applicants” page. Renamed Applicant Name to Applicant• Added Requested and Funded Field• Changed Applicant’s Name
+           col.Add(c => c.ApplicantName)
+                            .Titled("Applicant")
+                            .SetWidth("auto")
+                            .Css("CellApplicationName")
+                            .Sortable(true)
+                            .Filterable(true);
+
+           col.Add(c => c.JobTitle)
+                            .Titled("Funding opertunity") //Opportunity Name
+                            .SetWidth("auto")
+                            .Css("CellJobTitle")
+                            .Sortable(true)
+                            .Filterable(true)
+                            .SetFilterWidgetType("CustomVacancyFilterWidget");
+
+           col.Add(c => c.AppliedOn)
+                            .Titled("Applied On")
+                            .SetWidth("auto")
+                            .Css("CellAppliedOn")
+                            .Sortable(true)
+                            .Filterable(true)
+                            .Format("{0:MM/dd/yyyy}")
+                            .SetFilterWidgetType(string.Empty, new { format = "MM/dd/yyyy" });
+
+           col.Add(c => c.ApplicantionStatus)
+                            .Titled("Status")
+                            .SetWidth("auto")
+                            .Filterable(false);
+            
+
+           col.Add(c => c.Score)
+                        .Titled("Score")
+                        .SetWidth("auto")
+                        .Css("CellScore")
+                        .Sortable(true)
+                        .Filterable(true)
+                        .Format("{0:00.00}");
+
+           col.Add(c => c.ProfileName, true)
+                           .Titled("Download")
+                           .SetWidth("75px")
+                           .Encoded(false)
+                           .Sanitized(false)
+
+                           .RenderValueAs(o =>
+                            @<text>
+                                <ul id="GearMyCandidateGrid" class="DropMenu">
+                                    <li>
+                                        <a href="#"><img src='@Url.Content("~/Content/images/Download_24.png")' alt="" border="0" /></a>
+                                        <ul class="MobRight" id="gethref">
+                                            <li id="bgResume"><a class="WithIcon bgResume" href='@Url.Action("DownloadCandidateResumeAndCoverLetter", "MyVacancy", new { AtsResumeId = o.ResumeId })' title="Download Resume">Resume</a></li>
+                                            @if (!o.CoverLetterId.Equals(Guid.Empty))
+                                            {
+                                                <li id="bgCoverLetter"><a class="WithIcon bgCoverLetter" href='@Url.Action("DownloadCandidateResumeAndCoverLetter", "MyVacancy", new { AtsResumeId = o.CoverLetterId })' title="Download Cover Letter">Cover Letter</a></li>
+                                            }
+                                            <li id="bgPdf"><a class="WithIcon bgPdf" href='@Url.Action("PrintFullProfile", "MyVacancy", new { URL = "/Employee/CandidateDetails?ApplicationId=" + o.ApplicationId, ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, UserId = ATS.WebUi.Common.CurrentSession.Instance.UserId })' title="Full Profile">Full Profile</a></li>
+                                            <li id="bgZip"><a id="CopyVacancyManager" class="WithIcon bgZip" href='@Url.Action("DownloadAllAppDocsZipByApplicationId", "MyVacancy", new { ApplicationId = o.ApplicationId, UserId = Guid.Empty })' title="All (Zip File)">All (Zip File title="All (Zip File)">All (Zip File)</a></li>
+                                            <li id="PublicCode">@o.PublicCode</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <div id="MyVacDetails" class="ViewCandidateDetails MobView" onclick="ViewDetailMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></div>
+                            </text>);
+       }).WithMultipleFilters()
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".grid-wrap").addClass("table-responsive");
+        var clicks = 0;
+        $('.grid-row').on("click", function (e) {
+            var GridRow = $(this);
+            clicks++;
+            if (clicks == 1) {
+                setTimeout(function () {
+                    if (clicks == 1) {
+                        RowSingleClick(GridRow);
+                        ResizeActionbar();
+                    } else if (clicks > 1) {
+                        RowDoubleClick($(GridRow));
+                    }
+                    clicks = 0;
+                }, 300);
+            }
+        });
+
+        $("#btnAppProcess").on("click", function () {
+            var element = $(".grid-table > tbody > .grid-row-selected");
+            RowDoubleClick(element);
+        });
+    });
+
+    function selectone(ctl) {
+        if (!$(ctl).is(":checked")) {
+            $("#selectAll").prop("checked", false);
+        } else {
+            var flag = 0;
+            $(".chk").each(function () {
+                if (!this.checked)
+                    flag = 1;
+            })
+            if (flag == 0) { $("#selectAll").prop("checked", true); }
+        }
+    }
+
+    function RowSingleClick(element) {
+        CloseCopy();
+        $('.ShowOnSingle').show();
+        var _resURL = $(element).find("[data-name=ProfileName] #bgResume a").attr('href');
+        $('.ShowOnSingle a.bgResume').attr('href', _resURL);
+        if ($(element).find("[data-name=ProfileName] #bgCoverLetter").length > 0) {
+            var _covURL = $(element).find("[data-name=ProfileName] #bgCoverLetter a").attr('href');
+            $('.ShowOnSingle a.bgCoverLetter').attr('href', _covURL);
+        }
+        else {
+            $('.ShowOnSingle a.bgCoverLetter').hide();
+        }
+        var _fullURL = $(element).find("[data-name=ProfileName] #bgPdf a").attr('href');
+        $('.ShowOnSingle a.bgPdf').attr('href', _fullURL);
+        var _allURL = $(element).find("[data-name=ProfileName] #bgZip a").attr('href');
+        $('.ShowOnSingle a.bgZip').attr('href', _allURL);
+
+        var ApplicationId = $(element).find("[data-name=ApplicationId]").html();
+        $.post("/MyCandidates/GetBeginInterviews", { ApplicationId: ApplicationId }, function (data) {
+            data = JSON.parse(data);
+            $('#BeginInterview').html('');
+
+            if (data.ScheduleIntId.length == 0) {
+                $('#BeginInterview').append('<li class="NoRecords">No Pending Interviews</li>')
+            }
+            else {
+                for (var i = 0; i < data.ScheduleIntId.length; i++) {
+                    var AppendHtml = '<li><a OnClick="return BeginInterview(this);" data-scheduleintid=' + data.ScheduleIntId[i] + ' data-vacrndid=' + data.VacRndId[i] + '>' + data.RoundDetail[i] + '</a></li>';
+                    $('#BeginInterview').append(AppendHtml);
+                }
+            }
+        });
+    }
+
+    function RowDoubleClick(element) {
+        var $this = element;
+        if (!$(element).hasClass('grid-empty-text')) {
+            var rowid = $(element).find('[data-name="ApplicationId"]:last').text();
+            var IsNotViewable = $(element).find('[data-name="IsNotViewable"]:last').text();
+            if (IsNotViewable != 'True') {
+                var dLink = '@Url.Action("GetCandidateProfile","MyCandidates",new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_DATAID_"})';
+                dLink = dLink.replace("_DATAID_", rowid);
+                window.location = dLink;
+            }
+        }
+    }
+
+    function BeginInterview(element) {
+        var ScheduleIntId = $(element).attr("data-scheduleintid");
+        var VacRndId = $(element).attr("data-vacrndid");
+        var dLink = '@Html.Raw(Url.Action("ConductInterview", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ScheduleIntId = "_SCHEDULEINTID_", VacRndId = "_VACRNDID_" ,ReturnUrl = "Candidate"}))';
+        dLink = dLink.replace("_SCHEDULEINTID_", ScheduleIntId);
+        dLink = dLink.replace("_VACRNDID_", VacRndId);
+        window.location = dLink;
+    }
+
+    //Annad As Per Feedbackof 10th March
+    @*$('<tr style="display: none;"><td colspan="8"><div id="viewdoc" style="width: 710px;" height="700"><iframe id="DocViewer" src="" width="100%" height="700" style="border: none;"></iframe></div></td></tr>').insertAfter(".grid-row");
+    var divdbl = $(".grid-row");
+    divdbl.click(function (e) {
+        var isNotViewable = $(this).find(".IsNotViewable")[0];
+        var filename = $(this).find(".filepath")[0];
+        var path = filename.innerHTML;
+        path = path.toString().replace("\n", "").replace(" ", "");
+        //alert(path);
+        if (isNotViewable.innerHTML == "False") {
+            if (e.target.nodeName != 'IMG' && e.target.nodeName != 'A') {
+                $(this).next().find("#viewdoc").find("#DocViewer").attr('src', "http://docs.google.com/viewer?url=" + path + '&embedded=true');
+                $(this).next().toggle();
+            }
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage("#commonMessage", "You don't have permission ...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    });*@
+
+    //function selectall () {
+    //    $("#selectAll").change(function () {
+    //        if (this.checked) {
+    //            $(".chk").each(function () {
+    //                this.checked = true;
+    //            })
+    //        } else {
+    //            $(".chk").each(function () {
+    //                this.checked = false;
+    //            })
+    //        }
+    //    });
+    //}
+
+    //$('.grid-row').click(function () {
+    //    var ApplicationId = $(this).find("[data-name=ApplicationId]").html();
+    //    $.post("/MyCandidates/GetBeginInterviews", { ApplicationId: ApplicationId }, function (data) {
+    //        data = JSON.parse(data);
+    //        $('#BeginInterview').html('');
+
+    //        if (data.ScheduleIntId.length == 0) {
+    //            $('#BeginInterview').append('<li class="NoRecords">No Pending Interviews</li>')
+    //        }
+    //        else {
+    //            for (var i = 0; i < data.ScheduleIntId.length; i++) {
+    //                $('#BeginInterview').append('<li><a OnClick="return BeginInterview(this);" data-scheduleintid=' + data.ScheduleIntId[i] + '>' + data.RoundDetail[i] + '</a></li>')
+    //            }
+    //        }
+    //    });
+    //});
+</script>

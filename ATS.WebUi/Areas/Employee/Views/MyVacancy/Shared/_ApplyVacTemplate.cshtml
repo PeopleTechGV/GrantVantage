@@ -1,0 +1,76 @@
+﻿@model ATS.BusinessEntity.TVac
+@using BEClient = ATS.BusinessEntity
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+
+@using (Ajax.BeginForm("ApplyVacancyTemplate", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "ApplyVacTemplateSuccess(data,'" + Model.ObjVacancy.VacancyId + "')",
+            OnFailure = "ApplyVacTemplateFailed",
+        }, new { id = "frmApplyVacTemplate" }))
+{
+    @Html.Hidden("hdnVacId", (object)@ViewBag.VacId)
+    <div style="float: left; margin: 8px 0 0 24px; width: 100%; ">
+        <div class="TemplateSelect">
+            @Html.DropDownListFor(m => m.TVacId, (SelectList)ViewBag.TVacTemplate, "- Select Template -", new { @class = "Combobox100" })
+        </div>
+    </div>
+    <text>
+        <script>
+            function ApplyVacTemplateSuccess(data, custom) {
+                data = JSON.parse(data);
+
+                if (!data.IsError) {
+                    $("div[name='applicationProcess']").attr('data-mode', '@BEClient.PageMode.Update');
+                    $("div[name='jobdesc']").attr('data-mode', '@BEClient.PageMode.Update');
+                    $("div[name='cominfo']").attr('data-mode', '@BEClient.PageMode.Update');
+                    $("div[name ='vacancyDetail']").attr('data-mode', '@BEClient.PageMode.Update');
+                    $("div[name ='vacancyDetail']").html("");
+                    $("div[name ='vacancyDetail']").append(data.Data);
+                    var vacancyId = $("div[name ='vacdet']").attr("data-vacid");
+                    $('#addRoundConfig').attr('data-vacid', vacancyId);
+                    $("div.acc-header").attr("data-recordid", vacancyId);
+                    var objvacancyId = $(".acc-header").find("P").children().closest(".Save");
+                    for (var k = 0; k < objvacancyId.length; k++) {
+                        if (objvacancyId[k].hasAttribute("data-vacancyid")) {
+                            var vIvalue = $(objvacancyId[k]).attr("data-vacancyid");
+                            var Id = vIvalue.split('_');
+                            if (Id.length >= 2) {
+                                $(objvacancyId[k]).attr("data-vacancyid", Id[0] + "_" + vacancyId);
+                            }
+                            else {
+                                $(objvacancyId[k]).attr("data-vacancyid", vacancyId);
+                            }
+                        }
+                    }
+                    if (data.IsError == false) {
+
+                        $('div.acc-header').show();
+                        var _text = $(data.Data).filter(":hidden#frmVacancyDetails").find('#obj_RndCount').val();
+                        $("div[name='applicationProcess']").prev().find('#vacrndcnt').text("(Rounds: " + _text + ")");
+                    }
+                }
+                var Savelink = $("span[data-VacancyId='" + custom + "']").get(0);
+                if (MyVacancy.IsCandidateApplied == "true") {
+
+                    MyVacancy.MakeFormReadOnly();
+                }
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+
+
+
+            $('#TVacId').change(function () {
+                var tVacid = $('#TVacId').val();
+
+                var mainEle = $('#btnNextToComplete');
+                var _datalink = '@Url.Action("ApplyNewVacancyTemplate", "MyVacancy", new { TVacId = "_TVACID_" })';
+
+                _datalink = _datalink.replace("_TVACID_", tVacid);
+
+                $(mainEle).attr('href', _datalink);
+            });
+        </script>
+    </text>
+}

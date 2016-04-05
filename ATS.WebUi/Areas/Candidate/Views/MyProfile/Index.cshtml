@@ -1,0 +1,94 @@
+﻿@using System.Linq
+@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateProfile>
+@{
+    ViewBag.Title = "My Profile(s)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .job-input {
+        border: 1px solid #BEC0C4 !important;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        height: 23px;
+        padding: 3px;
+        font-weight: bold;
+        width: 150px;
+        text-decoration: none;
+        color: #2B3D50;
+        font-size: 13px;
+        background: url(../../../Content/images/down-arrow.jpg) no-repeat scroll 130px 10px #FFFFFF;
+        text-indent: 0.01px;
+        text-overflow: "";
+        overflow: hidden;
+    }
+</style>
+
+@{
+    SelectListItem list = ((SelectList)ViewBag.Profilename).Where(x => x.Value.ToLower().Equals(Model.obj.objProfile.ProfileId.ToString().ToLower())).First();
+}
+
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon bgMyProfile24W"></div>
+        <span class="navTitle CaseUpper">@Html.LanguageLabel(BEClient.Common.CandidateMenuConstant.MNU_MYPROFILES)</span>
+        <span class="chevron"></span>
+    </div>
+    <div class="NavItems hasDropdown">
+        <span class="navTitle">@list.Text</span>
+        <span class="chevron"></span>
+        <ul class="dropdownMenu menuPurple">
+            @if (((SelectList)ViewBag.Profilename).Count() > 1)
+            {
+                foreach (SelectListItem _item in (SelectList)ViewBag.Profilename)
+                {
+                    <li>
+                        <a href='@Url.Action("IndexProfileChanger", "Myprofile", new { @ProfileId = _item.Value, area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, CreateNav=false })'>
+                            @_item.Text
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+<div id="Messages" style="width: auto; float: left;margin-left:300px;">
+</div>
+
+@if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+{
+    @Html.Partial("_Settings", Model.obj)
+}
+
+@Html.Partial("Profile/_Profile", Model.obj)
+
+<script>
+    $(function () {
+        $("#ProfileName").change(function () {
+            var str = '@Url.Action("IndexProfileChanger", "Myprofile")?ProfileId=' + $('#ProfileName option:selected').val();
+            window.location.href = str;
+        });
+    });
+
+</script>
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.Success != null)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Success', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

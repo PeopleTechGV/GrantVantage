@@ -1,0 +1,283 @@
+﻿@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.Profile>
+@using BEUploadResumeConst = ATS.BusinessEntity.Common.UploadResumeConst
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@{
+    ViewBag.Title = "ProfileMaker";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon bgMyDocument24W"></div>
+        <span class="navTitle">MY DOCUMENTS</span>
+        <span class="chevron"></span>
+    </div>
+}
+
+<style>
+    #profileMaker {
+        display: inline-block;
+        width: 50%;
+    }
+
+    .detail-input, .detail-select {
+        height: 26px !important;
+    }
+</style>
+
+
+@using (Html.BeginForm("IndexProfile", "MyProfile", new { allowParse = true }, FormMethod.Post, new { enctype = "multipart/form-data", @id = "form1" }))
+{
+    @Html.HiddenFor(m => m.obj.ExtensionTypes, new { @id = "hdnExtensiontypes" })
+    @Html.HiddenFor(m => m.obj.DocCategoryType, new { @id = "hdnDocCategoryType" })
+    <div id="ErrorMessage"></div>
+    <div id="profileMaker" class="ProfileMaker floatleft SMW100 SMContentBox">
+        <div class="box" data-doctype="" data-extensions="">
+            @Html.LanguageLabelFor(m => m.obj.DocumentTypeId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.DocumentTypeId, (SelectList)ViewBag.DocumentName, "--Select--", new { @class = "detail-input", @Id = "DrpDocumentType" })
+        </div>
+        <div class="box">
+            @Html.LanguageLabelFor(m => m.obj.CandidateDescription, new { @class = "label" })
+            @Html.TextAreaFor(m => m.obj.CandidateDescription, new { @class = "detail-input" })
+        </div>
+        <div class="uploadrsumedoc">
+            <label class="label_radio @String.Format("{0}", Convert.ToBoolean(ViewBag.ForUpdate) ? "r_off" : "r_on")" for="radio-01">
+                <input name="sample-radio" id="radio-01" value="1" type="radio" @String.Format("{0}", Convert.ToBoolean(ViewBag.ForUpdate) ? "" : "Checked") />
+                @Html.LanguageLabel(BEUploadResumeConst.FRM_UPRESUME_CREATENEW)
+            </label>
+            <div class="box">
+                @Html.TextBoxFor(m => m.obj.ProfileName, new { @placeholder = "Profile Name", @id = "txtProfilename", @class = "detail-input" })
+                @Html.ValidationMessageFor(m => m.obj.ProfileName)
+            </div>
+            <label class="label_radio  @String.Format("{0}", Convert.ToBoolean(ViewBag.ForUpdate) ? "r_on" : "r_off")" for="radio-02">
+                <input name="sample-radio" id="radio-02" value="1" type="radio" @String.Format("{0}", Convert.ToBoolean(ViewBag.ForUpdate) ? "Checked" : "") />
+                @Html.LanguageLabel(BEUploadResumeConst.FRM_UPRESUME_UPDATEEXISTING)
+            </label>
+            <div class="box">
+                @Html.DropDownListFor(m => m.obj.ProfileId, (SelectList)ViewBag.Profilename, new { @id = "drpProfileName", @class = "detail-select" })
+            </div>
+        </div>
+
+        <div class="box">
+            <label id="lblDocType" class="lblBbrown">@Html.LanguageLabel(BEUploadResumeConst.FRM_SELECT)</label>
+            <input type="file" value="Browse" name="documentFile" id="uploadResume" class="detail-Browse w100" />
+        </div>
+        <span id="exfile"></span>
+
+        <div class="box floatright" style="margin-top: 8px;">
+            <button class="btn-icon24 bgUploadDocument24 floatright bordered CaseUpper" id="btnSub" title="@Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENT)" style="margin-right: 0">
+                @Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENT)
+            </button>
+        </div>
+
+    </div>
+    if (ViewBag.IsError != null)
+    {
+        <script>
+            VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        </script>
+    }
+    if (ViewBag.Message != null)
+    {
+        <script>
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+        </script>
+    }
+}
+
+<script>
+    var safari = (navigator.userAgent.toLowerCase().indexOf('safari') != -1) ? true : false;
+    var gebtn = function (parEl, child) { return parEl.getElementsByTagName(child); };
+    var turn_radio = function () {
+        var inp = gebtn(this, 'input')[0];
+
+        if (this.className == 'label_radio r_off' || inp.checked) {
+
+            var ls = gebtn(this.parentNode, 'label');
+            for (var i = 0; i < ls.length; i++) {
+                var l = ls[i];
+                if (l.className.indexOf('label_radio') == -1) continue;
+                l.className = 'label_radio r_off';
+            };
+
+            this.className = 'label_radio r_on';
+            if (safari) inp.click();
+        }
+        else {
+            this.className = 'label_radio r_off';
+            if (safari) inp.click();
+        };
+    };
+
+    function SubmitCreateForm() {
+
+
+        $('#form1').submit();
+    }
+
+    $(document).ready(function () {
+        $(".uploadrsumedoc").hide();
+        $('#radio-01').on("change", function () {
+            $('#drpProfileName').attr('disabled', true);
+            $('#txtProfilename').attr('disabled', false);
+            $("span.ui-dialog-title").text('Create Profile');
+        });
+
+        $('#radio-02').on("change", function () {
+            $('#txtProfilename').attr('disabled', true);
+            $('#txtProfilename').val("");
+            $('#drpProfileName').attr('disabled', false);
+            $("span.ui-dialog-title").text('Update Profile');
+        });
+
+        var d = document;
+        var body = gebtn(d, 'profileMaker')[0];
+
+        if (!d.getElementById || !d.createTextNode) return;
+        var ls = gebtn(d, 'label');
+
+        for (var i = 0; i < ls.length; i++) {
+            var l = ls[i];
+            if (l.className.indexOf('label_') == -1) continue;
+            var inp = gebtn(l, 'input')[0];
+            if (l.className == 'label_radio r_on') {
+                $('#' + $(l).attr('for')).trigger('change');
+            }
+        };
+
+        var qrystr = getParameterByName('ForWhat');
+        if (qrystr === 'Create') {
+            $("#DrpDocumentType option").each(function () { this.selected = (this.text == 'Resume'); });
+            $('#DrpDocumentType').trigger('change');
+        }
+    });
+
+    $(function () {
+        $('#drpProfileName').change(function () {
+            //$('#btnSub').attr('value', 'Update ' + $("#drpProfileName option:selected").text());
+        });
+    });
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    $(function () {
+        $('#btnSub').click(function () {
+
+            var iSize = ($("#uploadResume")[0].files[0].size / 1024);
+            var iisize = iSize / 1024;
+            if (iisize > 10) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', "Maximum file size is 10 MB", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+            else {
+
+
+                var txtProfileName = $('#txtProfilename').val();
+                var _doctype = $("#DrpDocumentType").parent().attr('data-doctype');
+                var uploadResume = $('#uploadResume').val();
+                if (!$('#txtProfilename').prop("disabled")) {
+                    if (txtProfileName == '') {
+                        if (_doctype == "Others") {
+                            $('#txtProfilename').removeClass('input-validation-error');
+                        }
+                        else if (_doctype == "CoverLetter") {
+                            $('#txtProfilename').removeClass('input-validation-error');
+                        }
+                        else {
+                            $('#txtProfilename').addClass('input-validation-error');
+                            return false;
+                        }
+                    }
+                    else {
+                        $('#txtProfilename').removeClass('input-validation-error');
+                    }
+                }
+                else {
+                    $('#txtProfilename').removeClass('input-validation-error');
+                }
+
+                if (!$('#uploadResume').prop("disabled")) {
+                    var ext = $("#DrpDocumentType").parent().attr("data-extensions");
+                    var obj = VacancyModel.ValidateDocumentType(uploadResume, ext, true);
+                    if (obj.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', obj.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        $('#uploadResume').addClass('input-validation-error');
+                        return false;
+                    }
+                    else {
+                        $('#uploadResume').removeClass('input-validation-error');
+                        SubmitCreateForm();
+                    }
+                }
+            }
+        });
+
+    });
+
+
+    $("#DrpDocumentType").change(function () {
+        var DocumentTypeId = $(this).val();
+        var labeltxt = $("#lblDocType").text();
+        $("#lblDocType").text('');
+        if (DocumentTypeId != "") {
+            var _dataLink = '@Html.Raw(Url.Action("GetDocumentTypeById", "MyProfile", new { @DocumenttypeId = "_DocumentType_"}))';
+            _dataLink = _dataLink.replace("_DocumentType_", DocumentTypeId);
+            $.ajax({
+                url: _dataLink,
+                type: "Get",
+                async: false,
+                success: function (response) {
+                    var data = JSON.parse(response)
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+
+                        var str = data.Data;
+                        var doctype = str.substr(0, str.indexOf('#'))
+
+                        var extension = str.substr(str.indexOf('#') + 1);
+                        if (doctype == "Resume") {
+                            $("#DrpDocumentType").parent().attr("data-doctype", doctype);
+                            $("#DrpDocumentType").parent().attr("data-extensions", extension);
+                            $('#hdnExtensiontypes').val(extension);
+                            $('#hdnDocCategoryType').val('1');
+                            $(".uploadrsumedoc").show();
+                        }
+                        else if (doctype == "CoverLetter") {
+
+                            $(".uploadrsumedoc").hide();
+                            $('#txtProfilename').removeClass('input-validation-error');
+                            $("#DrpDocumentType").parent().attr("data-doctype", doctype);
+                            $("#DrpDocumentType").parent().attr("data-extensions", extension);
+                            $('#hdnDocCategoryType').val('2');
+                            $('#hdnExtensiontypes').val(extension);
+                        }
+                        else {
+
+                            $(".uploadrsumedoc").hide();
+                            $('#txtProfilename').removeClass('input-validation-error');
+                            $("#DrpDocumentType").parent().attr("data-doctype", doctype);
+                            $("#DrpDocumentType").parent().attr("data-extensions", extension);
+                            $('#hdnExtensiontypes').val(extension);
+                        }
+                        labeltxt = $("#DrpDocumentType :selected").text();
+                        $("#exfile").text('');
+                        $("#exfile").text("(Ex:" + ' ' + extension + ')');
+                        $("#lblDocType").text(labeltxt);
+                    }
+                }
+            });
+        }
+        else {
+            $(".uploadrsumedoc").hide();
+            $("#uploadResume").removeClass('input-validation-error');
+            $('#txtProfilename').removeClass('input-validation-error');
+            $("#exfile").text('');
+        }
+    });
+</script>

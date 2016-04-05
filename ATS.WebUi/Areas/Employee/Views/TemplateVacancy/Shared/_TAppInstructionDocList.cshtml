@@ -1,0 +1,37 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.TAppInstructionDocs>
+
+<div class="GridAttachment">
+    <ul class="RowHeader">
+        <li class="w50">Document Name</li>
+    </ul>
+    @foreach (BEClient.TAppInstructionDocs current in Model)
+    {
+        <ul class="RowContent" data-id="@current.TAppInstructionDocId">
+            <li class="w50">@current.FileName</li>
+            <li class="w25">
+                <a class="btnDelete bgDelete16B" href="javascript:void(0);" onclick="DeleteTAppInstructionDocConfirm(this)">
+                </a>
+            </li>
+        </ul>
+    }
+</div>
+
+<script>
+    function DeleteTAppInstructionDocConfirm(element) {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Document", 350, "Are you sure you want to delete this document?", "Yes", "Cancel", "DeleteTAppInstructionDoc", element, null);
+        return false;
+    }
+
+    function DeleteTAppInstructionDoc(Result, element) {
+        if (Result) {
+            var DocumentId = $(element).parents(".RowContent").attr("data-id");
+            var dataLink = '@Url.Action("DeleteTAppInstructionDoc", "TemplateVacancy", new { TAppInstructionDocId = "_TAPPINSTRUCTIONDOCID_" })';
+            dataLink = dataLink.replace("_TAPPINSTRUCTIONDOCID_", DocumentId);
+            VacancyModel.CallPostMethod(dataLink, function (data, message) {
+                $(element).parents(".RowContent").remove();
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, 3000);
+            });
+        }
+    }
+</script>

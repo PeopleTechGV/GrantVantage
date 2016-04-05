@@ -1,0 +1,23 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.ScheduleInt>
+
+
+
+<div style="width: 100%; float: left; overflow: hidden; padding: 6px 0; border-bottom: 1px solid #953634;">
+    <span class="ttldbrown w20 floatleft">Date</span>
+    <span class="ttldbrown w10 floatleft">Start</span>
+    <span class="ttldbrown w10 floatleft">End</span>
+    <span class="ttldbrown w60 floatleft">Interviewer(s)</span>
+</div>
+
+@foreach (BEClient.ScheduleInt item in Model)
+{
+    <div style="width: 100%; float: left; overflow: hidden; padding: 6px 0;">
+        <span class="w20 floatleft">@item.ScheduleDateStr</span>
+        <span class="w10 floatleft">@item.StartTime</span>
+        <span class="w10 floatleft MobDisable">@item.EndTime</span>
+        <span class="w60 floatleft">@item.InterviewerList</span>
+    </div>
+}
+
+

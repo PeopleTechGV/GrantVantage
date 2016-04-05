@@ -1,0 +1,68 @@
+﻿@using ATS.WebUi.Models
+@using ATS.WebUi.Helpers;
+@using BE = ATS.BusinessEntity;
+@model ATS.BusinessEntity.SolrEntity.ISettingFields
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BEToolTipConstantConst = ATS.BusinessEntity.Common.TooltipConstant
+@{ List<Guid> objApplicationlst = (List<Guid>)ViewBag.ApplicationApply; }
+@{
+    ATS.BusinessLogic.VacancyRoundAction objVacRndAction = new ATS.BusinessLogic.VacancyRoundAction(ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientId);
+    int RoundCount = objVacRndAction.GetRoundCountByVancancyId(new Guid(Model.StrVacancyId));
+}
+@if (RoundCount <= 0)
+{
+    <a id="Upload" href='javascript:void(0)' title='Not Configured'>
+        <img src="/Content/images/Apply_disabled_24.png" />
+    </a>
+}
+else
+{
+    if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser == null)
+    {
+        <li class="ActionRightBreadCrum">
+            <a id="Upload" href='javascript:void(0)' onclick="javascript: window.location = '@Url.Action("AnonymousUserProfile", "Account", new { area = ATS.WebUi.Common.Constants.AREA_ROOT, VacancyId = Model.StrVacancyId.ToString() })'" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_APPLY_JOB)'>
+                <img src="/Content/images/Apply_24.png" />
+            </a>
+        </li>
+    }
+    else
+    {
+        if (!objApplicationlst.Contains(new Guid(Model.StrVacancyId)))
+        {
+            <li>
+                <a id="Upload" href='javascript:void(0)' onclick="javascript: window.location = '@Url.Action("UploadCoverLetter", "MyApplications", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, VacancyId = Model.StrVacancyId.ToString() })'" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_APPLY_JOB)' dialog-width="400" dialog-close-button="false" dialog-title='@Html.LanguageLabel(BECommonConstantConst.ACTION_APPLY)' dialog-companyname="Test" title=@BECommonConstantConst.ACTION_DRAFT>
+                    <img src="/Content/images/Apply_24.png" />
+                </a>
+            </li>
+            @*if (ViewBag.ShowSaveJob != "0")
+                {
+                    List<Guid> objUservacancylst = (List<Guid>)ViewBag.SaveJob;
+                    if (!objUservacancylst.Contains(new Guid(Model.StrVacancyId)))
+                    {
+                        <li>
+                            <a onclick="SaveJob('@Model.StrVacancyId.ToString()','SaveJob');" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SAVE_TO_MY_JOB)'>
+                                <img src="/Content/images/Save_to_My_Jobs_24.png" />
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a onclick="SaveJob('@Model.StrVacancyId.ToString()','UnSaveJob');" title='@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SAVE_TO_MY_JOB)'>
+                                <img src="/Content/images/Save_to_My_Jobs_disabled_24.png" />
+                            </a>
+                        </li>
+                    }
+                }*@
+        }
+        else
+        {
+            <li data-isapplied="true">
+                <a href='javascript:void(0)'><img src="/Content/images/Apply_disabled_24.png" title="You have already applied for this position" border="0" /></a>
+            </li>
+            @*<li>
+                    <a href='javascript:void(0)'><img src="/Content/images/Save_to_My_Jobs_disabled_24.png" title="You have already applied for this position" border="0" /></a>
+                </li>*@
+        }
+}
+}

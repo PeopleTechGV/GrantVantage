@@ -1,0 +1,44 @@
+﻿@model IList<ATS.BusinessEntity.PositionType>
+@using BEPositionTypeConst = ATS.BusinessEntity.Common.PositionType
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w40 location">@Html.LanguageLabel(BEPositionTypeConst.LST_POS_POSNAME)</li>
+        <li class="w60 location">@Html.LanguageLabel(ATS.BusinessEntity.Common.JobLocation.LST_JOB_DIVNAME)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.PositionType current in Model)
+    {
+        ATS.BusinessEntity.PageMode pageMode = ATS.WebUi.Common.CommonFunctions.GetPageMode(current.PermissionType, ViewBag.PageMode);
+        string strPermissionType = current.PermissionType != null ? string.Join(",", current.PermissionType) : "";
+        if (pageMode != ATS.BusinessEntity.PageMode.Other)
+        {
+            <ul class="RowContent CursorPointer" data-id='@current.PositionTypeId' data-auth="@strPermissionType">
+                <li class="w40 cntPositionType">@current.LocalName</li>
+                <li class="w60 cntPositionType">@current.AttachedDivision</li>
+                <li id="btnPosTypeMob" class="ViewDetailsMob MobView" onclick="btnPosTypeMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+            </ul>
+        }
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "PositionType")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var ptId = $(this).attr("data-id");
+        var ptLink = '@Url.Action("View", "PositionType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id ="_DATAID_"})';
+        ptLink = ptLink.replace("_DATAID_", ptId);
+        window.location = ptLink;
+    });
+
+    function btnPosTypeMob(element) {
+        var ptId = $(element).parents(".RowContent").attr("data-id");
+        var ptLink = '@Url.Action("View", "PositionType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id ="_DATAID_"})';
+        ptLink = ptLink.replace("_DATAID_", ptId);
+        window.location = ptLink;
+    }
+</script>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://services.resumeparsing.com/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://services.resumeparsing.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://services.resumeparsing.com/">
+      <s:element name="ParseResume">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:ParseResumeRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ParseResumeRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AccountId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileBytes" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileText" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Configuration" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OutputXmlDoc" nillable="true" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="OutputHtml" nillable="true" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="OutputRtf" nillable="true" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="OutputWordXml" nillable="true" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="RevisionDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParserVersion" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ParseResumeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParseResumeResult" type="tns:ParseResumeResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ParseResumeResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Text" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TextCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Xml" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XmlDoc">
+            <s:complexType mixed="true">
+              <s:sequence>
+                <s:any />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Html" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HtmlCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rtf" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RtfCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WordXml" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WordXmlCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UsesRemaining" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParserVersion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileExtension" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAccountInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:GetAccountInfoRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetAccountInfoRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AccountId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceKey" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAccountInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAccountInfoResult" type="tns:GetAccountInfoResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetAccountInfoResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalTransactions" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TransactionsRemaining" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpirationDate" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ParseResumeSoapIn">
+    <wsdl:part name="parameters" element="tns:ParseResume" />
+  </wsdl:message>
+  <wsdl:message name="ParseResumeSoapOut">
+    <wsdl:part name="parameters" element="tns:ParseResumeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountInfoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ResumeServiceSoap">
+    <wsdl:operation name="ParseResume">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Parse a Resume/CV.</wsdl:documentation>
+      <wsdl:input message="tns:ParseResumeSoapIn" />
+      <wsdl:output message="tns:ParseResumeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the Member Account information.</wsdl:documentation>
+      <wsdl:input message="tns:GetAccountInfoSoapIn" />
+      <wsdl:output message="tns:GetAccountInfoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ResumeServiceSoap" type="tns:ResumeServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ParseResume">
+      <soap:operation soapAction="http://services.resumeparsing.com/ParseResume" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountInfo">
+      <soap:operation soapAction="http://services.resumeparsing.com/GetAccountInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ResumeServiceSoap12" type="tns:ResumeServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ParseResume">
+      <soap12:operation soapAction="http://services.resumeparsing.com/ParseResume" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountInfo">
+      <soap12:operation soapAction="http://services.resumeparsing.com/GetAccountInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ResumeService">
+    <wsdl:port name="ResumeServiceSoap" binding="tns:ResumeServiceSoap">
+      <soap:address location="http://services.resumeparsing.com/ResumeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ResumeServiceSoap12" binding="tns:ResumeServiceSoap12">
+      <soap12:address location="http://services.resumeparsing.com/ResumeService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

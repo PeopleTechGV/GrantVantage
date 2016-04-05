@@ -1,0 +1,36 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<List<ATS.BusinessEntity.Company>>
+@{
+    ViewBag.Title = "Company";
+    Layout = "~/Areas/Employee/Views/CompanySetup/CompanySetUpMaster.cshtml";
+}
+
+<div id="Messages" style="width: auto; float: left; margin-left: 25px;">
+</div>
+
+<div class="featured-jobs" >
+    <div class="search">
+     
+        @*<a href ='@Url.Action("View", "Company")' class="btn-add-new" style="" >Add Client</a>*@
+        <button class="btn-add-new" onclick="javascript:window.location='@Url.Action("View","Company")'">
+            Add
+        </button>
+        @*@Html.Partial("Buttons/_CreateBtn", Model)*@ 
+        @*<div class="search-box">
+            <input id="searchbox" value="" />
+        </div>*@
+    </div>
+</div>
+@Html.Partial("Shared/_CompanyList", Model.obj)
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+

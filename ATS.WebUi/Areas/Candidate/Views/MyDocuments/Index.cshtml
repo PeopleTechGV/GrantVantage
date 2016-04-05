@@ -1,0 +1,272 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<List<BEClient.ATSResume>>
+@using BEDocumentsConst = ATS.BusinessEntity.Common.DocumentsDetailsConst
+@using BEModelConstantConst = ATS.BusinessEntity.Common.ModelConstant
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+@{
+    ViewBag.Title = "My Documents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgMyDocument24W"></div>
+        <span class="navTitle">
+            MY DOCUMENTS
+            <span class="lblMyDocCount lblNavCount">@Model.obj.Count()</span>
+        </span>
+        <span class="chevron"></span>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        //if ($('[class="doc-list"]:first') !== '') {
+        //    ResumePreview($('[class="doc-list"]:first'));
+        //}
+
+        $("#selectable").selectable({
+            selected: function (event, ui) {
+                debugger;
+                $(ui.selected).siblings().removeClass("ui-selected");
+                $(".ActionBar").find(".ShowOnSingle").show();
+                //CR-11
+                var SelectedEle = $("#selectable").find(".ui-selected");
+                var IsApplied = $(SelectedEle).attr("data-issubmitted");
+                if (IsApplied=="True")
+                {
+                    $('#btnUpdate').hide();
+                    $('#btnDelete').hide();
+                }
+                else {
+                    $('#btnUpdate').show();
+                    $('#btnDelete').show();
+                }
+             
+                var EditButton = $("#btnUpdate");
+                $(EditButton).attr("href", $(ui.selected).find(".btnEdit").attr("href"));
+                $("#btnSave").attr("href", "/Resume/" + $(ui.selected).attr("savepath"))
+
+            },
+            stop: function (event, ui) {
+                if ($("#selectable").children(".ui-selected").length == 0) {
+                    $(".ActionBar").find(".ShowOnSingle").hide();
+                }
+            }
+        });
+    });
+</script>
+
+<div id="commonMessage" style="width: auto; float: left;margin-left:300px;">
+</div>
+
+<ul class="ActionBar">
+    <li>
+        <a class="bgUploadDocument16 CaseUpper" href='@Url.Action("ProfileMaker", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ForWhat = "Create" })'
+           id="Create" onclick="javascript: window.location = '@Url.Action("ProfileMaker", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ForWhat = "Upload" })'" title="Upload Documents" dialog-width="400" dialog-close-button="false" dialog-title="Create Profile" dialog-companyname="@ViewBag.ClientName">
+            @Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENTS)
+        </a>
+    </li>
+    <li>
+        <a id="btnPreview" class="bgPreview16 CaseUpper ShowOnSingle">
+            PREVIEW DOCUMENT
+        </a>
+    </li>
+    <li>
+        <a id="btnSave" class="bgSave16B CaseUpper ShowOnSingle" href="javascript:void(0);" target="_blank">
+            SAVE DOCUMENT
+        </a>
+    </li>
+    <li>
+        <a id="btnUpdate" class="bgEdit16B CaseUpper ShowOnSingle" href="#" onclick="return VacancyModel.OpenPostRequestForm(this)" title='@Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENT)' dialog-width="400" dialog-close-button="false" dialog-title="Update Document">
+            UPDATE DOCUMENT
+        </a>
+    </li>
+    <li>
+        <a id="btnDelete" class="bgDelete16B CaseUpper ShowOnSingle" href="#">
+            DELETE DOCUMENT
+        </a>
+    </li>
+</ul>
+
+@if (Model.obj.Count() > 0)
+{
+    <div id="selectable" class="GridContainer">
+        <ul class="RowHeader">
+            <li class="w40">@Html.LanguageLabel(BEDocumentsConst.LST_DOC_FILE_NAME)</li>
+            <li class="w30">@Html.LanguageLabel(BEDocumentsConst.LST_DOC_DOC_TYPE)</li>
+            <li class="w20">@Html.LanguageLabel(BEDocumentsConst.LST_DOC_DATE_UPLOADED)</li>
+
+        </ul>
+        @foreach (BEClient.ATSResume current in Model.obj)
+        {
+            <ul class="RowContent CursorPointer" data-doctype="@current.DocumentTypeName" data-resumeid="@current.ATSResumeId" data-profileid='@current.ProfileId' data-isdefault='@current.IsDefaultProfile' data-isresumeapplied='@current.IsResumeApplied'  data-issubmitted='@current.isdocumnetsubmitted'  data-id='@current.ATSResumeId' filepath='@String.Format("{0}{1}", ATS.WebUi.Common.ConfigurationMapped.Instance.ResumeURL, current.NewFileName)' savepath='@current.NewFileName'>
+                <li class="w40 lblDocName cntFileName">@current.UploadedFileName</li>
+                @if (!string.IsNullOrEmpty(@current.DocumentTypeName))
+                {
+                    <li class="w30 cntDocumentType">@current.DocumentTypeName</li>
+                }
+                else
+                {
+                    <li class="w30 cntDocumentType">Resume</li>
+                }
+                <li class="w20 cntDateUploaded">@current.DateUploadedText</li>
+                @if (current.ProfileId != Guid.Empty)
+                {
+                    <li class="w10 sm-disabled">
+                        <span class="resume-edit floatright">
+                            <a class="btnEdit" href='@Html.Raw(Url.Action("Edit", "MyDocuments", new { ProfileId = @current.ProfileId, AtsResumeId = @current.ATSResumeId }))' id="UploadDocument" onclick="return VacancyModel.OpenPostRequestForm(this)" title="Upload Document" dialog-width="400" dialog-close-button="false" dialog-title='@Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENT)'>@*<img src="/Content/images/Edit_16.png" align="top" alt="modify" />*@</a>
+                            @if (!current.IsDefaultProfile)
+                            {
+                                if (!current.IsResumeApplied)
+                                {
+                                    <a title="Delete Document" href='@Url.Action("DeleteDocument", "MyDocuments", new { ProfileId = @current.ProfileId, AtsResumeId = @current.ATSResumeId })' id="RemoveResume">@*<img src="/Content/images/delete_16.png" alt="delete" align="top" />*@</a>
+                                }
+                                else
+                                {
+                                    <a title="Delete Document" href='@Url.Action("DeleteDocument", "MyDocuments", new { ProfileId = @current.ProfileId, AtsResumeId = @current.ATSResumeId })'>@*<img src="/Content/images/delete_16.png" alt="delete" align="top" />*@</a>
+                                }
+                            }
+                            else
+                            {
+                                <a title="Delete Document" href='#' onclick="return notify();">@*<img src="/Content/images/delete_16.png" alt="delete" align="top" />*@</a>
+                            }
+                        </span>
+                    </li>
+                }
+                else
+                {
+                    <li class="w10 sm-disabled">
+                        <span class="resume-edit floatright">
+                            <a class="btnEdit" href='@Html.Raw(Url.Action("Edit", "MyDocuments", new { AtsResumeId = @current.ATSResumeId}))' id="UploadDocument" onclick="return VacancyModel.OpenPostRequestForm(this)" title='@Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENT)' dialog-width="400" dialog-close-button="false" dialog-title="Upload Document">@*<img src="/Content/images/Edit_16.png" align="top" alt="modify" />*@</a>
+                            <a href='@Url.Action("DeleteDocument", "MyDocuments", new { AtsResumeId = @current.ATSResumeId })'>@*<img src="/Content/images/delete_16.png" alt="delete" align="top" />*@</a>
+                        </span>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+<div id="ConfirmDiv"></div>
+
+<script>
+    //function ResumePreview(data) {
+    //    $('[class="doc-list active"]').removeClass("active");
+    //    $(data).addClass("active");
+    //    var Loc = $(data).attr('filepath');
+    //    var GoogleHref = "http://docs.google.com/viewer?url=";
+    //    var mainUrl = GoogleHref + Loc + '&embedded=true';
+    //    $('#SaveDocument').attr('href', Loc);
+    //    $('#DocViewer').attr('src', mainUrl);
+    //}
+
+    $("#btnPreview").click(function () {
+        var mainUrl = "";
+        var DocName = $("#selectable > .ui-selected").find(".lblDocName").html();
+        var DocExtension = DocName.split('.').pop();
+        if (DocExtension == "jpg" || DocExtension == "jpeg" || DocExtension == "png" || DocExtension == "bmp") {
+            var filePath = $("#selectable").find(".ui-selected").attr("savepath");
+            var mainUrl = "/Resume/" + filePath;
+        }
+        else {
+            var filePath = $("#selectable").find(".ui-selected").attr("filepath");
+            var GoogleHref = "http://docs.google.com/viewer?url=";
+            mainUrl = GoogleHref + filePath + '&embedded=true';
+        }
+        window.open(mainUrl, mainUrl, "width=1000,height=800,scrollbars=yes,resizable = yes");
+    });
+
+    $("#btnDelete").click(function () {
+        var SelectedEle = $("#selectable").find(".ui-selected");
+        var IsDefault = $(SelectedEle).attr("data-isdefault");
+        if (IsDefault == "True") {
+            VacancyModel.NotificationDialog("ConfirmDiv", "Delete Profile", 300, " The Profile contains this document is default profile.Please select another profile as default and try again.", "OK");
+            return false;
+        }
+        else {
+            var IsApplied = $(SelectedEle).attr("data-isresumeapplied");
+            if (IsApplied == "True") {
+                VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Document", 300, "Are you sure you want to delete this document?,Deleting this document will delete your profile ", "Yes", "Cancel", "RemoveFile", this, "test");
+                return false;
+            }
+            else {
+                RemoveFile(true, this);
+            }
+        }
+        $(".ShowOnSingle").hide();
+    });
+
+    function RemoveFile(Result, element) {
+        if (Result == true) {
+            var SelectedEle = $("#selectable").find(".ui-selected");
+            var AtsResumeId = $(SelectedEle).attr("data-resumeid");
+            var ProfileId = $(SelectedEle).attr("data-profileid");
+            var dataLink = '@Html.Raw(Url.Action("DeleteFile", "MyDocuments", new { ProfileId = "_PROFILEID_", AtsResumeId = "_RESUMEID_" }))';
+            dataLink = dataLink.replace("_PROFILEID_", ProfileId);
+            dataLink = dataLink.replace("_RESUMEID_", AtsResumeId);
+            VacancyModel.CallPostMethod(dataLink, function (data, message) {
+                $(SelectedEle).remove();
+                var MyDocCount = $(".LeftMenu").find(".lblMyDocCount").html();
+                $(".lblMyDocCount").html(parseInt(MyDocCount) - 1);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            });
+        }
+    }
+
+    $("#RemoveCoverLetter").live("click", function () {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete CoverLetter", 300, "Are you sure you want to delete this document?", "Yes", "Cancel", "CoverLetterResult", this, "test");
+        return false;
+    });
+
+    function CoverLetterResult(Result, element, RemoveDivName) {
+        if (Result == true) {
+            window.location.href = $(element).attr('href');
+        }
+    }
+
+    $("#RemoveResume").live("click", function () {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Resume", 300, "Are you sure you want to delete this document?,Deleting this document will delete your profile ", "Yes", "Cancel", "RemoveResumeResult", this, "test");
+        return false;
+    });
+
+    function RemoveResumeResult(Result, element, RemoveDivName) {
+        if (Result == true) {
+            window.location.href = $(element).attr('href');
+        }
+    }
+
+    function notify(changeVal) {
+        VacancyModel.NotificationDialog("ConfirmDiv", "Delete Profile", 300, " The Profile contains this document is default profile.Please select another profile as default and try again.", "OK");
+        return false;
+    }
+
+    function printFrame(element) {
+        var purl = $(element).attr("filepath");
+        var frame = document.getElementById('DocViewer');
+        if (!frame) {
+            alert("Error: Can't find printing frame.");
+            return;
+        }
+
+        frame = frame.contentWindow;
+        frame.focus();
+        frame.print();
+    }
+
+</script>
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

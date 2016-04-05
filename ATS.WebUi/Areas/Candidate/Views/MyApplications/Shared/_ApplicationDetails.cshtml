@@ -1,0 +1,62 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonApplicationDetailsConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@model BEClient.CandidateApplications
+
+<div class="tblSummary" style="">
+    <div class="SummaryBox w50 SMW100">
+        <span>Funding Oppty Number: </span>
+        <span>@Model.objVacancy.FundingOpptyNumber</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>@Html.LanguageLabel(BECommonConstatnConst.POSITION_ID): </span>
+        <span>@Model.objVacancy.PositionIDText</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>@Html.LanguageLabel(BECommonConstatnConst.POSITION_TYPE): </span>
+        <span>@Model.objVacancy.PositionTypeName</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>@Html.LanguageLabel(BECommonConstatnConst.LOCATION): </span>
+        <span>@Model.objVacancy.LocationText</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>Open Date: </span>
+        <span>@Model.objVacancy.OpenDateText</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>@Html.LanguageLabel(BECommonConstatnConst.APPLIED_ON): </span>
+        <span>@Model.AppliedOnText</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>@Html.LanguageLabel(BECommonApplicationDetailsConst.LST_APP_PROFILE): </span>
+        <span style="text-decoration:underline"><a href='@Url.Action("IndexProfileChanger", "Myprofile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ProfileId = Model.objAtsResume.ProfileId, ControllerNm = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.Select(r => r.Controller).First() })'>@Model.objAtsResume.ProfileName</a></span>
+    </div>
+
+    <div class="SummaryBox w50 SMW100">
+        <span>Announcement Date: </span>
+        <span>
+            @if (Model.objVacancy.AnnouncementDate != DateTime.MinValue)
+            {
+                @Model.objVacancy.AnnouncementDate.ToString("MMM dd, yyyy")
+            }
+        </span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>Announcement Type: </span>
+        <span>@Model.objVacancy.AnnouncementType</span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>Open Date: </span>
+        <span>
+            @if (Model.objVacancy.OpenDate != DateTime.MinValue)
+            {
+                @Model.objVacancy.OpenDate.ToString("MMM dd, yyyy")
+            }
+        </span>
+    </div>
+    <div class="SummaryBox w50 SMW100">
+        <span>Activity Code: </span>
+        <span>@Model.objVacancy.ActivityCode</span>
+    </div>
+</div>

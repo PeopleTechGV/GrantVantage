@@ -1,0 +1,32 @@
+﻿@using BEClient = ATS.BusinessEntity
+
+
+@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<BEClient.QueCat>>>
+@{
+    ViewBag.Title = "Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="Messages" style="width: auto; float: left; position: inherit; margin-left: 25px;">
+</div>
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div class="CatAccordian SMContentBox">
+    @Html.Partial("Shared/_CategoryConfig", Model.obj)
+</div>
+@Html.Partial("Shared/_BtnAddCategory", Model.obj)
+<script type="text/javascript">
+    $(document).ready(function () {
+        QuesitonLibrary.QueAccordianURL = '@Html.Raw(Url.Action("GetAnswerByQueId", "QuestionLibrary", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, QueId = "_QUEID_", QueDt = "_QUEDT_", RoundAttribute = "_ROUNDATTRIBUTE_", CatId ="_CATID_"}))'
+        QuesitonLibrary.CatAccordianURL = '@Url.Action("GetQuestionByCategoryId", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @CatId = "_CATID_" })'
+        QuesitonLibrary.EditQuestion = '@Html.Raw(Url.Action("GetQuestion", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueId = "_QUEID_", @RoundAttributeNo="_ROUNDATTRIBUTENO_" }))'
+        QuesitonLibrary.EditCategoryURL = '@Url.Action("GetCategory", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = "_QUECATID_" })'
+        QuesitonLibrary.EditAnsOptURL = '@Url.Action("GetAnsOpt", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = "_AnsOptId_" })'
+    });
+
+
+
+</script>
+
+@System.Web.Optimization.Scripts.Render("~/bundles/jQuestionLibrary")

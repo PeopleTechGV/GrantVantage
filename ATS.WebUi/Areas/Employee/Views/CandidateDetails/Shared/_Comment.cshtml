@@ -1,0 +1,9 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model IList<BEClient.AppComment>
+
+<div class="previous-remarks">
+    @foreach (BEClient.AppComment _curr in Model)
+    {
+        <b>@_curr.CreatedOnText: @_curr.FullName :</b> @_curr.Comments<br />
+    }
+</div>

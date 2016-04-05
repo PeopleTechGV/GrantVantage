@@ -1,0 +1,14 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.PublicationHistory>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.Title - @v.PublicationDate.ToString("MMM", System.Globalization.CultureInfo.InvariantCulture) @v.PublicationDate.ToString("yyyy") </h3>
+
+        <p>
+            @v.Description<br />
+        </p>
+    </div>
+}

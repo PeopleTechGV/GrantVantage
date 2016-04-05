@@ -1,0 +1,177 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.Vacancy>
+@using BEClient = ATS.BusinessEntity;
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmJobDescription');
+        });
+    </script>
+}
+
+@using (Ajax.BeginForm("AddJobDescription", "MyVacancy", new { area = "Employee" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "JobDescriptionSucess(data,'" + Model.obj.VacancyId + "')",
+        OnFailure = "JobDescriptionFailure"
+    }, new { id = "frmJobDescription", isFormChange = "false" }))
+{
+    @Html.HiddenFor(model => model.obj.VacancyId)
+    @*<link type="text/css" rel="stylesheet" href="~/CLEditor/jquery.cleditor.css">*@
+    @*<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>*@
+    <text>
+        <script>
+            var form = $("#frmJobDescription");
+            $.validator.unobtrusive.parse(form);
+
+            function outerSave(element) {
+                var head = $(element).closest('.acc-header');
+                var myform = $(head).next().children().get(0);
+                var isvalidate = $(myform).valid();
+                if (isvalidate) {
+                    $(myform).submit();
+                }
+                return false;
+            }
+            function JobDescriptionSucess(data, custom) {
+                data = JSON.parse(data);
+                if (!data.IsError) {
+                    var JobDesc = $("div[name ='jobdesc']");
+                    $(JobDesc).attr('data-mode', '@BEClient.PageMode.Update');
+                    $(JobDesc).html("");
+                    $(JobDesc).html(data.Data);
+                    if ($('.ttllbrownConf').length > 0) {
+                        MyVacancy.SetConformation(JobDesc);
+                    }
+                }
+                var Savelink = $("span[data-VacancyId='JobDesc_" + custom + "']").get(0);
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+
+            function JobDescriptionFailure(data) {
+                data = JSON.parse(data);
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+            //$('.jqte-textarea').jqte();
+            ////******EDITOR setting**////////
+            $(document).ready(function () {
+                $(".CLE-textarea").cleditor({
+                    controls:
+                "source | bold italic underline | bullets numbering | outdent " +
+                "indent | alignleft center alignright justify | " +
+                "link unlink "
+                });
+            });
+        </script>
+    </text>
+
+    <div class="VacancyInfo">
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.JobDescription, new { @class = "header" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebJobDescription, new { @id = "chkSowDesc" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.JobDescription, new { @class = "text-data CLE-textarea", style = "display: none; width:100%" })
+            </div>
+        </div>
+        <br clear="all" />
+        <br clear="all" />
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.DutiesAndResponsibilities, new { @class = "header" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebDuties, new { @id = "chkSowDuties" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.DutiesAndResponsibilities, new { @class = "text-data CLE-textarea", style = "display: none; width:100%" })
+            </div>
+        </div>
+        <br clear="all" />
+        <br clear="all" />
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.SkillsAndQualification, new { @class = "header" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebSkills, new { @id = "chkSowSkill" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.SkillsAndQualification, new { @class = "text-data CLE-textarea", style = "display: none; width:100%" })
+            </div>
+        </div>
+        <br clear="all" />
+        <br clear="all" />
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.Benefits, new { @class = "header" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebBenefits, new { @id = "chkSowBenifits" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.Benefits, new { @class = "text-data CLE-textarea", style = "display: none; width:100%" })
+            </div>
+        </div>
+        @if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Delete, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+        {
+            if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+            {
+                <div class="ActionBox">
+                    @if (Model.obj.ConfirmJobDescription && Model.obj.VacancyId != Guid.Empty)
+                    {
+                        @*<a href="javascript:void(0);" class="prfle-button-save" onclick="return ConfirmJobDescription(this);">Confirm Job Description</a>*@
+
+                        if (Model.obj.ConfirmVacancyDetails && Model.obj.ConfirmJobDescription && Model.obj.ConfirmCompensationInfo && Model.obj.ConfirmApplicationreview && Model.obj.VacancyId != Guid.Empty)
+                        {
+                            <button type="submit" class="prfle-button-save CaseUpper" name="btnSubmit" value="SaveRecord">Save Opportunity Description</button>
+
+                        }
+                    }
+                    else
+                    {
+                        <button type="submit" class="prfle-button-save CaseUpper" name="btnSubmit" value="ConfirmRecord">Confirm Opportunity Description</button>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $(".VacancyInfo input[type='checkbox']").each(function () {
+            ShowOnWeb(this);
+        });
+    });
+
+    $('input[type="checkbox"]').change(function () {
+        ShowOnWeb(this);
+    });
+
+    function ShowOnWeb(event) {
+        if ($(event).is(':checked')) {
+            $(event).parent().next(".ContentMain").children().show();
+            if ($(event).parent().parent().next('.ActionBox').length > 0) {
+                $(".ActionBox").css("border-top", "2px solid #953634");
+            }
+
+        }
+        else {
+            $(event).parent().next(".ContentMain").children().hide();
+            if ($(event).parent().parent().next('.ActionBox').length > 0) {
+                $(".ActionBox").css("border-top", "none");
+            }
+        }
+    }
+</script>

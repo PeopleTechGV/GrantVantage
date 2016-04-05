@@ -1,0 +1,122 @@
+﻿@using BECompanySetupMenuConst = ATS.BusinessEntity.Common.CompanySetupMenu
+@{
+    ViewBag.Title = "Company SetUpMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*@System.Web.Optimization.Styles.Render("~/Content/SCCss")*@
+<div class="search-heading">
+</div>
+<div id="search-resumes" style="float:left;">
+    <div class="nav-bar clearfix">
+        <ul class="saved-searches">
+            <li>
+                <a class="active-left" href="javascript:;">
+                    <img src='@Url.Content("~/Content/images/Company_Setup_24.png")' width="24" height="24" align="absmiddle">
+                    <span class="dumy-left"></span>
+                </a>
+            </li>
+            <li class="select-saved-searches mid">
+                <a class="active-left new-search" href="javascript:;">
+                    <span class="dumy-right"></span>
+                    <div style="margin-top:5px;">
+                        <span class="left_menu_space" style="display: marker; overflow: hidden; text-overflow: ellipsis; white-space: normal; ">@Html.LanguageLabel((String)ViewBag.FormName) &nbsp;</span>
+                        <span style="font-size: 10px;padding-left: 4px;">&#9660;</span>
+                    </div>
+                    <span class="dumy-left"></span>
+                </a>
+                <ul class="options-dd">
+                    <li>
+                        <a href='@Url.Action("Index", "Division", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="DivisionLink" class="menuItem ">
+                            @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_DIVISION)
+                        </a>
+                    </li>
+                    @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+                    {
+                        <li>
+                            <a href='@Url.Action("Index", "DegreeType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="DegreeType"
+                               class="menuItem ">
+                                @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_DEGREETYPE)
+                            </a>
+                        </li>
+                    }
+                    @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+                    {
+                        <li>
+                            <a href='@Url.Action("Index", "VacancyQuestionType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="DegreeType"
+                               class="menuItem ">
+                                @Html.Label("Vacancy Question Type")
+                            </a>
+                        </li>
+                    }
+                    @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+                    {
+                        <li>
+                            <a href='@Url.Action("Index", "RndType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="DegreeType"
+                               class="menuItem ">
+                                @Html.Label("Round Type")
+                            </a>
+                        </li>
+                    }
+                        <li>
+                            <a href='@Url.Action("Index", "JobLocation", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="UserDivisionPermissionLink" class="menuItem ">
+                                @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_JOBLOCATION)
+                            </a>
+                        </li>
+                        @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+                        {
+                            <li>
+                                <a href='@Url.Action("Index", "PositionType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="PositionTypeLink" class="menuItem ">
+                                    @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_POSITIONTYPE)
+                                </a>
+                            </li>
+                            <li>
+                                <a href='@Url.Action("Index", "SkillType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="SkillType"
+                                   class="menuItem ">
+                                    @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_SKILLTYPE)
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a href='@Url.Action("Index", "User", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="User"
+                               class="menuItem ">
+                                @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_USER)
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("Index", "Question", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="Question"
+                               class="menuItem ">
+                                @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_QUE)
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "CompanySetup", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, userId = ATS.WebUi.Common.CurrentSession.Instance.UserId })' id="PrivilegeLink" class="menuItem ">
+                                @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_USERPRIVILEGES)
+                            </a>
+                        </li>
+                        @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+                        {
+                            <li>
+                                <a href='@Url.Action("Index", "VacancyStatus", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="VacancyStatus"
+                                   class="menuItem ">
+                                    @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_VACANCYSTATUS)
+                                </a>
+                            </li>
+                        }
+                        @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+                        {
+                            <li>
+                                <a href='@Url.Action("Index", "LanguageBlocks", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })' id="LanguageBlocks"
+                                   class="menuItem ">
+                                    @Html.LanguageLabel(BECompanySetupMenuConst.CSMNU_LANGUAGEBLOCKS)
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    @RenderBody()
+
+

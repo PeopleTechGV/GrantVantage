@@ -1,0 +1,312 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BEVacancyConstant = ATS.BusinessEntity.Common.VacancyConstant
+<script src="~/Content/js/Actionbar.js"></script>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@System.Web.Optimization.Styles.Render("~/Content/GridMvcCSS")
+@System.Web.Optimization.Scripts.Render("~/bundles/GridMvcJS")
+
+@model ATS.WebUi.Models.BreadScrumbModel<List<BEClient.VacancyApplicant>>
+@{
+    var totalCount = 0;
+    if (Model.obj != null && Model.obj.Count() > 0)
+    {
+        totalCount = Model.obj.First().TotalCount;
+    }
+    <text>
+        <script>
+            var _totalCount = @totalCount
+        </script>
+    </text>
+}
+<style>
+    /*To Hide Loading image on row selection*/
+    #loading {
+        display: none !important;
+        visibility: hidden !important;
+    }
+</style>
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgMyCandidate24W"></div>
+        <span class="navTitle">
+            @Html.LanguageLabel(BEClient.Common.EmployeeMenuConstant.MNU_MY_CANDIDATES):
+            <span class="navSubTitle lblNgold CaseUpper">@ViewBag.SelectedStatus</span>
+            <span class="lblNavCount">@totalCount</span>
+        </span>
+        <span class="chevron"></span>
+        <ul class="dropdownMenu menuPurple">
+            @Html.Partial("Shared/_DrpApplicationStatusCount")
+        </ul>
+    </div>
+}
+
+<div class="Searchbox">
+    <input id="txtSearch" class="txtSearch" type="text" name="txtSearch" value="@ViewBag.SearchText" placeholder="Search Applicant" />
+    @if (ViewBag.SearchTextImg == "Search")
+    {
+        <a href="javascript:void(0);" title="Search"><img src="/Content/images/Search_Jobs_16.png" onclick="Search()" alt="" /></a>
+    }
+    else
+    {
+        <a href="javascript:void(0);" title="Clear Search"><img src="/Content/images/Close_Model_16.png" onclick="Clear()" alt="" /></a>
+    }
+</div>
+
+<ul class="ActionBar ResizableAction">
+    <li id="liDownload" class="ShowOnSingle">
+        <a class="bgExport16 ComboDropdown" href='javascript:void(0);'>
+            Download
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+                <ul class="MobRight">
+                    <li><a class="WithIcon bgResume" href=''>Resume</a></li>
+                    <li><a class="WithIcon bgCoverLetter" href=''>Cover Letter</a></li>
+                    <li><a class="WithIcon bgPdf" href=''>Full Profile</a></li>
+                    <li><a id="CopyVacancyManager" class="WithIcon bgZip" href=''>All (Zip File)</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </li>
+    @*<li class="ShowOnSingle">
+            <a class="bgCandidateLink16B" onclick="OpenCopy('@String.Format("{0}", ((Int32)ATS.BusinessEntity.PublicCodelink.Candidate).ToString())');" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CAN_LINK)'>
+                @Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CAN_LINK)
+            </a>
+        </li>
+        <li class="ShowOnSingle">
+            <a class="bgManagerLink16B" onclick="OpenCopy('@String.Format("{0}", ((Int32)ATS.BusinessEntity.PublicCodelink.Manager).ToString())');" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_MAN_LINK)' id="CopyVacancyManager">
+                @Html.LanguageLabel(BEVacancyConstant.FRM_VAC_MAN_LINK)
+            </a>
+        </li>*@
+    <li class="ShowOnSingle">
+        <a class="bgInterview16 ComboDropdown" href='javascript:void(0);'>
+            BEGIN INTERVIEW
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+                <ul id="BeginInterview" class="MobRight AutoWidth"></ul>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="ShowOnSingle">
+        <a class="bgScheduleInterview16 ComboDropdown" href='javascript:void(0);'>
+            SCHEDULE INTERVIEW
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="ShowOnSingle MobView">
+        <a id="btnAppProcess" class="bgNext16 ComboDropdown MobView" href='javascript:void(0);'>
+            APPLICATION PROCESS
+        </a>
+    </li>
+</ul>
+
+
+<div id="message1" style="display:none;" class="alert-box notice"><span id="copytext"></span><div class="floatright CursorPointer" onclick="CloseCopy();"><img src='@Url.Content("~/Content/images/remove_16.png")' alt="" border="0" /></div></div>
+
+<div class="my-vacancies" id="Candidate_grid" style="padding-bottom:20px;">
+    @Html.Partial("Shared/_CandidateGrid", Model.obj)
+    @if (Model.obj != null && Model.obj.Count() > 0 && totalCount > ATS.WebUi.Common.Constants.PAGGING)
+    {
+        <text>
+            <div class="grid-ajax-pager">
+                <a href="javascript:void(0);">Show more</a>
+            </div>
+        </text>
+    }
+</div>
+
+<script>
+    $('.ShowOnSingle').hide();
+    var pageLink = $(".grid-ajax-pager a");
+    (function ($) {
+        var self = this;
+        this.currentPage = 1;
+        var gridTableBody = $(pageLink).closest(".grid-wrap").find("tbody");
+        pageLink.on("click", function () {
+            self.loadNextPage();
+        });
+
+        $(".grid-mvc").each(function () {
+            $(".grid-mvc").gridmvc();
+            var _currentcount = $(this).find('.grid-row').length;
+            if(_totalCount==_currentcount )
+            {
+                pageLink.hide();
+            }
+        });
+
+        this.loadNextPage = function () {
+            self.currentPage++;
+            $.get('@Url.Action("Index", "MyCandidates", new { area = "Employee" })' + self.pad(location.search) + self.currentPage,
+            function (response) {
+                $(".contnt-right").find("tbody").append($(response).find("tbody").html());
+
+                //$('#Candidate_grid td').dblclick(function(){
+                //    DoubleClick($(this));
+                //});
+                var _currentcount =$(".contnt-right").find("tbody").find('.grid-row').length;
+                if(_totalCount==_currentcount )
+                {
+                    pageLink.hide();
+                }
+                if ($(response).find("tbody").find("tr").hasClass("grid-empty-text"))
+                    pageLink.hide();
+            }).fail(function (data) {
+                alert("error");
+            });
+        };
+
+        this.pad = function (query) {
+            if (query.length == 0) return "?page=";
+            return query + "&page=";
+        };
+
+    })(jQuery);
+
+    //$('#Candidate_grid td').dblclick(function(){
+    //    DoubleClick($(this));
+    //});
+
+    function ViewDetailMob(element)
+    {
+        var $this = $(element).parent();
+        var row = $this.closest("tr");
+        if(!row.hasClass('grid-empty-text'))
+        {
+            var rowid = row.find('[data-name="ApplicationId"]:last').text();
+            var IsNotViewable = row.find('[data-name="IsNotViewable"]:last').text();
+            if (IsNotViewable != 'True') {
+                var dLink = '@Url.Action("GetCandidateProfile","MyCandidates",new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_DATAID_"})';
+                dLink = dLink.replace("_DATAID_", rowid);
+                window.location = dLink;
+            }
+        }
+    }
+
+    function DoubleClick(element)
+    {
+        var $this = element;
+        var row = $this.closest("tr");
+        if(!row.hasClass('grid-empty-text'))
+        {
+            var rowid = row.find('[data-name="ApplicationId"]:last').text();
+            var IsNotViewable = row.find('[data-name="IsNotViewable"]:last').text();
+            if (IsNotViewable != 'True') {
+                var dLink = '@Url.Action("GetCandidateProfile","MyCandidates",new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_DATAID_"})';
+                dLink = dLink.replace("_DATAID_", rowid);
+                window.location = dLink;
+            }
+        }
+    }
+</script>
+
+<script>
+    function Clear() {
+        //window.location = window.location.protocol + "//" + window.location.host + window.location.pathname.replace("#", "");
+        var strFilter = window.location.search.substr(1).split('&');
+        var indexPath = window.location.protocol + "//" + window.location.host;
+        var path = indexPath + window.location.pathname.replace("#", "");
+        var qryString = "";
+        if (strFilter.length > 0) {
+            for (var i = 0; i < strFilter.length; i++) {
+                if (strFilter[i].indexOf("search=") == -1 && strFilter[i] != "") {
+                    if (qryString == "")
+                        qryString = strFilter[i];
+                    else
+                        qryString += "&" + strFilter[i];
+                }
+            }
+        }
+        //window.location.href = indexPath + window.location.pathname + "?" + qryString;
+        //  window.location = window.location.protocol + "//" + window.location.host + window.location.pathname.replace("#", "");
+
+        if (qryString != "")
+            window.location.href = indexPath + window.location.pathname + "?" + qryString;
+        else
+            window.location.href = indexPath + window.location.pathname;
+
+    }
+    function Search() {
+        SearchCandidate();
+    }
+    $("#txtSearch").keyup(function (event) {
+        if (event.keyCode == 13) {
+            SearchCandidate();
+        }
+    });
+    function SearchCandidate() {
+        var indexPath = window.location.protocol + "//" + window.location.host;
+        var path = indexPath + window.location.pathname.replace("#", "");
+        if (window.location.pathname.search == "") {
+            if ($("#txtSearch").val() != "")
+                window.location = path + "?search=" + $("#txtSearch").val();
+            else
+                window.location = path;
+        }
+        else {
+            var strFilter = window.location.search.substr(1).split('&');
+            var qryString = "";
+            if (strFilter.length > 0) {
+                for (var i = 0; i < strFilter.length; i++) {
+                    if (strFilter[i].indexOf("search=") == -1 && strFilter[i] != "") {
+                        if (qryString == "")
+                            qryString = strFilter[i];
+                        else
+                            qryString += "&" + strFilter[i];
+                    }
+                }
+            }
+            if ($("#txtSearch").val() != "")
+                window.location = indexPath + window.location.pathname + "?search=" + $("#txtSearch").val() + "&" + qryString;
+            else if (qryString != "")
+                window.location.href = indexPath + window.location.pathname + "?" + qryString;
+            else
+                window.location.href = indexPath + window.location.pathname;
+        }
+    }
+
+    function OpenCopy(isManager) {
+        //var _currentSelected = $('.my-vacancies .grid-row-selected');
+        var public_code = $('.my-vacancies .grid-row-selected #PublicCode').text();
+        var htmlvalue = '@Url.Action("EmployeeLogin", "Home", new { area = "", PublicCode = "_PUBLIC_CODE_", ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, ManagerLink = "_ISBOOL_" }, HttpContext.Current.Request.Url.Scheme)';
+        htmlvalue = '<b>Copy URL : </b>' + htmlvalue.replace("_ISBOOL_", isManager);
+        htmlvalue = htmlvalue.replace("_PUBLIC_CODE_", public_code);
+        $('#copytext').html(htmlvalue);
+        $('#message1').show();
+        $('body,html').animate({
+            scrollTop: 0
+        }, 400);
+    }
+
+    function CloseCopy() {
+        $('#message1').hide();
+    }
+</script>
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+

@@ -1,0 +1,37 @@
+﻿@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-action">
+    <a title="" id="addTVacRnd" href='javascript:void(0);' data-url="@Url.Action("GetNewTVacRnd", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacId = Model.obj.TVacId })" class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_APP_REV_ADD)</a>
+</div>
+
+<script>
+    $(function () {
+        $("a#addTVacRnd").tooltip({
+            track: false,
+            open: function (event, ui) {
+                setTimeout(function () {
+                    $(ui.tooltip).hide('toggle');
+                }, 4000);
+            },
+            position: { my: "left+175 top+5", at: "left top", collision: "flipfit" },
+            content: function (callback) {
+                callback("connecting......");
+                var _Link = '@Url.Action("GetARPHint", "MyVacancy")';
+                $.ajax({
+                    url: _Link,
+                    global: false,
+                    success: function (response) {
+                        response = JSON.parse(response);
+                        if (!response.IsError) {
+                            $(this).removeAttr("title");
+                            if ($.trim(response.Data) != "") {
+                                $(this).attr("title", "");
+                                callback(response.Data);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

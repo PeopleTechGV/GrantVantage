@@ -1,0 +1,53 @@
+﻿@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.SkinMaster>>>
+
+
+@{
+    ViewBag.Title = "SkinMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@if (Model != null)
+{
+    <ul class="DataList">
+        @foreach (var item in Model.obj.obj)
+        {
+            <li class="btnPreview" data-path="@item.StylePath">
+                <span class="dlTitle">
+                    @item.SkinDisplayName
+                </span>
+                <span class="SkinImage">
+                    <img src='@item.SkinImage' />
+                </span>
+                <span class="dlAction">
+                    <a href="javascript:void(0);" class="btnApply" data-path="@item.StylePath" data-id="@item.SkinId">Apply</a>
+                </span>
+            </li>
+        }
+    </ul>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".btnPreview").click(function () {
+            var StylePath = $(this).attr("data-path");
+            $("#cssTheme").attr("href", StylePath);
+        });
+
+        $(".btnApply").click(function () {
+            var SkinName = $(this).parent(".dlAction").siblings(".dlTitle").html();
+            var StylePath = $(this).attr("data-path");
+            var SkinId = $(this).attr("data-id");
+            var dataLink = '@Html.Raw(Url.Action("UpdateSkin", "SkinMaster", new { SkinId = "_SKINID_", StylePath = "_STYLEPATH_" }))';
+            dataLink = dataLink.replace("_SKINID_", SkinId);
+            dataLink = dataLink.replace("_STYLEPATH_", StylePath);
+            VacancyModel.CallPostMethod(dataLink, function (data, message) {
+                $("#cssTheme").attr("href", StylePath);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', SkinName + ' ' + message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            });
+        });
+    });
+</script>

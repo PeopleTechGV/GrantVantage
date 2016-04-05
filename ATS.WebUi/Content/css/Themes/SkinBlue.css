@@ -1,0 +1,116 @@
+﻿.NavigationBar {
+    background-color: #345e8e;
+}
+
+.user-image {
+    display: none;
+}
+
+/*#region HOVER ICONS */
+
+.LeftMenu > li > .bgFeaturedJob24W:hover, .dropdownMenu > li > .bgFeaturedJob24W:hover {
+    background-image: url("/content/images/Featured_Jobs_24.png");
+}
+
+.LeftMenu > li > .bgSearch24W:hover, .dropdownMenu > li > .bgSearch24W:hover {
+    background-image: url("/content/images/Search_Jobs_24.png");
+}
+
+.LeftMenu > li > .bgMyApplication24W:hover, .dropdownMenu > li > .bgMyApplication24W:hover {
+    background-image: url("/content/images/My_Applications_24.png");
+}
+
+.LeftMenu > li > .bgMyDocument24W:hover, .dropdownMenu > li > .bgMyDocument24W:hover {
+    background-image: url("/content/images/My_Documents_24.png");
+}
+
+.LeftMenu > li > .bgMyProfile24W:hover, .dropdownMenu > li > .bgMyProfile24W:hover {
+    background-image: url("/content/images/My_Profile_24.png");
+}
+
+.LeftMenu > li > .bgMyVacancy24W:hover, .dropdownMenu > li > .bgMyVacancy24W:hover {
+    background-image: url("/content/images/My_Vacancies_24.png");
+}
+
+.LeftMenu > li > .bgMyCandidate24W:hover, .dropdownMenu > li > .bgMyCandidate24W:hover {
+    background-image: url("/content/images/My_Candidates_24.png");
+}
+
+.LeftMenu > li > .bgInterviewCalender24W:hover, .dropdownMenu > li > .bgInterviewCalender24W:hover, .hasDropdown:hover > .bgInterviewCalender24W {
+    background-image: url("/content/images/Interview_Calendar_24.png");
+}
+
+
+.LeftMenu > li > .bgCompanySetup24W:hover, .dropdownMenu > li > .bgCompanySetup24W:hover {
+    background-image: url("/content/images/Company_Setup_24.png");
+}
+
+.dropdownMenu > li > .bgLogout16W:hover {
+    background-image: url("/content/images/Logout_16.png");
+}
+
+
+
+.dropdownMenu > li > .bgChange16W:hover {
+    background-image: url("/content/images/Change_Status_16.png");
+}
+
+
+
+
+
+.hasDropdown:hover > .bgHome16W {
+    background-image: url("/content/images/Home_button_16.png");
+}
+
+.hasDropdown:hover > .bgMyApplication16W {
+    background-image: url("/content/images/My_Applications_24.png");
+}
+
+.hasDropdown:hover > .bgFeaturedJob16W {
+    background-image: url("/content/images/Featured_Jobs_16.png");
+}
+
+.hasDropdown:hover > .bgMyDocument24W {
+    background-image: url("/content/images/My_Documents_24.png");
+}
+
+.hasDropdown:hover > .bgMyVacancy24W {
+    background-image: url("/content/images/My_Vacancies_24.png");
+}
+
+.hasDropdown:hover > .bgMyCandidate24W {
+    background-image: url("/content/images/My_Candidates_24.png");
+}
+
+.hasDropdown:hover > .bgCompanySetup24W {
+    background-image: url("/content/images/Company_Setup_24.png");
+}
+
+.hasDropdown:hover > .bgMyProfile24W {
+    background-image: url("/content/images/My_Profile_16.png");
+}
+
+.hasDropdown:hover > .bgSavedJobs24W {
+    background-image: url("/content/images/Saved_Jobs_16.png");
+}
+
+.hasDropdown:hover > .bgSearch16W {
+    background-image: url("/content/images/Search_Jobs_16.png");
+}
+
+.hasDropdown:hover > .bgMyProfile16W {
+    background-image: url("/content/images/My_Profile_16.png");
+}
+
+.hasDropdown:hover > .bgLogin16W {
+    background-image: url("/content/images/Login_16.png");
+}
+
+
+.hasDropdown:hover > .chevron {
+    background: url("/content/images/Down_Chevron_8.png") no-repeat scroll center center transparent;
+}
+
+
+/*#endregion */

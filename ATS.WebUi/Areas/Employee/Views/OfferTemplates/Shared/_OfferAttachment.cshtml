@@ -1,0 +1,38 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.OfferAttachment>
+
+<div class="GridAttachment">
+    <ul class="RowHeader sm-disabled">
+        <li class="w50">Attachment Name</li>
+        <li class="w25">&nbsp;</li>
+        <li class="w20">Mandatory</li>
+    </ul>
+    @foreach (BEClient.OfferAttachment current in Model)
+    {
+        <ul class="RowContent" data-attachmentid="@current.OfferAttachmentId">
+            <li class="w50 SMW100">@current.FileName</li>
+            <li class="w25 SMW50 SMFloatRight">
+                <a class="btnDelete bgDelete16B SMFloatRight" href="javascript:void(0);" onclick="TemplateOffer.DeleteOfferAttachmentConfirm(this)"></a>&nbsp;
+            </li>
+            <li class="w20 SMW50 cntMandatory">@Html.CheckBoxFor(m => current.IsMandatory, new { @class = "chkIsMandatory" })</li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".chkIsMandatory").click(function () {
+            var chkMandatory = $(this);
+            var IsMandatory = $(this).is(":checked");
+            var AttachmentId = $(this).parents(".RowContent").attr("data-attachmentid");
+            var dataLink = '@Html.Raw(@Url.Action("ChangeAttachmentMandatory", "OfferTemplates", new { OfferAttachmentId = "_OFFERATTACHMENTID_", IsMandatory = "_ISMANDATORY_" }))';
+            dataLink = dataLink.replace("_OFFERATTACHMENTID_", AttachmentId);
+            dataLink = dataLink.replace("_ISMANDATORY_", IsMandatory);
+            VacancyModel.CallPostMethod(dataLink, function (data) {
+                if (data == "Failed") {
+                    $(chkMandatory).prop("checked", !IsMandatory)
+                }
+            });
+        });
+    });
+</script>

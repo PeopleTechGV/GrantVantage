@@ -1,0 +1,31 @@
+﻿@model IList<ATS.BusinessEntity.Application>
+
+@foreach (var _current in Model)
+{
+    <div class="acc-header" data-pkid="@_current.ApplicationId" data-vacid="@_current.VacancyId" data-resumeid="@_current.ATSResumeId" data-coverletterid="@_current.ATSCoverLetterId" data-isdeclined="@_current.IsDeclined">
+        <p class="prfle-tab-head-brown" style="overflow:hidden;">
+            @*
+                <span style="float:right"><span class='ttldb count'>Status: </span><span class='ttldb count' style="color:#953634;"></span></span>
+            *@
+            <span class="VacNameOnAcc" data-vacancyname="@_current.objCandidateApplications.objVacancy.JobTitle">
+                @_current.objCandidateApplications.objVacancy.JobTitle - @_current.objCandidateApplications.objVacancy.LocationText <span class='ttldb count MobDisable'>(@_current.CreatedOnText) </span>
+            </span>
+            @*Rutul Patel : Desc - Comment Score : Change Request By Client : 2014 16 11
+                    <span class="w20">
+                    <span class="ttllbrown"><label>Score:</label></span>
+                    <span class="ttldblue" id="rndscore"><label>@_current.Score</label></span>
+                </span>*@
+            <span class="lblAppStatus SMWAuto">
+                <span class="ttllbrown MobDisable">Status:</span>
+                <span class="ttldblue" id="rndweight">@Html.LanguageLabel(_current.AppState)</span>
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-inner">
+            <div class="CanInterview">
+
+            </div>
+        </div>
+    </div>
+}

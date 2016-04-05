@@ -1,0 +1,281 @@
+﻿@model IEnumerable<ATS.BusinessEntity.Vacancy>
+@using BEVacancyConst = ATS.BusinessEntity.Common.VacancyConstant
+@using BEToolTipConstantConst = ATS.BusinessEntity.Common.TooltipConstant
+@using BEClient = ATS.BusinessEntity;
+
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+
+@*RK 31052014*@
+@using (Html.BeginForm("Paging", "MyVacancies", FormMethod.Post, new { id = "myForm" }))
+{
+    <span id="select-result"></span>
+    <div class="my-vacancies">
+        <div class="my-vacancies-heading">
+            <div class="job-title">
+                @Html.LanguageLabel(BEVacancyConst.LST_VAC_JOB_TITLE)
+            </div>
+            <div class="job-title01">
+                @Html.LanguageLabel(BEVacancyConst.LST_VAC_LOCATION)
+            </div>
+            <div class="job-title02">
+                @Html.LanguageLabel(BEVacancyConst.LST_VAC_POSTED_ON)
+            </div>
+        </div>
+        <ol id="selectable">
+            @foreach (ATS.BusinessEntity.Vacancy current in Model)
+            {
+                @Html.Partial("Shared/_MyVacancyListSingle", current);
+            }
+        </ol>
+    </div>
+}
+<script>
+    function UpdateVacStatus(element) {
+        var VacancyId = $(element).closest('#VacStatus').attr('data-id');
+        var VacancyStatus = $(element).attr('data-nextstatus');
+        var VacancyReason = "";
+        if (VacancyStatus == "Close") {
+            VacancyReason = $(element).attr('vacancyvalue');
+        }
+        else {
+            VacancyReason = "";
+        }
+        var _dataLink = '@Html.Raw(Url.Action("UpdateVacStatus", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, VacancyId = "_VacancyId_", VacancyStatus = "_VacancyStatus_", VacancyReason = "_VacancyReason_" }))';
+        _dataLink = _dataLink.replace("_VacancyId_", VacancyId);
+        _dataLink = _dataLink.replace("_VacancyStatus_", VacancyStatus);
+        _dataLink = _dataLink.replace("_VacancyReason_", VacancyReason);
+        $.ajax({
+            url: _dataLink,
+            type: "POST",
+            success: function (response) {
+                var JsonData = JSON.parse(response);
+                var _currEle = $(element).parents('.my-vacancies-content');
+                var status = $("#DDLStatusList").children().find('.left_menu_space').text()
+                if (JsonData.IsError) {
+                    VacancyModel.DisplayErrorMeesage("#commonMessage", JsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                else {
+
+                    if (status.trim() != "All") {
+                        $(_currEle).remove();
+                    }
+                    else {
+                        $(_currEle).html(JsonData.Data);
+                    }
+                    VacancyModel.DisplaySuccessMeesage("#commonMessage", JsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+
+                var getcnt = '@Html.Raw(Url.Action("GetVacCnt", "MyVacancy", new { status = "_STATUS_" }))';
+                getcnt = getcnt.replace("_STATUS_", status.trim());
+                VacancyModel.CallGetMethod(getcnt, function (data) {
+                    if (!data.IsError) {
+                        $("#mnuMyApp").html('');
+                        $("#mnuMyApp").html(data);
+                        var status = $("#mnuMyApp").html(data).parent().children('.navTitle').children('.navSubTitle').text()
+                        var _comparingEle = $(data).find("span:contains('" + status + "')")
+                        var latestcnt = $(_comparingEle).next().text();
+                        $("#mnuMyApp").html(data).parent().children('.navTitle').children('.lblNavCount').text(latestcnt);
+                    }
+                });
+                SetVacancyEventHandlers();
+            }
+        });
+    }
+
+    function ConfirmUpdateVacStatus(element) {
+        var msg = 'Are you sure you want to re-open this vacancy?';
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Re-Open Vacancy", 400, msg, "Yes", "Cancel", "ReopenVacancy", element, null);
+    }
+
+    function ReopenVacancy(result, element) {
+        if (result) {
+            var VacancyId = $(element).closest('#VacStatus').attr('data-id');
+            var VacancyStatus = $(element).attr('data-nextstatus');
+            var VacancyReason = "";
+            if (VacancyStatus == "Close") {
+                VacancyReason = $(element).attr('vacancyvalue');
+            }
+            else {
+                VacancyReason = "";
+            }
+            var _dataLink = '@Html.Raw(Url.Action("UpdateVacStatus", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, VacancyId = "_VacancyId_", VacancyStatus = "_VacancyStatus_", VacancyReason = "_VacancyReason_" }))';
+            _dataLink = _dataLink.replace("_VacancyId_", VacancyId);
+            _dataLink = _dataLink.replace("_VacancyStatus_", VacancyStatus);
+            _dataLink = _dataLink.replace("_VacancyReason_", VacancyReason);
+            $.ajax({
+                url: _dataLink,
+                type: "POST",
+                success: function (response) {
+                    var JsonData = JSON.parse(response);
+
+
+                    var _currEle = $(element).parents('.my-vacancies-content');
+                    $(_currEle).html(JsonData.Data);
+
+                    location.reload();
+                    VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    SetVacancyEventHandlers();
+                }
+            });
+        }
+    }
+
+    $(function () {
+
+        SetVacancyEventHandlers();
+    });
+    //$(function () {
+
+    //    SetVacancyEventHandlers();
+    function SetVacancyEventHandlers() {
+        //alert('testt  call fn');
+        $(".img-search-location,.img-search-location-inactive,.img-featured-location,.img-featured-location-inactive").unbind("click");
+
+        function UpdateVacancyStatus(element, vacancyid, vacstatus, successCallback) {
+            var datastring = { VacancyId: vacancyid, VacancyStatus: vacstatus };
+            $.ajax({
+                type: "POST",
+                url: '../../Employee/MyVacancy/UpdateVacancyStatus',
+                cache: false,
+                data: datastring,
+                success: successCallback,
+                error: function (xhr, text, err) {
+                    OnUpdateFailure(xhr, text, err);
+                }
+            });
+        }
+
+        $('.img-search-location').click(function () {
+            var nextstatus = $(this).attr('data-nextstatus');
+            var dataid = $('#VacStatus').attr('data-id');
+            var pageMode = $('#VacStatus').attr('pagemode');
+            //var dataid = $(this).parent('ul').first().attr('data-id');
+            //var pageMode = $(this).parent('ul').first().attr('PageMode');
+            if (pageMode == '@ATS.BusinessEntity.PageMode.Update') {
+                var that = this;
+                UpdateVacancyStatus($(this), dataid, nextstatus, function (data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage("#commonMessage", data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        //Anand Featured replacement
+                        var _Ftitle = 'Feature on Web';
+                        $(that).next().replaceWith("<li class='img-featured-location-inactive ui-selected ui-selectee' title='" + _Ftitle + "'></li>");
+                        $(that).parents('li').prev().find('li.date').text(data.Data);
+                        var _title = '@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SHOW_ON_WEB)'
+                        $(that).replaceWith("<li class='img-search-location-inactive ui-selected ui-selectee' title='" + _title + "'></li>");
+                        VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        SetVacancyEventHandlers();
+                    }
+                });
+            }
+            else {
+                VacancyModel.DisplayErrorMeesage("#commonMessage", "You don't have permission ...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+        $('.img-search-location-inactive').click(function () {
+            var dataid = $(this).parent('ul').first().attr('data-id');
+            var pageMode = $(this).parent('ul').first().attr('PageMode');
+
+            if (pageMode == '@ATS.BusinessEntity.PageMode.Update') {
+                var that = this;
+                UpdateShowOnWeb($(this), dataid, 'true', function (data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage("#commonMessage", data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+
+                        $(that).parents('li').prev().find('li.date').text(data.Data);
+                        var _title = '@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SHOW_ON_WEB)';
+                        $(that).replaceWith("<li class='img-search-location ui-selected ui-selectee' title='" + _title + "'></li>");
+                        VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        SetVacancyEventHandlers();
+                    }
+                });
+            } else {
+                VacancyModel.DisplayErrorMeesage("#commonMessage", "You don't have permission ...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+        $('.img-featured-location').click(function () {
+            var dataid = $(this).parent('ul').first().attr('data-id');
+            var pageMode = $(this).parent('ul').first().attr('PageMode');
+            if (pageMode == '@ATS.BusinessEntity.PageMode.Update') {
+                var that = this;
+                UpdateVacancy($(this), dataid, 'FeaturedOnWeb', 'false', function (data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage("#commonMessage", data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        var _title = '@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SHOW_FEATURE)';
+                        $(that).replaceWith("<li class='img-featured-location-inactive ui-selected ui-selectee' title='" + _title + "'></li>");
+                        VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        SetVacancyEventHandlers();
+                    }
+                });
+            } else {
+                VacancyModel.DisplayErrorMeesage("#commonMessage", "You don't have permission ...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+        $('.img-featured-location-inactive').click(function () {
+            var dataid = $(this).parent('ul').first().attr('data-id');
+            var pageMode = $(this).parent('ul').first().attr('PageMode');
+
+            if (pageMode == '@ATS.BusinessEntity.PageMode.Update') {
+                var that = this;
+                UpdateVacancy($(this), dataid, 'FeaturedOnWeb', 'true', function (data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage("#commonMessage", data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        var _title = '@Html.LanguageLabel(BEToolTipConstantConst.TOOLTIP_SHOW_FEATURE)';
+                        $(that).replaceWith("<li class='img-featured-location ui-selected ui-selectee' title='" + _title + "'></li>");
+                        VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        SetVacancyEventHandlers();
+                    }
+                });
+            } else {
+                VacancyModel.DisplayErrorMeesage("#commonMessage", "You don't have permission ...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+    }
+
+
+
+
+    function UpdateShowOnWeb(element, vacancyid, fieldvalue, successCallback) {
+        var datastring = { pVacancyId: vacancyid, pFieldValue: fieldvalue };
+        $.ajax({
+            type: "POST",
+            url: '../../Employee/MyVacancy/UpdateShowOnWeb',
+            cache: false,
+            data: datastring,
+            success: successCallback,
+            error: function (xhr, text, err) {
+                OnUpdateFailure(xhr, text, err);
+            }
+        });
+    }
+    function UpdateVacancy(element, vacancyid, fieldname, fieldvalue, successCallback) {
+        var datastring = { pVacancyId: vacancyid, pFieldName: fieldname, pFieldValue: fieldvalue };
+
+        $.ajax({
+            type: "POST",
+            url: '../../Employee/MyVacancy/UpdateVacancyVisibility',
+            cache: false,
+            data: datastring,
+            success: successCallback,
+            error: function (xhr, text, err) {
+                OnUpdateFailure(xhr, text, err);
+            }
+        });
+    }
+
+    function OnUpdateFailure(xhr, text, err) {
+
+    }
+    //});
+</script>

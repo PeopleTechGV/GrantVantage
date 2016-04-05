@@ -1,0 +1,52 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.AppComment
+
+@using (Ajax.BeginForm("AddUpdateAppComment", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "AppCommentSuccess",
+        OnFailure = "AppCommentFail",
+    }, new { id = "frmAppComment" }))
+{
+    @Html.HiddenFor(m => m.AppCommentId)
+    @Html.HiddenFor(m => m.ApplicationId)
+
+    @Html.LabelFor(m => m.Comments, new { @class = "std_width lblBbrown" })
+    @Html.TextAreaFor(m => m.Comments, new { @id = "newComments", @class = "application-remark" })
+    <button class="prfle-button-save save-remark CaseUpper">Save</button>
+    <br clear="all">
+    <br clear="all">
+    <label class="std_width lblBbrown">Previous Comments</label>
+    <div class="previous-remarks">
+        <ul>
+            @if (Model.AppCommentLst != null && Model.AppCommentLst.Count != 0)
+            {
+                foreach (BEClient.AppComment _curr in Model.AppCommentLst)
+                {
+                    @Html.Partial("_CommentsDetails", _curr)
+                }
+            }
+        </ul>
+    </div>
+}
+
+
+<script>
+    function AppCommentSuccess(data) {
+        var JsonData = JSON.parse(data);
+        if (!JsonData.IsError) {
+            var _ele = $('.previous-remarks').children();
+            $(_ele).prepend(JsonData.Data);
+            $('#newComments').val('');
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', JsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', JsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+
+    function AppCommentFail(data) {
+
+    }
+</script>

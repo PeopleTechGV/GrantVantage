@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ATS.BusinessEntity.DivisionPositionType>
+@using BEDivisionPositiontypeConst = ATS.BusinessEntity.Common.DivisionPositionType
+<div class="search-result-detail">
+    <div class="search-heading">
+
+        <li class="location">@Html.LanguageLabel(BEDivisionPositiontypeConst.LST_DIVPOS_DIVNAME)</li>
+        <li class="job-title">
+            @Html.LanguageLabel(BEDivisionPositiontypeConst.LST_DIVPOS_POSNAME)
+        </li>
+        <li class="posted-on">&nbsp;</li>
+        <li class="action">&nbsp;</li>
+    </div>
+    @foreach (ATS.BusinessEntity.DivisionPositionType current in Model)
+    {
+        <ul class="search-row default">
+            <li class="text-details">
+                <ul data-id='@current.DivisionPositionTypeId'>
+                    <li class="detail-location">@current.DivisionName</li>
+
+                    <li class="detail-job-title">@current.PositionTypeName</li>
+
+                </ul>
+            </li>
+        </ul>
+
+    }
+</div>
+
+<script>
+    var divPodbl = $(".search-row");
+    divPodbl.dblclick(function () {
+        var dpId = $(this).find('ul').attr("data-id");
+        var dpLink = '@Url.Action("View", "DivisionPositionType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    });
+</script>

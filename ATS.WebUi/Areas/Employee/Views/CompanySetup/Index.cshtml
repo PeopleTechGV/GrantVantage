@@ -1,0 +1,130 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@model ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<ATSModel>>
+@using BEUserPrivilegesConst = ATS.BusinessEntity.Common.UserPrivilegesConst
+@{
+    ViewBag.Title = "Company Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .ui-accordion .ui-accordion-content {
+        border: none;
+        background: transparent;
+        overflow: auto;
+        width: 90%;
+    }
+
+    .ui-state-default,
+    .ui-state-active {
+        background: transparent;
+        border: 0px solid #aaaaaa;
+    }
+
+    .ui-state-hover,
+    .ui-state-focus {
+        background: #FFEBAF;
+        border: 0px solid #999999;
+    }
+
+    .ui-widget-content {
+        color: #345E8E;
+    }
+</style>
+<script type="text/javascript">
+    var icons = {
+        header: "iconOpen",
+        activeHeader: "iconClosed"
+    };
+
+    $(function () {
+        $("#accordion").accordion({
+            icons: icons,
+            heightStyle: "content",
+            active: 0,
+            animate: true,
+            collapsible: true,
+            activate: function (event, ui) {
+            },
+            beforeActivate: function (event, ui) {
+                if ($(ui.newPanel).find('#SecurityRole').length > 0) {
+                }
+            }
+        });
+    });
+
+    $.validator.setDefaults({
+        ignore: [],
+    });
+</script>
+@{
+    string actionName = "Save";
+}
+
+@using (Html.BeginForm(actionName, "CompanySetup", FormMethod.Post, new { id = "frmCompanySetup" }))
+{
+    @section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+    <div id="search-resumes">
+        <div class="nav-bar clearfix">
+            <ul class="saved-searches">
+                @Html.Partial("_BreadCrumb", Model)
+                @Html.Partial("_CompanySetupDropDown")
+            </ul>
+            @Html.Partial("Shared/_Header")
+        </div>
+    </div>
+    <article class="std_width">
+        @Html.Partial("Shared/_UserList")
+    </article>
+    <article class="std_width spctop-btm">
+        <div id="accordion">
+            <div class="acc-header">
+                <p class="prfle-tab-head">
+                    @Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_SPERINFO)
+                    <span class="notification" style="color:red;display:none;"></span>
+                </p>
+            </div>
+            <div class="acc-Content">
+                <div class="acc-inner">
+                    @Html.Partial("Shared/_PersonalInfo")
+                </div>
+            </div>
+            <div class="acc-header">
+                <p class="prfle-tab-head">
+                    @Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_SECROLES)
+                    <span class="srnotification" style="color:red;display:none;"></span>
+                </p>
+            </div>
+            <div class="acc-Content">
+                <div id="SecurityRole">
+                    <div class="acc-Content">
+                        <div class="user-roles">
+                            @Html.Partial("Shared/_SecurityRoleList")
+                        </div>
+                        <div class="Privilege">
+                            @Html.Partial("Shared/_Privilege")
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </article>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+<script>
+    var message = '@ViewBag.Message'
+    var isError = '@ViewBag.IsError'
+    function callSuccessSaved() {
+        if (message != '' && isError == 'False') {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+        }
+        else if (message != '' && isError == 'True') {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+        }
+    }
+</script>

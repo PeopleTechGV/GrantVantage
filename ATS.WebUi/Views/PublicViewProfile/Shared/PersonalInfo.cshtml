@@ -1,0 +1,91 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.UserDetails
+
+<div>
+    <div id="topPersonalInfo" class="HomePersonalInfo">
+        <div id="btomPersonalInfo">
+            <div style="float: left; width: 100%; margin-bottom: 10px;">
+                <div class="head_resum_aa">
+                    Personal Details
+                </div>
+                <div id="personalInfo" style="float: left; padding: 0 0 10px 15px; width: 98%;">
+                    <div class="adminup_aa" style="width:100%;">
+                        <div style="height: auto; margin-left: 5px; width: 55%;float:left;">
+                            <div class="titleText">
+                                @if (!string.IsNullOrEmpty(Model.Affix))
+                                { @Model.Affix <text>&nbsp;</text> @Model.FirstName <text>&nbsp;</text> @Model.LastName}
+                                else
+                                { @Model.FirstName <text>&nbsp;</text> @Model.LastName}
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.Address))
+                            {
+                                <div>
+                                    @Model.Address
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.City))
+                            {
+                                <div>
+                                    @Model.City
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.State) || !string.IsNullOrEmpty(Model.Zip))
+                            {
+                                <div>
+                                    @Model.State &nbsp; @Model.Zip
+                                </div>
+                            }                            
+                            @if (!string.IsNullOrEmpty(Model.BusinessPhoneNo))
+                            {
+                                <div>
+                                    @Model.BusinessPhoneNo
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.HomePhone))
+                            {
+                                <div>
+                                    @Model.HomePhone
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.MobilePhone))
+                            {
+                                <div>
+                                    @Model.MobilePhone
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.HomeEmail))
+                            {
+                                <div>
+                                    @Model.HomeEmail
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.WorkEmail))
+                            {
+                                <div>
+                                    @Model.WorkEmail
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Pager))
+                            {
+                                <div>
+                                    @Model.Pager
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Fax))
+                            {
+                                <div>
+                                    @Model.Fax
+                                </div>
+                            }
+                        </div>
+                        <div style="border: 0; float: right; height: 100px; width: 40%;cursor: inherit;
+                        margin-right: 5px">
+                            <div style="float: right;position:relative;height:100px;cursor: inherit;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

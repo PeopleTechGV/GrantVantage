@@ -1,0 +1,38 @@
+﻿@model ATS.BusinessEntity.VacancyRound
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByVacRndId(Model.VacancyRoundId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+}
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        <span class="w50" style="float:left;">
+            <span class='Save'>@Html.LanguageLabel(BECommonConst.FRM_APP_REV_ROUND)<span class="cntRound">@Model.RndOrder</span>:</span>
+            <span class='ttldblue' id="rndtype">@Model.RoundType</span>
+        </span>
+        @if (RndAttr != BERndAttr.OfferRound)
+        {
+            <span class="floatright">
+                <span class="ttllbrown">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+                <span class="ttldblue" id="rndweight">@Model.RoundWeight</span>
+            </span>
+        }
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="acc-inner">
+        @if (RndAttr != BERndAttr.OfferRound)
+        {
+            foreach (ATS.BusinessEntity.InterViewProcess objinterviewProcess in Model.ObjInterviewProcess)
+            {
+                @Html.Partial("Shared/_SglInterviewProcess", objinterviewProcess)<br />
+            }
+        }
+        else
+        {
+            @Html.Partial("Shared/_AccVacancyOfferList", Model.ObjVacancyOffer)<br />
+        }
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@using ATS.WebUi.Models
+@using ATS.WebUi.Helpers;
+@using BE = ATS.BusinessEntity;
+@model ATS.BusinessEntity.SolrEntity.SolrSearchObject
+@using LangConstant = ATS.BusinessEntity.Common.LanguageStringConstant;
+
+<style>
+    .ui-widget-header {
+        width: 92.9%;
+    }
+</style>
+
+<input type="hidden" id="JobId" name="JobId" />
+<div id="selectable" class="GridContainer GridCol2">
+    <ul class="RowHeader">
+        <li class="w50">@Html.LanguageLabel(LangConstant.LANG_SEARCH_JOBTITLE) / @Html.LanguageLabel(LangConstant.LANG_SEARCH_DESCRIPTION)</li>
+        <li class="w20">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_LOCATION)</li>
+        <li class="w20">@Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_POSTEDON)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.SolrEntity.SolrSearchFields current in Model.SearchData)
+    {
+        <ul class="RowContent CursorPointer ui-selectee" data-id='@current.StrVacancyId'>
+            <li class="w50 GridCol2Title">@current.JobTitle</li>
+            <li class="w20 cntLocation">@current.Location </li>
+            <li class="w20 cntPostedOn">@current.LocalPostedOn.ToString("MMM dd, yyyy")</li>
+            <li class="w10">
+                <ul class="GearButtonAbsRight">
+                    @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+                    {
+                        Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "Candidate", showSaveJob = 1 });
+                    }
+                    else
+                    {
+                        Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "setting-details", aTagId = "slideit5", style = "", area = "", showSaveJob = 0 });
+                    }
+                </ul>
+            </li>
+            <li id="btnVacDetailsMob" class="ViewDetailsMob MobView" onclick="btnVacDetailsMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+            @if (current.ShowOnWebJobDescription)
+            {
+                <li class="FullContent lblNbrown editorContent">
+                    @*@if (!string.IsNullOrEmpty(@current.JobDescription) && @current.JobDescription.Length > 1000)
+                        {
+                            @String.Format("{0}...", current.JobDescription.Remove(1000))
+                        }
+                        else
+                        {
+                            @current.JobDescription
+                        }*@
+                    @Html.Raw(@current.JobDescription)
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#selectable").selectable({
+            cancel: 'ul.RowHeader, #selectable > .ui-selected, #Upload',
+
+            selecting: function (e, ui) {
+                $("#selectable ul").removeClass('ui-selected');
+                $(this).addClass('ui-selected');
+            },
+            selected: function (e, ui) {
+                $("#btnApplyNow").show(300);
+                $("#hdnVacancyId").val($(this).find(".ui-selected").attr('data-id'));
+            }
+        });
+    });
+
+    var divPodbl = $(".search-row");
+    divPodbl.dblclick(function () {
+        var dpId = $(this).find('ul').attr("data-id");
+        @*var dpLink = '@Url.Action("DisplayJob", "Search", new { VacancyId = "_DATAID_" })';*@
+        @*CR-5*@
+        var dpLink = '@Url.Action("DisplayOppty", "Search", new { OpptyID = "_DATAID_" })';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    });
+
+    function btnVacDetailsMob(element) {
+        var dpId = $(element).closest('ul').attr("data-id");
+        var dpLink = '@Url.Action("DisplayOppty", "Search", new { OpptyID = "_DATAID_" })';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    }
+
+    function actionClick(id) {
+        runEffect(id);
+        return false;
+    };
+
+    function runEffect(id) {
+        $("#" + id).slideToggle("slow");
+    }
+</script>

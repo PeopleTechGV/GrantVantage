@@ -1,0 +1,37 @@
+﻿@model  ATS.WebUi.Models.Question.ATSPickList
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+
+<div class="one-div-full">
+    <div class="box ATSPickList">
+        @Html.DropDownListFor(m => m.Answer, Model.AllValues, "--Select--", new { @class = "detail-select", @id = "AnsOptValues" })
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#AnsOptValues").live('change', function () {
+            var $self = $(this);
+            var ansOptId = $self.val();
+            if ($.trim(ansOptId) != "") {
+                var dataLink = '@Url.Action("GetValue","Application",new {AnsOptId = "_ANSOPTID_" })';
+                dataLink = dataLink.replace("_ANSOPTID_", ansOptId);
+                VacancyModel.CallGetMethod(dataLink, function (data) {
+                    if ($self.parents('form').find('#score').length > 0) {
+                        $self.removeClass('input-validation-error');
+                        $self.parents('form').find('#score').slider("value", parseInt(data), { enabled: false });
+                        var isExpandView = $("#btnExpandView").attr("is-expand");
+                        if (isExpandView == 'true') {
+                            var result = VacancyModel.ValidateQuestionAnswer($self.parents("form"));
+                            if (!result) {
+                                $self.parents("form").submit()
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+                $self.addClass('input-validation-error');
+                $self.parents('form').find('#score').slider("value", 0);
+            }
+        });
+    });
+</script>

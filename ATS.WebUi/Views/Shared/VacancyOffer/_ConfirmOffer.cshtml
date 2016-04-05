@@ -1,0 +1,185 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+
+<div id="VacOfferModel" class="OfferMain borderedModel">
+    <div class="OfferHeader">
+        Confirm Award
+        <a class="btnClosePopup" onclick="CloseVacOfferModel();"></a>
+    </div>
+
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW50 ModelValue">
+                <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.CandidateName):</span>
+                <span class="CandDetailsRight">@Model.CandidateName</span>
+            </div>
+            <div class="OfferBox OW50 ModelValue">
+                <span class="CandDetailsLeft">Award Type:</span>
+                @if (Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Candidate_Declined) || Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Candidate_Retracted))
+                {
+                    <span class="CandDetailsRight">@ATS.BusinessEntity.VacancyOfferType.New_Offer.ToString().Replace("_", " ")</span>
+                }
+                else
+                {
+                    <span class="CandDetailsRight">@Model.OfferTypeText</span>
+                }
+            </div>
+            <div class="OfferBox OW50 ModelValue">
+                <span class="CandDetailsLeft">Opportunity:</span>
+                <span class="CandDetailsRight">@Model.JobTitle</span>
+            </div>
+            <div class="OfferBox OW50 ModelValue">
+                <span class="CandDetailsLeft">Award Status:</span>
+                @if (Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Candidate_Declined) || Model.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Candidate_Retracted))
+                {
+                    <span class="CandDetailsRight">Make Award</span>
+                }
+                else
+                {
+                    <span class="CandDetailsRight">@Model.OfferStatusText</span>
+                }
+            </div>
+            <div class="OfferBox OW50 ModelValue">
+                <span class="CandDetailsLeft">Award Date:</span>
+                <span class="CandDetailsRight">@DateTime.Now.ToString("MM/dd/yyyy")</span>
+            </div>
+            <div class="OfferBox OW50 ModelValue">
+            </div>
+            <hr class="BreakLine" />
+
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeftN">Award Type:</span>
+                <span id="lblPlacementType" class="CandDetailsRight"></span>
+            </div>
+            @*<div class="OfferBox OW50">
+                    <span class="CandDetailsLeftN">Job Type:</span>
+                    <span id="lblJobType" class="CandDetailsRight"></span>
+                </div>*@
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeftN">Program Office:</span>
+                <span id="lblLocation" class="CandDetailsRight"></span>
+            </div>
+            <div class="OfferBox OW50">
+                <span class="CandDetailsLeftN">Award Start Date:</span>
+                <span id="lblStartDate" class="CandDetailsRight"></span>
+            </div>
+            <div class="OfferBox OW50 Contract">
+                <span class="CandDetailsLeftN">Award End Date:</span>
+                <span id="lblEndDate" class="CandDetailsRight"></span>
+            </div>
+        </div>
+
+        <div class="OfferDetails">
+            <span>Award Details</span>
+        </div>
+
+        <div class="OfferBox OW50">
+            <span class="CandDetailsLeftN">Award Amount:</span>
+            <span id="lblAwardAmount" class="CandDetailsRight"></span>
+        </div>
+        <div class="OfferBox OW50">
+            <span class="CandDetailsLeftN">Cash Match Req.:</span>
+            <span id="lblCashMatchRequired" class="CandDetailsRight"></span>
+        </div>
+        <div class="OfferBox OW50">
+            <span class="CandDetailsLeftN">Award Issue Date:</span>
+            <span id="lblAwardIssueDate" class="CandDetailsRight"></span>
+        </div>
+        <br clear="all" />
+
+        @*<div class="OfferBox OW50 Permanent">
+                <span class="CandDetailsLeftN">Salary Type:</span>
+                <span id="lblSalaryType" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 SalaryType">
+                <span class="CandDetailsLeftN">Salary Offered:</span>
+                <span id="lblSalaryOffered" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 HourlyType">
+                <span class="CandDetailsLeftN">Hour Per Week</span>
+                <span id="lblPerWeek" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 HourlyType">
+                <span class="CandDetailsLeftN">Hourly Wage</span>
+                <span id="lblHourlyWage" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 PieceType">
+                <span class="CandDetailsLeftN">Rate</span>
+                <span id="lblPieceRate" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 PieceType">
+                <span class="CandDetailsLeftN">Per</span>
+                <span id="lblPiecePer" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 Contract">
+                <span class="CandDetailsLeftN">Pay Rate:</span>
+                <span id="lblPayRate" class="CandDetailsRight"></span>
+            </div>
+
+            <div class="OfferBox OW50 Contract">
+                <span class="CandDetailsLeftN">Rate Period:</span>
+                <span id="lblRatePeriod" class="CandDetailsRight"></span>
+            </div>*@
+
+        <div class="OfferBox OW50 PlusCommission ClearFloat">
+            <span class="CandDetailsLeftN">Commission:</span>
+            <span id="lblCommission" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 PlusCommission">
+            <span class="CandDetailsLeftN">Comm Potential:</span>
+            <span id="lblCommPotential" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 PlusCommission">
+            <span class="CandDetailsLeftN">Commission Cap:</span>
+            <span id="lblCommissionCap" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 PlusBonus ClearFloat">
+            <span class="CandDetailsLeftN">Bonus:</span>
+            <span id="lblBonus" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 PlusBonus">
+            <span class="CandDetailsLeftN">Bonus Potential:</span>
+            <span id="lblBunusPotential" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 PlusBonus">
+            <span class="CandDetailsLeftN">Bonus Cap:</span>
+            <span id="lblBunusCap" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 ClearFloat CandidateNotice">
+            <span class="CandDetailsLeftN">Applicant Notice:</span>
+            <span id="lblCandidateNotice" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 CompanyNotice">
+            <span class="CandDetailsLeftN">Company Notice:</span>
+            <span id="lblCompanyNotice" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 CandidateNotice">
+            <span class="CandDetailsLeftN">In:</span>
+            <span id="lblCanNoticeIn" class="CandDetailsRight"></span>
+        </div>
+
+        <div class="OfferBox OW50 CompanyNotice">
+            <span class="CandDetailsLeftN">In:</span>
+            <span id="lblComNoticeIn" class="CandDetailsRight"></span>
+        </div>
+    </div>
+
+    <div class="OfferAction" style="margin-top: 15px;">
+        <input type="submit" class="btnMakeOffer" value="Cancel" onclick="CloseVacOfferModel(); return false;">
+        <input type="submit" id="btnMakeOffer" name="EmployeeAction" value="Confirm Award" onclick="RemoveComma();">
+        <input style="display: none;" type="submit" id="btnConfirmOffer" name="EmployeeAction" value="Confirm Acceptance">
+    </div>
+</div>

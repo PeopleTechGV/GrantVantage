@@ -1,0 +1,45 @@
+﻿@using BELabel = ATS.BusinessEntity.Common.ClientLabel;
+@model IEnumerable<ATS.BusinessEntity.Master.ClientMaster>
+<div class="search-result-detail">
+    <div class="search-heading">
+        <div class="location">
+            @Html.LanguageLabel(BELabel.FRM_CLIENT)
+        </div>
+        <div class="location">
+            @Html.LanguageLabel(BELabel.FRM_CLIENT_STARTDATE)
+        </div>
+        <div class="location">
+            @Html.LanguageLabel(BELabel.FRM_CLIENT_ENDDATE)
+        </div>
+        <div class="location">
+            &nbsp;
+        </div>
+    </div>
+    @foreach (ATS.BusinessEntity.Master.ClientMaster objCM in Model)
+    {
+        <div>
+            <ul class="search-row default">
+                <li id="selectable" class="text-details">
+                    <ul data-id="@objCM.ClientId">
+
+                        <li class="detail-location">@objCM.ClientName</li>
+                        <li class="detail-location">@objCM.StartDate.ToString("MMM dd, yyyy")</li>
+                        <li class="detail-location">@objCM.EndDate.ToString("MMM dd, yyyy")</li>
+                        <li style="height: 45px; padding: 0 13px; width: 24px;"></li>
+                        <li class="id">@Html.LanguageLabel(BELabel.FRM_CLIENT_USERLIMIT) :<span> @objCM.UserLimit</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    var divdbl = $(".search-row");
+    divdbl.dblclick(function () {
+        var clientId = $(this).find('ul').attr("data-id");
+        var dLink = '@Url.Action("View", "Client", new { area = ATS.WebUi.Common.Constants.AREA_ADMIN, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", clientId);
+        window.location = dLink;
+    });
+
+</script>

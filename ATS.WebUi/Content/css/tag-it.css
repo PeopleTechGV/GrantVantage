@@ -1,0 +1,51 @@
+﻿.ui-helper-hidden-accessible, .ui-icon-close {
+        display: none;
+    }
+
+
+    #ExtensionList {
+        border: 1px solid #bec0c4;
+        border-radius: 0;
+        display: block;
+        overflow: hidden;
+        padding: 3px;
+        width: 88%;
+    }
+
+        #ExtensionList > li.tagit-choice {
+            background-color: #e3e3e3;
+            border-radius: 0;
+            border: 1px solid #fff;
+            float: left;
+            font-family: calibri;
+            font-size: 13px;
+            list-style-type: none;
+            margin-right: 3px;
+            padding: 1px 4px;
+        }
+
+        #ExtensionList > li.tagit-new {
+            list-style-type: none;
+            float: left;
+            border: medium none;
+            padding: 0px 3px;
+            margin-right: 3px;
+        }
+
+            #ExtensionList > li.tagit-new > input[type=text] {
+                border: medium none;
+                padding: 3px 0;
+                width: 60px;
+            }
+
+
+    .tagit-close > .text-icon {
+        color: #953634;
+        margin-left: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .tagit-label{
+        color: #346E8E;
+    }

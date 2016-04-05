@@ -1,0 +1,270 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" />
+    @System.Web.Optimization.Styles.Render("~/Content/css1")
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery1")
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery3")
+    @using CurrentSession = ATS.WebUi.Common.CurrentSession;
+    <link id="cssTheme" href='@CurrentSession.Instance.VerifiedClient.objCompanyInfo.StylePath' rel="stylesheet" />
+    @System.Web.Optimization.Styles.Render("~/Content/cssResponsive")
+    <title>
+        @if (CurrentSession.Instance != null && CurrentSession.Instance.VerifiedClient != null)
+        {
+            @String.Format("{0}-Grants Portal-{1}", CurrentSession.Instance.VerifiedClient.Clientname, ViewBag.Title)
+        }
+        else
+        {
+            @ViewBag.Title
+        }
+        @{
+            String Website = string.Empty;
+            if (CurrentSession.Instance != null && CurrentSession.Instance.VerifiedClient.WebSite != null)
+            {
+                Website = CurrentSession.Instance.VerifiedClient.WebSite.ToString();
+            }
+        }
+    </title>
+
+    <script>
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+        if (msie > 0)
+            $.ajaxSetup({ cache: false });
+        var idleTimer = null;
+        var idleState = false;
+        var idleWait = 30 * 1000;
+
+        $(document).ready(function () {
+            ua = ua.toLowerCase();
+            if (ua.indexOf("safari/") !== -1 &&
+                ua.indexOf("windows") !== -1 && ua.indexOf("chrom") === -1
+                ) {
+                var rightContentSize = $(window).width() - 274;
+                $(".contnt-right").css('width', rightContentSize + 'px !important');
+            }
+
+            $('*').bind('mousemove keydown scroll', function () {
+                clearTimeout(idleTimer);
+                if (idleState == true) {
+                    console.log("Welcome Back after idle");
+                }
+                idleState = false;
+                idleTimer = setTimeout(function () {
+                    console.log("Call idleTimer");
+                    $.ajax({
+                        type: "POST",
+                        url: '/Shared/KeepSessionAlive.ashx',
+                        data: {},
+                        global: false,
+                        success: function () {
+                            console.log("KeepSessionAlive" + new Date());
+                        }
+                    });
+                    $("body").trigger("mousemove");
+                    idleState = true;
+                }, idleWait);
+            });
+            $("body").trigger("mousemove");
+            $('#loading').hide()
+           .ajaxStart(function () { $("#loading").fadeIn(); })
+           .ajaxStop(function () { $("#loading").fadeOut(); });
+            VacancyModel.RegisterDialog('dialog', false, false, true);
+
+            var ContentHeight = $("body").height() - 120;
+            $(".ContentSection").css("min-height", ContentHeight);
+
+            var sticky_navigation_offset_top = $('#stick-navigation').offset().top;
+            function sticky_navigation() {
+                var leftSection = "-=" + $(".contnt-left").outerWidth() + "px";
+                var scroll_top = $(window).scrollTop();
+                if (scroll_top > sticky_navigation_offset_top) {
+                    if ($('.ActionBar').length > 0) {
+                        $(".contnt-right").css("margin-top", "35px");
+                    }
+                    $('.ActionBar').addClass("FreezeActionbar");
+                    $('.contnt-left').addClass("FreezeSectionLeft");
+                    $(".contnt-right").addClass("FreezeSectionRight");
+                    $(".Searchbox").addClass("FreezeSearchBox");
+                    $("#DropToggle").addClass("FreezeDrpMore");
+                    $('.ActionBar').css('width', '100%').css('width', leftSection);
+                    $('#stick-navigation').addClass("FreezeNavigation");
+                } else {
+                    $(".contnt-right").css("margin-top", "0");
+                    $('.ActionBar').removeClass("FreezeActionbar");
+                    $('.contnt-left').removeClass("FreezeSectionLeft");
+                    $(".contnt-right").removeClass("FreezeSectionRight");
+                    $(".Searchbox").removeClass("FreezeSearchBox");
+                    $("#DropToggle").removeClass("FreezeDrpMore");
+                    $('.ActionBar').css('width', 'auto');
+                    $('#stick-navigation').removeClass("FreezeNavigation");
+                }
+            }
+            sticky_navigation();
+            $(window).scroll(function () {
+                sticky_navigation();
+            });
+
+            ////Set menue option layout to multi column if options >8
+            $(".NavigationBar > .hasDropdown > ul.dropdownMenu").each(function () {
+                console.log($(this).children("li").length);
+                if ($(this).children("li").length > 8) {
+                    $(this).addClass("multiColumns");
+                }
+                else if ($(this).children("li").length == 0) {
+                    $(this).hide();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        @if (CurrentSession.Instance != null && CurrentSession.Instance.VerifiedClient != null && CurrentSession.Instance.VerifiedClient.objCompanyInfo != null)
+        {
+            if (System.IO.File.Exists(Server.MapPath(CurrentSession.Instance.VerifiedClient.objCompanyInfo.Logo)))
+            {
+                <div class="Logo"><a href='@Website'><img alt="Logo" src='@CurrentSession.Instance.VerifiedClient.objCompanyInfo.Logo.Replace("~","")' /></a></div>
+            }
+            else
+            {
+                <div class="Logo"><a href='@Website'><img alt="Logo" src="/Content/images/logo.png" /></a></div>
+            }
+            <div class="HeaderText"><span>@CurrentSession.Instance.VerifiedClient.objCompanyInfo.PortalBannerTitle</span></div>
+        }
+        else
+        {
+            <div class="Logo"><a href='@Website'><img alt="Logo" src="/Content/images/logo.png" /></a></div>
+            <div class="HeaderText"><span>GRANTS PORTAL</span></div>
+        }
+        <div class="PoweredBy"><img class="SplashTrack" title="Splash Track" alt="Splash Track" src="/Content/images/splashtrack_logo.png" /></div>
+        <div class="HeaderAction">
+            <input type="button" class="btnHeader bgLanguage" value="Language" disabled="disabled" />
+            @if (CurrentSession.Instance == null || CurrentSession.Instance.VerifiedUser == null)
+            {
+                <div class="aside">@Html.Partial("_Login")</div>
+                <button class="btnHeader bgHeaderLogin" onclick="javascript: window.location = '@Url.Action("AnonymousUserProfile", "Account", new { area = ATS.WebUi.Common.Constants.AREA_ROOT })'">Login/Register</button>
+            }
+            else
+            {
+                <a href='javascript:void(0)' class="btnHeader bgLogout MobView" onclick="javascript:window.location='@Url.Action("LogOut", "Home", new { area = "" })'">Logout</a>
+            }
+        </div>
+    </header>
+
+    @{
+        var LeftMenu = @Html.Partial("_LeftMenu");
+    }
+
+    <div id="stick-navigation" class="NavigationBar">
+        <div class="NavItems hasDropdown">
+            <div class="MenuItemIcon bgHome16W"></div>
+            <span class="chevron"></span>
+            <ul class="dropdownMenu hasIcon">@LeftMenu</ul>
+        </div>
+        @RenderSection("Navigation", false)
+        @if (CurrentSession.Instance != null && CurrentSession.Instance.VerifiedUser != null)
+        {
+            <div class="NavItems hasDropdown floatright sm-disabled">
+                <span class="navTitle">Welcome,  @CurrentSession.Instance.VerifiedUser.FullName</span>
+                <span class="chevron"></span>
+                <ul class="dropdownMenu MenuRight hasIcon">
+                    @if (CurrentSession.Instance.VerifiedUser.DivisionId != null && CurrentSession.Instance.VerifiedUser.DivisionId != Guid.Empty)
+                    {
+                        <li>
+                            <a href='javascript:void(0)' class="bgChange16W" onclick="javascript:window.location='@Url.Action("EmployeeChangePassword", "User", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'">
+                                CHANGE PASSWORD
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        string profileImagePath = ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.ProfileImage;
+                        if (profileImagePath == "")
+                        {
+                            profileImagePath = "Candidate.png";
+                        }
+                        <li class="user-image">
+                            <img src="/UploadImages/ProfileImage/@profileImagePath" />
+                        </li>
+                        <li>
+                            <a href='javascript:void(0)' class="bgChange16W" onclick="javascript:window.location='@Url.Action("CandidateChangePassword", "Home", new { area =  ATS.WebUi.Common.Constants.AREA_CANDIDATE })'">
+                                CHANGE PASSWORD
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href='javascript:void(0)' class="bgLogout16W" onclick="javascript:window.location='@Url.Action("LogOut", "Home", new { area = "" })'">
+                            LOGOUT
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+        <div class="BackCover">
+        </div>
+    </div>
+
+    <div id="commonMessage" class="CommonNotification"></div>
+
+    <section class="ContentSection">
+        <div class="contnt-left">
+            <ul class="LeftMenu">
+                @LeftMenu
+            </ul>
+            <div class="aside" id="sticker">
+                <div class="asideone">
+                    @Html.Partial("_SideBar")
+                </div>
+            </div>
+        </div>
+        <div id="ParentContentId" class="contnt-right">
+            @RenderBody()
+        </div>
+    </section>
+
+    <div id="dialog"></div>
+    <div id="ConfirmDiv"></div>
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(function () {
+            var pull = $('#pull');
+            menu = $('nav ul');
+            menuHeight = menu.height();
+            $(pull).on('click', function (e) {
+                e.preventDefault();
+                menu.slideToggle();
+            });
+            $(window).resize(function () {
+                var w = $(window).width();
+                var responsiveMenu = $('#nav-bar1');
+                if (w > 320 && menu.is(':hidden')) {
+                    menu.removeAttr('style');
+                }
+                if (w > 991 && !responsiveMenu.is(':hidden')) {
+                    responsiveMenu.removeAttr('style');
+                }
+            });
+        });
+    </script>
+
+    <div id="loading">
+        <div id="loadingcontent">
+            <p id="loadingspinner">
+                <img src="~/Content/images/ajax-loader.gif" />
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

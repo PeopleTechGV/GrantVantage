@@ -1,0 +1,57 @@
+﻿<ul class="DropMenu">
+    <li>
+        <a href="javascript:void(0);">
+            <span id="SelectedStatus" class="ttldbrown"></span>
+            <span id="SelectedStatusCount" class="ttldbrown"></span>
+            <span class="ttldbrown">&#9660;</span>
+        </a>
+        <ul class="ddlVacStatusItems" style="display: none;">
+            @foreach (SelectListItem item in (SelectList)ViewBag.ApplicationStatusListWithCount)
+            {
+                <li><a href="javascript:void(0);" data-vacstatus="@item.Text" class="SelectedItem">@item.Text<span class="ttldbrown">&nbsp;(@item.Value)</span></a></li>
+            }
+        </ul>
+    </li>
+</ul>
+
+<script>
+    $(document).ready(function () {
+        $(".DropMenu").hover(function (event) {
+            if ($('.ddlVacStatusItems').parents(".acc-header").hasClass('ui-state-active')) {
+                $('.ddlVacStatusItems').show();
+            }
+        }, function () {
+            $('.ddlVacStatusItems').hide();
+        });
+    });
+</script>
+
+<script>
+    SetSelectedStatus();
+    function SetSelectedStatus() {
+        var SelectedStatus = $(".ddlVacStatusItems .SelectedItem").attr("data-vacstatus");
+        var SelectedStatusCount = $(".ddlVacStatusItems .SelectedItem span").html();
+        $(".DropMenu #SelectedStatus").html(SelectedStatus);
+        $(".DropMenu #SelectedStatusCount").html(SelectedStatusCount);
+    }
+
+    $(".ddlVacStatusItems a").click(function (event) {
+        var active = $(".ddlVacApplication").parent().parent().accordion("option", "active");
+        $(".ddlVacApplication").parent().parent().accordion("option", "active", 5);
+        var VacStatus = $(this).attr("data-vacstatus");
+        var VacancyId = $(this).parents(".ddlVacApplication").parents().attr('data-recordid')
+        var dataLink = '@Html.Raw(Url.Action("GetApplicationByVacIdAndStatus", "MyVacancy", new { VacancyId = "_VACID_", VacStatus = "_VACSTATUS_" }))';
+        dataLink = dataLink.replace("_VACID_", VacancyId);
+        dataLink = dataLink.replace("_VACSTATUS_", VacStatus);
+        VacancyModel.CallPostMethod(dataLink, function (data) {
+            $(".ddlVacApplication").parents(".acc-header").next(".acc-Content").html("");
+            $(".ddlVacApplication").parents(".acc-header").next(".acc-Content").html(data);
+        });
+
+        $(this).parent().siblings().children().removeClass("SelectedItem")
+        $(this).addClass("SelectedItem")
+        $(".DropMenu #SelectedStatus").html(VacStatus);
+        $(".DropMenu #SelectedStatusCount").html($(this).children("span").html());
+        event.stopImmediatePropagation();
+    });
+</script>

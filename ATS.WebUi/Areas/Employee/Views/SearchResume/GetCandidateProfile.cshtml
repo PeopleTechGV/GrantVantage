@@ -1,0 +1,46 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateProfile>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@{
+    ViewBag.Title = "GetCandidateProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon bgSearch16W"></div>
+        <span class="navTitle">@Model.obj.objUserDetails.FirstName&nbsp;@Model.obj.objUserDetails.LastName</span>
+        <span class="chevron"></span>
+    </div>
+}
+<div id="Messages" style="width: auto; float: left;margin-left:300px;">
+</div>
+
+<script>
+    $(function () {
+        var h2data = '<div style="padding-left:10px;color:#953634;float:left;width:15%;">Resume Name   </div>'
+        $($("#frmMyProfileCandidate").find("h2").get(0)).html(h2data + '@Model.obj.objProfile.ProfileName');
+
+    });
+
+    function BackEvent() {
+        window.location.href = '@Url.Action("Index", "SearchResume", new {IsBack = true })'
+    }
+
+    function downloadFullProfilePDF(element) {
+        var url = $(element).attr('page-url');
+        window.location.href = url;
+    }
+</script>
+
+<div class="floatright">
+    <button class="btn-icon24 bordered bgBack24" id="btn_Back1" onclick=" BackEvent();">
+        @Html.LanguageLabel(BECommonConstantConst.BACK)
+    </button>
+    <a class="btn-icon24 bordered bgPdf32" onclick="downloadFullProfilePDF(this);" page-url='@Url.Action("PrintFullProfile", "MyVacancy", new { URL = "/Employee/CandidateDetails?ApplicationId=" + Guid.Empty, ClientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname, UserId = Model.obj.objUserDetails.UserId })'>
+        PDF
+    </a>
+</div>
+<br clear="all" />
+<div class="ClearFloat" style="margin-top: 5px;">
+    @Html.Partial("Profile/_Profile", Model.obj)
+</div>

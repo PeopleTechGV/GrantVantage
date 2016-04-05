@@ -1,0 +1,355 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.ApplicationReviewProcess
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByVacRndId(Model.objVacancyRound.VacancyRoundId);
+    //BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    BERndAttr RndAttr = (BERndAttr)Model.objVacancyRound.RoundAttributeNo;
+    var IsSurveyPending = false;
+    if (RndAttr == BERndAttr.CandidateSurvey && float.Parse(Model.objVacancyRound.Score.ToString()) >= 0.0)
+    {
+        IsSurveyPending = ATS.WebUi.Common.CommonFunctions.GetAnswerStatusByVacRndId(Model.AppId, Model.objVacancyRound.VacancyRoundId);
+    }
+}
+
+<div class="acc-header" data-vacroundid="@Model.objVacancyRound.VacancyRoundId" data-pkid="@Model.objVacancyRound.VacancyRoundId" data-rndattrnoheader='@Model.objVacancyRound.RoundAttributeNo' data-rndorderheader="@Model.objVacancyRound.RndOrder" data-rndcntheader="@Model.objVacancyRound.RndCnt">
+    <p class="prfle-tab-head-brown RndAttrNo" style="overflow: hidden" data-rndattrno='@Model.objVacancyRound.RoundAttributeNo' data-surveypending='@IsSurveyPending'>
+        <span class="w50 SMW70" style="float:left;">
+            <span class='Save'>@Html.LanguageLabel(BECommonConst.FRM_APP_REV_ROUND) <span class="CountRound"></span>:</span>
+            <span class='ttldblue' id="rndtype">@Model.objVacancyRound.RoundType</span>
+            @if (Model.objVacancyRound.IsRndActive && float.Parse(Model.objVacancyRound.Score.ToString()) >= 0.0)
+            {
+                <span style="padding-right: 1%;padding-left: 1%;" class="ttllbrown activeCan">(ACTIVE)</span>
+            }
+            else
+            {
+                if (!Model.objVacancyRound.IsPromoted)
+                {
+                    <span class="inativeCan"></span>
+                }
+            }
+        </span>
+        <span class="ansoption" style="float: left;">
+            <span class="up" style="right:6%;background-color:aliceblue; z-index:999999 !important;">
+
+            </span>
+        </span>
+        <span class="ansoption AccDeleteIcon">
+            @if (float.Parse(Model.objVacancyRound.Score.ToString()) < 0.0)
+            {
+                if (@Model.objVacancyRound.RndOrder == 1 && @Model.objVacancyRound.RndCnt > 1)
+                {
+                    <span class="down onload sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("VacRndReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacancyId = Model.objVacancyRound.VacancyId, @VacRndId = Model.objVacancyRound.VacancyRoundId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.objVacancyRound.RndOrder + 1)' data-id='@Model.objVacancyRound.VacancyRoundId' onclick="return SetVacRndOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                }
+                else if (@Model.objVacancyRound.RndOrder == @Model.objVacancyRound.RndCnt && @Model.objVacancyRound.RndCnt > 1)
+                {
+                    <span class="up onload sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("VacRndReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacancyId = Model.objVacancyRound.VacancyId, @VacRndId = Model.objVacancyRound.VacancyRoundId, @OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.objVacancyRound.RndOrder - 1)' data-id='@Model.objVacancyRound.VacancyRoundId' onclick="return SetVacRndOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                }
+                else
+                {
+                    if (@Model.objVacancyRound.RndCnt > 1)
+                    {
+                        <span class="up onload sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("VacRndReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacancyId = Model.objVacancyRound.VacancyId, @VacRndId = Model.objVacancyRound.VacancyRoundId, @OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.objVacancyRound.RndOrder - 1)' data-id='@Model.objVacancyRound.VacancyRoundId' onclick="return SetVacRndOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                        <span class="down onload sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("VacRndReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacancyId = Model.objVacancyRound.VacancyId, @VacRndId = Model.objVacancyRound.VacancyRoundId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.objVacancyRound.RndOrder + 1)' data-id='@Model.objVacancyRound.VacancyRoundId' onclick="return SetVacRndOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                    }
+                }
+                <span class="up" id="onSaveRndUp" style="display:none;"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("VacRndReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacancyId = Model.objVacancyRound.VacancyId, @VacRndId = Model.objVacancyRound.VacancyRoundId, @OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.objVacancyRound.RndOrder - 1)' data-id='@Model.objVacancyRound.VacancyRoundId' onclick="return SetVacRndOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                <span class="down" id="onSaveRndDown" style="display:none;"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("VacRndReorder", "MyVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @VacancyId = Model.objVacancyRound.VacancyId, @VacRndId = Model.objVacancyRound.VacancyRoundId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.objVacancyRound.RndOrder + 1)' data-id='@Model.objVacancyRound.VacancyRoundId' onclick="return SetVacRndOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                if (Model.objVacancyRound.PermissionType.Contains(BEClient.ATSPermissionType.Delete))
+                {
+                    <span class="up"><a href='javascript:void(0);' id="Vacrounddelete" onclick="MyVacancy.DeleteVacRnd(this);" data-pkid="@Model.objVacancyRound.VacancyRoundId"><img src="~/Content/images/delete_16.png" height="13" width="13" /></a></span>
+                }
+            }
+        </span>
+        @if (RndAttr != BERndAttr.OfferRound)
+        {
+            if (float.Parse(Model.objVacancyRound.Score.ToString()) >= 0.0)
+            {
+                <span class="w30 MobDisable">
+                    <span class="ttllbrown">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+                    <span class="ttldblue" id="rndweight">@Model.objVacancyRound.RoundWeight</span>
+                </span>
+                <span class="w20 SMWAuto" style="float:right;text-align:right;">
+                    <span class="ttllbrown">Score: </span>
+                    <span class="ttldblue" id="rndscore">@Model.objVacancyRound.Score</span>
+                </span>
+            }
+            else
+            {
+                <span class="w30">
+                    <label></label>
+                </span>
+                <span class="w30 sm-disabled" style="float:right;text-align:right;">
+                    <span class="ttllbrown">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+                    <span class="ttldblue" id="rndweight">@Model.objVacancyRound.RoundWeight</span>
+                </span>
+            }
+        }
+
+        @if (float.Parse(Model.objVacancyRound.Score.ToString()) >= 0.0)
+        {
+            if (Model.objVacancyRound.IsRndActive)
+            {
+                <div class="AccGearBox">
+                    <ul id="VacStatus" class="DropMenu">
+                        <li>
+                            <a><img src='@Url.Content("~/Content/images/Options_Gear_24.png")' /></a>
+                            <ul class="rndMenuRight">
+                                @if (Model.objVacancyRound.isReviewer && Model.IsApplicationDecline)
+                                {
+                                    <li><a class="WithIcon bgReactivate" onclick="ReactiveCandidateApplication(this)">Reactive Applicant</a></li>
+                                }
+                                else
+                                {
+                                    if (Model.objVacancyRound.isReviewer || Model.objVacancyRound.VacancyManagerId == ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.UserId)
+                                    {
+                                        <li>
+                                            <a class="WithIcon bgAssignCandidate16" href='@Url.Action("GetUnAssignedReviewers", "Application", new { VacRndId = Model.objVacancyRound.VacancyRoundId,ApplicationId = Model.AppId })' onclick="return VacancyModel.OpenPostRequestForm(this)" title="Assign Applicant" dialog-width="700px" dialog-close-button="false" dialog-title='Assign Applicant'>
+                                                Assign Applicant
+                                            </a>
+                                        </li>
+                                    }
+                                    if (Model.objVacancyRound.isReviewer)
+                                    {
+                                        <li>
+                                            <a class="WithIcon bgDecline">Decline Applicant<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /> </a>
+                                            <ul class="submenu-right">
+                                                @foreach (var v in Model.ApplicationBasedStatusList.Where(x => x.Category == "Declined").ToList())
+                                                {
+                                                    <li><a id="btnClose" data-appstatusid='@v.ApplicationBasedStatusId' onclick="UpdateApplication(this)">@v.LocalName</a></li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                    if (Model.objVacancyRound.RndCnt > 1)
+                                    {
+                                        if (Model.objVacancyRound.isReviewer)
+                                        {
+                                            if (Model.objVacancyRound.RndOrder == Model.objVacancyRound.RndCnt)
+                                            {
+                                                <li>
+                                                    <a id="btnDemote" class="WithIcon bgDemote" onclick="DemoteCandidate(this);">Demote Applicant</a>
+                                                </li>
+                                            }
+                                            else if (Model.objVacancyRound.RndOrder < Model.objVacancyRound.RndCnt && Model.objVacancyRound.RndOrder > 1)
+                                            {
+                                                if (Model.objVacancyRound.RoundAttributeNo != Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.OfferRound))
+                                                {
+                                                    if (IsSurveyPending)
+                                                    {
+                                                        <li>
+                                                            <a id="btnSurveyReminder" class="WithIcon bgResend" onclick="ResendSurveyReminder(this);">Resend Survey Reminder</a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a id="btnPromote" class="WithIcon bgPromote" onclick="PromoteCandidate(this);">Promote Applicant</a>
+                                                        </li>
+                                                    }
+                                                }
+                                                <li>
+                                                    <a id="btnDemote" class="WithIcon bgDemote" onclick="DemoteCandidate(this);">Demote Applicant</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                if (IsSurveyPending)
+                                                {
+                                                    <li>
+                                                        <a id="btnSurveyReminder" class="WithIcon bgResend" onclick="ResendSurveyReminder(this);">Resend Survey Reminder</a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a id="btnPromote" class="WithIcon bgPromote" onclick="PromoteCandidate(this);">Promote Applicant</a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (Model.objVacancyRound.RoundAttributeNo == Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.OfferRound) &&
+                                    Model.objVacancyRound.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed))
+                                    {
+                                        <li><a id="btnHireCandidate" class="WithIcon bgHireCandidate" onclick="HireCandidate(this);">Hire Applicant</a></li>
+                                    }
+                                }
+
+                                <li class="showData">
+                                    <a class="WithIcon bgExport16">Download<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /></a>
+                                    <ul class="submenu-right">
+                                        @if (ViewBag.UploadedRequiredDocsList != null)
+                                        {
+                                            string _path = HttpContext.Current.Request.Url.AbsoluteUri.Substring(0, HttpContext.Current.Request.Url.AbsoluteUri.IndexOf("/Employee"));
+                                            foreach (var item in ViewBag.UploadedRequiredDocsList)
+                                            {
+                                                <li><a class="WithIcon bgResume" onclick="downloadFiles(this);" filepath='@_path@item.Path.Replace("~","")'>@item.RequiredDocumentName</a></li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li><a id="btnPreviewResume" class="WithIcon bgResume" onclick="PreviewResume(this);" filepath='@String.Format("{0}{1}", ATS.WebUi.Common.ConfigurationMapped.Instance.ResumeURL, Model.ATSResumeNewName)'>Preview Resume</a></li>
+                                            if (Model.ATSCoverLetterId != null && Model.ATSCoverLetterId != Guid.Empty)
+                                            {
+                                                <li><a id="btnPreviewCoverLetter" class="WithIcon bgCoverLetter" onclick="PreviewCoverLetter(this);" filepath='@String.Format("{0}{1}", ATS.WebUi.Common.ConfigurationMapped.Instance.ResumeURL, Model.ATSCoverLetterNewName)'>Preview Cover Letter</a></li>
+                                            }
+                                        }
+                                        <li><a id="btnFullProfile" class="WithIcon bgPdf" data-client='@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname' data-user='@ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.UserId' onclick="ShowData2(this)">@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_VAC_PDF)</a></li>
+                                        <li><a onclick="downloadZipFiles(this);" filepath='@Url.Action("DownloadAllAppDocsZipByApplicationId", "MyVacancy", new { ApplicationId = Model.AppId })' id="btnAllZip" class="WithIcon bgZip">All (zip file)</a></li>
+                                    </ul>
+                                </li>
+
+                                @if (ViewBag.BeginInterviewList != null && (Model.objVacancyRound.RoundAttributeNo == Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.InternalEvalRound) || Model.objVacancyRound.RoundAttributeNo == Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.InterviewRound)))
+                                {
+                                    <li>
+                                        <a class="WithIcon bgInterview16">Begin Interview<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /></a>
+                                        <ul id="BeginInterview" class="submenu-right" style="width: 300px !important;">
+                                            @foreach (var item in ViewBag.BeginInterviewList)
+                                            {
+                                                <li><a onclick="return BeginInterview(this);" data-scheduleintid="@item.ScheduleIntId" data-vacrndid="@item.VacRndId">@item.Round</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            }
+        }
+    </p>
+</div>
+
+<div class="acc-Content" name="RoundDetail" data-mode="@ViewBag.PageMode">
+    <div class="acc-inner">
+        @if (Model.IsApplicationDecline)
+        {
+            <div>
+                Please Reactivate the Applicant.
+            </div>
+        }
+        else
+        {
+            <div class="AccRoundDetail">
+            </div>
+        }
+        @if (float.Parse(Model.objVacancyRound.Score.ToString()) < 0.0)
+        {
+            @Html.Partial("Shared/_SectionDone", null)
+        }
+    </div>
+</div>
+
+<script>
+    function BeginInterview(element) {
+        var ScheduleIntId = $(element).attr("data-scheduleintid");
+        var VacRndId = $(element).attr("data-vacrndid");
+        var dLink = '@Html.Raw(Url.Action("ConductInterview", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ScheduleIntId = "_SCHEDULEINTID_", VacRndId = "_VACRNDID_", ReturnUrl = "Application" }))';
+        dLink = dLink.replace("_SCHEDULEINTID_", ScheduleIntId);
+        dLink = dLink.replace("_VACRNDID_", VacRndId);
+        window.location = dLink;
+    }
+
+    function PreviewResume(data) {
+        var Loc = $(data).attr('filepath');
+        var GoogleHref = 'http://docs.google.com/viewer?url=' + Loc + '&embedded=false';
+        window.open(GoogleHref, GoogleHref, "width=1000,height=800,scrollbars=yes,resizable = yes");
+    }
+
+    function PreviewCoverLetter(data) {
+        var Loc = $(data).attr('filepath');
+        var GoogleHref = 'http://docs.google.com/viewer?url=' + Loc + '&embedded=false';
+        window.open(GoogleHref, GoogleHref, "width=1000,height=800,scrollbars=yes,resizable = yes");
+    }
+    function downloadZipFiles(data) {
+        var userid = $("#ulRequiredDocs").attr("user-id");
+        var Loc = $(data).attr('filepath');
+        window.location.href = Loc + "&UserId=" + userid;
+    }
+    function downloadFiles(data) {
+        var Loc = $(data).attr('filepath');
+        window.open(Loc);
+    }
+    downloadZipFiles
+    function ShowData2(element) {
+        var _ele = $(element);
+        //var _appid = $(_ele).parents('.AccRevRat').parent().prev().parents('.CanInterview').closest('.acc-Content').prev().attr('data-pkid');
+        var _appid = $(_ele).parents('.CanInterview').closest('.acc-Content').prev().attr('data-pkid');
+        var url1 = '@Html.Raw(Url.Action("Index", "CandidateDetails", new { ApplicationId = "_APPID_", ClientName = "_CLIENTNAME_", UserId = "_USERID_" }))';
+        var clientid = $(_ele).attr('data-client');
+        var userid = $(_ele).attr('data-user');
+        url1 = url1.replace("_APPID_", _appid);
+        url1 = url1.replace("_CLIENTNAME_", clientid);
+        url1 = url1.replace("_USERID_", userid);
+        window.open(url1, null, "width=1000,height=700,scrollbars=yes,resizable = yes");
+    }
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    function SetVacRndOrder(element) {
+        var _ele = $(element);
+        var _newrndAttr = "";
+        var _currRndAttr = "";
+        var _message = "";
+        _currRndAttr = $(_ele).parents('.acc-header').attr('data-rndattrnoheader');
+        _newrndAttr = $(_ele).parents('.acc-header').next().next().attr('data-rndattrnoheader');
+        if ($(_ele).attr('id') == "OrderUp") {
+            _newrndAttr = $(_ele).parents('.acc-header').prev().prev().attr('data-rndattrnoheader');
+        }
+        else {
+            _newrndAttr = $(_ele).parents('.acc-header').next().next().attr('data-rndattrnoheader');
+        }
+        if (_newrndAttr == 1 && _currRndAttr != 1) {
+            _message = "Application Round Must be the First Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr != 1 && _currRndAttr == 1) {
+            _message = "Application Round Must be the First Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr == 5 && (_currRndAttr == 1)) {
+            _message = "Applicant Survey Round cannot be the first round and it cannot be the last round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr != 4 && (_currRndAttr == 4)) {
+            _message = "Award Round Must be the Last Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_currRndAttr == 5 && (_newrndAttr == 1)) {
+            _message = "Applicant Survey Round cannot be the first round and it cannot be the last round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_currRndAttr == 5 && (_newrndAttr == 4)) {
+            _message = "Applicant Survey Round cannot be the first round and it cannot be the last round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr != 4 && _currRndAttr == 4) {
+            _message = "Award Round Must be the Last Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else if (_newrndAttr == 4 && _currRndAttr != 4) {
+            _message = "Award Round Must be the Last Round.";
+            VacancyModel.DisplayErrorMeesage('#commonMessage', _message, 3000);
+        }
+        else {
+            $.get($(element).attr("data-url"), function (response) {
+                var jsonData = JSON.parse(response);
+                if (!jsonData.IsError) {
+                    var _parentAcc = $(element).parents('#VacancyAcc');
+                    var active = _parentAcc.accordion("option", "active");
+                    _parentAcc.accordion("option", "active", false).accordion("refresh");
+                    _parentAcc.accordion("option", "active", active);
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, 3000);
+                }
+            });
+        }
+    }
+</script>

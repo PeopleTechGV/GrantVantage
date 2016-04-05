@@ -1,0 +1,133 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.TVac>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BELanCat = ATS.BusinessEntity.Common.VacancyTemplate
+@using BEClient = ATS.BusinessEntity
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+
+<div id="innerTVac" class="innerTVac">
+    <div class="acc-header" data-index="1" data-recordid="@Model.obj.TVacId">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(BELanCat.FRM_VAC_DETAILS)
+            <span class="notification" style="display:none;"></span>
+            <span class="Save" data-tvacid='@Model.obj.TVacId' style="display:none;">
+                <button type="button" onclick=""></button>
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content" name="vacancyDetail" data-mode="@ViewBag.PageMode">
+
+    </div>
+
+    @if (ViewBag.PageMode == BEClient.PageMode.View || ViewBag.PageMode == BEClient.PageMode.Update)
+    {
+        <div class="acc-header" data-index="2" data-recordid="@Model.obj.TVacId">
+            <p class="prfle-tab-head">
+             @Html.LanguageLabel(BELanCat.FRM_VAC_JOB_DESCRIPTION)
+                <span class="notification" style="display:none;"></span>
+                <span class="Save" data-vacancyid='JobDesc_@Model.obj.TVacId' style="display:none;">
+                    <button type="button" onclick="return outerSave(this);"></button>
+                </span>
+            </p>
+        </div>
+        <div class="acc-Content" name="jobdesc" data-mode="@ViewBag.PageMode">
+        </div>
+
+        <div class="acc-header" data-index="3" data-recordid="@Model.obj.TVacId">
+            <p class="prfle-tab-head">
+                @Html.LanguageLabel(BELanCat.FRM_VAC_COMPENSATION_INFO)
+                <span class="notification" style="display:none;"></span>
+                <span class="Save" data-tvacid='Com_@Model.obj.TVacId' style="display:none;">
+                    <button type="button" onclick="return outerSave(this);"></button>
+                </span>
+            </p>
+        </div>
+        <div class="acc-Content" name="compinfo" data-mode="@ViewBag.PageMode">
+        </div>
+
+        <div class="acc-header" data-index="4" data-recordid="@Model.obj.TVacId">
+            <p class="prfle-tab-head" style="overflow:hidden;">
+                <span style=" float:left;">Application Review Process</span>
+                <span class="ttldbrown" style="float:left; margin-left: 5px;">
+                    (Rounds: <span id="vacrndcnt">@Model.obj.RndCount</span>)
+                </span>
+            </p>
+        </div>
+        <div class="acc-Content" name="appreviewprocess" data-mode="@ViewBag.PageMode">
+            <div class="AccTVacRounds">
+            </div>
+            <div class="RoundConfigNewForm" style="display:none;">
+
+            </div>
+            @Html.Partial("Shared/_BtnAddTVacRnd")
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".innerTVac").accordion(VacancyModel.AccSecondAttr);
+        $('#divisionId > option').each(function () {
+            $(this).html($(this).text());
+        });
+    });
+    $("body").ajaxStop(function () {
+        $('#divisionId > option').each(function () {
+            $(this).html($(this).text());
+        });
+    });
+
+    function setval(ele) {
+        var txt_TotalPosition = ele;
+        $(txt_TotalPosition).closest('.vacancy-Details').find("#txt_RemainingPosition").val(txt_TotalPosition.value)
+    }
+    $("#txt_TotalPosition").change(function () {
+        $("txt_RemainingPosition").val($("#txt_TotalPosition").val());
+    });
+
+    function RemoveTVac(element) {
+        $(element).closest("form").closest('.acc-Content').prev().remove();
+        $(element).closest("form").closest('.acc-Content').remove();
+        return false;
+    }
+
+    function CopyTemplateName(changeVal) {
+        var cur = $(changeVal);
+        VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val());
+    }
+
+    function TVacSuccess(data, custome) {
+        var CatAccClassName = ".TVacAccordian";
+        $(CatAccClassName).children('form').remove();
+        var jsonData = JSON.parse(data);
+        if (!jsonData.IsError) {
+            var newJsonData = "<div>" + jsonData.Data + "</div>";
+            var newId = $(newJsonData).find(".acc-header").attr("data-tvacidonly");
+            if ($(CatAccClassName).find("div[data-tvacidonly='" + newId + "']").length > 0) {
+                var active = $(CatAccClassName).accordion("option", "active");
+                $(CatAccClassName).find("div[data-tvacidonly='" + newId + "']").html($(newJsonData).find("div[data-tvacidonly='" + newId + "']").html());
+                $(CatAccClassName).find("div[data-tvacidonly='" + newId + "']").next().find('.editsection').hide();
+                $(CatAccClassName).accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", active);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                $(CatAccClassName).append(jsonData.Data).accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                $(CatAccClassName).find("div[data-catidonly=00000000-0000-0000-0000-000000000000]").remove('div');
+                $(CatAccClassName).find("div[data-catid=00000000-0000-0000-0000-000000000000]").remove('div');                
+            }
+        }
+        else {
+            $weight = $(CatAccClassName).find("div[data-catidonly='" + custome + "']").find('#rndweight');
+            if ($weight.length > 0) {
+                VacancyModel.DisplayProfileCommonNotification(jsonData, $weight.get(0));
+            }
+            var Savelink = $("span[data-TVacid='" + custome + "']").get(0);
+            VacancyModel.DisplayProfileCommonNotification(jsonData, $(Savelink));
+        }
+        var count = ($(CatAccClassName).find("div[data-tvacidonly]").length);
+        $('#lblCount').text(count);
+        $("#Count_CSMNU_VACANCYTEMPLATES").text(count);
+        VacancyModel.IgnoreAccordianHeaderClick("CatAccordian");
+        TemplateMyVacancy.IgnoreAccordianVacTemplateMainAccHeaderClick($('.TVacAccordian').find('.acc-header'));
+    }
+</script>

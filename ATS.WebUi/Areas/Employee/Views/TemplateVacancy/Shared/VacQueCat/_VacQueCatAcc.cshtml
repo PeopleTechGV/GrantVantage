@@ -1,0 +1,20 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.TVacQueCat>
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+<div class="VacQueCat">
+    @if (Model != null)
+    {
+        int TotalCount = Model.Count();
+        foreach (BEClient.TVacQueCat _current in Model)
+        {
+            _current.TVacQueCatCnt = TotalCount;
+            @Html.Partial("Shared/VacQueCat/_VacQueCatDetail", _current);
+        }
+    }
+</div>
+<div class="acc-action">
+    <a id="addTVacQueCat" href="javascript:void(0);" class="btn CaseUpper">@Html.LanguageLabel(BeCommonConst.FRM_QUE_CAT_ADD)</a>
+</div>
+
+
+@*TEMPLATE*@

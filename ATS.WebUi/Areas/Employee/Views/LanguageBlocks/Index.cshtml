@@ -1,0 +1,33 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.LanguageBlocks>>> 
+@{
+    ViewBag.Title = "Language Blocks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@Html.Partial("Shared/_LanguageBlockList", Model.obj.obj)
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+<script>
+    function ViewBlock(element) {
+        var dataid = $(element).closest('ul').attr("data-id");
+        var vLink = '@Url.Action("View", "LanguageBlocks", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_" })';
+        vLink = vLink.replace("_DATAID_", dataid);
+        window.location = vLink;
+    }
+</script>

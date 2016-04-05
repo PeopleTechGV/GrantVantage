@@ -1,0 +1,47 @@
+﻿@model List<ATS.BusinessEntity.ATSSecurityRoles>
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+@{
+    Layout = null;
+}
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w50">Security Roles</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.ATSSecurityRoles current in Model)
+    {
+        <ul class="RowContent CursorPointer" onclick="rwFocus(this,'@current.SequenceNo')" data-id='@current.ATSSecurityRoleId'>
+            <li class="w50 cntDegreeType">@current.LocalName</li>
+            @*<li id="MobDegreeType" class="ViewDetailsMob MobView" onclick="MobDegreeType(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>*@
+        </ul>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "ATSSecurity")';
+    });
+
+    function rwFocus(ctlUl,role) {
+        if(role == 301)
+        {
+            $(ctlUl).removeClass("ui-selected");
+            if($(".ui-selected").length <=0)
+                $("#btnDelete").hide();
+            return false;
+        }
+    }
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var SecurityroleId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "ATSSecurity", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", SecurityroleId);
+        window.location = dLink;
+    });
+
+    function MobDegreeType(element) {
+        var SecurityroleId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "ATSSecurity", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", SecurityroleId);
+        window.location = dLink;
+    }
+</script>

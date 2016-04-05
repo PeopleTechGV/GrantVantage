@@ -1,0 +1,19 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.ScheduleInt
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant;
+
+<div class="acc-header" style="clear:both;">
+    <div class="reviewer-tab-head">
+        <p class="applicant-interview">
+            <span class="ScheduleDate">@Model.ScheduleDateStr</span>
+            <span class="SchStartTime">@Model.StartTime</span>
+            <span class="SchEndTime MobDisable">@Model.EndTime</span>
+            <span class="SchReviewer">@Model.InterviewerList</span>
+            <span class="SchRound">@Model.RndOrder: @Model.Round</span>
+            <span class="SchScore MobDisable" id="rndscore">@Model.Score</span>            
+        </p>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,117 @@
+﻿@using BEClient = ATS.BusinessEntity.SolrEntity
+@model IEnumerable<BEClient.SolrEmployeeSearchFields>
+
+<div class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w30">Applicant Name</li>
+        <li class="w25">Program Office</li>
+        <li class="w20">Relevance</li>
+        <li class="w20 textcenter">Resume</li>
+    </ul>
+
+    @foreach (BEClient.ISolrUserDetail _Current in Model)
+    {
+
+        <ul class="RowContent CursorPointer" data-id='@_Current.UserId' profileid='@_Current.StrProfileId'>
+            <li class="w30 cntName">@_Current.FirstName @_Current.LastName </li>
+            <li class="w25 cntLocation">@_Current.City  @_Current.State &nbsp;</li>
+            <li class="w20 cntScore">@_Current.Score</li>
+            <li class="w20 cntResume textcenter"><a class="SearchExport bgExport16" href='@Url.Action("DownloadResume", "SearchResume", new { UserId = _Current.UserId, profileId = _Current.StrProfileId })'></a></li>
+            <li id="btnViewDetailsMob" class="w5 ViewDetailsMob MobView" onclick="btnViewDetailsMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    function btnViewDetailsMob(element) {
+        var uid = $(element).parents(".RowContent").attr("data-id");
+        var pid = $(element).parents(".RowContent").attr("profileid");
+        var dpLink = '/Employee/SearchResume/GetCandidateProfile?UserId=_USERID_&ProfileId=_PROFILEID_';
+        dpLink = dpLink.replace("_USERID_", uid);
+        dpLink = dpLink.replace("_PROFILEID_", pid);
+        window.location = dpLink;
+    }
+
+    $(function () {
+        var divPodbl = $(".RowContent");
+        divPodbl.dblclick(function () {
+            var uid = $(this).attr("data-id");
+            var pid = $(this).attr("profileid");
+            var dpLink = '/Employee/SearchResume/GetCandidateProfile?UserId=_USERID_&ProfileId=_PROFILEID_';
+            dpLink = dpLink.replace("_USERID_", uid);
+            dpLink = dpLink.replace("_PROFILEID_", pid);
+            window.location = dpLink;
+        });
+
+        SetBlockCandidateEventHandlers();
+        function SetBlockCandidateEventHandlers() {
+            $(".action-exclude-result").unbind("click");
+            $('.action-exclude-result').bind('click', function () {
+                var dataid = $(this).parent('li').first().attr('data-id');
+                var that = this;
+                UnBlockCandidate($(this), dataid, function (data) {
+                    data = JSON.parse(data);
+                    if (!data.IsError) {
+                        VacancyModel.DisplayErrorMeesage("#commonMessage", data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        $(that).replaceWith('<a class="action-exclude-result-disabled" href="javascript:;"><img border="0" alt="" src="/Content/images/Exclude_disabled_16.png"></a>');
+
+                        VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        SetBlockCandidateEventHandlers();
+                    }
+                });
+
+            });
+            $(".action-exclude-result-disabled").unbind("click");
+            $('.action-exclude-result-disabled').bind('click', function () {
+                var dataid = $(this).parent('li').first().attr('data-id');
+                var that = this;
+                BlockCandidate($(this), dataid, function (data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage("#commonMessage", data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        $(that).replaceWith(' <a class="action-exclude-result" href="javascript:;"><img border="0" alt="" src="/Content/images/exclude_16.png"></a> ');
+                        VacancyModel.DisplaySuccessMeesage("#commonMessage", "Vacancy updated successfully...!", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        SetBlockCandidateEventHandlers();
+                    }
+                });
+
+            });
+        }
+
+        function BlockCandidate(element, userid, successCallback) {
+            var datastring = { pUserId: userid };
+
+            $.ajax({
+                type: "POST",
+                url: '../../Employee/SearchResume/BlockCandidates',
+                cache: false,
+                data: datastring,
+                success: successCallback,
+                error: function (xhr, text, err) {
+                    OnUpdateFailure(xhr, text, err);
+                }
+            });
+        }
+
+        function OnUpdateFailure(xhr, text, err) { }
+
+        function UnBlockCandidate(element, userid, successCallback) {
+            var datastring = { pUserId: userid };
+            $.ajax({
+                type: "POST",
+                url: '../../Employee/SearchResume/UnBlockCandidates',
+                cache: false,
+                data: datastring,
+                success: successCallback,
+                error: function (xhr, text, err) {
+                    OnDeleteFailure(xhr, text, err);
+                }
+            });
+        }
+        function OnDeleteFailure(xhr, text, err) { }
+    });
+</script>

@@ -1,0 +1,45 @@
+﻿@model List<ATS.BusinessEntity.VacancyOffer>
+<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>
+<div class="AccVacancyOffer" data-count='@Model.Count'>
+    @{
+        bool IsCandidate = ViewBag.IsCandidate == true ? true : false;
+        int i = 1;
+        Guid lstOfferIdExceptDraft = Guid.Empty;
+        ATS.BusinessEntity.VacancyOffer objLastOffer = Model.LastOrDefault(x => x.OfferStatusId != Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Draft));
+        if (Model != null && Model.Count > 0 && objLastOffer != null)
+        {
+            lstOfferIdExceptDraft = objLastOffer.VacancyOfferId;
+        }
+    }
+    @foreach (var _Current in Model)
+    {
+        if (_Current.VacancyOfferId == lstOfferIdExceptDraft)
+        {
+            _Current.RndNo = Model.Count;
+        }
+        else
+        {
+            _Current.RndNo = i;
+        }
+        _Current.TotalOffer = Model.Count;
+        @Html.Partial("VacancyOffer/_AccVacancyOfferSingle", _Current)
+        i = i + 1;
+    }
+</div>
+
+@if (IsCandidate == false && ViewBag.IsReviewerOffer == true)
+{
+    if (Model.Count == 0)
+    {
+        <div class="acc-action">
+            <a id="btnAddOffer" href="javascript:void(0);" data-laststatus="0" onclick="return AddVacancyOffer(this,0);" data-lstofferstatus='0' class="btn CaseUpper">Add Award</a>
+        </div>
+    }
+    else if (Model.Count > 0 && Model[Model.Count - 1].OfferStatusId != Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed))
+    {
+        var status = Model[Model.Count - 1].OfferStatusId;
+        <div class="acc-action">
+            <a id="btnAddOffer" href="javascript:void(0);" data-laststatus="@status" onclick="return AddVacancyOffer(this, @status);" data-lstofferstatus='@status' class="btn btnAddOffer CaseUpper">Add Award</a>
+        </div>
+    }
+}

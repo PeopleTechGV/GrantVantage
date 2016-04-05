@@ -1,0 +1,119 @@
+﻿@model ATS.WebUi.Models.LogOnModel
+@{
+    Model.VacancyId = ViewBag.VacancyId;
+}
+
+@using (Ajax.BeginForm("Login", "Home", new { returnUrl = ViewBag.ReturnURL, IsAnonymous = true }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "LoginSuccess",
+            OnFailure = "LoginFailed"
+        }, new { @id = "LoginForm" }))
+{
+    @Html.ValidationSummary()
+    @Html.HiddenFor(m => m.VacancyId)
+    <div class="box">
+        <span class="AccountSpan">
+            @Html.LanguageLabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "detail-input w100" })
+        </span>
+    </div>
+    <div class="box">
+        <span class="AccountSpan">
+            @Html.LanguageLabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "detail-input w100" })
+        </span>
+    </div>
+    <div class="box">
+        <label class="RememberMe">
+            <input type="checkbox" name="RememberMe" value="Remember Me" />
+            Keep me signed in
+        </label>
+        <button class="btn-icon24 bgLogin24 floatright">LOGIN</button>
+    </div>
+    <div class="box" style="margin-top: 20px;">
+        @*Commented for Fb login remove CR-22 By Muneendra*@
+        @*<div class="fb-button floatleft" onclick="fblogin();" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false">Login With Facebook</div>*@
+        <div id="status">
+        </div>
+        <span class="PasswordHelp floatright">
+            @Html.ActionLink("Password Help", "ForgotPassword", "Home")
+        </span>        
+    </div>
+}
+
+<script type="text/javascript">
+    function LoginSuccess(result) {
+        $('.validation-summary-errors').html('');
+        result = JSON.parse(result);
+        if (result.IsError == true) {
+            var $form = $('#LoginForm');
+            VacancyModel.DisplayErrorMeesage('#commonMessage', result.Message, 3000);
+        }
+        else {
+            window.location = result.Url;
+        }
+    }
+
+    function SubmitLogin() {
+        $('#updateForm').submit();
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '908510319195370',
+            cookie: true,  // enable cookies to allow the server to access
+            // the session
+            xfbml: true,  // parse social plugins on this page
+            version: 'v2.3' // use version 2.2
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+</script>
+
+<script>
+    function fblogin() {
+        FB.login(function (e) {
+            e.authResponse && FB.api("/me", function (e) { UserDetails = FBookLogin(e) })
+        }, { scope: "email" })
+    }
+    //function GetPic(e) { var t = FB.Data.query("select name, hometown_location, sex, pic_square from user where uid={0}", e); t.wait(function (e) { document.getElementById("name").innerHTML = '<img src="' + e[0].pic_square + '" alt="" width="32" height="32" />' + "<br />" }) }
+    function FBookLogin(e) {
+        var t = e;
+        if (t.email == null || t.email == undefined || t.email == "") {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', 'Unable to get profile details from Facebook.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            return false;
+        }
+        var _dataLink = '@Html.Raw(Url.Action("FBLogin", "Home", new { Email = "_EMAILID_", FName="_FNAME_", LName="_LNAME_" }))';
+        _dataLink = _dataLink.replace("_EMAILID_", t.email);
+        _dataLink = _dataLink.replace("_FNAME_", t.first_name);
+        _dataLink = _dataLink.replace("_LNAME_", t.last_name);
+        $.ajax({
+            url: _dataLink,
+            type: "POST",
+            success: function (response) {
+                var data = JSON.parse(response)
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', 'Unable to proceed with Facebook Login.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                else {
+                    if (window.location.href.indexOf("?VacancyId=") >= 1) {
+                        window.location.href = window.location.href;
+                    }
+                    else {
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    }
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,152 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.JobLocation>>
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuDisplayName = "Job Locations";
+    string action = ViewBag.RedirectAction;
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.obj.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmJobLocations');
+        });
+    </script>
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(action, "JobLocation", FormMethod.Post, new { id = "frmJobLocations" }))
+{
+    @Html.HiddenFor(m => m.obj.obj.JobLocationId)
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    @Html.HiddenFor(m => m.obj.obj.SelecteDivision, new { id = "SelecteDivision" })
+    @Html.Partial("Buttons/_ViewGear", Model.obj)
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DefaultValue, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DefaultValue, new { @class = "detail-input" })
+            @if (ViewBag.IsEdit == 1)
+            {
+                <div class="form-chkActive">
+                    @Html.CheckBoxFor(m => m.obj.obj.IsActive, new { @id = "isActive" }) @Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)
+                </div>
+            }
+        </div>
+        @for (int i = 0; i < Model.obj.obj.JobLocatoinEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.JobLocatoinEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.JobLocatoinEntityLanguage[i].LanguageId)
+                @Html.TextBoxFor(m => m.obj.obj.JobLocatoinEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.City, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.City, new { @class = "detail-input" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.State, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.State, new { @class = "detail-input" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Country, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.Country, new { @class = "detail-input" })
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.ZipCode, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.ZipCode, new { @class = "detail-input" })
+        </div>
+        @*<div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DivisionId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.obj.DivisionId, (IEnumerable<SelectListItem>)ViewBag.ListOfDivision, "--Select One--", new { @class = "detail-select", @id = "divisionId", @onchange = "GetOnBoardManagers();" })
+        </div>*@
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.LocationManagerId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.obj.LocationManagerId, (IEnumerable<SelectListItem>)ViewBag.ListOfLocationManagers, "--Select One--", new { @class = "detail-select" })
+        </div>
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.OnBoardingManagerId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.obj.OnBoardingManagerId, (IEnumerable<SelectListItem>)ViewBag.ListOfOnBoardingManager, "--Select One--", new { @class = "detail-select", @id = "OnBoardingManager", })
+        </div>
+    </div>
+}
+<div>
+    @Html.Partial("Shared/_JoblocationDivisionList", Model)
+</div>
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+<script>
+    function OnClickValidate()
+    {
+        var _form=$('#frmJobLocations');
+
+        if(_form.valid()){
+            if(!$(":checkbox.divisions_checkbox").is(':checked')){
+                VacancyModel.DisplayErrorMeesage('#commonMessage', 'Please select at least one division from below list.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+        }
+        _form.submit();
+    }
+
+    $(".btn-remove-vacancy").live("click", function () {
+        var VacancyCount =""
+        var ApplicantCount=""
+        var UserSaveCount=""
+        if(@Model.obj.obj.RecordExistsCount.Count > 0)
+        {
+            VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()
+            ApplicantCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Applicants").Select(x => x.Count).FirstOrDefault()
+            UserSaveCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "User Saved Vacancy").Select(x => x.Count).FirstOrDefault()
+            }
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Job Location", 300, "Are you sure want to delete this Job Location ? <br /> The following records will also be deleted: <br />" + VacancyCount +" Vacancies <br />" + ApplicantCount + " Applicant <br /> " + UserSaveCount +" User Save Jobs", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "JobLocation", new { id = @Model.obj.obj.JobLocationId })'
+            window.location.href = deletelink;
+        }
+    }
+
+    function GetOnBoardManagers() {
+        var divisionId = document.getElementById('divisionId').value;
+        $.post("/JobLocation/GetOnBoardingUsersByDivision", { divisionId: divisionId }, function (data) {
+            data = JSON.parse(data);
+            var sel = document.getElementById('OnBoardingManager');
+            $('#OnBoardingManager').empty();
+            var opt = document.createElement('option');
+            opt.innerHTML = '- Select -';
+            opt.value = '';
+            sel.appendChild(opt);
+            for (var i = 0; i < data.OnboardManagerId.length; i++) {
+                var opt = document.createElement('option');
+                opt.innerHTML = data.FullNameUsers[i];
+                opt.value = data.OnboardManagerId[i];
+                sel.appendChild(opt);
+            }
+        });
+    }
+</script>

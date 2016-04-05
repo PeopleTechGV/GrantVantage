@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{591B881E-F5F4-4CD7-89CC-F7766701B3E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ATS.BusinessEntity</RootNamespace>
+    <AssemblyName>ATS.BusinessEntity</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SANITY|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\SANITY\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\QA\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SolrNet, Version=0.4.0.2002, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OtherDLL\SolrNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ATS.WebUi\bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.2\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Achievement.cs" />
+    <Compile Include="AdHocPrivilege.cs" />
+    <Compile Include="AnonymousUser.cs" />
+    <Compile Include="AnsOpt.cs" />
+    <Compile Include="AppInstructionDoc.cs" />
+    <Compile Include="ApplicationDocuments.cs" />
+    <Compile Include="AppAnswer.cs" />
+    <Compile Include="AppComment.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="ApplicationBasedStatus.cs" />
+    <Compile Include="ApplicationHistory.cs" />
+    <Compile Include="ApplicationReviewProcess.cs" />
+    <Compile Include="AppQueAns.cs" />
+    <Compile Include="AssignedCandidates.cs" />
+    <Compile Include="Associations.cs" />
+    <Compile Include="ATSRelativePrivilege.cs" />
+    <Compile Include="ATSResume.cs" />
+    <Compile Include="ATSRolePrivilege.cs" />
+    <Compile Include="ATSSecurityRolePrivilages.cs" />
+    <Compile Include="ATSSecurityRoles.cs" />
+    <Compile Include="Attributes\ATSRangeAttribute.cs" />
+    <Compile Include="Attributes\ATSRegularExpressionAttribute.cs" />
+    <Compile Include="Attributes\ATSStringLengthAttribute.cs" />
+    <Compile Include="Attributes\ATSRequiredAttribute.cs" />
+    <Compile Include="Attributes\EmployeeSearchAttribute.cs" />
+    <Compile Include="Availability.cs" />
+    <Compile Include="BeginInterView.cs" />
+    <Compile Include="BlockCandidate.cs" />
+    <Compile Include="BreadCrumb.cs" />
+    <Compile Include="CandidateApplications.cs" />
+    <Compile Include="CandidateEmployee.cs" />
+    <Compile Include="CandidateProfileForPDF.cs" />
+    <Compile Include="CandidateHistory.cs" />
+    <Compile Include="CandidateSurvey.cs" />
+    <Compile Include="Common\BaseEntityUpdate.cs" />
+    <Compile Include="Common\CommonFunction.cs" />
+    <Compile Include="Common\Constant.cs" />
+    <Compile Include="Common\IBreadCrumb.cs" />
+    <Compile Include="Common\LanguageConstant.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="CompanyInfo.cs" />
+    <Compile Include="ConductInterviewDetails.cs" />
+    <Compile Include="CSNavigation.cs" />
+    <Compile Include="DeclinedAutoEmail.cs" />
+    <Compile Include="DegreeType.cs" />
+    <Compile Include="DeleteMaster.cs" />
+    <Compile Include="DivisionLanguage.cs" />
+    <Compile Include="DivisionPositionType.cs" />
+    <Compile Include="DocumentType.cs" />
+    <Compile Include="EmailContent.cs" />
+    <Compile Include="EmailTemplates.cs" />
+    <Compile Include="EntityLanguage.cs" />
+    <Compile Include="ExecutiveSummary.cs" />
+    <Compile Include="Common\IGrid.cs" />
+    <Compile Include="GetScore.cs" />
+    <Compile Include="HireCandidates.cs" />
+    <Compile Include="InterviewCalender.cs" />
+    <Compile Include="InterViewProcess.cs" />
+    <Compile Include="InterviewProcessQue.cs" />
+    <Compile Include="InterviewProcessQueModel.cs" />
+    <Compile Include="JobLocation.cs" />
+    <Compile Include="LanguageBlocks.cs" />
+    <Compile Include="Languages.cs" />
+    <Compile Include="LicenceAndCertifications.cs" />
+    <Compile Include="LocationDivision.cs" />
+    <Compile Include="Master\ClientMaster.cs" />
+    <Compile Include="Master\StoredProcedure.cs" />
+    <Compile Include="Master\UserMaster.cs" />
+    <Compile Include="NavCount.cs" />
+    <Compile Include="Objective.cs" />
+    <Compile Include="OfferAttachment.cs" />
+    <Compile Include="OfferLetters.cs" />
+    <Compile Include="OfferTemplates.cs" />
+    <Compile Include="OnboardManagers.cs" />
+    <Compile Include="Organization.cs" />
+    <Compile Include="PermissionAndScope.cs" />
+    <Compile Include="PortalContent.cs" />
+    <Compile Include="PromoteCandidate.cs" />
+    <Compile Include="PublicationHistory.cs" />
+    <Compile Include="QueCat.cs" />
+    <Compile Include="QuesAns.cs" />
+    <Compile Include="Question.cs" />
+    <Compile Include="QuestionDetails.cs" />
+    <Compile Include="Question\ATSCheckBox.cs" />
+    <Compile Include="Question\ATSPickList.cs" />
+    <Compile Include="Question\ATSQuestionCommon.cs" />
+    <Compile Include="Question\ATSScale.cs" />
+    <Compile Include="Question\ATSTextArea.cs" />
+    <Compile Include="Question\ATSTextBox.cs" />
+    <Compile Include="Question\ATSYesNo.cs" />
+    <Compile Include="RecentlyViewed.cs" />
+    <Compile Include="RecordExists.cs" />
+    <Compile Include="RequiredDocument.cs" />
+    <Compile Include="Resume.cs" />
+    <Compile Include="ResumeSearch.cs" />
+    <Compile Include="Reviewers.cs" />
+    <Compile Include="RndType.cs" />
+    <Compile Include="RoundAttributes.cs" />
+    <Compile Include="SaveSearchResume.cs" />
+    <Compile Include="ScheduleInt.cs" />
+    <Compile Include="Search.cs" />
+    <Compile Include="SearchModel.cs" />
+    <Compile Include="SearchParameters.cs" />
+    <Compile Include="SearchResume.cs" />
+    <Compile Include="SkeVacTemp\SkeReqDoc.cs" />
+    <Compile Include="SkeVacTemp\SkeVacQue.cs" />
+    <Compile Include="SkeVacTemp\SkeVacQueCat.cs" />
+    <Compile Include="SkeVacTemp\SkeVacRM.cs" />
+    <Compile Include="SkeVacTemp\SkeVacRnd.cs" />
+    <Compile Include="SkillType.cs" />
+    <Compile Include="SkinMaster.cs" />
+    <Compile Include="SolrEntity\ISolrEmployeeFields.cs" />
+    <Compile Include="SolrEntity\SolrEmployeeSearchFields.cs" />
+    <Compile Include="SpeakingEventHistory.cs" />
+    <Compile Include="ReActivate.cs" />
+    <Compile Include="SRPEntity\SRPATSSecurityRole.cs" />
+    <Compile Include="SRPEntity\SRPDivision.cs" />
+    <Compile Include="SRPEntity\SRPDivisionPositionType.cs" />
+    <Compile Include="SRPEntity\SRPJobLocation.cs" />
+    <Compile Include="SRPEntity\SRPOfferLetters.cs" />
+    <Compile Include="SRPEntity\SRPOfferTemplates.cs" />
+    <Compile Include="SRPEntity\SRPPositionType.cs" />
+    <Compile Include="SRPEntity\SRPQuestion.cs" />
+    <Compile Include="SRPEntity\SRPReqDoc.cs" />
+    <Compile Include="SRPEntity\SRPResume.cs" />
+    <Compile Include="SRPEntity\SRPReviewers.cs" />
+    <Compile Include="SRPEntity\SRPTVac.cs" />
+    <Compile Include="SRPEntity\SRPTVacQue.cs" />
+    <Compile Include="SRPEntity\SRPUserDivisionSecurityRole.cs" />
+    <Compile Include="SRPEntity\SRPUserSecurityRole.cs" />
+    <Compile Include="SRPEntity\SRPUser.cs" />
+    <Compile Include="SRPEntity\SRPVacancy.cs" />
+    <Compile Include="SRPEntity\SRPUserDivisionPermission.cs" />
+    <Compile Include="SRPEntity\SRPVacancyQuestion.cs" />
+    <Compile Include="SRPEntity\SRPVacQueCat.cs" />
+    <Compile Include="SRPEntity\UserPermissionWithScope.cs" />
+    <Compile Include="TAppInstructionDocs.cs" />
+    <Compile Include="TRequiredDocument.cs" />
+    <Compile Include="TVac.cs" />
+    <Compile Include="TVacancyRound.cs" />
+    <Compile Include="TVacQue.cs" />
+    <Compile Include="TVacQueCat.cs" />
+    <Compile Include="TVacReviewMember.cs" />
+    <Compile Include="UserATSSecurityRole.cs" />
+    <Compile Include="Common\BaseEntity.cs" />
+    <Compile Include="CandidateProfile.cs" />
+    <Compile Include="Common\ClientBaseEntity.cs" />
+    <Compile Include="Common\ISecurityEntity.cs" />
+    <Compile Include="Common\MasterBaseEntity.cs" />
+    <Compile Include="UserDetails.cs" />
+    <Compile Include="Division.cs" />
+    <Compile Include="DrpStringMapping.cs" />
+    <Compile Include="EducationHistory.cs" />
+    <Compile Include="EmploymentHistory.cs" />
+    <Compile Include="Master\ClientLanguage.cs" />
+    <Compile Include="Master\Lable.cs" />
+    <Compile Include="Master\Language.cs" />
+    <Compile Include="Master\LanguageLable.cs" />
+    <Compile Include="Master\Client.cs" />
+    <Compile Include="PositionType.cs" />
+    <Compile Include="SolrEntity\CommonSearchParameter.cs" />
+    <Compile Include="SolrEntity\ISearchFields.cs" />
+    <Compile Include="SolrEntity\SearchParameter.cs" />
+    <Compile Include="SolrEntity\SolrSearchFields.cs" />
+    <Compile Include="SolrEntity\SolrSearchObject.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Profile.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="References.cs" />
+    <Compile Include="Skills.cs" />
+    <Compile Include="Master\Subscription.cs" />
+    <Compile Include="UserDivisionPermission.cs" />
+    <Compile Include="UserDivisionSecurityRole.cs" />
+    <Compile Include="UserVacancy.cs" />
+    <Compile Include="Vacancy.cs" />
+    <Compile Include="VacancyApplicant.cs" />
+    <Compile Include="VacancyHistory.cs" />
+    <Compile Include="VacancyOffer.cs" />
+    <Compile Include="VacancyQuestion.cs" />
+    <Compile Include="VacancyRound.cs" />
+    <Compile Include="VacancyStatus.cs" />
+    <Compile Include="VacancyTemplate.cs" />
+    <Compile Include="VacQueCat.cs" />
+    <Compile Include="Variables.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{463f7aaa-0549-4b85-b497-da184ce18b8d}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

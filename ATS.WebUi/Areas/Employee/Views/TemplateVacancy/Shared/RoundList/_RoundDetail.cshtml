@@ -1,0 +1,57 @@
+﻿@model ATS.BusinessEntity.VacancyTemplate
+@using CommonConst = ATS.BusinessEntity.Common.VacancyRound;
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByTVacRndId(Model.objTVacancyRound.TVacRndId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+}
+<div class="acc-header" data-index="1" data-roundid="@Model.objTVacancyRound.TVacRndId">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel(CommonConst.ROUND_REVIEWERS)
+        <span class="revCount ttldbrown" data-rndconfigrevcnt="@Model.objTVacancyRound.ReqReviewer">(@Model.objTVacancyRound.ReviewersCount)</span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+<div class="acc-Content">
+</div>
+@if (RndAttr != BERndAttr.OfferRound)
+{
+    <div class="acc-header" data-index="2" data-roundid="@Model.objTVacancyRound.TVacRndId">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(CommonConst.ROUND_QUESTIONS)
+            <span class="queCount lblRoundBraces ttldbrown">@Model.objTVacancyRound.QueCount</span>
+            <span class="notification" style="display:none;"></span>
+        </p>
+    </div>
+    <div class="acc-Content">
+
+    </div>
+}
+
+
+<div class="acc-header" data-index="4" data-roundid="@Model.objTVacancyRound.TVacRndId">
+    <p class="prfle-tab-head">
+        Required Documents
+        <span class="lblReqDocCount lblRoundBraces ttldbrown">@Model.objTVacancyRound.RequiredDocumentCount</span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+<div class="acc-Content">
+
+</div>
+
+<div class="acc-header" data-index="3" data-roundid="@Model.objTVacancyRound.TVacRndId">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel(CommonConst.ROUND_CONFIGURATION)
+        <span class="notification" style="display:none;"></span>
+        <span class="Save" data-roundconfigid="@Model.objTVacancyRound.TVacRndId" style="display:none;">
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="AccTRoundDetail" style="width:98%">
+    </div>
+
+</div>
+
+

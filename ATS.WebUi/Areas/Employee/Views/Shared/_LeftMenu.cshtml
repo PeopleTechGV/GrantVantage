@@ -1,0 +1,52 @@
+﻿@using BEMenuConstant = ATS.BusinessEntity.Common.EmployeeMenuConstant;
+@{
+    var contrName = string.Empty; var activeclassname = String.Empty; var activeClass = "activeMenu";
+    if (ATS.WebUi.Common.CurrentSession.Instance != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs != null)
+    {
+        contrName = Convert.ToString(ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.Select(r => r.Controller).FirstOrDefault());
+    }
+    activeclassname = (contrName.Equals("MyVacancy")) ? activeClass : string.Empty;
+}
+<li>
+    <a class='@activeclassname bgMyVacancy24W' href='@Url.Action("Index", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        @Html.LanguageLabel(BEMenuConstant.MNU_MY_VACANCIES)
+    </a>
+</li>
+@{
+    activeclassname = (contrName.Equals("MyCandidates")) ? activeClass : string.Empty;
+}
+<li>
+    <a class='@activeclassname bgMyCandidate24W' href='@Url.Action("Index", "MyCandidates", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        @Html.LanguageLabel(BEMenuConstant.MNU_MY_CANDIDATES)
+    </a>
+</li>
+@{
+    activeclassname = (contrName.Equals("InterviewCalender")) ? activeClass : string.Empty;
+}
+@*<li>
+    <a class='@activeclassname bgInterviewCalender24W' href='@Url.Action("Index", "InterviewCalender", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        @Html.LanguageLabel(BEMenuConstant.MNU_INTERVIEW_CALENDER)
+    </a>
+</li>*@
+
+@{
+    activeclassname = (contrName.Equals("SearchResume")) ? activeClass : string.Empty;
+}
+<li>
+    @*CR-13*@
+    @*<a class='@activeclassname bgSearch24W' href='@Url.Action("Index", "SearchResume", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @IsNewSearch=true })'>
+        @Html.LanguageLabel(BEMenuConstant.MNU_SEARCH_RESUME)
+    </a>*@
+</li>
+
+@{
+    activeclassname = (contrName.Equals("CompanySetup")) ? activeClass : string.Empty;
+}
+@if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.ManageCompanySetup)
+{
+    <li>
+        <a class='@activeclassname bgCompanySetup24W' href='@Url.Action("Index", "CompanySetup", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, userId = ATS.WebUi.Common.CurrentSession.Instance.UserId })'>
+            @Html.LanguageLabel(BEMenuConstant.MNU_COMPANY_SETUP)
+        </a>
+    </li>
+}

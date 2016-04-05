@@ -1,0 +1,12 @@
+﻿@using BE = ATS.BusinessEntity
+@model IList<BE.LicenceAndCertifications>
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@foreach (var v in Model)
+{
+    <div class="content">
+        <h3>@v.Name</h3>
+        <p>
+            @v.Description<br />
+        </p>
+    </div>
+}

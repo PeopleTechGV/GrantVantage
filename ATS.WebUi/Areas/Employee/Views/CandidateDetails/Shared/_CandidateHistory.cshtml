@@ -1,0 +1,9 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.CandidateHistory>
+
+<div style="color: #345E8E; margin: 5px 10px;">    
+        @foreach (BEClient.CandidateHistory _curr in Model)
+        {
+            <span>@_curr.CreatedOn.ToString("MM/dd/yy hh:mmtt").ToLower()@Html.Raw(" UTC: ") @_curr.Description</span><br />
+        }    
+</div>

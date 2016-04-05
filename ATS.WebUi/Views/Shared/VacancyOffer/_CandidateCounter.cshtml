@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+
+<div id="CandidateCounterModel" class="OfferMain borderedModel">
+    <div class="OfferHeader">
+        Applicant Counter
+        <a class="btnClosePopup" onclick="CloseCandidateCounterModel();"></a>
+    </div>
+
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW100">
+                <span>Note To Hiring Manager</span>
+                @Html.TextAreaFor(m => m.CandidateCounterReason, new { @id = "txtCounterReason" })
+            </div>
+        </div>
+    </div>
+    <div class="OfferAction" style="margin-top: 15px;">
+        <input id="btnCounter" type="submit" name="CandidateAction" value="Counter Award" onclick="RemoveReadonly();">
+        <input id="btnCloseCounter" onclick="CloseCandidateCounterModel(); return false;" type="button" value="Cancel">
+        @*<a class="btnMakeOffer" onclick="CloseCandidateCounterModel();">Cancel</a>*@
+    </div>
+</div>

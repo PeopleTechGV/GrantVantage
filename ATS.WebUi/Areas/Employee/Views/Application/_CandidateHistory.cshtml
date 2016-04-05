@@ -1,0 +1,11 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.CandidateHistory>
+
+<div class="HistoryMain">
+    <ul>
+        @foreach (BEClient.CandidateHistory _curr in Model)
+        {
+            <li>@_curr.CreatedOnText : @_curr.Description</li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,104 @@
+﻿@model ATS.WebUi.Areas.Candidate.Models.IQuestions
+@using HtmlHelpers.BeginCollectionItem
+
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+<style>
+    li{color:#345E8E;}
+</style>
+@if (Model.ATSQueCommon != null && Model.ATSQueCommon.QueCatList != null && Model.ATSQueCommon.QueCatList.Count > 0)
+{
+    ViewBag.ApplicationStatus = BEApplicationOptionsConstant.APP_STAT_SUBMIT;
+    <div class="AccQuestionCategory">
+        @foreach (var CurrentCat in Model.ATSQueCommon.QueCatList)
+        {
+            int Answered = 0, Count = 0, Perc = 100;
+            Count = Model.ListATSScale == null ? Count : Count + Model.ListATSScale.Count(m => m.QueCatId == CurrentCat.Item1);
+            Count = Model.ListATSTextArea == null ? Count : Count + Model.ListATSTextArea.Count(m => m.QueCatId == CurrentCat.Item1);
+            Count = Model.ListATSTextBox == null ? Count : Count + Model.ListATSTextBox.Count(m => m.QueCatId == CurrentCat.Item1);
+            Count = Model.ListATSYesNo == null ? Count : Count + Model.ListATSYesNo.Count(m => m.QueCatId == CurrentCat.Item1);
+            Count = Model.ListCheckList == null ? Count : Count + Model.ListCheckList.Count(m => m.QueCatId == CurrentCat.Item1);
+            Count = Model.ListPickList == null ? Count : Count + Model.ListPickList.Count(m => m.QueCatId == CurrentCat.Item1);
+
+            Answered = Model.ListATSScale == null ? Answered : Answered + Model.ListATSScale.Count(m => m.QueCatId == CurrentCat.Item1 && m.Answer != null && m.Answer.ToString() != "0");
+            Answered = Model.ListATSTextArea == null ? Answered : Answered + Model.ListATSTextArea.Count(m => m.QueCatId == CurrentCat.Item1 && m.Answer != null && !string.IsNullOrEmpty(m.Answer.ToString()));
+            Answered = Model.ListATSTextBox == null ? Answered : Answered + Model.ListATSTextBox.Count(m => m.QueCatId == CurrentCat.Item1 && m.Answer != null && !string.IsNullOrEmpty(m.Answer.ToString()));
+            Answered = Model.ListATSYesNo == null ? Answered : Answered + Model.ListATSYesNo.Count(m => m.QueCatId == CurrentCat.Item1 && m.Answer != null && !string.IsNullOrEmpty(m.Answer.ToString()));
+            Answered = Model.ListPickList == null ? Answered : Answered + Model.ListPickList.Count(m => m.QueCatId == CurrentCat.Item1 && m.Answer != null && !string.IsNullOrEmpty(m.Answer.ToString()));
+            Answered = Model.ListCheckList == null ? Answered : Answered + Model.ListCheckList.Count(m => m.QueCatId == CurrentCat.Item1 && m.SelectedList != null && m.SelectedList.Count() != 0);
+            Answered = Model.ListCheckList == null ? Answered : Answered + Model.ListCheckList.Count(m => m.QueCatId == CurrentCat.Item1 && m.AllValues.Count() != 0);
+            
+            Perc = (Answered * 100) / Count;
+            <div class="acc-header">
+                <p class="prfle-tab-head">
+                    @CurrentCat.Item2
+                    <span class="lblBbrown lblRoundBraces">@Count</span>
+                    <span class="floatright lblNbrown">@Perc% Complete</span>
+                </p>
+            </div>
+            <div class="acc-Content">
+                <div class="acc-inner acc-inner-padding">                    
+                    @if (Model.ListPickList != null)
+                    {
+                        foreach (ATS.WebUi.Models.Question.ATSPickList _current in Model.ListPickList.Where(m => m.QueCatId == CurrentCat.Item1))
+                        {
+                            using (Html.BeginCollectionItem("ListPickList"))
+                            {
+                                @Html.Partial("Question/_PickList", _current)
+                            }
+                        }
+                    }
+                    @if (Model.ListCheckList != null)
+                    {
+                        foreach (ATS.WebUi.Models.Question.ATSCheckBox _current in Model.ListCheckList.Where(m => m.QueCatId == CurrentCat.Item1))
+                        {
+                            using (Html.BeginCollectionItem("ListCheckList"))
+                            {
+                                @Html.Partial("Question/_CheckList", _current)
+                            }
+                        }
+                    }
+                    @if (Model.ListATSTextArea != null)
+                    {
+                        foreach (ATS.WebUi.Models.Question.ATSTextArea _current in Model.ListATSTextArea.Where(m => m.QueCatId == CurrentCat.Item1))
+                        {
+                            using (Html.BeginCollectionItem("ListATSTextArea"))
+                            {
+                                @Html.Partial("Question/_LargeText", _current)
+                            }
+                        }
+                    }
+                    @if (Model.ListATSTextBox != null)
+                    {
+                        foreach (ATS.WebUi.Models.Question.ATSTextBox _current in Model.ListATSTextBox.Where(m => m.QueCatId == CurrentCat.Item1))
+                        {
+                            using (Html.BeginCollectionItem("ListATSTextBox"))
+                            {
+                                @Html.Partial("Question/_SmallText", _current)
+                            }
+                        }
+                    }
+                    @if (Model.ListATSYesNo != null)
+                    {
+                        foreach (ATS.WebUi.Models.Question.ATSYesNo _current in Model.ListATSYesNo.Where(m => m.QueCatId == CurrentCat.Item1))
+                        {
+                            using (Html.BeginCollectionItem("ListATSYesNo"))
+                            {
+                                @Html.Partial("Question/_YesNo", _current)
+                            }
+                        }
+                    }
+                    @if (Model.ListATSScale != null)
+                    {
+                        foreach (ATS.WebUi.Models.Question.ATSScale _current in Model.ListATSScale.Where(m => m.QueCatId == CurrentCat.Item1))
+                        {
+                            using (Html.BeginCollectionItem("ListATSScale"))
+                            {
+                                @Html.Partial("Question/_Scale", _current)
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,210 @@
+﻿@model ATS.BusinessEntity.TVacancyRound
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo
+@using BEPageMode = ATS.BusinessEntity.PageMode
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByRndTypeId(Model.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+    var PageMode = ViewBag.PageMode;
+}
+
+@using (Ajax.BeginForm("AddEditTVacRnd", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, PageMode = PageMode }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "RoundSuccess(data,'" + Model.TVacId + "')",
+            OnFailure = "RoundFailure",
+        }, new { id = "frmTVacRoundConfig", isFormChange = "false" }))
+{
+    <script>
+        var form = $("#frmTVacRoundConfig");
+        $.validator.unobtrusive.parse(form);
+    </script>
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.TVacRndId)
+    @Html.HiddenFor(m => m.TVacId)
+    @Html.HiddenFor(m => m.AssignCandiadteToReviewerId)
+    @Html.HiddenFor(m => m.ReqReviewer)
+
+    @Html.HiddenFor(m => m.AssignCandidateBatches)
+    <div class="vacancy-Details" data-tvacrndconfigid="@Model.TVacRndId">
+        <div class="vacancy-quest-box">
+            <div class="std_width">
+                <div class="width-62 SMW100">
+                    @Html.LanguageLabelFor(m => m.RndTypeId, new { @class = "round-config-lft" })
+                    @Html.DropDownListFor(m => m.RndTypeId, (SelectList)ViewBag.TRoundType, "--Select--", new { @id = "TReviewRound", @class = "round-slt-lft", @onchange = "CopyRndType(this);" })
+                </div>
+                <div class="RndConfigDetails">
+                    @if (RndAttr != BERndAttr.OfferRound)
+                    {
+                        <div class="width-38 SMW100">
+                            @Html.LanguageLabelFor(m => m.RoundWeight, new { @class = "round-config-rgt labelwidth-rgt" })
+                            @Html.TextBoxFor(m => m.RoundWeight, new { @class = "round-rgt", @onchange = "CopyRndWeight(this);" })
+                        </div>
+
+                        <div class="width-62 SMW100">
+                            @Html.LanguageLabelFor(m => m.PromoteCandidate, new { @class = "round-config-lft " })
+                            @Html.DropDownListFor(m => m.PromoteCandidate, (SelectList)ViewBag.YesNoDropDownPromoteCandidate, "- Select -", new { @class = "round-slt-lft" })
+                        </div>
+                        <div class="width-38 SMW100">
+                            @Html.LanguageLabelFor(m => m.PromotionThresoldScore, new { @class = "round-config-rgt labelwidth-rgt" })
+                            @Html.TextBoxFor(m => m.PromotionThresoldScore, new { @class = "round-rgt" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="width-62 SMW100">
+                            @Html.LanguageLabelFor(m => m.OfferTemplateId, new { @class = "round-config-lft" })
+                            @if (ViewBag.OfferTemplates != null)
+                            {
+                                @Html.DropDownListFor(m => m.OfferTemplateId, (SelectList)ViewBag.OfferTemplates, "--Select--", new { @class = "round-slt-lft" })
+                            }
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="box" style="margin-top: 10px; border-bottom: 2px solid #953634;">
+                <button type="submit" class="prfle-button-save CaseUpper">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_SAVE)</button>
+                @if (PageMode != ATS.BusinessEntity.PageMode.Update)
+                {
+                    <button type="button" id="RemoveRound" class="prfle-button-delete CaseUpper" onclick="RemoveTRoundConfig(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_REMOVE)</button>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $('#TReviewRound').change(function () {
+        var TRndTypeId = $(this).val();
+        var element = $(this);
+        if (TRndTypeId != "") {
+            var TVacid = $(this).parents(".AccTVacDetails").parent().prev().attr("data-tvacid");
+            var TVacRndId = $('#TReviewRound').parents(".vacancy-Details").attr('data-tvacrndconfigid');
+            var dataLink = '@Html.Raw(@Url.Action("CheckForRoundNo", "TemplateVacancy", new { TRndTypeId = "_TRNDTYPEID_", TVacId  = "_TVACID_",TVacRndId = "_TVACRNDID_"}))';
+            dataLink = dataLink.replace("_TRNDTYPEID_", TRndTypeId);
+            dataLink = dataLink.replace("_TVACID_", TVacid);
+            dataLink = dataLink.replace("_TVACRNDID_", TVacRndId);
+            VacancyModel.CallGetMethod(dataLink, function (data) {
+                //$(element).parents("form").find(".RndConfigDetails").html('');
+                var newEle = $(element).parents("form").parent();
+                $(newEle).html('');
+                $(newEle).append(data);
+                if (data != "") {
+                    if ('@PageMode' == '@BEPageMode.Create')
+                        $(element).closest(".acc-Content").prev().find(".ReviewRoundWt").show();
+                    else
+                        $(element).parents(".AccRoundDetail").parent().prev().find(".ReviewRoundWt").show();
+                }
+                else {
+                    if ('@PageMode' == '@BEPageMode.Create')
+                        $(element).closest(".acc-Content").prev().find(".ReviewRoundWt").hide();
+                    else
+                        $(element).parents(".AccRoundDetail").parent().prev().find(".ReviewRoundWt").hide();
+                }
+            });
+            CopyRndType(this);
+        }
+        else {
+            $(".RndConfigDetails").hide();
+            if ('@PageMode' == '@BEPageMode.Create')
+                $(element).closest(".acc-Content").prev().find(".ReviewRoundWt").hide();
+            else
+                $(element).parents(".AccRoundDetail").parent().prev().find(".ReviewRoundWt").hide();
+        }
+    });
+
+    function CopyRndType(changeVal) {
+        var cur = $(changeVal);
+        var RoundName = "";
+        if (cur.val() != 0) {
+            RoundName = cur.find('option:selected').text();
+        }
+        if ('@PageMode' == '@BEPageMode.Create') {
+            cur.closest(".acc-Content").prev().find(".lblRRName").text(RoundName);
+        }
+        else {
+            cur.parents(".AccRoundDetail").parent().prev().find(".lblRRName").text(RoundName);
+        }
+    }
+
+    function CopyRndWeight(changeVal) {
+        var RoundWt = $(changeVal);
+        if ('@PageMode' == '@BEPageMode.Create') {
+            RoundWt.closest(".acc-Content").prev().find(".ReviewRoundWt > .lblRRWeight").text(RoundWt.val());
+        }
+        else {
+            RoundWt.parents(".AccRoundDetail").parent().prev().find(".ReviewRoundWt > .lblRRWeight").text(RoundWt.val());
+        }
+    }
+    var callEnd = false;
+    var _curElement = "";
+    function RoundSuccess(data, tVacId) {
+        callEnd = true;
+
+        var _$TVacAcc = $("div[data-tvacidonly='" + tVacId + "']");
+        _$TVacAcc = _$TVacAcc.next();
+        var JsonData = JSON.parse(data);
+
+        if (!JsonData.IsError) {
+
+
+            if ('@PageMode' != '@BEPageMode.Update') {
+                _$TVacAcc.find('.RoundConfigNewForm').html('');
+                _$TVacAcc.find('.RoundConfigNewForm').hide();
+
+                //                _$TVacAcc.find('.AccTVacRounds').append(JsonData.Data).accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+
+
+                var _parentAcc = $(_$TVacAcc).find(".innerTVac");
+                var active = _parentAcc.accordion("option", "active");
+                _parentAcc.accordion("option", "active", false).accordion("refresh");
+                _parentAcc.accordion("option", "active", active);
+                //_$TVacAcc.find('.innerTVac ').accordion({ active: 3 });
+                //_$TVacAcc.find('.AccTVacRounds').append(JsonData.Data).accordion(VacancyModel.AccSecondAttr).accordion("refresh");
+                //var _active = _$TVacAcc.find('.AccTVacRounds').children('.acc-Content').size() - 1;
+                //_$TVacAcc.find('.AccTVacRounds').accordion({ active: _active });
+                var lblRoundCount = _$TVacAcc.find('.AccTVacRounds').parent().prev().find("#vacrndcnt");
+                var RndCount = parseInt(lblRoundCount.text()) + 1;
+                lblRoundCount.text(RndCount);
+                $(".AccTVacRounds").find(".acc-header:last").find(".cntRound").text(RndCount);
+                var _TvacRndId = $(JsonData.Data).attr("data-vacroundid");
+                _curElement = _TvacRndId;
+                $(".AccTVacRounds").find(".acc-header:last").find(".cntRound").text(RndCount);
+            }
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', JsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', JsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+
+    function RemoveTRoundConfig(element) {
+        $(element).closest("form").parents(".accNewReviewRound").remove();
+        return false;
+    }
+
+    function RoundFailure() {
+        return false;
+    }
+
+    //var _$jsonData = $('<div>' + JsonData.Data + '</div>');
+    //_$jsonData.find('.cntRound').text((_$TVacAcc.find('.AccRound > .acc-header').size() + 1).toString());
+    //_$TVacAcc.find('.AccRound').append(_$jsonData.html()).accordion(VacancyModel.AccFirstAttr).accordion("refresh");
+    //var RoundCountMain = _$TVacAcc.prev().children("p").find("#vacrndcnt");
+    //var Roundcount = RoundCountMain.text();
+    //var finalcount = parseInt(Roundcount.match(/[0-9]+/)[0], 10) + 1;
+    //RoundCountMain.text("(Rounds: " + finalcount + ")")
+    $("body").ajaxStop(function () {
+        if (callEnd) {
+            var _newAcc = $('.AccTVacRounds').children('div[data-vacroundid = "' + _curElement + '"]');
+            callEnd = false;
+            _newAcc.click();
+            callEnd = false;
+        }
+    });
+</script>

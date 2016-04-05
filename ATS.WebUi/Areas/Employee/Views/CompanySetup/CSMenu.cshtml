@@ -1,0 +1,37 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using CommonFunctions = ATS.WebUi.Common.CommonFunctions
+@{
+    ViewBag.Title = "CSMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    List<ATS.WebUi.Models.CompanySetup> companysetupList = null; // CommonFunctions.CompanySetupMenu();
+    List<BEClient.CSNavigation> CSCountList = CommonFunctions.GetCSNavigationCount();
+    if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+    {
+        companysetupList = ATS.WebUi.Common.CommonFunctions.AdminCompanySetupMenu();
+    }
+    else
+    {
+        companysetupList = CommonFunctions.CompanySetupMenu();
+    }
+    companysetupList = companysetupList.GroupBy(x => x.DisplayName).Select(y => y.First()).ToList();
+}
+@section Navigation{
+@Html.Partial("_NavCompanySetup")
+}
+<ul class="CSMenu">
+    @foreach (ATS.WebUi.Models.CompanySetup _current in companysetupList)
+    {
+        var CSCount = CSCountList.Where(m => m.Name == _current.DisplayName).FirstOrDefault();
+        <li>
+            <a href='@Url.Action(_current.Action, _current.Controller, _current.param)'>
+                @Html.LanguageLabel(_current.DisplayName)
+                @if (CSCount != null)
+                {
+                    <span class="lblNavCount">@CSCount.Count</span>
+                }
+            </a>
+        </li>
+    }
+</ul>

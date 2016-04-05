@@ -1,0 +1,42 @@
+﻿
+@model ATS.BusinessEntity.PortalContent
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Employee/Views/CompanySetup/CompanySetUpMaster.cshtml";
+}
+
+<h2>View</h2>
+<div id="Messages">
+</div>
+@{
+    string actionName = ViewBag.RedirectAction;
+}
+@using (Html.BeginForm(actionName,"PortalContent", FormMethod.Post, new { id = "frmPortalContent" }))
+{
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(m => m.PortalContentId)
+    @Html.HiddenFor(m => m.ClientId)
+    <br />
+    <div class="vacancy-Details">
+        <div class="left-div">
+            <div class="box">
+              @Html.(m => m.Logo, new { @class = "label" })
+                    <br />
+             </div>
+        </div>
+        <button class="btn-save-vacancy" type="submit">
+            Save Position</button>
+    </div>
+}
+@if (ViewBag.IsError != null)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.Message != null)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+    </script>
+}

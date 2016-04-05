@@ -1,0 +1,41 @@
+﻿@model ATS.BusinessEntity.InterViewProcess
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using VacRound = ATS.BusinessEntity.Common.VacancyRound;
+
+
+
+<div class="acc-header" data-sectionid="@Model.ObjQueCat.QueCatId" data-rndtypeid='@Model.VacRndId'>
+    <p class="prfle-tab-head" style="overflow: hidden;">
+        <span class="w50 SMW80" style="float:left;">
+            <span class='ttldb Save'>Section<span class="cntSection"></span>:</span>
+            <span class='ttllbrown'>@Model.ObjQueCat.LocalName</span>
+        </span>
+        <span class="w30 SMWAuto MobDisable">
+            <span class="ttldblue">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+            <span class="ttllbrown" id="rndweight">@Model.ObjQueCat.Weight</span>
+        </span>
+        <span class="w20 SMWAuto" style="float:right;text-align:right;">
+            
+        </span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="AccQue-header">
+            <div class="w60 AccQue-headerCell">@Html.LanguageLabel(VacRound.ROUND_QUESTIONS)</div>
+            <div class="w30 AccQue-headerCell">@Html.LanguageLabel(VacRound.ROUND_WEIGHT)</div>
+            <div class="w10 AccQue-headerCell textright">Score</div>
+        </div>
+        <div class="AccQuestionDetail">
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".AccQuestionDetail").accordion(VacancyModel.AccSecondAttr);
+    });
+</script>

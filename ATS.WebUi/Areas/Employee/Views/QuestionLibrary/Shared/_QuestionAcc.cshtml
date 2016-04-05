@@ -1,0 +1,53 @@
+﻿@model ATS.BusinessEntity.Question
+@using BEClient = ATS.BusinessEntity;
+@using BECommonConstant = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+@{
+    //bool AllowEdit = false;
+    String myTypeInText = string.Empty;
+    ATS.WebUi.Common.CommonFunctions.QuestionType.TryGetValue(@Model.QueDataType, out myTypeInText);
+}
+<div class="acc-header" data-pkid="@Model.QueId" data-quecatid="@Model.QueCatId" data-qdatatype="@Model.QueDataType">
+    <p class="prfle-tab-head-brown" style="overflow:hidden;">
+        <span class="floatleft w60 SMW80">
+            <span class="ttldb"> @Model.LocalName</span>
+            <span class="ttlb QueTypeInText">(@myTypeInText)</span>
+        </span>
+        @*@if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.PermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, BEClient.PageMode.Update))
+            {
+                AllowEdit = true;
+            }*@
+        <span class="sm-disabled" style="float:right; white-space:nowrap;">
+            <span class="ttldblue">@Html.LanguageLabel(BeQl.FRM_WEIGHT): </span>
+            <span id="rndweight" class="ttllbrown">@Model.Weight</span>
+        </span>
+        <span style="padding-right: 1%;padding-left: 1%;" class="ansoption">
+            @*@if (AllowEdit)
+                {*@
+            <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("QueReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId,@QueId = Model.QueId,@OrderDir = "Up"  })' data-neworder='@Convert.ToString(Model.Order - 1)' data-id='@Model.QueId' onclick="return SetQueOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+            <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("QueReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueCatId = Model.QueCatId, @QueId = Model.QueId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.Order + 1)' data-id='@Model.QueId' onclick="return SetQueOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+            <span class="update sm-disabled" style="display:none;"><a href='#' id="editQuestion" data-id='@Model.QueId' onclick="return editQuestion(this);"><img src="~/Content/images/Edit_16.png" /></a></span>
+            @*}*@
+            <span class="delete"><a href='javascript:void(0);' onclick="return DeleteQueConfirm(this);" data-url='@Url.Action("DeleteQue", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueId = Model.QueId }) ' id="deleteQue"><img src="~/Content/images/delete_16.png" /></a></span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content" data-queid="@Model.QueId" data-quecatid="@Model.QueCatId">
+    <span class="editsection" style="display:none;">
+    </span>
+    <div class="AnsAccordian" style="width:98%;">
+    </div>
+    <div class="Content acc-action">
+        @if (ATS.WebUi.Common.CommonFunctions.AllowAnsOption(Model.QueDataType))
+        {
+        <a id="addAnswer" href='javascript:void(0);' data-url="@Url.Action("GetNewAnsOpt", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueId = Model.QueId, @DataType = Model.QueDataType, @AnsOrder = "_ANSORDER_" })" class="btn CaseUpper">@Html.LanguageLabel(BECommonConstant.FRM_ANSOPT_ADD)</a>
+        }
+        @*@if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.PermissionType, ATS.BusinessEntity.ATSPermissionType.Create, BEClient.PageMode.Create))
+            {
+                if (ATS.WebUi.Common.CommonFunctions.AllowAnsOption(Model.QueDataType))
+                {
+                    <a id="addAnswer" href='javascript:void(0);' data-url="@Url.Action("GetNewAnsOpt", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueId = Model.QueId, @DataType = Model.QueDataType, @AnsOrder = "_ANSORDER_" })" class="btn CaseUpper">@Html.LanguageLabel(BECommonConstant.FRM_ANSOPT_ADD)</a>
+                }
+            }*@
+    </div>
+</div>

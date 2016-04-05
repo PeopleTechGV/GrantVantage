@@ -1,0 +1,15 @@
+﻿@model List<ATS.BusinessEntity.VacancyOffer>
+
+<div class="AccVacancyOffer">
+    @{
+        bool IsCandidate = ViewBag.IsCandidate == true ? true : false;
+        int i = 1;
+    }
+    @foreach (ATS.BusinessEntity.VacancyOffer _Current in Model)
+    {
+        _Current.RndNo = i;
+        @Html.Partial("Shared/_AccVacancyOfferSingle", _Current)
+        i = i + 1;
+    }
+
+</div>

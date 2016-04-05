@@ -1,0 +1,15 @@
+﻿@model ATS.BusinessEntity.SRPEntity.IDynamicSRP
+
+@if (Model.UserPermissionWithScope != null)
+{
+    <ul class="ActionBar">
+        @if (Model.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0)
+        {
+            <li><a id="AddNew" class="bgAdd bgAdd16B" href='@Model.AddRecordURL'>@Html.LanguageLabel(Model.AddBtnText)</a></li>
+        }
+        @if (Model.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Delete)).Count() > 0)
+        {
+            <li><a id="btnDelete" class="bgAdd bgDelete16B ShowOnMulti" onclick="ConfirmDeleteRecordsRoleWise(this);">@Html.LanguageLabel(Model.RemoveBtnText)</a></li>
+        }
+    </ul>
+}

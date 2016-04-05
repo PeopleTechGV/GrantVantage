@@ -1,0 +1,14 @@
+﻿@model ATS.BusinessEntity.VacancyRound
+
+<div class="width-38">
+    @Html.LanguageLabelFor(m => m.RoundWeight, new { @class = "round-config-rgt labelwidth-rgt" })
+    @Html.TextBoxFor(m => m.RoundWeight, new { @class = "round-rgt", @onchange = "CopyRndWeight(this);" })
+</div>
+<div class="width-62">
+    @Html.LanguageLabelFor(m => m.PromoteCandidate, new { @class = "round-config-lft " })
+    @Html.DropDownListFor(m => m.PromoteCandidate, (SelectList)ViewBag.YesNoDropDownPromoteCandidate, "- Select -", new { @class = "round-slt-lft" })
+</div>
+<div class="width-38">
+    @Html.LanguageLabelFor(m => m.PromotionThresoldScore, new { @class = "round-config-rgt labelwidth-rgt" })
+    @Html.TextBoxFor(m => m.PromotionThresoldScore, new { @class = "round-rgt" })
+</div>

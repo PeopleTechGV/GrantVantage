@@ -1,0 +1,27 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Areas.Candidate.Models.JobApplication<ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateApplications>>
+@using BEApplicationDetailsConstantConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@using CommonFunction = ATS.WebUi.Common.CommonFunctions
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Navigation{
+    <div id="NavMyApp" class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgMyApplication16W"></div>
+        <span class="navTitle">
+            MY APPLICATIONS
+            @*<span class="navSubTitle lblNgold CaseUpper">@ViewBag.SelectedStatus</span>*@
+            @*<span class="lblNavCount">@totalCount</span>*@
+        </span>
+        @*<span class="chevron"></span>
+        <ul id="mnuMyApp" class="dropdownMenu menuPurple CaseUpper">
+            @Html.Partial("_NavMyApplication")
+        </ul>*@
+    </div>
+}
+
+
+@Html.Partial("_CandidateSurveyQuestions", Model)

@@ -1,0 +1,268 @@
+﻿@model ATS.BusinessEntity.ATSRolePrivilege
+@{
+    Layout = null;
+}
+@Html.HiddenFor(m => m.ATSRelativePrivilegeId)
+@Html.HiddenFor(m => m.ATSSecurityRoleId)
+
+
+@if (Model.DisplayOrder < 200)
+{
+    <div id="AllPrivilege" class="PrivilegeRow">
+        <ul class="dropdown" style="display:block" id='Name_'>
+            <li id="All">
+                <ul id="@Model.DisplayOrder" data-relativeorder="@Model.RelativeDisplayOrder" class="ats-catgry">
+                    <li class="catgry-title"> @Model.DisplayName</li>
+                    <li class="catgry-check" id="O">
+                        &nbsp;
+                        @Html.CheckBoxFor(m => @Model.ScopeOwn, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                    <li class="catgry-check" id="S">
+                        &nbsp;
+                        @Html.CheckBoxFor(m => @Model.ScopeSister, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                    <li class="catgry-check" id="C">
+                        &nbsp;
+                        @Html.CheckBoxFor(m => @Model.ScopeChild, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                    <li class="catgry-check" id="A">
+                        @Html.CheckBoxFor(m => @Model.ScopeAll, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+else if (Model.DisplayOrder == 200)
+{
+    <div id="AllPrivilege" class="CSParent PrivilegeRow">
+        <ul class="dropdown" style="display:block" id='Name_'>
+            <li id="All">
+                <ul id="@Model.DisplayOrder" data-relativeorder="@Model.RelativeDisplayOrder" class="ats-catgry">
+                    <li class="catgry-title">@Model.DisplayName</li>
+                    <li class="catgry-check" id="O">
+                        &nbsp;
+                    </li>
+                    <li class="catgry-check" id="S">
+                        &nbsp;
+                    </li>
+                    <li class="catgry-check" id="C">
+                        &nbsp;
+                    </li>
+                    <li class="catgry-check" id="A">
+                        @Html.CheckBoxFor(m => @Model.ScopeAll)
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+
+else
+{
+    <div id="AllPrivilege" class="CSChild PrivilegeRow">
+        <ul class="dropdown" style="display:block" id='Name_'>
+            <li id="All">
+                <ul id="@Model.DisplayOrder" data-relativeorder="@Model.RelativeDisplayOrder" class="ats-catgry">
+                    <li class="catgry-title">@Model.DisplayName</li>
+                    <li class="catgry-check" id="O">
+                        &nbsp;
+                        @Html.CheckBoxFor(m => @Model.ScopeOwn, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                    <li class="catgry-check" id="S">
+                        &nbsp;
+                        @Html.CheckBoxFor(m => @Model.ScopeSister, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                    <li class="catgry-check" id="C">
+                        &nbsp;
+                        @Html.CheckBoxFor(m => @Model.ScopeChild, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                    <li class="catgry-check" id="A">
+                        @Html.CheckBoxFor(m => @Model.ScopeAll, new { @onclick = "setCheckBox(this)" })
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+
+<script>
+
+    function setCheckBox(element) {
+        var _currEle = $(element).parent();
+        var _scope = $(_currEle).attr('id');
+        var _allScope = $(_currEle).parent().children('.catgry-check');
+        var _currPri = $(_currEle).parent().attr('id');
+        var _currRelativePri = $(_currEle).parent().attr('data-relativeorder');
+        
+        var _relativePrivilege = $(_currEle).parents('#AllRelativePrivileges').children('#AllPrivilege').children().find('.ats-catgry[id="' + _currPri + '"]');
+        //For A (click - UnClick)
+        if (_scope == "A") {
+            $(_allScope).each(function () {
+                var _singleScope = $(this).children();
+                if ($(element).is(':checked'))
+                    $(_singleScope).attr('checked', true);
+                else
+                    $(_singleScope).attr('checked', false);
+            });
+            if ($(element).is(':checked')) {
+                if (_currRelativePri != "2") {
+                    var _newRel = $(_relativePrivilege).filter("[data-relativeorder='2']").children('.catgry-check');
+                    $(_newRel).each(function () {
+                        var _singleScope = $(this).children();
+                        if ($(element).is(':checked'))
+                            $(_singleScope).attr('checked', true);
+                    });
+                }
+            }
+            else {
+                if (_currRelativePri == "2") {
+
+                    var _newRel = $(_relativePrivilege).filter("[data-relativeorder !='2']").children('.catgry-check');
+                    $(_newRel).each(function () {
+                        var _singleScope = $(this).children();
+                        $(_singleScope).attr('checked', false);
+                    });
+                    
+                    //var _newRelDel = $(_relativePrivilege).filter("[data-relativeorder !='2']").children('.catgry-check');
+                    //$(_newRelDel).each(function () {
+                    //    var _intscope = $(this).attr('id');
+                    //    var _singleScope = $(this).children();
+                    //    $(_singleScope).attr('checked', false);
+                    //});
+                }
+            }
+        }
+            // END For A (click - UnClick)
+        else {
+            if ($(element).is(':checked')) {
+
+                if (_scope == "C" || _scope == "S") {
+                    if ($(_allScope).find(":checked").length == 3) {
+                        //$(_allScope).each(function () {
+                        //    var _intscope = $(this).attr('id');
+                        //    var _singleScope = $(this).children();
+                        //    if (_intscope == "A") {
+                        //        $(_singleScope).attr('checked', true);
+                        //    }
+                        //});
+                        if (_currRelativePri != "2") {
+                            var _newRel = $(_relativePrivilege).filter("[data-relativeorder='2']").children('.catgry-check');
+                            $(_newRel).each(function () {
+                                var _intscope = $(this).attr('id');
+                                var _singleScope = $(this).children();
+                                //if (_intscope == "A") {
+                                //    $(_singleScope).attr('checked', true);
+                                //}
+                                if (_intscope == _scope)
+                                { $(_singleScope).attr('checked', true); }
+                            });
+                        }
+                    }
+                    else {
+                        $(_allScope).each(function () {
+                            var _intscope = $(this).attr('id');
+                            var _singleScope = $(this).children();
+                            if (_intscope == "O") {
+                                $(_singleScope).attr('checked', true);
+                            }
+                        });
+
+                        if (_currRelativePri != "2") {
+                            var _newRel = $(_relativePrivilege).filter("[data-relativeorder='2']").children('.catgry-check');
+                            $(_newRel).each(function () {
+                                var _intscope = $(this).attr('id');
+                                var _singleScope = $(this).children();
+                                if (_intscope == "O") {
+                                    $(_singleScope).attr('checked', true);
+                                }
+                                if (_intscope == _scope)
+                                { $(_singleScope).attr('checked', true); }
+                            });
+                        }
+
+
+                    }
+                }
+                if (_scope == 'O') {
+                    if (_currRelativePri != "2") {
+                        var _newRel = $(_relativePrivilege).filter("[data-relativeorder='2']").children('.catgry-check');
+                        $(_newRel).each(function () {
+                            var _intscope = $(this).attr('id');
+                            var _singleScope = $(this).children();
+                            if (_intscope == _scope)
+                            { $(_singleScope).attr('checked', true); }
+                        });
+                    }
+
+                }
+
+            }
+            else {
+                if (_scope == 'O') {
+                    $(_allScope).each(function () {
+                        var _intscope = $(this).attr('id');
+                        var _singleScope = $(this).children();
+                        $(_singleScope).attr('checked', false);
+                    });
+
+
+                    if (_currRelativePri == "2") {
+                        var _newRel = $(_relativePrivilege).filter("[data-relativeorder !='2']").children('.catgry-check');
+                        //var _newRelDel = $(_relativePrivilege).filter("[data-relativeorder !='2']").children('.catgry-check');
+                        $(_newRel).each(function () {
+                            var _intscope = $(this).attr('id');
+                            var _singleScope = $(this).children();
+                            $(_singleScope).attr('checked', false);
+                        });
+                        //$(_newRelDel).each(function () {
+                        //    var _intscope = $(this).attr('id');
+                        //    var _singleScope = $(this).children();
+                        //    $(_singleScope).attr('checked', false);
+                        //});
+                    }
+
+                }
+                else {
+                    $(_allScope).each(function () {
+                        var _intscope = $(this).attr('id');
+                        var _singleScope = $(this).children();
+                        if (_intscope == "A") {
+                            var _value = $(_singleScope).is(':checked');
+                            if (_value)
+                                $(_singleScope).attr('checked', false);
+                        }
+                    });
+                    if (_currRelativePri == "2") {
+                        var _newRel = $(_relativePrivilege).filter("[data-relativeorder='1']").children('.catgry-check');
+                        var _newRelDel = $(_relativePrivilege).filter("[data-relativeorder='3']").children('.catgry-check');
+
+                        $(_newRel).each(function () {
+                            var _intscope = $(this).attr('id');
+                            var _singleScope = $(this).children();
+                            if (_intscope == "A") {
+                                var _value = $(_singleScope).is(':checked');
+                                if (_value)
+                                    $(_singleScope).attr('checked', false);
+                            }
+                            if (_intscope == _scope)
+                            { $(_singleScope).attr('checked', false); }
+                        });
+
+                        $(_newRelDel).each(function () {
+                            var _intscope = $(this).attr('id');
+                            var _singleScope = $(this).children();
+                            if (_intscope == "A") {
+                                var _value = $(_singleScope).is(':checked');
+                                if (_value)
+                                    $(_singleScope).attr('checked', false);
+                            }
+                            if (_intscope == _scope)
+                            { $(_singleScope).attr('checked', false); }
+                        });
+                    }
+                }
+            }
+        }
+    }
+</script>

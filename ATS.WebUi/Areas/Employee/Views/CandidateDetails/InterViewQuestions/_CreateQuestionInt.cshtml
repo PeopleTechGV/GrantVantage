@@ -1,0 +1,72 @@
+﻿@model  ATS.BusinessEntity.ATSQuestionCommon
+
+@switch (Model.GetType().Name)
+{
+    case "ATSPickList":
+        <div class="question-dtl-lbl">Applicant's Answer</div>
+        <div class="question-dtl-value">
+            @Html.Partial("InterViewQuestions/_PickListInt", Model)
+        </div>
+        <div class="question-dtl-lbl">Score</div>
+        <div class="question-dtl-value slider">
+            @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+        </div>
+        break;
+
+    case "ATSCheckBox":
+    <div class="question-dtl-lbl">Applicant's Answer</div>
+    <div class="question-dtl-value">
+        @Html.Partial("InterViewQuestions/_CheckListInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+
+    case "ATSTextArea":
+    <div class="question-dtl-lbl">Applicant's Answer</div>
+    <div class="question-dtl-value">
+        @Html.Partial("InterViewQuestions/_LargeTextInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+
+    case "ATSTextBox":
+    <div class="question-dtl-lbl">Applicant's Answer</div>
+    <div class="question-dtl-value">
+        @Html.Partial("InterViewQuestions/_SmallTextInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+
+    case "ATSYesNo":
+    <div class="question-dtl-lbl">Applicant's Answer</div>
+    <div class="question-dtl-value">
+        @Html.Partial("InterViewQuestions/_YesNoInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+
+    case "ATSScale":
+    <div class="question-dtl-lbl">Applicant's Answer</div>
+    <div class="question-dtl-value slider">
+        @Html.Partial("InterViewQuestions/_ScaleInt", Model)
+    </div>
+    <div class="question-dtl-lbl">Score</div>
+    <div class="question-dtl-value slider">
+        @Html.TextBoxFor(x => x.Value, new { type = "slider", id = "score", @class = "score" })
+    </div>
+        break;
+}
+
+

@@ -1,0 +1,146 @@
+﻿@model ATS.BusinessEntity.Reviewers
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByVacRndId(Model.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+}
+
+@using (Ajax.BeginForm("AddUpdateVacRev", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "RevSuccess(data,'" + Model.VacancyReviewMemberId + "')",
+            OnFailure = "RevFailure",
+        }, new { id = "frmVacRev", isFormChange = "false" }))
+{
+    <script>
+        var formVRev = $("#frmVacRev");
+        $.validator.unobtrusive.parse(formVRev);
+    </script>
+    <div class="ARPInlineForm">
+        @Html.HiddenFor(m => m.RndTypeId)
+        @Html.HiddenFor(m => m.VacancyReviewMemberId)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.Title)
+        @if (RndAttr == BERndAttr.OfferRound)
+        {
+            @Html.HiddenFor(m => m.CanPromote, new { Value = true })
+        }
+        <div id="ARPRevName" class="reviewer-name w30 ARPBox">
+            @Html.DropDownListFor(m => m.UserId, (SelectList)ViewBag.UserList, "- Select -", new { @class = "r-right", @style = "width:90%;", @onchange = "return ReviewerDrp(this);" })
+        </div>
+        <div id="ARPRevTitle" class="reviewer-name w20 ARPBox">
+            <label class="LableBox">&nbsp;@Model.Title</label>
+        </div>
+        @if (RndAttr == BERndAttr.OfferRound)
+        {
+            <div class="reviewer-name w20 textcenter ARPBox cntCanEditAward">
+                @Html.DropDownListFor(m => m.CanEditOffers, (SelectList)ViewBag.YesNoDropDownCanPramote, new { @class = "r-right", @style = "width:50%;" })
+            </div>
+
+            <div class="reviewer-name w20 textcenter ARPBox cntCanMakeAward">
+                @Html.DropDownListFor(m => m.CanMakeOffers, (SelectList)ViewBag.YesNoDropDownCanPramote, new { @class = "r-right", @style = "width:50%;" })
+            </div>
+        }
+        else
+        {
+            <div id="ARPRevWt" class="reviewer-weight w20 ARPBox textcenter">
+                @Html.TextBoxFor(m => m.Weight, new { @class = "r-wght SMW100", @autocomplete = "off" })
+            </div>
+
+            <div id="ARPRevCP" class="reviewer-name w20 ARPBox">
+                @Html.DropDownListFor(m => m.CanPromote, (SelectList)ViewBag.YesNoDropDownCanPramote, new { @class = "r-right", @style = "width:50%;" })
+            </div>
+        }
+        <div class="vacancy-Details ARPInlineAction">
+            <button type="submit" class="prfle-button-save CaseUpper">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_REVIEWER_SAVE)</button>
+            @if (ViewBag.AllowRemoveBtn != null && (bool)ViewBag.AllowRemoveBtn == true)
+            {
+                <button type="button" id="RemoveRev" class="prfle-button-delete CaseUpper" onclick="RemoveRevFunction(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_APP_REV_REVIEWER_REMOVE)</button>
+            }
+        </div>
+    </div>
+}
+
+<script>
+    function RevSuccess(response, id) {
+        var jsonResponse = JSON.parse(response);
+        var vacRevid = $(jsonResponse.Data).attr('data-vacancyrevMemberId');
+        var existing = $("div[data-vacancyRevMemberId='" + id + "']").length;
+        var $Revbtn = MyVacancy.AddReviewersBtn;
+        var $qAccorEle = $("#frmVacRev").parent().closest(".acc-inner").children(".Content:first");
+
+        if (existing > 0) {
+            $("div[data-vacancyRevMemberId='" + id + "']").html($('<div>' + jsonResponse.Data + '</div>').find('div:first').html());
+        }
+        else {
+            //var VacRevcount = $("#frmVacRev").parents('.acc-Content:first').find('.reviewer-fld').size();
+
+            //$("#frmVacRev").parents('.acc-Content').prev().find('.revCount').text("(" + VacRevcount + ")");
+            //$("#frmVacRev").parents('.acc-Content').prev().find('.queCount').text("(" + Quecount + ")");
+
+            //var $qAccorEle = $("#frmVacRev").parent().closest(".acc-inner").children(".Content");
+            $qAccorEle = $qAccorEle.append(jsonResponse.Data);
+            //$('#frmVacQue').parent().remove();
+            $('#frmVacRev').remove();
+            var afterSave = $qAccorEle.parent().find('div[data-vacancyRevMemberId]').length;
+
+            //var afterSave = $("div[data-vacancyRevMemberId]").length;
+            $(".ARPReviewersMain").parent().prev().find('.revCount').text("(" + afterSave + ")");
+
+            //add reviewer button
+            //$qAccorEle.next().append($Revbtn);
+
+
+        }
+        if ($qAccorEle.find('#frmVacRev').length <= 0) {
+            $qAccorEle.next().append($Revbtn);
+        }
+
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonResponse.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    }
+    function RevFailure() {
+        alert('RoundQuestionFail');
+    }
+
+
+    function ReviewerDrp(element) {
+        var oldUserId = '';
+        var _useId = $(element).find("option:selected").val();
+        if ($(element).parents('form').closest('.reviewer-fld').length > 0) {
+            oldUserId = $(element).parents('form').closest('.reviewer-fld').attr('data-userid');
+        }
+        else {
+            oldUserId = _useId
+        }
+
+
+        var _vacrevid = $(element).parents('form').closest('.reviewer-fld').attr('data-vacancyRevMemberId')
+        var _vacrndid = $(element).parents('.acc-Content:first').prev().attr('data-roundid');
+        _dataLink = '@Html.Raw(Url.Action("GetUserTitle", "Myvacancy", new { UserId = "_DATAID_" ,VacRndId ="_VACRND_" , VacRevId = "_VACREV_",OldUserId="_OLDUSERID_"}))'
+
+        _dataLink = _dataLink.replace("_DATAID_", _useId);
+        _dataLink = _dataLink.replace("_VACREV_", _vacrevid);
+        _dataLink = _dataLink.replace("_VACRND_", _vacrndid);
+        _dataLink = _dataLink.replace("_OLDUSERID_", oldUserId);
+
+
+        $.get(_dataLink, function (response) {
+            response = JSON.parse(response)
+            var $fin = $(response.Data);
+            $(element).parents('form').html($fin.html());
+        });
+
+
+    }
+    function RemoveRevFunction(element) {
+
+        var $ele = $(element).parents('.Content').next();
+        $(element).closest("form").remove();
+        $ele.append(MyVacancy.AddReviewersBtn);
+    }
+
+</script>
+
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@

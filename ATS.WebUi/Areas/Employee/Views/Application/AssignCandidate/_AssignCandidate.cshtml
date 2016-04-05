@@ -1,0 +1,233 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.AssignedCandidates
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+
+<style>
+    .dgvModel input[type=text] {
+        width: 65%;
+    }
+</style>
+
+<div>
+
+    <div style="display:none;">
+        @foreach (var _curr in Model.objVacancyRounds)
+        {
+            <div id="@_curr.VacancyRoundId" data-order="@_curr.RndOrder">@_curr.LocalName</div>
+        }
+    </div>
+    @if (Model.objReviewers.Count() > 0)
+    {
+        <span class="floatleft w40 SMW100" style="padding: 5px 0;"><span class="ttldbrown">Applicant: </span>@Html.Label(Model.objReviewers[0].CandidateName, new { @id = "lblCandidateName", @class = "ttldblue" })</span>
+        <span class="floatright w60 textright SMTextLeft SMW100" style="padding: 5px 0;"><span class="ttldbrown">Opportunity: </span>@Html.Label(Model.objReviewers[0].JobTitle, new { @id = "lblVacancyName", @class = "ttldblue" })</span>
+        <span class="floatleft w40 ClearFloat SMW100" style="padding: 5px 0;"><span class="ttldbrown">Current Round: </span>@Html.Label(Model.CurrentName, new { @id = "lblVacancyName", @class = "ttldblue" })</span>
+        <span class="floatright w60 textright SMTextLeft SMW100" style="padding: 5px 0;"><span class="ttldbrown">Assign Applicant into the Round: </span>@Html.DropDownListFor(x => x.VacRndId, (SelectList)ViewBag.AllVacRounds, new { @id = "AllVacancyRound", @class = "w40" })</span>
+    }
+</div>
+<br clear="all" />
+<br clear="all" />
+<div class="dgvAssignCandidate">
+    <div class="drAssignCandidate sm-disabled">
+        <div style="float: left;" class="w20"><span class="ttldbrown">Select Assignee(s)</span></div>
+        <div style="float: left; text-align:center;" class="w20"><span class="ttldbrown interview">Weight (1-100)</span></div>
+        <div style="float: left; text-align: center;" class="w20"><span class="ttldbrown interview">Can Promote</span></div>
+        <div style="float: left; text-align: center;" class="w20"><span class="ttldbrown offer">Can Make Award</span></div>
+        <div style="float: left; text-align: center;" class="w20"><span class="ttldbrown offer">Can Edit Award</span></div>
+    </div>
+    @using (Ajax.BeginForm("InsertUnassignedReviewers", "Application", new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "AssignReviewerSuccess",
+            OnFailure = "AssignReviewerFailed"
+        }, new { id = "frmunassigned" }))
+    {
+        @Html.HiddenFor(m => m.ApplicationId, new { @id = "appId" })
+        @Html.HiddenFor(m => m.RoundsToAssign, new { @id = "RndsToAssign" })
+        @Html.HiddenFor(m => m.RoundsName, new { @id = "RndsName" })
+        <script>
+            var form = $("#frmunassigned");
+            $.validator.unobtrusive.parse(form);
+        </script>
+        <div id="RevByRounds" style="max-height: 290px; overflow: auto;">
+            @foreach (var item in Model.objReviewers)
+            {
+                item.ApplicationId = Model.ApplicationId;
+                item.RndTypeId = Model.VacRndId;
+                @Html.Partial("AssignCandidate/_SingleAssignCandidate", item);
+            }
+        </div>
+        <div class="AssignCandidateAction">
+            <input id="btnCancel" class="btnAssignCandidate" type="button" value="Cancel" onclick="return CloseDialog();" />
+            <input id="btnAssign" class="btnAssignCandidate" type="submit" value="Assign" onclick="return CheckValidation();" />
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            var _selectedrnd = $("#AllVacancyRound option:selected").val();
+            var _selectedrndname = $("#AllVacancyRound option:selected").text();
+            var _ele = $("#" + _selectedrnd).nextAll();
+            var totalValue = '';
+            var rndname = '';
+            totalValue += _selectedrnd + ';';
+            rndname += _selectedrndname + ';';
+            if ($(_ele).length > 0) {
+
+                $(_ele).each(function (index, value) {
+                    totalValue += $(this).attr("Id") + ';';
+                    rndname += $(this).text() + ';';
+                });
+            }
+
+            totalValue = totalValue.substring(0, totalValue.length - 1);
+            rndname = rndname.substring(0, rndname.length - 1);
+            $("#RndsToAssign").val(totalValue);
+            $("#RndsName").val(rndname);
+            var _intele = $('.interview');
+            var _offele = $('.offer')
+            if ($("#Weight").length == 0) {
+
+                $(_intele).each(function (index, value) {
+                    $(this).css("display", "none");
+                });
+            }
+            else {
+                $(_intele).each(function (index, value) {
+                    $(this).removeProp("display");
+                });
+            }
+
+            if ($("#CanMakeOffers").length == 0) {
+                $(_offele).each(function (index, value) {
+                    $(this).css("display", "none");
+                });
+            }
+            else {
+                $(_offele).each(function (index, value) {
+                    $(this).removeProp("display");
+                });
+            }
+        })
+
+        $("#AllVacancyRound").change(function () {
+
+            var _selectedrnd = $(this).val();
+            var _selectedrndname = $(this).find("option:selected").text();
+            var _appId = $("#appId").val();
+            var _dataLink = '@Html.Raw(Url.Action("GetUnAssignedReviewersByRound", "Application", new { VacRndId = "_VACRNDID_", ApplicationId = "_AppId_" }))';
+
+            _dataLink = _dataLink.replace("_VACRNDID_", _selectedrnd);
+            _dataLink = _dataLink.replace("_AppId_", _appId);
+
+            $.ajax({
+                url: _dataLink,
+                type: "Get",
+                success: function (response) {
+                    var data = JSON.parse(response)
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        $("#RevByRounds").html('');
+                        $("#RevByRounds").html(data.Data);
+                        var _ele = $("#" + _selectedrnd).nextAll();
+
+                        var totalValue = '';
+                        var rndname = '';
+                        totalValue += _selectedrnd + ';';
+                        rndname += _selectedrndname + ';';
+
+                        if ($(_ele).length > 0) {
+                            $(_ele).each(function (index, value) {
+                                totalValue += $(this).attr("Id") + ';';
+                                rndname += $(this).text() + ';';
+
+                            });
+                        }
+                        totalValue = totalValue.substring(0, totalValue.length - 1);
+                        rndname = rndname.substring(0, rndname.length - 1);
+
+                        $("#RndsToAssign").val(totalValue);
+                        $("#RndsName").val(rndname);
+
+                        var _inteleAft = $('.interview');
+                        var _offeleAft = $('.offer')
+                        $(_inteleAft).each(function (index, value) {
+                            $(this).css("display", "block");
+                        });
+                        if ($(data.Data).find("#Weight").length == 0) {
+
+                            $(_inteleAft).each(function (index, value) {
+                                $(this).css("display", "none");
+                            });
+
+                        }
+                        else {
+                            $(_inteleAft).each(function (index, value) {
+                                $(this).removeAttr("display");
+                            });
+
+                        }
+
+
+                        if ($(data.Data).find("#CanMakeOffers").length == 0) {
+                            $(_offeleAft).each(function (index, value) {
+                                $(this).css("display", "none");
+                            });
+
+                        }
+                        else {
+                            $(_offeleAft).each(function (index, value) {
+                                $(this).removeAttr("display");
+                            });
+
+                        }
+                    }
+                }
+            });
+        });
+    })
+
+    function CloseDialog() {
+        $('.ui-dialog-titlebar-close').click();
+    }
+
+    function CheckValidation() {
+        $('.txtWeight').each(function () {
+            $(this).rules("remove");
+        })
+        $(".chkAssigned").each(function () {
+            var _currEle = $(this);
+            var _currTxt = $(_currEle).parent().siblings().find('.txtWeight');
+            if ($(_currEle).is(':checked')) {
+                $(_currTxt).rules("add", {
+                    number: true,
+                    max: 100,
+                    min: 1,
+                    required: true
+                });
+            }
+        });
+    }
+
+    function AssignReviewerSuccess(result) {
+        var data = JSON.parse(result);
+        var form = $("#frmunassigned");
+        $.validator.unobtrusive.parse(form);
+        if (data.IsError) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            $('.ui-dialog-titlebar-close').click();
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+
+    function AssignReviewerFailed() {
+        var data = JSON.parse(result);
+        VacancyModel.DisplayErrorMeesage('#commonMessage', 'Reviewers Assigned Failed', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    }
+</script>

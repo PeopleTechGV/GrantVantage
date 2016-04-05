@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+
+<div id="CandidateRetractAcceptanceModel" class="OfferMain borderedModel">
+    <div class="OfferHeader">
+        Retract Acceptance
+        <a class="btnClosePopup" onclick="CloseCandidateRetractAcceptanceModel();"></a>
+    </div>
+
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW100">
+                <span>We are sorry to hear you are retracting this award. Please tell us why</span>
+                @Html.TextAreaFor(m => m.CandidateDeclineReason, new { @id = "txtDeclineReason" })
+            </div>
+        </div>
+    </div>
+    <div class="OfferAction" style="margin-top: 15px;">
+        <input id="btnRetractAcceptaqnce" type="submit" name="CandidateAction" value="Retract Acceptance">
+        <input id="btnCloseRetract" onclick="CloseCandidateRetractAcceptanceModel(); return false;" type="button" value="Cancel">
+        @*<a class="btnMakeOffer" onclick="CloseCandidateRetractAcceptanceModel();">Cancel</a>*@
+    </div>
+</div>

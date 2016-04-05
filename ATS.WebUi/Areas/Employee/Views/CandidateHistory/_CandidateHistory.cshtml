@@ -1,0 +1,21 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.CandidateHistory>
+
+
+@if (Model.Count > 0)
+{
+    <div class="previous-remarks">
+        <ul>
+            @foreach (BEClient.CandidateHistory _curr in Model)
+            {
+                <li>@_curr.CreatedOn.ToString("MM/dd/yy hh:mmtt").ToLower()@Html.Raw(" UTC: ") @_curr.Description</li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+<div>
+    Applicant History Not Available
+</div>
+}

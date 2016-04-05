@@ -1,0 +1,25 @@
+﻿@model ATS.BusinessEntity.TVacancyRound
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="accNewReviewRound">
+    <div class="acc-header">
+        <p class="prfle-tab-head-brown">
+
+            <span class="w50" style="float:left;">
+                <span class='lblRRName ttldblue'>New Round<span class="cntRound"></span></span>
+            </span>
+
+            <span class="w30">
+                <label></label>
+            </span>
+
+            <span class="ReviewRoundWt floatright DisplayNone">
+                <span class="ttllbrown">@Html.LanguageLabel(BECommonConst.FRM_APP_REV_WEIGHT): </span>
+                <span class="lblRRWeight ttldblue" id="rndweight">50</span>
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        @Html.Partial("Shared/RoundConfig/_RoundConfig", Model)
+    </div>
+</div>

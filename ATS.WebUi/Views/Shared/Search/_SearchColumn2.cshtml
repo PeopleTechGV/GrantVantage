@@ -1,0 +1,80 @@
+﻿@using ATS.WebUi.Models
+@using ATS.WebUi.Helpers;
+@model ATS.BusinessEntity.SolrEntity.SolrSearchObject
+
+<div class="saved-result-detail" style="margin-top:30px;">
+    <ul class="saved-job" id="selectable2">
+        @foreach (ATS.BusinessEntity.SolrEntity.SolrSearchFields current in Model.SearchData)
+        {
+            <li class="save-2col ui-selectee" data-id="@current.StrVacancyId">
+                <ul class="save-2col-lft RowContent">
+                    <li class="sv-txt-dtls">
+
+                        <ul class="std-width abcd" data-id='@current.StrVacancyId'>
+                            <li class="saved-jb-hd">@current.JobTitle</li>
+                            <li class="saved-jb-dtl">
+                                @Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_LOCATION) : <span class="saved-value">@current.Location</span>
+                            </li>
+                            @if (current.ShowOnWebSal)
+                            {
+                                <li class="saved-jb-dtl">
+                                    @Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_SALARY): <span class="saved-value">
+                                        @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@current.SalaryMinText - @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol@current.SalaryMaxText
+                                        (annual)
+                                    </span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="saved-jb-dtl">
+
+                                </li>
+                            }
+                            <li class="saved-jb-dtl">
+                                @Html.LanguageLabel(ATS.BusinessEntity.Common.LanguageStringConstant.LANG_SEARCH_EMPLOYMENTTYPE) : <span class="saved-value">@current.EmploymentType</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="w10">
+                        <ul class="GearButtonAbsRight GearAbsolute">
+                            @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+                            {
+                                Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "saved-setting", aTagId = "slideit5", style = "", area = "Candidate", showSaveJob = 1 });
+                            }
+                            else
+                            {
+                                Html.RenderAction("SearchSetting", "Search", new { objSolrSearchFields = current, applicationApply = (List<Guid>)ViewBag.ApplicationApply, saveJob = (List<Guid>)ViewBag.SaveJob, Id = "slidepanel", href = "#", className = "saved-setting", aTagId = "slideit5", style = "", area = "", showSaveJob = 0 });
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        }
+    </ul>
+</div>
+
+<script>
+    var divPodbl = $(".save-2col-lft");
+    divPodbl.dblclick(function () {
+        var dpId = $(this).find('ul').attr("data-id");
+        var dpLink = '@Url.Action("DisplayOppty", "Search", new { OpptyID =  "_DATAID_" })';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#selectable2").selectable({
+            cancel: '#selectable2 > .ui-selected, #Upload',
+
+            selecting: function (e, ui) {
+                $("#selectable2 li").removeClass('ui-selected');
+                $(this).addClass('ui-selected');
+            },
+            selected: function (e, ui) {
+                $("#btnApplyNow").show(300);
+                $("#hdnVacancyId").val($(this).find(".ui-selected").attr("data-id"));
+            }
+        });
+    });
+</script>

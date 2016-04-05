@@ -1,0 +1,34 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.TRequiredDocument
+
+<div class="GridRow std_width reviewer-fld">
+    <div class="reviewer-name w20 SMW90"><label class="r-name cntNameBBlue">@Model.objDocumentType.DocumentName</label></div>
+    <div class="reviewer-name w30 SMW90"><label class="r-name cntDocumentTypeBBlue">@Model.objDocumentType.Description</label></div>
+    <div class="reviewer-name w30 SMW90"><label class="r-name cntExtensionTypesBBlue">@Model.objDocumentType.ExtensionTypes</label></div>
+    <div class="delete deleteIcon floatright w10" style="margin-right: 5px;">
+        <a id="deleteVacRev" onclick="ConfirmDeleteTRequiredDocument(this)" data-id="@Model.TRequiredDocumentId" data-url="" href="javascript:void(0);">
+            <img width="15" height="15" src="/Content/images/delete_16.png">
+        </a>
+    </div>
+</div>
+
+<script>
+    function ConfirmDeleteTRequiredDocument(element) {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Reviewer", 300, "Are you sure you want to delete this Required Document?", "Yes", "Cancel", "RemoveTRequiredDocument", element, "test");
+        return false;
+    }
+
+    function RemoveTRequiredDocument(Result, element) {
+        if (Result) {
+            var TRequiredDocumentId = $(element).attr('data-id')
+            var _dataLink = '@Url.Action("DeleteTRequiredDocument", "TemplateVacancy", new { TRequiredDocumentId = "_TREQUIREDDOCUMENTID_" })';
+            dataLink = _dataLink.replace("_TREQUIREDDOCUMENTID_", TRequiredDocumentId)
+            VacancyModel.CallPostMethod(dataLink, function (data, message) {
+                var OldCount = $(element).closest(".acc-Content").prev().find(".lblReqDocCount").html();
+                $(element).closest(".acc-Content").prev().find(".lblReqDocCount").html(parseInt(OldCount) - 1);
+                $(element).parents(".GridRow").remove();
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', message, 3000);
+            });
+        }
+    }
+</script>

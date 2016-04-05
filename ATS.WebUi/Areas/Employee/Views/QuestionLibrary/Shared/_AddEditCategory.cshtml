@@ -1,0 +1,142 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.BusinessEntity.QueCat
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BELanCat = ATS.BusinessEntity.Common.QueCategory
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+
+<script>
+    $(document).ready(function () {
+        $(".AccCategoryInner").accordion(VacancyModel.AccSecondAttr);
+    });
+    $(".AccCategoryInner").live("accordionbeforeactivate", function (event, ui) {
+        event.stopImmediatePropagation();
+
+    });
+</script>
+
+@{
+    List<BEClient.RoundAttributes> ObjRndAttributes = ATS.WebUi.Common.CommonFunctions.GetRoundAttributesForQueCat();
+    ViewBag.drpRoundAttributes = new SelectList(ObjRndAttributes, "RoundAttributesId", "RoundAttributesName");
+}
+
+@using (Ajax.BeginForm("CRUCategory", "QuestionLibrary", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "CategorySuccess(data,'" + Model.QueCatId + "')",
+            OnFailure = "CategoryFailure",
+        }, new { id = "frmCategory", isFormChange = "false" }))
+{
+    <script>
+        var formAECat = $("#frmCategory");
+        $.validator.unobtrusive.parse(formAECat);
+    </script>
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.QueCatId, new { Id = "QueCat" })
+    @Html.HiddenFor(m => m.Order)
+
+    <div class="AccCategoryInner">
+        <div class="acc-header">
+            <p class="prfle-tab-head" style="overflow:hidden;">
+                <span class="ttldb">@Html.LanguageLabel(BELanCat.FRM_CAT_CAT_DETAILS)</span>
+            </p>
+        </div>
+        <div class="acc-Content">
+            <div class="vacancy-Details QueLibraryForm SMW94">
+                <div class="one-div" style="margin-left: 1%;">
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.DefaultName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.DefaultName, new { @class = "detail-input", @onchange = "CopyCategoryName(this);" })
+                    </div>
+                    @for (int i = 0; i < Model.EntityLanguageList.Count(); i++)
+                    {
+                        <div class="box">
+                            @{
+                        String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.EntityLanguageList[i].LanguageId)).First().objLanguage.LanguageName;
+                            }
+                            @Html.Label(Html.LanguageLabel(BELanCat.FRM_CATEGORY) + " " + Html.LanguageLabel(BECommonConstantConst.IN) + " " + languageame, new { @class = "label" })
+                            @Html.HiddenFor(m => m.EntityLanguageList[i].LanguageId, new { @class = "detail-input" })
+                            @Html.TextBoxFor(m => m.EntityLanguageList[i].LocalName, new { @class = "detail-input" })
+                        </div>
+                    }
+                    <div class="box">
+                        <label class="label">Use Category In Round</label>
+                        @Html.DropDownListFor(m => m.RoundAttributeId, (SelectList)ViewBag.drpRoundAttributes, "--Select--", new { @class = "detail-input" })
+                    </div>
+
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.Weight, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Weight, new { @class = "detail-input", @onchange = "CopyWeight(this);" })
+                    </div>
+
+                    @Html.HiddenFor(m => m.IsActive)
+                    @Html.HiddenFor(m => m.Order)
+                </div>
+            </div>
+
+            <div class="vacancy-Details ARPInlineAction">
+                <button type="submit" class="prfle-button-save CaseUpper">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_CAT_SAVE)</button>
+                @if (Model.QueCatId == Guid.Empty)
+                {
+                    <button type="button" id="RemoveCat" class="prfle-button-delete CaseUpper" onclick="RemoveCategory(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_CAT_REMOVE)</button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function RemoveCategory(element) {
+            $(element).closest("form").closest('.acc-Content').prev().remove();
+            $(element).closest("form").closest('.acc-Content').remove();
+            $('#addCategory').show();
+            return false;
+        }
+
+        function CopyCategoryName(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+        }
+
+        function CopyWeight(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "ttldblue", cur.val())
+        }
+
+
+        function CategorySuccess(data, custome) {
+            var CatAccClassName = ".CatAccordian";
+            $(CatAccClassName).children('form').remove();
+            var jsonData = JSON.parse(data);
+            if (!jsonData.IsError) {
+                var newJsonData = "<div>" + jsonData.Data + "</div>";
+                var newId = $(newJsonData).find(".acc-header").attr("data-catidonly");
+                if ($(CatAccClassName).find("div[data-catidonly='" + newId + "']").length > 0) {
+                    var active = $(".CatAccordian").accordion("option", "active");
+                    $(CatAccClassName).find("div[data-catidonly='" + newId + "']").html($(newJsonData).find("div[data-catidonly='" + newId + "']").html());
+                    $(CatAccClassName).find("div[data-catidonly='" + newId + "']").next().find('.editsection').hide();
+                    $(CatAccClassName).accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", active);
+               
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                else {
+                    $(CatAccClassName).find("div[class^='acc-header'][aria-selected='true']").remove('div')
+                    $(CatAccClassName).find("div[class^='acc-Content'][style^='display: block;']").remove('div');
+                    $(CatAccClassName).append(jsonData.Data).accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+            else {
+
+                $weight = $(CatAccClassName).find("div[data-catidonly='" + custome + "']").find('#rndweight');
+                if ($weight.length > 0) {
+                    VacancyModel.DisplayProfileCommonNotification(jsonData, $weight.get(0));
+                }
+            }
+            VacancyModel.IgnoreAccordianHeaderClick("CatAccordian");
+            $('#addCategory').show();
+            var _lstcount = $('.CatAccordian').children('.acc-header').length;
+            $("#lblCount").text(_lstcount);
+            $('#Count_CSMNU_QUE').text(_lstcount);
+        }
+    </script>
+}

@@ -1,0 +1,205 @@
+﻿.NavigationBar {
+    padding-left: 231px;
+}
+
+.contnt-right {
+    width: calc(100% - 230px);
+}
+
+.contnt-left {
+    background-color: #E6E6E6;
+    display: block;
+    float: left;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 230px;
+    z-index: 10;
+}
+
+ul.LeftMenu > li {
+    display: block;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    width: 100%;
+    border-top: 1px solid #8d8d8d;
+}
+
+    ul.LeftMenu > li > a {
+        background-position: 8px center;
+        background-size: 16px 16px;
+        border-left: 3px solid #953634;
+        color: #ffffff;
+        display: block;
+        font-size: 10pt;
+        height: auto;
+        padding: 12px 12px 12px 32px;
+    }
+
+        ul.LeftMenu > li > a.activeMenu {
+            border-color: #953634;
+        }
+
+            ul.LeftMenu > li > a:hover, ul.LeftMenu > li > a.activeMenu:hover {
+                border-color: #345E8E;
+            }
+
+.btn-upload-resume {
+    background: url("/content/images/Upload_Documents_white_24.png") no-repeat 95% center #345E8E;
+    border: medium none;
+    bottom: 50px;
+    color: #FFF;
+    display: block;
+    font-size: 12px;
+    left: -135px;
+    margin: 0 auto;
+    padding: 8px 42px 8px 8px;
+    position: fixed;
+    text-align: left;
+    width: 175px;
+    transition: all .75s ease;
+}
+
+    .btn-upload-resume:hover {
+        transition: all .75s ease;
+        left: 0;
+        background-color: #345E8E;
+    }
+
+
+/*#region HOVER ICONS */
+
+.LeftMenu > li > .bgFeaturedJob24W:hover, .dropdownMenu > li > .bgFeaturedJob24W:hover {
+    background-image: url("/content/images/Featured_Jobs_24.png");
+}
+
+.LeftMenu > li > .bgSearch24W:hover, .dropdownMenu > li > .bgSearch24W:hover {
+    background-image: url("/content/images/Search_Jobs_24.png");
+}
+
+.LeftMenu > li > .bgMyApplication24W:hover, .dropdownMenu > li > .bgMyApplication24W:hover {
+    background-image: url("/content/images/My_Applications_24.png");
+}
+
+.LeftMenu > li > .bgMyDocument24W:hover, .dropdownMenu > li > .bgMyDocument24W:hover {
+    background-image: url("/content/images/My_Documents_24.png");
+}
+
+.LeftMenu > li > .bgMyProfile24W:hover, .dropdownMenu > li > .bgMyProfile24W:hover {
+    background-image: url("/content/images/My_Profile_24.png");
+}
+
+.LeftMenu > li > .bgMyVacancy24W:hover, .dropdownMenu > li > .bgMyVacancy24W:hover {
+    background-image: url("/content/images/My_Vacancies_24.png");
+}
+
+.LeftMenu > li > .bgMyCandidate24W:hover, .dropdownMenu > li > .bgMyCandidate24W:hover {
+    background-image: url("/content/images/My_Candidates_24.png");
+}
+
+.LeftMenu > li > .bgInterviewCalender24W:hover, .dropdownMenu > li > .bgInterviewCalender24W:hover, .hasDropdown:hover > .bgInterviewCalender24W {
+    background-image: url("/content/images/Interview_Calendar_24.png");
+}
+
+
+.LeftMenu > li > .bgCompanySetup24W:hover, .dropdownMenu > li > .bgCompanySetup24W:hover {
+    background-image: url("/content/images/Company_Setup_24.png");
+}
+
+.dropdownMenu > li > .bgLogout16W:hover {
+    background-image: url("/content/images/Logout_16.png");
+}
+
+
+
+.dropdownMenu > li > .bgChange16W:hover {
+    background-image: url("/content/images/Change_Status_16.png");
+}
+
+
+
+
+
+.hasDropdown:hover > .bgHome16W {
+    background-image: url("/content/images/Home_button_16.png");
+}
+
+.hasDropdown:hover > .bgMyApplication16W {
+    background-image: url("/content/images/My_Applications_24.png");
+}
+
+.hasDropdown:hover > .bgFeaturedJob16W {
+    background-image: url("/content/images/Featured_Jobs_16.png");
+}
+
+.hasDropdown:hover > .bgMyDocument24W {
+    background-image: url("/content/images/My_Documents_24.png");
+}
+
+.hasDropdown:hover > .bgMyVacancy24W {
+    background-image: url("/content/images/My_Vacancies_24.png");
+}
+
+.hasDropdown:hover > .bgMyCandidate24W {
+    background-image: url("/content/images/My_Candidates_24.png");
+}
+
+.hasDropdown:hover > .bgCompanySetup24W {
+    background-image: url("/content/images/Company_Setup_24.png");
+}
+
+.hasDropdown:hover > .bgMyProfile24W {
+    background-image: url("/content/images/My_Profile_16.png");
+}
+
+.hasDropdown:hover > .bgSavedJobs24W {
+    background-image: url("/content/images/Saved_Jobs_16.png");
+}
+
+.hasDropdown:hover > .bgSearch16W {
+    background-image: url("/content/images/Search_Jobs_16.png");
+}
+
+.hasDropdown:hover > .bgMyProfile16W {
+    background-image: url("/content/images/My_Profile_16.png");
+}
+
+.hasDropdown:hover > .bgLogin16W {
+    background-image: url("/content/images/Login_16.png");
+}
+
+
+.hasDropdown:hover > .chevron {
+    background: url("/content/images/Down_Chevron_8.png") no-repeat scroll center center transparent;
+}
+
+
+/*#endregion */
+
+
+
+.dropdownMenu > .dropdownInfo {
+    background-color: #31859c;
+    color: #cdcdcd;
+}
+
+ul.dropdownMenu {
+    padding: 0;
+}
+
+    ul.dropdownMenu > li {
+        margin-bottom: 0;
+    }
+
+ul.multiColumns {
+    width: 460px;
+}
+
+    ul.multiColumns > li:nth-child(2n+1) {
+        margin-right: 0;
+    }
+
+
+#UploadPhotoSideForm {
+    display: none;
+}

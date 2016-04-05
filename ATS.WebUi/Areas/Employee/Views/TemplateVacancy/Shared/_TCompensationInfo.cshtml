@@ -1,0 +1,298 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.TVac>
+@using BEClient = ATS.BusinessEntity;
+@using (Ajax.BeginForm("AddTVacCompensationInfo", "TemplateVacancy", new { area = "Employee" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "TCompensationInfoSucess(data,'" + @Model.obj.TVacId + "')",
+        OnFailure = "TJobDescriptionFailure"
+    }, new { id = "TCompensationInfo", isFormChange = "false" }))
+{
+    @Html.HiddenFor(m => m.obj.TVacId)
+    <text>
+        <script>
+            var form = $("#TCompensationInfo");
+            $.validator.unobtrusive.parse(form);
+            function TCompensationInfoSucess(data, custom) {
+                $("div[name ='cominfo']").attr('data-mode', '@BEClient.PageMode.Update');
+                data = JSON.parse(data);
+                if (!data.IsError) {
+                    $("div[name ='cominfo']").html("");
+                    $("div[name ='cominfo']").html(data.Data);
+                }
+                var Savelink = $("span[data-TVacid='Com_" + custom + "']").get(0);
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+
+            function TCompensationInfoFailure(data) {
+                data = JSON.parse(data);
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+        </script>
+    </text>
+
+    <div class="VacancyInfo">
+        @*------------------------NEW SECTION START--------------------------------*@
+        <div class="CompensationBox">
+            <div class="box">
+                <div class="header">
+                    Application Instruction
+                </div>
+                <div class="checkbox-web">
+                    @Html.CheckBoxFor(m => m.obj.ShowOnWebAppInstruction)
+                    @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+                </div>
+                <div class="detail-data">
+                    <div class="box">
+                        @Html.TextAreaFor(m => m.obj.ApplicationInstruction, new { @class = "text-data CLE-textarea w100" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br clear="all" />
+        <div class="CompensationBox">
+            <div class="box">
+                <div class="header">
+                    Application Instruction Documents
+                </div>
+                <div class="checkbox-web">
+                    @Html.CheckBoxFor(m => m.obj.ShowOnWebAppInstructionDoc)
+                    @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+                </div>
+                <div class="detail-data">
+                    <div class="AppInstructionDocList" style="margin: 0 15px;">
+                        @if (Model.obj.objTAppInstructionDocList != null && Model.obj.objTAppInstructionDocList.Count > 0)
+                        {
+                            @Html.Partial("Shared/_TAppInstructionDocList", Model.obj.objTAppInstructionDocList)
+                        }
+                    </div>
+                    <div class="box">
+                        <input type="file" id="btnUploadFile" name="myfile[]" multiple class="file-upload floatleft">
+                        <a id="btnUploadDocument" class="btn-small bgUploadDocument16" href="javascript:void(0);">UPLOAD DOCUMENTS</a>
+                        <br clear="all" /><div><span class="ttldbrown">Ex: </span><span class="ttldblue">.doc, .docx, .pdf, .csv, .xls, .xlsx, .txt</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*------------------------NEW SECTION END--------------------------------*@
+
+
+        @if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Delete, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+        {
+            if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+            {
+                <div class="ActionBox">
+                    <button type="submit" class="prfle-button-save CaseUpper">Save Application Instructions</button>
+                </div>
+            }
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    (function () {
+        $('#btnUploadDocument').click(function (event) {
+            $('#btnUploadFile').click();
+        });
+
+        $('#btnUploadFile').change(function (click) {
+            var IsError = ValidateFiles();
+            if (IsError == true) {
+                var Message = "Invalid Document Type";
+                VacancyModel.DisplayErrorMeesage('#commonMessage', Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                var formData = new FormData();
+                var totalFiles = document.getElementById("btnUploadFile").files.length;
+                for (var i = 0; i < totalFiles; i++) {
+                    var file = document.getElementById("btnUploadFile").files[i];
+                    formData.append("btnUploadFile", file);
+                }
+                var TVacId = $(this).parents("#TCompensationInfo").parents(".acc-Content").prev(".acc-header").attr("data-recordid");
+                var _datalink = '@Html.Raw(@Url.Action("UploadTAppInstructionDocument", "TemplateVacancy", new { TVacId = "_TVACID_" }))';
+                _datalink = _datalink.replace("_TVACID_", TVacId);
+                $.ajax({
+                    type: "POST",
+                    url: _datalink,
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (!response.IsError) {
+                            $(".AppInstructionDocList").html(response.Data);
+                            VacancyModel.DisplaySuccessMeesage('#commonMessage', response.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        }
+                    },
+                    error: function (error) {
+                        alert("errror");
+                    }
+                });
+            }
+        });
+    })();
+
+    function ValidateFiles() {
+        var IsError = false;
+        var length = document.getElementById('btnUploadFile').files.length;
+        for (var i = 0; i < length; i++) {
+            var fname = document.getElementById('btnUploadFile').files[i].name;
+            var fext = fname.split('.').pop();
+            if (fext != 'doc' && fext != 'docx' && fext != 'pdf' && fext != 'csv' && fext != 'xls' && fext != 'xlsx' && fext != 'txt') {
+                IsError = true;
+            }
+        }
+        return IsError;
+    }
+</script>
+
+<script>
+    $('#chkHourlySal').change(function () {
+        if ($(this).is(':checked')) {
+            $('#chkAnnualSal').prop('checked', false);
+        }
+        ShowOnWeb();
+    });
+
+    $('#chkAnnualSal').change(function () {
+        if ($(this).is(':checked')) {
+            $('#chkHourlySal').prop('checked', false);
+        }
+        ShowOnWeb();
+    });
+
+    $(document).ready(function () {
+        ShowOnWeb();
+        $(".CLE-textarea").cleditor({
+            controls:
+        "source | bold italic underline | bullets numbering | outdent " +
+        "indent | alignleft center alignright justify | " +
+        "link unlink "
+        });
+    });
+
+    $('input[type="checkbox"]').change(function () {
+        ShowOnWeb(this);
+    });
+
+    function ShowOnWeb() {
+        $(".VacancyInfo .CompensationBox input[type='checkbox']").each(function () {
+            if ($(this).is(':checked')) {
+                $(this).parent().next("div").children().show();
+                if ($(this).parents(".CompensationBox").next('.ActionBox').length > 0) {
+                    $(".ActionBox").css("border-top", "2px solid #953634");
+                }
+            }
+            else {
+                $(this).parent().next("div").children().hide();
+                if ($(this).parents(".CompensationBox").next('.ActionBox').length > 0) {
+                    $(".ActionBox").css("border-top", "none");
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    .cleditorMain iframe {
+        width: 100% !important;
+    }
+</style>
+
+
+@*<div class="CompensationBox">
+        <div class="box">
+            <div class="header">
+                Annual Salary
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebSal, new { @id = "chkAnnualSal" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="detail-data">
+                <div class="left-div compe-overflow">
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.obj.SalaryMin, new { @class = "label" })
+                        <span class="label"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                        <br />
+                        @Html.TextBoxFor(m => m.obj.SalaryMinText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);", @id = String.Format("{0}{1}", "SalaryMin", new Guid()) })
+                    </div>
+                </div>
+                <div class="right-div">
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.obj.SalaryMax, new { @class = "label" })
+                        <span class="label"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                        <br />
+                        @Html.TextBoxFor(m => m.obj.SalaryMaxText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br clear="all" />
+    <div class="CompensationBox">
+        <div class="box">
+            <div class="header">
+                Hourly Rate
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowonWebHour, new { @id = "chkHourlySal" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="detail-data">
+                <div class="left-div compe-overflow">
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.obj.HourlyMin, new { @class = "label" })
+                        <span class="label"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                        <br />
+                        @Html.TextBoxFor(m => m.obj.HourlyMinText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+                    </div>
+                </div>
+                <div class="right-div">
+                    <div class="box">
+                        @Html.LanguageLabelFor(m => m.obj.HourlyMax, new { @class = "label" })
+                        <span class="label"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                        <br />
+                        @Html.TextBoxFor(m => m.obj.HourlyMaxText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br clear="all" />
+    <div class="CompensationBox">
+        <div class="box">
+            <div class="header">
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_COMMISSION)
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebCommission)
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="detail-data">
+                <div class="box">
+                    @Html.TextAreaFor(m => m.obj.Commission, new { @class = "text-data", style = "width:100%" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <br clear="all" />
+    <div class="CompensationBox">
+        <div class="box">
+            <div class="header">
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_BONUS_POTENTIALS)
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebBonus)
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="detail-data">
+                <div class="box">
+                    @Html.TextAreaFor(m => m.obj.BonusPotential, new { @class = "text-data", style = "width:100%" })
+                </div>
+            </div>
+        </div>
+    </div>*@

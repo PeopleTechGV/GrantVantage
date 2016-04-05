@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ATS.BusinessEntity.Master.Subscription>
+@using BELabel = ATS.BusinessEntity.Common.ClientLabel
+@using BESubscriptionLabel = ATS.BusinessEntity.Common.SubscriptionLabel
+
+<div class="search-result-detail">
+    <div class="search-heading">
+        <div class="location">
+            @Html.LanguageLabel(BELabel.FRM_CLIENT_USERLIMIT)
+        </div>
+        <div class="location">
+            @Html.LanguageLabel(BESubscriptionLabel.FRM_SUBSCRIPTION_PRICE)
+        </div>
+        <div class="location">
+            &nbsp;
+        </div>
+        <div class="location">
+            &nbsp;
+        </div>
+    </div>
+    @foreach (ATS.BusinessEntity.Master.Subscription objSub in Model)
+{
+    <ul id="selectable" class="search-row default">
+        <li class="text-details">
+            <ul data-id="@objSub.SubscriptionId">
+                <li class="detail-location">@objSub.UserLimit</li>
+                <li class="detail-location">@objSub.PriceText</li>
+                <li class="detail-location" style="width:190px;">&nbsp;</li>
+                <li style="height: 20px; padding: 0 13px; width: 24px;">
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+}
+    </div>
+
+    <script type="text/javascript">
+        $("#selectable").dblclick(function () {
+            var clientId = $(this).find('ul').attr("data-id");
+            var dLink = '@Url.Action("View", "Subscription", new { area = ATS.WebUi.Common.Constants.AREA_ADMIN, id = "_DATAID_" })';
+            dLink = dLink.replace("_DATAID_", clientId);
+            window.location = dLink;
+        });
+    </script>

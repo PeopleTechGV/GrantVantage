@@ -1,0 +1,14 @@
+ClientID,CandidateID,ApplicationID,FirstName,LastName,MiddleName,PersonalEmail,Division,JobType,StreetAddress,City,State,Zip,HomePhone,JobLocation,EmployementType,PositionType,PositionOwner,PositionID,PayType,Salary,HiringDate,OnboardingManagerID,OnboardingManagerFirstName,OnboardingManagerLastName
+96,7C2D96B7-13E3-432D-AE27-303666654EFF,C5AB5D90-CB1D-439E-8006-C236D292BEAE,Anand,Shah,,anand.shah@promptsoftech.com,.Net,Part-Time,"Prompt Softech, 12-SF Maurya Times Square, Science City Road, Sola",Ahmedabad,GUJARAT,380 061,2656 59 92,Bangalore,Permanent,Sr. Software Er.,Ankit Rahevar,1000404,Contract,$3000,6/5/2015 2:38:06 PM,75BED2DB-641C-477D-8839-BF8F9772E79F,ABC,XYZ
+,,,,,,,,,,,,,,,Temporary,,,,Pernament,30 Hrs/Week & $6 Hourly Wages ,,,,
+,,,,,,,,,,,,,,,,,,,Temp,$5 Per <Textbox Value>,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,$5 Per Hours,,,,
+,,,,,,,,,,,,,,,,,,,,$3000 Per Month,,,,
+,,,,,,,,,,,,,,,,,,,,$100 Per Day,,,,
+,,,,,,,,,,,,,,,,,,,,$750 Per Week,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,Permanent ,,
+,,,,,,,,,,,,,,,,,,,,,,Contract / Temp,,

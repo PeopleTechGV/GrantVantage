@@ -1,0 +1,29 @@
+﻿@model ATS.BusinessEntity.Reviewers
+
+
+<div class="Reviewer acc-header" data-pkid="@Model.VacancyReviewMemberId">
+    <p class="sm-prfle-tab-head" style="overflow: hidden;">
+        <span class="ReviewersDtl w60 MobW65" style="float:left;">
+            <span class='ttldblue' style="padding-right:2px;">Reviewer</span>
+            <span class='ttllbrown'>@Model.UserName</span>
+            @if (Model.IsAssignedReviewer)
+            {
+                <span class="flgAssignedReviewers ttllbrown">
+                    (@Model.AssignedCandidateCount.ToString())
+                </span>
+            }
+        </span>
+        <span class="w30 textright MobDisable">
+            <span class="ttldblue" id="rndweight">@Model.Weight</span>
+        </span>
+        <span class="w10 floatright textright SMWAuto">
+            <span class="ttldblue" id="rndscore">@Model.Score</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="acc-inner">
+        <div class="CanAnswer">
+        </div>
+    </div>
+</div>

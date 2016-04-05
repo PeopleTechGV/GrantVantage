@@ -1,0 +1,71 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.ExecutiveSummary
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        @Html.LanguageLabel(ATS.BusinessEntity.Common.ExecutiveSummaryConstant.FRM_TITL_EXECUTIVESUMMARY)
+        <span class="Save" recordid='@Model.ExecutiveSummaryId' style="display:none;"><button type="button" onclick="return outerSave(this);"></button></span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+<div class="acc-Content">
+    @using (Ajax.BeginForm("ExecutiveSummary", "Profile", new { area = "" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "ExecutionSummarySucess(data,'" + Model.ExecutiveSummaryId + "')",
+        OnFailure = "ExecutionSummaryFailure"
+    }, new { id = "frmExecutiveSummary", isFormChange = "false" }))
+    {
+        <script>
+            function outerSave(element) {
+                var head = $(element).closest('.acc-header');
+                var myform = $(head).next().children().get(0);
+                var isvalidate = $(myform).valid();
+                if (isvalidate) {
+                    $(myform).submit();
+                }
+                return false;
+            }
+            function ExecutionSummarySucess(data, custom) {
+
+                data = JSON.parse(data);
+
+                var Savelink = $("span[recordid='" + custom + "']").get(0);
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+
+            function ExecutionSummaryFailure(data) {
+                data = JSON.parse(data);
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+
+        </script>
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div w100">
+                            <div class="box w100">
+                                @Html.HiddenFor(m => m.ExecutiveSummaryId, new { @class = "ignore" })
+                                @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+                                @Html.HiddenFor(m => m.UserId, new { @class = "ignore" })
+                                @Html.TextAreaFor(m => m.ExecutiveSummaryDetails, new { @class = "detail-input HX100" })
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper">Save Executive Summary</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

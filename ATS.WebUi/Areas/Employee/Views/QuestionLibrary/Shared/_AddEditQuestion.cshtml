@@ -1,0 +1,198 @@
+﻿@model ATS.BusinessEntity.Question
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BELangQuestion = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+@using DropDownConstants = ATS.BusinessEntity.Common.DropDownConstant
+
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@{
+    var @LangText = @Html.LanguageLabel(DropDownConstants.DRP_PLEASE_SELECT);
+}
+
+@if (@Model.QueDataType != 5)
+{
+    <text>
+        <style>
+            .YesNoValueBox {
+                display: none;
+            }
+        </style>
+    </text>
+}
+@using (Ajax.BeginForm("CRUQue", "QuestionLibrary", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "QuestionSuccess(data,'" + Model.QueId + "')",
+            OnFailure = "QuestionFailure",
+        }, new { id = "frmQuestion" }))
+{    
+    @*<script>
+        var _frmQuestion = $("#frmQuestion");
+        $.validator.unobtrusive.parse(_frmQuestion);
+    </script>*@
+    @Html.ValidationSummary(true)
+    @*@Html.HiddenFor(m => m.QueCatId)*@
+    <input type="hidden" name="QueCatId" id ="QueCatId" value="@Model.QueCatId" /> 
+    
+    @Html.HiddenFor(m => m.QueId, new { Id = "Que" })
+    @Html.HiddenFor(m => m.IsActive)
+    @Html.HiddenFor(m => m.Order)
+
+    <div class="vacancy-Details QueLibraryForm SMW90">
+        <div class="box QueLibraryFormInner" style="margin-left: 12px; width: 98% !important;">
+            @*@Html.HiddenFor(x => x.QueCatId)*@
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.DefaultName, new { @class = "label" })
+                @Html.TextBoxFor(m => m.DefaultName, new { @class = "detail-input", @onchange = "CopyQueName(this);" })
+            </div>
+
+            @for (int i = 0; i < Model.EntityLanguageList.Count(); i++)
+            {
+                <text>
+                    @{
+                String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.EntityLanguageList[i].LanguageId)).First().objLanguage.LanguageName;
+                    }
+                </text>
+                <div class="box">
+                    @Html.Label(Html.LanguageLabel(BELangQuestion.FRM_QUE) + " " + Html.LanguageLabel(BECommonConstantConst.IN) + " " + languageame, new { @class = "label" })
+                    @Html.HiddenFor(m => m.EntityLanguageList[i].LanguageId, new { @class = "detail-input" })
+                    @Html.TextBoxFor(m => m.EntityLanguageList[i].LocalName, new { @class = "detail-input" })
+                </div>
+            }
+
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.QueType, new { @class = "label" })
+                @Html.DropDownListFor(m => m.QueType, (SelectList)ViewBag.QueTypeLst, @LangText.ToString(), new { @class = "detail-select", @id = "QueType" })
+            </div>
+
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.QueDataType, new { @class = "label" })
+                @Html.DropDownListFor(m => m.QueDataType, (SelectList)ViewBag.QuestionTypeList, @LangText.ToString(), new { @class = "detail-select", @id = "QueDataType", @onchange = "CopyQueType(this);" })
+            </div>
+
+            <div class="MultiBox YesNoValueBox" style="margin-right: 1%;">
+                @Html.LanguageLabelFor(m => m.ValueForYes, new { @class = "label" })
+                @Html.TextBoxFor(m => m.ValueForYes, new { @class = "detail-input" })
+            </div>
+            <div class="MultiBox YesNoValueBox">
+                @Html.LanguageLabelFor(m => m.ValueForNo, new { @class = "label" })
+                @Html.TextBoxFor(m => m.ValueForNo, new { @class = "detail-input" })
+            </div>
+
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.Weight, new { @class = "label" })
+                @Html.TextBoxFor(m => m.Weight, new { @class = "detail-input", @onchange = "CopyQueWeight(this);" })
+            </div>
+            @*CR-9*@
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.IntegrationKey, new { @class = "label" })
+                @Html.TextBoxFor(m => m.IntegrationKey, new { @class = "detail-input"})
+            </div>
+
+        </div>
+        <div class="vacancy-Details ARPInlineAction">
+            <button type="submit" class="prfle-button-save CaseUpper">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_SAVE)</button>
+            @if (Model.QueId == Guid.Empty)
+            {
+                <button type="button" id="RemoveQue" class="prfle-button-delete CaseUpper" onclick="RemoveQueMain(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_REMOVE)</button>
+            }
+        </div>
+
+    </div>
+
+    <script>
+        //$("#RemoveQue").on("click",function () {
+        //    var element = $(this);
+        //    $(element).closest("form").closest('.acc-Content').prev().remove();
+        //    $(element).closest("form").closest('.acc-Content').remove();
+        //    $('#addQuestionQL').show();
+        //    return false;
+        //});
+        function RemoveQueMain(element) {
+            $(element).closest("form").closest('.acc-Content').prev().remove();
+            $(element).closest("form").closest('.acc-Content').remove();
+            $('#addQuestionQL').show();
+            return false;
+        }
+        function CopyQueName(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+
+        }
+        function CopyQueType(changeVal) {
+            $(".YesNoValueBox").hide();
+            var Value = $(changeVal).val();
+            if (Value == "5") {
+                $(".YesNoValueBox").show();
+            }
+            var cur = $(changeVal);
+            var text = "";
+            if (cur.val() != 0) {
+                text = "(" + cur.find('option:selected').text() + ")";
+            }
+
+            cur.closest('.acc-Content').prev().attr('data-qdatatype', cur.val());
+            VacancyModel.CopyDataToHeader(cur, "QueTypeInText", text);
+        }
+
+        function CopyQueWeight(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "ttllbrown", cur.val())
+        }
+
+        function QuestionSuccess(data, custome) {
+            
+            var jsonData = JSON.parse(data);
+            var CatAccClassName = ".CatAccordian";
+            var QuestionAccClassName = ".QueAccordian";
+
+            var newJsonData = "<div>" + jsonData.Data + "</div>";
+            
+            var _CatId = $(newJsonData).find(".acc-header").attr('data-quecatid');
+            var $catAcc = $(CatAccClassName).find("div[data-catidonly='" + _CatId + "']");
+            var $queAcc = $catAcc.next().find(QuestionAccClassName);
+            if (!jsonData.IsError) {
+
+                //Get Cat Accordian
+                var queId = $(newJsonData).find(".acc-header").attr("data-pkid");
+                $queAcc.find('form').remove();
+                if ($queAcc.find("div[data-pkid='" + queId + "']").length > 0) {
+                    var active = $queAcc.accordion("option", "active");
+                    $queAcc.find("div[data-pkid='" + queId + "']").html($(newJsonData).find("div[data-pkid='" + queId + "']").html());
+                    $queAcc.find("div[data-pkid='" + queId + "']").next().find('.editsection').hide();
+                    if ($(newJsonData).find("div.Content").length > 0 && $queAcc.find("div[data-pkid='" + queId + "']").next().find("div.Content").length > 0) {
+                        $queAcc.find("div[data-pkid='" + queId + "']").next().find("div.Content").html($(newJsonData).find("div.Content").html());
+                    }
+                    $queAcc.accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active);
+                    $queAcc.find('.AnsAccordian').accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                
+                   
+
+                }
+                else {
+
+                    $queAcc.find("div[class^='acc-header'][aria-selected='true']").remove('div')
+                    $queAcc.find("div[class^='acc-Content'][style^='display: block;']").remove('div');
+                    $queAcc.append(jsonData.Data).accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    $queAcc.find('.AnsAccordian').accordion(VacancyModel.AccSecondAttr).accordion('refresh');
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                var _quecnt = $queAcc.children('.acc-header').length;
+                $catAcc.find('#quecnt').text(_quecnt);
+            }
+            else {
+                $weight = $queAcc.find("div[data-catidonly='" + custome + "']").find('#rndweight');
+                if ($weight.length > 0) {
+                    VacancyModel.DisplayProfileCommonNotification(jsonData, $weight.get(0));
+                }
+            }
+            
+            VacancyModel.IgnoreAccordianHeaderClick("QueAccordian");
+            //$('#addQuestionQL').show();
+        }
+
+
+      
+    </script>
+}

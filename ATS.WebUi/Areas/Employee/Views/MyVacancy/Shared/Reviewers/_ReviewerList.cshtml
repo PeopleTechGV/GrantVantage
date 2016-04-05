@@ -1,0 +1,118 @@
+﻿@model ATS.BusinessEntity.Reviewers
+@using BEClient = ATS.BusinessEntity;
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByVacRndId(Model.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+}
+
+<div class="std_width reviewer-fld" style="padding: 0;" data-vacancyrevmemberid="@Model.VacancyReviewMemberId" data-userid="@Model.UserId" data-vacrndid="@Model.RndTypeId">
+    <div class="reviewer-name w30 WAuto CellPadding">
+        <label class="r-name">@Model.UserName</label>
+        @if (Model.IsAssignedReviewer)
+        {
+            <a class="flgAssignedReviewers" href='@Url.Action("GetAssignedCandidatesByUserIdAndVacRndId", "Application", new { UserId = @Model.UserId, VacRndId = @Model.RndTypeId })' onclick="return VacancyModel.OpenPostRequestForm(this)" title="Assigned Applicant(s)" dialog-width="400" dialog-close-button="false" dialog-title='Assigned Applicant(s)'>
+                (@Model.AssignedCandidateCount.ToString())
+            </a>
+        }
+    </div>
+    <div class="reviewer-name w20 MobW60 CellPadding"><label class="r-title">@Model.Title</label></div>
+    @if (RndAttr != BERndAttr.OfferRound)
+    {
+        <div id="RevWt" class="reviewer-name w20 textcenter cntWeightBBlue CellPadding"><label class="r-wght">@Model.Weight</label></div>
+        <div id="RevPromote" class="reviewer-name w20 textcenter cntCanPromoteBBlue CellPadding"><label class="r-wght">@Model.CanPromoteText</label></div>
+    }
+    @if (RndAttr == BERndAttr.OfferRound)
+    {
+        <div id="RevWt" class="reviewer-name w20 textcenter cntCanEditAwardBBlue CellPadding"><label class="r-wght">@Model.CanEditOffersText</label></div>
+        <div id="RevPromote" class="reviewer-name w20 textcenter cntCanMakeAwardBBlue CellPadding"><label class="r-wght">@Model.CanMakeOffersText</label></div>
+    }
+    @if (Model.PermissionType.Contains(BEClient.ATSPermissionType.Delete))
+    {
+        <span class="edit deleteIcon floatright CellPadding" style="margin-right: 5px;">
+            <a id="deleteVacRev" onclick="ConfirmDeleteVacRev(this)" data-id="@Model.VacancyReviewMemberId" data-rndid="@Model.RndTypeId" data-url="" href="javascript:void(0);">
+                <img width="15" height="15" src="/Content/images/delete_16.png">
+            </a>
+        </span>
+    }
+    @if (Model.PermissionType.Contains(BEClient.ATSPermissionType.Modify))
+    {
+        <span class="edit floatright CellPadding" style="margin-right: 5px;">
+            <a id="edit" onclick="EditVacRev(this)" data-id="@Model.VacancyReviewMemberId" data-rndid="@Model.RndTypeId" data-url="" href="javascript:void(0);">
+                <img width="15" height="15" src="/Content/images/Edit_16.png">
+            </a>
+        </span>
+    }
+</div>
+
+<script>
+    function EditVacRev(element) {
+        var $ele = $(element).parents('.Content').next().find('a');
+        var dataid = $(element).attr('data-id');
+        var rndid = $(element).attr('data-rndid');
+        var _Link = '@Url.Action("GetVacRevById", "MyVacancy", new { VacRevId = "_DATAID_", VacRndId = "_VACRNDID_" })';
+        _Link = _Link.replace("_DATAID_", dataid)
+        _Link = _Link.replace("_VACRNDID_", rndid)
+        _Link = _Link.replace("&amp;", "&")
+        var $replaceelement = $(element).parent().parent();
+        $.ajax({
+            url: _Link,
+            type: "GET",
+            success: function (response) {
+                response = JSON.parse(response);
+                if (!response.IsError) {
+                    $replaceelement.html(response.Data);
+                    $ele.remove();
+                }
+            }
+        });
+    }
+
+    function ConfirmDeleteVacRev(element) {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Reviewer", 300, "Are you sure you want to delete this Reviewer?", "Yes", "Cancel", "RemoveVacRev", element, "test");
+        return false;
+    }
+
+    function DeleteVacRev(element) {
+        var $ele = $(element).parents('.Content').next().find('a');
+        var VacRevMemId = $(element).attr('data-id');
+        var _dataLink = '@Url.Action("DeleteVacRevMember", "MyVacancy", new { VacReviewMemberId = "_VACREVMEMID_" })';
+        _dataLink = _dataLink.replace("_VACREVMEMID_", VacRevMemId)
+        VacancyModel.CallPostMethod(
+            _dataLink, function (response) {
+
+            });
+    }
+
+    $("#deleteRev").live("click", function () {
+
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Reviewer", 300, "Are you sure you want to delete this Reviewer?", "Yes", "Cancel", "RemoveVacRev", this, "test");
+        return false;
+    });
+
+    function RemoveVacRev(Result, element) {
+        if (Result) {
+            var $accContent = $(element).parents('.acc-Content:first');
+            var dataid = $(element).attr('data-id')
+            var _dataLink = '@Url.Action("RemoveVacRev", "MyVacancy", new { VacRevId = "_DATAID_" })';
+            _dataLink = _dataLink.replace("_DATAID_", dataid)
+            $.ajax({
+                url: _dataLink,
+                type: "POST",
+                success: function (response) {
+                    var jsonresp = JSON.parse(response)
+                    if (!jsonresp.IsError) {
+                        $(element).parent().parent().remove();
+                        var revCount = $accContent.find('.reviewer-fld').size();
+                        $accContent.prev().find('.revCount').text(revCount == 0 ? "" : "(" + revCount + ")");
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonresp.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', jsonresp.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+            });
+        }
+    }
+</script>

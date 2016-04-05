@@ -1,0 +1,34 @@
+﻿@model IList<ATS.BusinessEntity.LanguageBlocks>
+@using BEDivisionConst = ATS.BusinessEntity.Common
+@using LanguageBlockConstants = ATS.BusinessEntity.Common.LanguageBlockConstant
+<div class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w35">@Html.LanguageLabel(LanguageBlockConstants.FRM_LANGUAGE_BLOCK)</li>
+        <li class="w65">@Html.LanguageLabel(LanguageBlockConstants.FRM_LANGUAGE_BLOCK_DESCRIPTION)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.LanguageBlocks current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.LanguageBlockId'>
+            <li class="w35 SMW90 cntLangBlocks">@current.LanguageBlockName</li>
+            <li class="w65 SMW90 Langblocks-Desc cntDescription textjustify">@current.LanguageBlockDescription</li>
+            <li id="MobDegreeType" class="ViewDetailsMob MobView" onclick="ViewBlock(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var divisionId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "LanguageBlocks", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", divisionId);
+        window.location = dLink;
+    });
+
+    function MobDivision(element) {
+        var divisionId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "LanguageBlocks", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", divisionId);
+        window.location = dLink;
+    }
+</script>

@@ -1,0 +1,144 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.TVac>
+@using BEClient = ATS.BusinessEntity;
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@using (Ajax.BeginForm("AddTVacJobDescription", "TemplateVacancy", new { area = "Employee" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "TJobDescriptionSucess(data,'" + @Model.obj.TVacId + "')",
+        OnFailure = "TJobDescriptionFailure"
+    }, new { id = "TfrmTJobDescription", isFormChange = "false" }))
+{
+    @Html.HiddenFor(model => model.obj.TVacId)
+    @Html.HiddenFor(m => m.obj.TVacId)
+    <text>
+        <script>
+            var form = $("#TfrmTJobDescription");
+            $.validator.unobtrusive.parse(form);
+
+            function TJobDescriptionSucess(data, custom) {
+                $("div[name ='jobdesc']").attr('data-mode', '@BEClient.PageMode.Update');
+                data = JSON.parse(data);
+                if (!data.IsError) {
+                    $("div[name ='jobdesc']").html("");
+                    $("div[name ='jobdesc']").html(data.Data);
+                }
+                var Savelink = $("span[data-VacancyId='JobDesc_" + custom + "']").get(0);
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+
+            function TJobDescriptionFailure(data) {
+                data = JSON.parse(data);
+
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+            ////******EDITOR setting**////////
+            $(document).ready(function () {
+                $(".CLE-textarea").cleditor({
+                    controls:
+                "source | bold italic underline | bullets numbering | outdent " +
+                "indent | alignleft center alignright justify | " +
+                "link unlink "
+                });
+            });
+        </script>
+    </text>
+
+    <div class="VacancyInfo">
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.JobDescription, new { @class = "header" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebJobDescription, new { style = "margin-left:3px;" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.JobDescription, new { @class = "text-data CLE-textarea", style = "width:100%" })
+            </div>
+        </div>
+        <br clear="all" />
+        <br clear="all" />
+
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.DutiesAndResponsibilities, new { @class = "header", style = "margin-right:3px;" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebDuties, new { style = "margin-left:3px;" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.DutiesAndResponsibilities, new { @class = "text-data CLE-textarea", style = "width:100%" })
+            </div>
+        </div>
+        <br clear="all" />
+        <br clear="all" />
+
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.SkillsAndQualification, new { @class = "header", style = "margin-right:3px;" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebSkills, new { style = "margin-left:3px;" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.SkillsAndQualification, new { @class = "text-data CLE-textarea", style = "width:100%" })
+            </div>
+        </div>
+        <br clear="all" />
+        <br clear="all" />
+
+        <div class="box">
+            <div class="header" style="font-weight:normal;">
+                @Html.LanguageLabelFor(m => m.obj.Benefits, new { @class = "header", style = "margin-right:3px;" })
+            </div>
+            <div class="checkbox-web">
+                @Html.CheckBoxFor(m => m.obj.ShowOnWebBenefits, new { style = "margin-left:3px;" })
+                @Html.LanguageLabel(ATS.BusinessEntity.Common.VacancyConstant.FRM_VAC_SHOW_ON_WEB)
+            </div>
+            <div class="ContentMain">
+                @Html.TextAreaFor(m => m.obj.Benefits, new { @class = "text-data CLE-textarea", style = "width:100%" })
+            </div>
+        </div>
+        @if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Delete, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+        {
+            if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, ViewBag.PageMode) || ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.RecordPermissionType, ATS.BusinessEntity.ATSPermissionType.Create, ViewBag.PageMode))
+            {
+                <div class="ActionBox">
+                    <button type="submit" class="prfle-button-save CaseUpper">Save Opportunity Description</button>
+                </div>
+            }
+        }
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".VacancyInfo input[type='checkbox']").each(function () {
+            ShowOnWeb(this);
+        });
+    });
+
+    $('input[type="checkbox"]').change(function () {
+        ShowOnWeb(this);
+    });
+
+    function ShowOnWeb(event) {
+        if ($(event).is(':checked')) {
+            $(event).parent().next(".ContentMain").children().show();
+            if ($(event).parent().parent().next('.ActionBox').length > 0) {
+                $(".ActionBox").css("border-top", "2px solid #953634");
+            }
+        }
+        else {
+            $(event).parent().next(".ContentMain").children().hide();
+            if ($(event).parent().parent().next('.ActionBox').length > 0) {
+                $(".ActionBox").css("border-top", "none");
+            }
+        }
+    }
+</script>

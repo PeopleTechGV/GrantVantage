@@ -1,0 +1,45 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.Languages
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.LanguageCode)</span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.LanguageCode, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.LanguageCode, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Write, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.Write, (SelectList)ViewBag.YesNoDropDownWrite, new { @class = "detail-select" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Comments, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.Comments, new { @class = "detail-input txtarea" })
+                        </div>
+                    </div>
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Read, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.Read, (SelectList)ViewBag.YesNoDropDownRead, new { @class = "detail-select" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Speak, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.Speak, (SelectList)ViewBag.YesNoDropDownSpeak, new { @class = "detail-select" })
+                        </div>
+                    </div>
+                </div>
+                <br clear="all" />
+            </td>
+        </tr>
+    </table>
+</div>

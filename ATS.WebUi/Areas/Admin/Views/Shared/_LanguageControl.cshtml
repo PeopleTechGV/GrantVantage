@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ATS.BusinessEntity.Master.Language>
+<div class="language">
+    <a href="#" id="language-change">Language<img src="/Content/images/language.jpg" /></a>
+    <div id="languagelist">
+        <ul>
+      @foreach (var v in Model)
+        {
+            <li><a href='@Url.Action("ChangeLanguage", "Home", new { area = "Admin", languageId = v.LanguageId, culture = v.LanguageCulture,clientName = ATS.WebUi.Common.CurrentSession.Instance.VerifiedUserMaster.UserName,returnUrl=Request.Url.PathAndQuery})'><i class="flag-de"></i>@v.LanguageName @*English*@</a> </li>
+        }
+        </ul>
+        <br class="clear" />
+    </div>
+</div>

@@ -1,0 +1,946 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.CandidateProfile
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+<style>
+    .ui-accordion .ui-accordion-content {
+        border: none;
+        background: transparent;
+        height: 280px;
+        overflow: auto;
+        padding: 1em;
+        width: 95%;
+    }
+
+    .ui-accordion .ui-accordion-header {
+        height: 20px;
+    }
+
+    .ui-state-default,
+    .ui-state-active {
+        background: transparent;
+        border: 0px solid #aaaaaa;
+    }
+
+    .ui-state-hover,
+    .ui-state-focus {
+        background: #ECDBA8;
+        border: 0px solid #999999;
+    }
+</style>
+<script>
+
+    function SubmitCurrentForm() {
+        ShowLoading();
+        $("#frmMyProfileCandidate").submit();
+        $("#frmMyProfileCandidate").submit(function (e) {
+            var isValid = $("#frmMyProfileCandidate").valid();
+            if (isValid == false) {
+                var lastInvalid = $(this).validate().lastActive;
+                var errElement = $(lastInvalid).parents().find("div.ui-accordion-content").has(lastInvalid);
+                var sectIndex = $("#accordion > .ui-accordion-header").index(errElement.prev());
+                $("#accordion").pAccordion("selectedIndex", sectIndex);
+                $(errElement).scrollTop($(errElement).scrollTop() + $(lastInvalid).position().top
+            - $(errElement).height() + $(lastInvalid).height() / 2);
+            }
+            HideLoading();
+        });
+        HideLoading();
+        $('.field-validation-error').hide();
+
+    }
+
+    function actionClick(id) {
+        runEffect(id);
+        return false;
+    };
+    // run the currently selected effect
+    function runEffect(id) {
+        // run the effect
+       $("#" + id).slideToggle( "slow" );
+   }
+  
+    
+ 
+
+</script> 
+@*This code will check is candidate open or employee open for view purpose*@
+@if(ViewBag.EmployeeView!=null && ViewBag.EmployeeView==true)
+            {
+     <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmMyProfileCandidate');
+            $('[id^="add"]').each(function () {
+                $(this).hide();
+            });
+            $('[class^="prfle-link-delete"]').each(function () {
+                $(this).hide();
+            });
+          
+        });
+        
+    </script>
+}
+            
+<div id="MyProfile">
+    @*@using (Html.BeginForm("Index", "MyProfile", FormMethod.Post, new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, id = "frmMyProfileCandidate" }))
+    {*@    
+        @Html.HiddenFor(m=>m.objProfile.ProfileId)
+        @Html.HiddenFor(m=>m.objProfile.ProfileName)
+    <div style="height: 30px; position: inherit; margin-bottom: 27px; width: 95%;">
+        @if (!(ViewBag.EmployeeView != null && ViewBag.EmployeeView == true))
+        {
+            <div style="float: right;">
+                <div style="padding:10px;">
+                    @Html.Partial("_Settings", Model)
+                </div>
+            </div>
+        }
+
+    </div>
+        @Html.HiddenFor(m => m.objProfile.UserId, new { @class = "ignore" })
+        @Html.HiddenFor(m => m.objProfile.ProfileId, new { @class = "ignore" })
+        
+        <div @*id="accordion-resizer"*@ id = "Accordian1" class="Accordion">
+            <div id="accordion" class="AccordionPanel AccordionPanelOpen">
+                <div class="AccordionPanelTab" >
+                    <p class="prfle-tab-head" >
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_TTL_PERSONAL_INFO)
+                    </p>
+            </div>
+
+                @Html.Partial("MyProfile/_PersonalInfo",Model.objUserDetails)
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.AvailabilityConstant.FRM_PRF_TTL_AVAILIBILITY)
+                    </p>
+                </div>
+                <div id="ObjAvailability" class="AccordionPanelContent">
+                        @Html.HiddenFor(m => m.ObjAvailability.AvailibilityId, new { @class = "ignore" })
+                    <div class="vacancy-Details">
+                        <div class="left-div" >
+                            <div class="box">
+                                 @Html.LanguageLabelFor(m => m.ObjAvailability.DateAvailability, new { @class = "label" })
+                                 @Html.TextBoxFor(m => m.ObjAvailability.DateAvailabilityText, new { @class = "detail-input", @id = "DateAvailability" })
+                            </div>
+                           </div>
+                            <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.TargetIncome, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.TargetIncome, new { @class = "detail-input" })
+                            </div>
+                            </div>
+                            <div class="left-div" style="width:100%;">
+                        <div class="std-width">
+                            <label class="label" for="ObjAvailability_HrsMon" style="margin-bottom: 1%;">Hours Available</label>
+                        </div>
+                            <div class="box" style="width:100%;">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsMon, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsMon, new { @class = "hrs-input" })
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsTue, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsTue, new { @class = "hrs-input"})
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsWed, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsWed, new { @class = "hrs-input"})
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsThu, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsThu, new { @class = "hrs-input"})
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsFri, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsFri, new { @class = "hrs-input"})
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsSat, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsSat, new { @class = "hrs-input"})
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HrsSun, new { @class = "hrs-lable" })
+                                @Html.TextBoxFor(m => m.ObjAvailability.HrsSun, new { @class = "hrs-input"})
+                            </div>
+                            </div>
+                            <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.EmploymentPreference, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.ObjAvailability.EmploymentPreference, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.RelativesWorkingInCompany, new { @class = "label" })
+
+                                  <div class="input-container">
+                                @Html.DropDownListFor(m => m.ObjAvailability.RelativesWorkingInCompany, (SelectList)ViewBag.YesNoDropDownRelativesWorkingInCompany, new { @class = "detail-input" })
+                            </div>
+                                @*@Html.TextBoxFor(m => m.ObjAvailability.RelativesWorkingInCompany, new { @class = "detail-input" })*@
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.SubmittedApplicationBefore, new { @class = "label" })
+                              
+                                  <div class="input-container">
+                                @Html.DropDownListFor(m => m.ObjAvailability.SubmittedApplicationBefore, (SelectList)ViewBag.YesNoDropDownSubmittedApplicationBefore, new { @class = "detail-input" })
+                            </div>
+                                @*@Html.TextBoxFor(m => m.ObjAvailability.SubmittedApplicationBefore, new { @class = "detail-input" })*@
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HearAboutThePosition, new { @class = "label" })
+                                
+                                @Html.TextBoxFor(m => m.ObjAvailability.HearAboutThePosition, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.HowOld, new { @class = "label" })
+                               
+                                @Html.TextBoxFor(m => m.ObjAvailability.HowOld, new { @class = "detail-input" })
+                            </div>
+                            </div>
+                       
+                            <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.WillingToWorkOverTime, new { @class = "label" })
+                           
+                                 <div class="input-container">
+                                @Html.DropDownListFor(m => m.ObjAvailability.WillingToWorkOverTime, (SelectList)ViewBag.YesNoDropDownWillingToWorkOverTime, new { @class = "detail-input" })
+                            </div>
+                                @*@Html.TextBoxFor(m => m.ObjAvailability.WillingToWorkOverTime, new { @class = "detail-input" })*@
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.RelativesIfYes, new { @class = "label" })
+                         
+                                @Html.TextBoxFor(m => m.ObjAvailability.RelativesIfYes, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.AppicationSubmision, new { @class = "label" })
+                             
+                                @Html.TextBoxFor(m => m.ObjAvailability.AppicationSubmision, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.ReferredBy, new { @class = "label" })
+                         
+                                @Html.TextBoxFor(m => m.ObjAvailability.ReferredBy, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjAvailability.EligibleToWorkInUS, new { @class = "label" })
+                         
+                                  <div class="input-container">
+                                @Html.DropDownListFor(m => m.ObjAvailability.EligibleToWorkInUS, (SelectList)ViewBag.YesNoDropDownEligibleToWorkInUS, new { @class = "detail-input" })
+                            </div>
+                                @*@Html.TextBoxFor(m => m.ObjAvailability.EligibleToWorkInUS, new { @class = "detail-input" })*@
+                            </div>
+                        </div>
+                         </div>
+                    </div>
+                
+
+
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.ExecutiveSummaryConstant.FRM_TITL_EXECUTIVESUMMARY)
+                    </p>
+                </div>
+
+                <div id="ObjExecutiveSummary" class="AccordionPanelContent">
+                    @Html.HiddenFor(m => m.ObjExecutiveSummary.ExecutiveSummaryId, new { @class = "ignore" })
+
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjExecutiveSummary.ExecutiveSummaryDetails, new { @class = "label" })
+
+                                @Html.TextAreaFor(m => m.ObjExecutiveSummary.ExecutiveSummaryDetails, new { @class = "detail-input",@style ="height: 250px;resize: none; width: 625px;" })
+
+                            </div>
+                        </div>
+
+
+                        <div class="right-div">
+                 
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.ObjectiveConstant.FRM_TITL_OBJECTIVEDETAILS)
+                    </p>
+                </div>
+
+                <div id="ObjObjective" class="AccordionPanelContent">
+                    @Html.HiddenFor(m => m.ObjObjective.ObjectiveId, new { @class = "ignore" })
+
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ObjObjective.ObjectiveDetails, new { @class = "label" })
+
+                                @Html.TextAreaFor(m => m.ObjObjective.ObjectiveDetails, new { @class = "detail-input", @style = "height: 250px;resize: none; width: 625px;" })
+
+                            </div>
+                        </div>
+
+
+                        
+                    </div>
+                </div>
+
+
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.RecordOfEmployementConstant.FRM_PRF_TTL_RECORD_OF_EMPLOYMENT)</p>
+                </div>
+                <div class="AccordionPanelContent" style="margin-top: 2px; margin-left: 5px;">
+                    <div class="vacancy-Details">
+                        <div id="EmploymentHistories">
+                            @if (Model.ObjContactEmployments != null)
+                            {
+                                foreach (var _UserEmployments in Model.ObjContactEmployments)
+                                {
+                                @Html.Partial("MyProfile/_EmploymentHistory", _UserEmployments)
+                                }
+                            }
+                        </div>
+                      
+                        <a id="addEmploymentHistory" href='@Url.Action("AddEmploymentHistory")' class="prfle-link-add add-company">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_COMPANY)</a>
+
+                        @*<a id="addEmploymentHistory" href='@Url.Action("AddEmploymentHistory")'  
+              class="button" style="float: left; padding-left: 25px; width: auto;
+                border: 1px solid #FFFFFF; cursor: pointer; background: url('/Content/images/Add_New_24.png') no-repeat center left;">
+                            <input type="button" value="Add Company" style="border: 0px solid #fff; background-color: transparent;
+                                cursor: pointer; height: 25px;" />
+                        </a>*@
+                    </div>
+                </div>
+                @*End Record Of Employment*@ @*Record Of Education*@
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.EducationConstant.FRM_PRF_TTL_EDUCATION)</p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="EducationHistories" class="AccordionPanelContent">
+                        @if (Model.ObjContactEducations != null)
+                        {
+                            foreach (var _UserEducations in Model.ObjContactEducations)
+                            {
+                            @Html.Partial("MyProfile/_EducationHistory", _UserEducations)
+                            }
+                        }
+                    </div>
+                    
+                    <a id="addEducationHistory" href='@Url.Action("AddEducationHistory")'
+                       class="prfle-link-add add-company">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_EDUCATION)</a>
+
+                </div>
+                @*End Record Of Education*@
+
+
+
+
+
+
+                @*Start LicenceAndCertifications*@
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.LicenceAndCertificationsConstant.FRM_TITL_LICENCEANDCERTIFICATIONS)
+                    </p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="LicenceAndCertifications" class="AccordionPanelContent">
+                        @if (Model.ObjContactLicenceAndCertifications != null)
+                        {
+                            foreach (var _UserLicenceAndCertifications in Model.ObjContactLicenceAndCertifications)
+                            {
+                                @Html.Partial("MyProfile/_LicenceAndCertifications", _UserLicenceAndCertifications)
+                            }
+                        }
+                    </div>
+
+                    <a id="addELicenceAndCertifications" href='@Url.Action("AddLicenceAndCertifications")'
+                       class="prfle-link-add add-LicenceAndCertificationsy">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_LICENCEANDCERTIFICATIONS)</a>
+
+                </div>
+                @*End licence and certifications*@
+
+
+
+                @*Start Publication History*@
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PublicationHistoryConstant.FRM_PUB_TITL_PUBLICATION)
+                    </p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="PublicationHistory" class="AccordionPanelContent">
+                        @if (Model.ObjContactPublicationHistory != null)
+                        {
+                            foreach (var _UserPublicationHistory in Model.ObjContactPublicationHistory)
+                            {
+                                @Html.Partial("MyProfile/_PublicationHistory", _UserPublicationHistory)
+                            }
+                        }
+                    </div>
+
+                    <a id="addPublicationHistory" href='@Url.Action("AddPublicationHistory")'
+    class="prfle-link-add add-LicenceAndCertificationsy">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_PUBLICATIONHISTORY)</a>
+
+                </div>
+                @*End  Publication History**@
+
+
+
+
+
+                @*Start Speaking Event History*@
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.SpeakingEventHistoryConst.FRM_SPK_TITL_SPEAKINGEVENTHISTORY)
+                    </p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="SpeakingEventHistory" class="AccordionPanelContent">
+                        @if (Model.ObjContactSpeakingEventHistory != null)
+                        {
+                            foreach (var _UserSpeakingEventHistory in Model.ObjContactSpeakingEventHistory)
+                            {
+                                @Html.Partial("MyProfile/_SpeakingEventHistory", _UserSpeakingEventHistory)
+                            }
+                        }
+                    </div>
+
+                    <a id="addSpeakingEventHistory" href='@Url.Action("AddSpeakingEventHistory")'
+                       class="prfle-link-add add-SpeakingEventHistory">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_SPEAKINGEVENTHISTORY)</a>
+
+                </div>
+                @*Start Speaking Event History**@
+
+
+
+                @*Start Languages*@
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.LanguagesConst.FRM_LAN_TITLE_LANGUAGES)
+                    </p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="Languages" class="AccordionPanelContent">
+                        @if (Model.ObjContactLanguages != null)
+                        {
+                            foreach (var _UserLanguages in Model.ObjContactLanguages)
+                            {
+                                @Html.Partial("MyProfile/_Languages", _UserLanguages)
+                            }
+                        }
+                    </div>
+
+                    <a id="addLanguages" href='@Url.Action("AddLanguages")'
+         class="prfle-link-add add-Languages">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_LANGUAGES)</a>
+
+                </div>
+                @*End Languages**@
+
+
+
+                @*Start Achievement*@
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.AchievementConst.FRM_ACH_TITL_ACHIEVEMENT)
+                    </p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="Achievement" class="AccordionPanelContent">
+                        @if (Model.ObjContactAchievement != null)
+                        {
+                            foreach (var _UserAchievement in Model.ObjContactAchievement)
+                            {
+                                @Html.Partial("MyProfile/_Achievement", _UserAchievement)
+                            }
+                        }
+                    </div>
+
+                    <a id="addAchievement" href='@Url.Action("AddAchievement")'
+                       class="prfle-link-add add-Achievement">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_ACHIEVEMENTS)</a>
+
+                </div>
+                @*End Achievement**@
+
+
+
+
+                @*Start Associations*@
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.AssociationsConst.FRM_ASC_TITLE_ASSOCIATION)
+                    </p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="Associations" class="AccordionPanelContent">
+                        @if (Model.ObjContactAssociations != null)
+                        {
+                            foreach (var _UserAssociations in Model.ObjContactAssociations)
+                            {
+                                @Html.Partial("MyProfile/_Associations", _UserAssociations)
+                            }
+                        }
+                    </div>
+
+                    <a id="addAssociations" href='@Url.Action("AddAssociations")'
+                       class="prfle-link-add add-Associations">@Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_ASSOCIATIONS)</a>
+
+                </div>
+                @*End Associations**@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)</p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="Skills" class="AccordionPanelContent">
+                        @if (Model.ObjContactSkills != null)
+                        {
+                            foreach (var _UserSkills in Model.ObjContactSkills)
+                            {
+                            @Html.Partial("MyProfile/_Skills", _UserSkills)
+                            }
+                        }
+                    </div>
+                    <a id="addSkills" href='@Url.Action("AddSkills")'
+                       class="prfle-link-add  add-skill">
+                        @Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_SKILLSANDQUALIFICATIONS)
+                    </a>
+                </div>
+                <div class="AccordionPanelTab">
+                    <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.ReferencesConstant.FRM_PRF_TTL_REFERENCES)</p>
+                </div>
+                <div style="margin-top: 2px; margin-left: 5px;">
+                    <div id="References" class="AccordionPanelContent">
+                        @if (Model.ObjContactReferences != null)
+                        {
+                            foreach (var _UserReferences in Model.ObjContactReferences)
+                            {
+                            @Html.Partial("MyProfile/_References", _UserReferences)
+                            }
+                        }
+                    </div>
+                    <br />
+                    <a id="addReferences" href='@Url.Action("AddReferences")' class="prfle-link-add add-company">
+                        @Html.LanguageLabel(BeCommonConst.FRM_PRF_BTN_ADD_REFERENCES)
+                    </a>
+                </div>
+                <div class="AccordionPanelTab">
+                  <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_TTL_OTHER_INFORMATION)</p>
+                </div>
+                <div id="OtherInformation" class="AccordionPanelContent" style="margin-top: 2px; margin-left: 5px; height: 21%;">
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.Misdemeanor, new { @class = "label" })
+                                <div class="input-container">
+                                    @Html.DropDownListFor(m => m.objUserDetails.Misdemeanor, (SelectList)ViewBag.YesNoDropDownMisdemeanor, new { @class = "detail-input" })
+                                </div>
+                                @*@Html.TextBoxFor(m => m.objUserDetails.Misdemeanor, new { @class = "detail-input" })*@
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.MilitaryService, new { @class = "label" })
+                                <div class="input-container">
+                                    @Html.DropDownListFor(m => m.objUserDetails.MilitaryService, (SelectList)ViewBag.YesNoDropDownMilitaryService, new { @class = "detail-input" })
+                                </div>
+                                @*@Html.TextBoxFor(m => m.objUserDetails.MilitaryService, new { @class = "detail-input" })*@
+                            </div>
+                        </div>
+                        <div class="right-div" style="padding-top: 12px;">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.MisdemeanorExplain, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.objUserDetails.MisdemeanorExplain, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.MilitaryTypeDischarge, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.objUserDetails.MilitaryTypeDischarge, new { @class = "detail-input" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="AccordionPanelTab">
+                   <p class="prfle-tab-head">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_TTL_EMERGANCY)</p>
+                </div>
+                <div id="Emergency" class="AccordionPanelContent" style="margin-top: 2px; margin-left: 5px;">
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.EmergencyContact1, new { @class = "label" })
+                                <br />
+                                @Html.TextBoxFor(m => m.objUserDetails.EmergencyContact1, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.EmergencyContact2, new { @class = "label" })
+                                <br />
+                                @Html.TextBoxFor(m => m.objUserDetails.EmergencyContact2, new { @class = "detail-input" })
+                            </div>
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.EmergencyContact1Phone, new { @class = "label" })
+                                <br />
+                                @Html.TextBoxFor(m => m.objUserDetails.EmergencyContact1Phone, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.objUserDetails.EmergencyContact2Phone, new { @class = "label" })
+                                <br />
+                                @Html.TextBoxFor(m => m.objUserDetails.EmergencyContact2Phone, new { @class = "detail-input" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @*}*@
+</div>
+<div id="ConfirmDiv">
+</div>
+<script type="text/javascript">
+    /*Set Accordian*/
+    var icons = {
+        header: "iconOpen",
+        activeHeader: "iconClosed"
+    };
+
+    $(function () {
+
+        $("#accordion").accordion({
+            icons: icons,
+            heightStyle: "content",
+            active: 0,
+            animate: true,
+            activate: function (event, ui) {
+                //Create function which you want while accordian change
+            }
+        });
+
+        //aria-expanded="true"
+
+    });
+
+    function ResetFormValidator() {
+        var form = $("#frmMyProfile");
+        form.removeData("validator");
+        form.removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse(form);
+    }
+
+    $(document).ready(function () {
+
+        $("#Startdate,#Enddate,#EduEnddate,#EduStartdate,#DateAvailability").datepicker({
+            dateFormat: VacancyModel.DateFormat,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            showWeeks: true,
+            currentText: 'Now',
+            minDate: 0,
+            autoSize: true,
+            gotoCurrent: true,
+            showAnim: 'blind',
+            highlightWeek: true
+
+        });
+
+
+        $("#SectionSettings").hide();
+        $('html').click(function () {
+            if ($('#SectionSettings').is(':visible')) {
+                $("#SectionSettings").slideToggle("fast");
+            }
+        });
+        $("#Settings").click(function () {
+            $("#SectionSettings").slideToggle("fast");
+            return false;
+        });
+
+       
+        /*For Employment History*/
+        $('#addEmploymentHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#EmploymentHistories").append(html);
+                    $("#Startdate,#Enddate").datepicker({
+                        dateFormat: VacancyModel.DateFormat,
+                        showOtherMonths: true,
+                        minDate: 0,
+                        selectOtherMonths: true,
+                        showWeeks: true,
+                        currentText: 'Now',
+                        autoSize: true,
+                        gotoCurrent: true,
+                        showAnim: 'blind',
+                        highlightWeek: true
+
+                    });
+
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.EmploymentHistoryDeleteRow").live("click", function () {
+            
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Education History", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "EmploymentHistory");
+            return false;
+        });
+        /*END  Employment History*/
+
+        /*For Education History*/
+        $('#addEducationHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#EducationHistories").append(html);
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.EducationHistoryDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Education History", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "EducationHistory");
+            return false;
+        });
+
+        /*END Education History*/
+
+        /*  Licence And Education*/
+
+        $('#addELicenceAndCertifications').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#LicenceAndCertifications").append(html);
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.LicenceAndCertificationsDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Licence And Certification ", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "LicenceAndCertifications");
+            return false;
+        });
+      
+
+
+
+        /*  Publication History*/
+
+        $('#addPublicationHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#PublicationHistory").append(html);
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.PublicationHistoryDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Publication History ", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "PublicationHistory");
+            return false;
+        });
+
+
+
+
+
+        /*  Speaking Event History*/
+
+        $('#addSpeakingEventHistory').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#SpeakingEventHistory").append(html);
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.SpeakingEventHistoryDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Speaking Event History ", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "SpeakingEventHistory");
+            return false;
+        });
+
+
+
+
+        /*  Languages*/
+
+        $('#addLanguages').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#Languages").append(html);
+                  
+                }
+            });
+            return false;
+        });
+        $("a.LanguagesDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Languages", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "Languages");
+            return false;
+        });
+
+
+
+
+        /*  Acievement*/
+
+        $('#addAchievement').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#Achievement").append(html);
+
+                }
+            });
+            return false;
+        });
+        $("a.AchievementDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Achievement", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "Achievement");
+            return false;
+        });
+
+
+
+
+
+        /*  Associations*/
+
+        $('#addAssociations').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#Associations").append(html);
+
+                }
+            });
+            return false;
+        });
+        $("a.AssociationsDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Associations", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "Associations");
+            return false;
+        });
+
+
+
+        /*For Skills*/
+        $('#addSkills').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#Skills").append(html);
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.SkillDeleteRow").live("click", function () {
+
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Reference", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "Skill");
+
+
+            return false;
+        });
+        /*END Skills*/
+
+        /*For References */
+        $('#addReferences').click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $("#References").append(html);
+                    //Sys.Mvc.FormContext._Application_Load();
+                    //ResetFormValidator();
+                }
+            });
+            return false;
+        });
+        $("a.ReferenceDeleteRow").live("click", function () {
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Reference", 300, "Are you sure?", "Yes", "Cancel", "RemoveDiv", this, "Reference");
+
+            return false;
+        });
+
+        /*End References */
+    });
+    /*Delete Confirmation results*/
+    function RemoveDiv(Result, element, RemoveDivName) {
+        
+        if (Result == true) {
+            $(element).parents("div." + RemoveDivName + ":first").remove();
+            //ResetFormValidator();
+        }
+    }
+    $(function () {
+        $("#Startdate").datepicker();
+    });
+
+
+</script>
+    
+     

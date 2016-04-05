@@ -1,0 +1,390 @@
+﻿* {
+    background-repeat: no-repeat;
+}
+
+/*#region SEARCH 32PX BOX ICONS */
+.bgJobLocation32B {
+    background-image: url("/Content/images/Job_Location_32.png");
+}
+
+.bgPositionType32B {
+    background-image: url("/Content/images/Position_Type_32.png");
+}
+
+.bgFullPartTime32B {
+    background-image: url("/Content/images/Full_Time_Part_Time_32.png");
+}
+
+.bgEmploymentType32B {
+    background-image: url("/Content/images/Employment_Type_32.png");
+}
+
+.bgSalaryRange32B {
+    background-image: url("/Content/images/Salary_Range_32.png");
+}
+
+.bgSkill32B {
+    background-image: url("/Content/images/Skill_Search_32.png");
+}
+
+.bgDatePosted32B {
+    background-image: url("/Content/images/Date_Posted_32.png");
+}
+/*#endregion */
+
+/*#region LEFT MENU 24PX ICONS */
+.bgFeaturedJob24W {
+    background-image: url("/content/images/Featured_Jobs_white_24.png");
+}
+
+.bgSearch24W {
+    background-image: url("/content/images/Search_Jobs_white_24.png");
+}
+
+
+.bgMyApplication24W {
+    background-image: url("/content/images/My_Applications_white_24.png");
+}
+
+.bgMyDocument24W {
+    background-image: url("/content/images/My_Documents_white_24.png");
+}
+
+.bgMyProfile24W {
+    background-image: url("/content/images/My_Profile_white_24.png");
+}
+
+.bgMyVacancy24W {
+    background-image: url("/content/images/My_Vacancies_white_24.png");
+}
+
+.bgMyCandidate24W {
+    background-image: url("/content/images/My_Candidates_white_24.png");
+}
+
+
+.bgInterviewCalender24W {
+    background-image: url("/content/images/Interview_Calendar_white_24.png");
+}
+
+.bgCompanySetup24W {
+    background-image: url("/content/images/Company_Setup_white_24.png");
+}
+
+.bgChange16W {
+    background-image: url("/Content/images/Change_Status_white_16.png");
+}
+
+/*#endregion */
+
+/*#region COMMANDBAR 16PX BLUE ICONS */
+
+.bgAdd16B {
+    background-image: url("/Content/images/Add_New_16.png");
+}
+
+.bgEdit16B {
+    background-image: url("/Content/images/Edit_16.png");
+}
+
+.bgChange16B {
+    background-image: url("/Content/images/Change_Status_16.png");
+}
+
+.bgChange24B {
+    background-image: url("/Content/images/Change_Status_24.png");
+}
+
+.bgCandidateLink16B {
+    background-image: url("/Content/images/Copy_Candidate_Link_16.png") !important;
+}
+
+.bgManagerLink16B {
+    background-image: url("/Content/images/Copy_Manager_Link_16.png") !important;
+}
+
+.bgDelete16B {
+    background-image: url("/Content/images/delete_16.png") !important;
+}
+
+.bgSave16B {
+    background-image: url("/Content/images/Save_16.png");
+}
+
+.bgSatDefault16B {
+    background-image: url("/Content/images/Set_As_Default_16.png");
+}
+
+.bgSearch16B {
+    background-image: url("/content/images/Search_Jobs_16.png");
+}
+
+.bgWithdraw16B {
+    background-image: url("/Content/images/Withdraw_Application_16.png") !important;
+}
+
+.bgFlag16B {
+    background-image: url("/Content/images/Apply_16.png") !important;
+}
+.bgFlagDisable16B {
+    background-image: url("/Content/images/Apply_disabled_24.png") !important;
+}
+.bgHeart16B {
+    background-image: url("/Content/images/Saved_Jobs_16.png") !important;
+}
+/*#endregion */
+
+
+/*#region NAVIGATION 16PX WHITE ICONS */
+
+.bgHome16W {
+    background-image: url("/Content/images/Home_button_white_16.png");
+}
+
+.bgFeaturedJob16W {
+    background-image: url("/content/images/Featured_Jobs_white_16.png");
+}
+
+.bgSearch16W {
+    background-image: url("/content/images/Search_Jobs_white_16.png");
+}
+
+.bgMyApplication16W {
+    background-image: url("/content/images/My_Applications_white_16.png");
+}
+
+
+.bgMyProfile16W {
+    background-image: url("/content/images/My_Profile_white_16.png");
+}
+
+.bgLogout16W {
+    background-image: url("/content/images/Logout_white_16.png");
+}
+
+/*#endregion */
+
+.bgLogin {
+    background-color: transparent;
+    background-image: url("/content/images/Login_white_24.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+.bgHeaderLogin {
+    background-color: transparent;
+    background-image: url("/content/images/Login_24.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+.bgLogout {
+    background-color: transparent;
+    background-image: url("/content/images/Logout_24.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+
+.bgHome24 {
+    background-image: url("/content/images/Home_button_24.png");
+}
+
+.bgLanguage {
+    background-color: transparent;
+    background-image: url("/content/images/language.jpg");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+.bgOpen16 {
+    background-image: url("/Content/images/Open_Vacancy_16.png");
+}
+
+.bgDraft16 {
+    background-image: url("/Content/images/Draft_Vacancy_16.png");
+}
+
+.bgClose16 {
+    background-image: url("/Content/images/Close_Vacancy_16.png");
+}
+
+.bgArchive16 {
+    background-image: url("/Content/images/Archive_Vacancy_16.png");
+}
+
+.bgOpen24 {
+    background-image: url("/Content/images/Open_Vacancy_24.png");
+}
+
+.bgSavedJobs24W {
+    background-image: url("/content/images/Saved_Jobs_white_24.png");
+}
+
+.bgPromote {
+    background-image: url("/Content/images/Promote_Candidate_16.png");
+}
+
+.bgDemote {
+    background-image: url("/Content/images/Demote_Candidate_16.png");
+}
+
+.bgResend {
+    background-image: url("/Content/images/Resend_16.png");
+}
+
+.bgMakeOffer {
+    background-image: url("/Content/images/makeoffer_16.png");
+}
+
+.bgHireCandidate {
+    background-image: url("/Content/images/hirecandidate_16.png");
+}
+
+.bgDecline {
+    background-image: url("/Content/images/Decline_Candidate_16.png");
+}
+
+.bgExport16 {
+    background-image: url("/Content/images/Download_16.png");
+}
+
+.bgResume {
+    background-image: url("/Content/images/PreviewResume_16.png");
+}
+
+.bgResume16 {
+    background-image: url("/Content/images/PreviewResume_16.png");
+}
+
+.bgPdf {
+    background-image: url("/Content/images/PDF_16.png");
+}
+
+.bgPdf16 {
+    background-image: url("/Content/images/PDF_16.png");
+}
+
+.bgPdf32 {
+    background-image: url("/Content/images/pdf.png");
+}
+
+.bgZip {
+    background-image: url("/Content/images/zipfile-16.png");
+}
+
+.bgZip16 {
+    background-image: url("/Content/images/zipfile-16.png");
+}
+
+.bgReactivate {
+    background-image: url("/Content/images/icon_success.png");
+}
+
+.bgCoverLetter {
+    background-image: url("/Content/images/PreviewCoverLetter_16.png");
+}
+
+.bgAssignCandidate16 {
+    background-image: url("/Content/images/Candidates_Assigned_16.png");
+}
+
+.bgTerminateInterview16 {
+    background-image: url("/Content/images/Terminate_Interview_16.png");
+}
+
+.bgFinishLater16 {
+    background-image: url("/Content/images/Finish_Later_16.png");
+}
+
+.bgCompleteInterview16 {
+    background-image: url("/Content/images/Interview_Complete_16.png");
+}
+
+.bgBack16 {
+    background-image: url("/Content/images/arrow_left_16.png");
+}
+
+.bgBack24 {
+    background-image: url("/Content/images/arrow_left_24.png");
+}
+
+.bgNext16 {
+    background-image: url("/Content/images/arrow_right_16.png");
+}
+
+.bgNext24 {
+    background-image: url("/Content/images/arrow_right_24.png");
+}
+
+.bgSave24 {
+    background-image: url("/Content/images/Save_24.png");
+}
+
+.bgPrint16 {
+    background-image: url("/Content/images/Print_16.png");
+}
+
+.bgPrint24 {
+    background-image: url("/Content/images/Print_24.png");
+}
+
+.bgSubmitApplication24 {
+    background-image: url("/Content/images/Submit_Application_24.png");
+}
+
+.bgSubmitApplication16 {
+    background-image: url("/Content/images/Submit_Application_16.png");
+}
+
+.bgMyProfile24 {
+    background-image: url("/content/images/My_Profile_24.png");
+}
+
+.bgLogin24 {
+    background-image: url("/content/images/Login_24.png");
+}
+
+.bgLogin16W {
+    background-image: url("/content/images/Login_white_16.png");
+}
+
+.bgInterview16 {
+    background-image: url("/Content/images/Interview_16.png");
+}
+
+.bgInterview16W {
+    background-image: url("/Content/images/Interview_white_16.png");
+}
+
+.bgScheduleInterview16 {
+    background-image: url("/Content/images/Schedule_Interview_16.png");
+}
+
+.bgAccCollapse12 {
+    background-image: url("/Content/images/collapse_12.png");
+}
+
+.bgAccExpand12 {
+    background-image: url("/Content/images/expand_12.png");
+}
+
+.bgUploadDocument16 {
+    background-image: url("/Content/images/Upload_Documents_16.png");
+}
+
+.bgPreview16 {
+    background-image: url("/Content/images/preview_16.png");
+}
+
+.bgUploadDocument24 {
+    background-image: url("/Content/images/Upload_Documents_24.png");
+}
+
+.bgCandidate16W {
+    background-image: url("/Content/images/Candidate_white_16.png");
+}
+
+.bgCandidate16 {
+    background-image: url("/Content/images/Candidate_16.png");
+}

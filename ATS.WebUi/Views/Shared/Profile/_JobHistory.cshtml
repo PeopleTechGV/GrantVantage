@@ -1,0 +1,438 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.EmploymentHistory
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERecordOfEmploymentConst = ATS.BusinessEntity.Common.RecordOfEmployementConstant
+
+@{
+    SelectList monthList = (SelectList)ViewBag.StartMonthsList;
+    String startMonth = monthList.Where(x => x.Value.Equals(Model.StartMonth.ToString())).Count() > 0 ? monthList.Where(x => x.Value.Equals(Model.StartMonth.ToString())).First().Text : "";
+    SelectList endMonthList = (SelectList)ViewBag.EndMonthsList;
+    String endMonth = endMonthList.Where(x => x.Value.Equals(Model.EndMonth.ToString())).Count() > 0 ? endMonthList.Where(x => x.Value.Equals(Model.EndMonth.ToString())).First().Text : "";
+    SelectList YearList = (SelectList)ViewBag.StartYearList;
+    //String startYear = YearList.Where(x => x.Value.Equals(Model.StartYear.ToString())).Count() > 0 ? YearList.Where(x => x.Value.Equals(Model.StartYear.ToString())).First().Text : "";
+    //String EndYear = YearList.Where(x => x.Value.Equals(Model.EndYear.ToString())).Count() > 0 ? YearList.Where(x => x.Value.Equals(Model.EndYear.ToString())).First().Text : "";
+}
+<div class="acc-header">
+
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@String.Format("{0}", String.IsNullOrEmpty(Model.CompanyName) ? "New Company" : Model.CompanyName)</span>,
+        <span class='ttllb'>@String.Format("{0}", String.IsNullOrEmpty(Model.MostRecentPosition) ? "" : ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.MostRecentPosition))</span>
+        <span class='ttllbrown'>
+            <span class="startMonth">@String.Format("{0}", String.IsNullOrEmpty(startMonth) ? "" : startMonth)</span>
+            <span class="startYear">@Model.StartYear</span>
+            <span class="dash" style="display:none;">-</span>
+            <span class="endMonth">@String.Format("{0}", String.IsNullOrEmpty(endMonth) ? "" : endMonth)</span>
+            <span class="endYear">@Model.EndYear</span>
+        </span>
+        <span class="notification" style="display:none;"></span>
+        <span class="Save" style="display:none;"><button type="button" onclick="return outerSave(this);">&nbsp;</button></span>
+        <span class="delete"><a href='@Url.Action("RemoveJobHistory", "Profile", new { @area = "", @precordId = Model.EmployementId })' recordid='@Model.EmployementId' onclick="return DeleteJobHistory(this);"><img src="~/Content/images/delete_16.png" /></a></span>
+    </p>
+</div>
+<div class="acc-Content">
+
+    @using (Ajax.BeginForm("AddUpdateJobHistory", "Profile", new { area = "" }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "EmploymentHistorySuccess(data,'" + Model.EmployementId + "')",
+            OnFailure = "EmploymentHistoryFailure",
+        }, new { id = "frmEmploymentHistory", isFormChange = "false" }))
+    {
+
+        <text>
+            <script>
+                $(document).ready(function () {
+
+                    $(this).find('.ttllbrown').each(function (index) {
+                        displayDateRange($(this));
+                    });
+
+                    $(".intOnly").keypress(function (e) {
+                        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                            return false;
+                        }
+                        else if (e.which == 8 || e.which == 0)
+                        {
+                            return true;
+                        }
+                    });
+                    
+                    $(".endMonthDDL").each(function () {                        
+                        if ($(this).val() == "13" ) {                        
+                            $(this).parent().find("#spanEndYearTxt").hide();
+                        }
+                    });
+
+                    if ('@ViewBag.IsFromVacancy' == '1') {
+                        $(".lblUp").hide();
+                        $(".lblDown").hide();
+                    }
+                });
+
+                function outerSave(element) {
+                    var head = $(element).closest('.acc-header');
+                    var myform = $(head).next().children().get(0);
+                    var isvalidate = $(myform).valid();
+                    if (isvalidate) {
+                        $(myform).submit();
+                    }
+                    return false;
+                }
+
+                function displayDateRange(ttlbrownelement) {
+                    if (ttlbrownelement == undefined || $(ttlbrownelement).children().length != 5)
+                        return;
+                    var AllowBrace = false;
+                    var AllowDash = false;
+                    var Startingallow = false;
+
+                    $(ttlbrownelement).find(".dash").hide();
+                    if ($.trim($(ttlbrownelement).find(".startMonth").html().replace(/&nbsp;/g, '')) != '') { AllowBrace = true; Startingallow = true; };
+                    if ($.trim($(ttlbrownelement).find(".startYear").html().replace(/&nbsp;/g, '')) != '') { AllowBrace = true; Startingallow = true; };
+                    if ($.trim($(ttlbrownelement).find(".endMonth").html().replace(/&nbsp;/g, '')) != '') { AllowBrace = true; AllowDash = true; };
+                    if ($.trim($(ttlbrownelement).find(".endYear").html().replace(/&nbsp;/g, '')) != '') { AllowBrace = true; AllowDash = true; };
+                    if (AllowDash && Startingallow) {
+                        $(ttlbrownelement).find(".dash").show();
+                    }
+                    var starting_index = $(ttlbrownelement).html().indexOf('(');
+                    var ending_index = $(ttlbrownelement).html().indexOf(')');
+                    var oldhtml = $(ttlbrownelement).html();
+                    if ((starting_index + ending_index) > 1) {
+                        oldhtml = $(ttlbrownelement).html().substring(starting_index + 1, ending_index);
+                        if ($.trim($(oldhtml).text()) == '') {
+                            AllowBrace = false;
+                        }
+                    }
+
+                    if (AllowBrace) {
+                        $(ttlbrownelement).html('');
+                        $(ttlbrownelement).html("(" + oldhtml + ")");
+                    }
+                    else {
+                        $(ttlbrownelement).html('');
+                        $(ttlbrownelement).html(oldhtml);
+
+                    }
+                }
+
+                function fillBracket(element) {
+
+                    var changedata = $(element).closest(".acc-Content");
+                    changedata.siblings().each(function (index) {
+
+                        if ($(this).attr("aria-selected") == 'true') {
+
+                            displayDateRange($(this).find('.ttllbrown'));
+
+                        }
+                    });
+                }
+
+                function EmploymentHistorySuccess(data, custom) {
+                    data = JSON.parse(data);
+                    var deletelink = $("a[recordid='" + custom + "']").get(0);
+
+                    if (data.Data !== "") {
+                        //var stext = $("input[value='" + custom + "']");
+                        var stext = $("input[value='" + custom + "']");
+                        stext.val(data.Data);
+                        var currentForm = $(stext.parents("form#frmEmploymentHistory"));
+                        var attrText = currentForm.attr("data-ajax-success")
+                        currentForm.attr("data-ajax-success", attrText.replace(custom, data.Data));
+                        deletelink.href = deletelink.href.replace(custom, data.Data)
+                        $(deletelink).attr("recordid", data.Data);
+                    }
+                    return false;
+                }
+
+                function DeleteJobHistory(changeVal) {
+                    var _title = $(changeVal).parents('.acc-Content').prev().children('.prfle-tab-head-brown').text();
+                    var _index = _title.indexOf("(");
+                    _title = _title.substring(1, _index) + '"' + $($(changeVal).parent().siblings(".ttldb").first()).text() + '"';
+
+                    VacancyModel.ConfirmDialog("ConfirmDiv", "Are you sure you want to delete?", 300, _title, "Yes", "Cancel", "RemoveJobHistoryDiv", changeVal, "EmploymentHistory");
+                    return false;
+                }
+
+                function RemoveJobHistoryDiv(Result, element, RemoveDivName) {
+                    if (Result == true) {
+                        $.ajax({
+                            url: element.href,
+                            cache: false,
+                            success: function (data) {
+                                data = JSON.parse(data);
+                                if (data.IsError == false) {
+                                    var head = $(element).closest('.acc-header');
+                                    head.next().remove();
+                                    head.remove();
+                                    var $header = $("#accJobHistories").parent().prev();
+                                    var headcount = $("#accJobHistories").find(".acc-header").size();
+                                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                                    VacancyModel.ProfileHeaderCount($header);
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert(xhr.status);
+                                alert(thrownError);
+                            }
+                        });
+                    }
+                }
+
+                function CopyCompanyName(changeVal) {
+                    var cur = $(changeVal);
+                    VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+
+
+                }
+
+                function CopyRecentPosition(changeVal) {
+                    var cur = $(changeVal);
+                    VacancyModel.CopyDataToHeader(cur, "ttllb", cur.val())
+
+                }
+
+                function CopyStartMonth(changeVal) {
+                    var cur = $(changeVal);
+                    var selectedVal = changeVal.options[changeVal.selectedIndex].text;
+                    if (changeVal.selectedIndex == 0)
+                        selectedVal = '';
+                    VacancyModel.CopyDataToHeader(cur, "startMonth", selectedVal)
+                    fillBracket(cur);
+                }
+
+                function CopyStartYear(changeVal) {
+                    
+                    var cur = $(changeVal);
+                    var selectedVal = changeVal.options[changeVal.selectedIndex].text;
+                    if (changeVal.selectedIndex == 0)
+                        selectedVal = '';
+                    VacancyModel.CopyDataToHeader(cur, "startYear", selectedVal)
+                    fillBracket(cur);
+                }
+
+                function CopyEndMonth(changeVal) {
+                    var cur = $(changeVal);
+                    var selectedVal = changeVal.options[changeVal.selectedIndex].text;
+                    if (changeVal.selectedIndex == 0) {
+                        selectedVal = '';
+                        $(changeVal).parent().find("#spanEndYearTxt").show();
+                    }
+                    else if (changeVal.selectedIndex == 13) {
+                        $(changeVal).parent().find("#spanEndYearTxt").hide();
+                        $(changeVal).parents('.acc-Content:first').prev().children('p').find('.endYear').text("");
+                    }
+                    else {
+                        $(changeVal).parent().find("#spanEndYearTxt").show();
+                        var _newVal = $(changeVal).parent().find("#EndYear").val();
+                        $(changeVal).parents('.acc-Content:first').prev().children('p').find('.endYear').text(_newVal);
+                    }
+                    VacancyModel.CopyDataToHeader(cur, "endMonth", selectedVal)
+                    fillBracket(cur);
+                }
+
+                function CopyEndYear(changeVal) {
+                    var cur = $(changeVal);
+                    var selectedVal = changeVal.options[changeVal.selectedIndex].text;
+                    if (changeVal.selectedIndex == 0)
+                        selectedVal = '';
+                    VacancyModel.CopyDataToHeader(cur, "endYear", selectedVal)
+                    fillBracket(cur);
+                }
+
+                function UpVal(ctl, flag) {
+                    var classname = "";
+                    if (flag == 1) {
+                        var yearText = $(ctl).parent().find("#StartYear");
+                        classname = "startYear";
+
+                    }
+                    else {
+                        var yearText = $(ctl).parent().find("#EndYear");
+                        classname = "endYear";
+                    }
+                    if ($(yearText).val() == "")
+                    {
+                        return false;
+                    }
+                    $(yearText).val(parseInt($(yearText).val()) + 1);
+                    var _newVal = $(yearText).val();
+                    VacancyModel.CopyDataToHeader(yearText, classname, _newVal);
+                    //fillBracket(cur);
+
+                };
+
+                function DownVal(ctl, flag) {
+                    var classname = "";
+                    if (flag == 1) {
+                        var yearText = $(ctl).parent().find("#StartYear");
+                        classname = "startYear";
+                    }
+                    else {
+                        var yearText = $(ctl).parent().find("#EndYear");
+                        classname = "endYear";
+                    }
+                        if(parseInt($(yearText).val())>=0)
+                        $(yearText).val(parseInt($(yearText).val()) - 1);
+                        var _newVal = $(yearText).val();
+                        VacancyModel.CopyDataToHeader(yearText, classname, _newVal);
+                };
+                function changeStartyear(element)
+                {
+                    var _newval = $(element).val();
+                    VacancyModel.CopyDataToHeader(element, "startYear", _newval);
+                    fillBracket(element);
+
+                }
+                function changeEndyear(element) {
+                    var _newval = $(element).val();
+                    VacancyModel.CopyDataToHeader(element, "endYear", _newval);
+                    fillBracket(element);
+                }
+                //$(".txtstartyear").focusout(function () {
+                //    var _curr = $(this);
+                //    var _newVal = $(_curr).val();
+                //    var className = "startYear";
+                //    VacancyModel.CopyDataToHeader(_curr, className, _newVal);
+                //}); 
+                //$(".txtendyear").focusout(function () {
+                //    alert();
+                //    var _curr = $(this);
+                //    var _newVal = $(_curr).val();
+                //    var className = "endYear";
+                //    VacancyModel.CopyDataToHeader(_curr, className, _newVal);
+                //});
+
+                
+            </script>
+        </text>
+        @Html.HiddenFor(m => m.EmployementId)
+        @Html.HiddenFor(m => m.ProfileId)
+        @Html.HiddenFor(m => m.UserId)
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.CompanyName, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.CompanyName, new { @class = "detail-input", @onchange = "CopyCompanyName(this);" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.SupervisorName, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.SupervisorName, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Address, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.Address, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.State, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.State, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.City, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.City, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Zip, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.Zip, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.MayWeContact, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.MayWeContact, (SelectList)ViewBag.YesNoDropDownMayWeContact, new { @class = "detail-select" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Telephone, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.Telephone, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ReasonForLeaving, new { @class = "label" })
+                                @Html.TextAreaFor(m => m.ReasonForLeaving, new { @class = "detail-input txtarea" })
+                            </div>
+
+                        </div>
+
+                        <div class="right-div">
+
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.StartigPosition, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.StartigPosition, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+
+                                @Html.LanguageLabelFor(m => m.StartingPay, new { @class = "label lblAuto" })
+                                <span class="label lblAuto"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                                @Html.TextBoxFor(m => m.StartingPayText, new { @class = "detail-input", @onkeyup = "VacancyModel.commaSeparateNumber(this);" })
+
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EndingPay, new { @class = "label lblAuto" })
+                                <span class="label lblAuto"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                                @Html.TextBoxFor(m => m.EndingPayText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+                            </div>
+
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.JobCategory, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.JobCategory, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.MostRecentPosition, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.MostRecentPosition, new { @class = "detail-input", @onchange = "CopyRecentPosition(this);" })
+                            </div>
+                            <div class="box">
+                                <span class="label">
+                                    @Html.LanguageLabel(BERecordOfEmploymentConst.FRM_PRF_STARTMONTHYEAR)
+                                </span>
+
+                            </div>
+                            <div class="box">
+                                @Html.DropDownListFor(m => m.StartMonth, (SelectList)monthList, "---Please Select---", new { @class = "detail-input half-container", @style = "margin-right:2%;", onchange = "CopyStartMonth(this);" })
+                                @*@Html.DropDownListFor(m => m.StartYear, (SelectList)ViewBag.StartYearList, "---Please Select---", new { @class = "detail-input half-container", @onchange = "CopyStartYear(this);" })*@
+                                @Html.TextBoxFor(m => m.StartYear, new { @class = "detail-input intOnly txtstartyear", @style = "width:42%", @MaxLength = "4", @onblur = "changeStartyear(this);" })
+                                <label class="lblUp" onclick="UpVal(this,1)">+</label>
+                                <label class="lblDown" onclick="DownVal(this,1)">-</label>
+                            </div>
+                            <div class="box">
+                                <span class="label">
+                                    @Html.LanguageLabel(BERecordOfEmploymentConst.FRM_PRF_ENDMONTHYEAR)
+                                </span>
+                            </div>
+                            <div class="box">
+                                @Html.DropDownListFor(m => m.EndMonth, (SelectList)endMonthList, "---Please Select---", new { @class = "detail-input half-container endMonthDDL", @style = "margin-right:2%;", @onchange = "CopyEndMonth(this);" })
+                                @*@Html.DropDownListFor(m => m.EndYear, (SelectList)ViewBag.EndYearList, "---Please Select---", new { @class = "detail-input half-container", @onchange = "CopyEndYear(this);" })*@
+                                <span id="spanEndYearTxt">
+                                    @Html.TextBoxFor(m => m.EndYear, new { @class = "detail-input intOnly txtendyear", @style = "width:42%", @MaxLength = "4",@onblur = "changeEndyear(this);" })
+                                    <label class="lblUp" onclick="UpVal(this,2)">+</label>
+                                    <label class="lblDown" onclick="DownVal(this,2)">-</label>
+                                </span>
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Experience, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.Experience, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.DutiesAndResponsibilities, new { @class = "label" })
+                                @Html.TextAreaFor(m => m.DutiesAndResponsibilities, new { @class = "detail-input txtarea" })
+                            </div>
+                        </div>
+                    </div>
+                    <br clear="all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper" id="saveEmp">Save Company</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

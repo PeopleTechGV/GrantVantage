@@ -1,0 +1,19 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.VacQueCat>>
+
+
+<div class="VacQueCat">
+    @if (Model != null)
+    {
+        int TotalCount = Model.obj.Count();
+        foreach (BEClient.VacQueCat _current in Model.obj)
+        {
+            _current.VacQueCatCnt = TotalCount;
+            @Html.Partial("Shared/VacQueCat/_VacQueCatDetail", _current);
+        }
+    }
+</div>
+
+<div class="acc-action">
+    <a id="addVacQueCat" href="javascript void();" class="btn CaseUpper">Add Category</a>
+</div>

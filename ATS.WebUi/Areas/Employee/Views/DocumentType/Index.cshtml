@@ -1,0 +1,30 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.DocumentType>>>
+
+@{
+    ViewBag.Title = "Degree Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="Messages" style="width: auto; float: left; position: absolute; margin-left: 25px;">
+</div>
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@Html.Partial("Buttons/_ListGearAdmin", Model.obj)
+@Html.Partial("Shared/_DocumentTypeList", Model.obj.obj)
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

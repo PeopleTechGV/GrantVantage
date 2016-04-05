@@ -1,0 +1,2061 @@
+<res>
+  <re cu="en-US" nm="FRM_VAC_Position_Id" val="Opportunity ID" />
+  <re cu="en-US" nm="MAYWECONTACT" val="May We Contact?" />
+  <re cu="en-US" nm="CSMNU_STATUSREASON" val="STATUS REASONS" />
+  <re cu="en-US" nm="FRM_PRF_TTL_References" val="References" />
+  <re cu="en-US" nm="MNU_MYAPPLICATIONS" val="MY APPLICATIONS" />
+  <re cu="en-US" nm="FRM_MAKEOFF_SALARY_OFFERED" val="Salary Offered" />
+  <re cu="en-US" nm="FRM_USER_TTL_CREDENTIAL" val="Credential" />
+  <re cu="en-US" nm="LST_APP_RESUME" val="Resume" />
+  <re cu="en-US" nm="FRM_PRF_Hear_About_The_Position" val="How did you hear about this position?" />
+  <re cu="en-US" nm="LST_USER_DIV_USERNAME" val="User" />
+  <re cu="en-US" nm="FRM_UPV_Child_Division" val="Child Division" />
+  <re cu="en-US" nm="LST_VAC_OWNER" val="Owner" />
+  <re cu="en-US" nm="FRM_UPV_Permission_Type" val="Permission Type" />
+  <re cu="en-US" nm="FRM_VAL_Length" val="length should be between" />
+  <re cu="en-US" nm="FRM_UPV_Own_Division" val="Own Division" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_ASSOCIATIONS" val="Add Association" />
+  <re cu="en-US" nm="FRM_EMAILSUBJECT" val="Email Subject" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Thu" val="Thu" />
+  <re cu="en-US" nm="SE_Company" val="Company" />
+  <re cu="en-US" nm="LST_VAC_Vacancies" val="Vacancies" />
+  <re cu="en-US" nm="APPLY" val="Apply" />
+  <re cu="en-US" nm="FRM_JOB_ONBOARDING_MANAGER" val="Onboarding Manager" />
+  <re cu="en-US" nm="FRM_CLIENT_LANGUAGE" val="Language" />
+  <re cu="en-US" nm="LST_USER_LOC_USERNAME" val="User" />
+  <re cu="en-US" nm="FRM_VAC_Vacancy_History" val="Opportunity History" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Record_Of_Employment" val="Record Of Employment" />
+  <re cu="en-US" nm="FRM_ACH_DESCRIPTION" val="Description" />
+  <re cu="en-US" nm="FRM_DIV_Default_Name" val="Default Name" />
+  <re cu="en-US" nm="DEFAULT_WEIGHT" val="Default Weight" />
+  <re cu="en-US" nm="FRM_VAC_Vacancy_Status" val="Opportunity Status" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PLUS_COMM" val="Plus Commission" />
+  <re cu="en-US" nm="FRM_USER_TTL_DIVISION" val="Division" />
+  <re cu="en-US" nm="MNU_ANONY_SEARCHJOBS" val="Search Jobs" />
+  <re cu="en-US" nm="FRM_PRF_Home_Email" val="Home Email" />
+  <re cu="en-US" nm="FRM_VALIDTO" val="Valid To" />
+  <re cu="en-US" nm="FRM_UPV_View" val="View" />
+  <re cu="en-US" nm="SE_END_TIME" val="End Time" />
+  <re cu="en-US" nm="SE_Vacancy_Question" val="Vacancy Question" />
+  <re cu="en-US" nm="CSMNU_QUE" val="QUESTIONS" />
+  <re cu="en-US" nm="FRM_VAC_Job_Description" val="Opportunity Description" />
+  <re cu="en-US" nm="MNU_MYPROFILES" val="PROFILES" />
+  <re cu="en-US" nm="FRM_CLIENT_USERLIMIT" val="User Limit" />
+  <re cu="en-US" nm="MDL_Job_Location" val="Job Location" />
+  <re cu="en-US" nm="FRM_UPRESUME_UPDATEEXISTING" val="Update Existing" />
+  <re cu="en-US" nm="SE_Vacancy" val="Vacancy" />
+  <re cu="en-US" nm="FRM_PRF_Reference_Name" val="Reference Name" />
+  <re cu="en-US" nm="FRM_UPRESUME_SELECTRESUME" val="Select Resume" />
+  <re cu="en-US" nm="FRM_PRF_Project_Details" val="Project Details" />
+  <re cu="en-US" nm="FRM_Res_Upload_Cover" val="Upload Cover Letter (Optional)" />
+  <re cu="en-US" nm="FRM_UPV_Select_User" val="Select User" />
+  <re cu="en-US" nm="FRM_PRF_Mobile_Phone" val="Mobile Phone" />
+  <re cu="en-US" nm="FRM_USER_PRIV_BUT_ADDUSER" val="Add New User" />
+  <re cu="en-US" nm="FRM_PRF_LEVEL" val="Level" />
+  <re cu="en-US" nm="FRM_MAKEOFF_MARKUP_VALUE" val="Markup Value" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_SPEAKINGEVENTHISTORY" val="Add Speaking Event" />
+  <re cu="en-US" nm="FRM_SPK_EVENTNAME" val="Event Name" />
+  <re cu="en-US" nm="FRM_VAC_Location" val="Program Office" />
+  <re cu="en-US" nm="FRM_JOB_LOC_MANAGER" val="Location Manager" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_REFERENCES" val="Add Reference" />
+  <re cu="en-US" nm="LST_VAC_APPLICANTS" val="Applicants" />
+  <re cu="en-US" nm="DOCUMENT_NAME" val="Document Name" />
+  <re cu="en-US" nm="FRM_Remember_Me" val="Remember Me" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Wed" val="Wed" />
+  <re cu="en-US" nm="FRM_MAKEOFF_EMAIL_CONTENT_EDITABLE_BY_MANAGER" val="Email content editable by Manager" />
+  <re cu="en-US" nm="FRM_COMPANY_PHNO" val="Phone No" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_COMPANY" val="Add Company" />
+  <re cu="en-US" nm="CSMNU_DOCUMENTTYPES" val="DOCUMENT TYPES" />
+  <re cu="en-US" nm="FRM_VACRND_RndWeight" val="Round Weight(1-100)" />
+  <re cu="en-US" nm="ANSOPT_ANS" val="Answer" />
+  <re cu="en-US" nm="FRM_CAT_CAT_DETAILS" val="Category Details" />
+  <re cu="en-US" nm="SE_START_TIME" val="Start Time" />
+  <re cu="en-US" nm="FRM_Subscription" val="Subscription" />
+  <re cu="en-US" nm="FRM_VAC_Benefits" val="Eligibility Requirements" />
+  <re cu="en-US" nm="DRP_PLEASE_SELECT" val="--Please Select--" />
+  <re cu="en-US" nm="LST_DOC_DOC_TYPE" val="Document Type" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETCOMPANY" val="Delete Company" />
+  <re cu="en-US" nm="TOOLTIP_APPLY_JOB" val="Apply for Funding" />
+  <re cu="en-US" nm="CSMNU_OFFERLETTER" val="AWARD LETTERS" />
+  <re cu="en-US" nm="FRM_APP_REV_REVIEWER_SAVE" val="Save Reviewer" />
+  <re cu="en-US" nm="VACSTATUS_DRAFT" val="DRAFT" />
+  <re cu="en-US" nm="FRM_PRF_POSTALCODE" val="Postal Code" />
+  <re cu="en-US" nm="ROUND_WEIGHT" val="Weight(1-100)" />
+  <re cu="en-US" nm="Featured" val="Featured" />
+  <re cu="en-US" nm="SE_Question" val="Question" />
+  <re cu="en-US" nm="FRM_VAC_Total_Positions" val="Total Positions" />
+  <re cu="en-US" nm="FRM_VAC_CONFIRM_REQUIRED" val="Confirmation Required" />
+  <re cu="en-US" nm="FRM_PRF_Skill_And_Qualification" val="Skill / Qualification" />
+  <re cu="en-US" nm="FRM_MAKEOFF_INCLUDE_IN_OFFER" val="Include in Award" />
+  <re cu="en-US" nm="FRM_VACRND_RndType" val="Round Type" />
+  <re cu="en-US" nm="FRM_VACRND_ReqRev" val="Required Reviews this Round" />
+  <re cu="en-US" nm="FRM_Email_Address" val="Email Address" />
+  <re cu="en-US" nm="FRM_VAC_Remaing_Positions" val="Remaining Number of Positions" />
+  <re cu="en-US" nm="FRM_STATUSTEXT" val="Status Text" />
+  <re cu="en-US" nm="FRM_OFFERDESCRIPTION" val="Award Letter Content" />
+  <re cu="en-US" nm="FRM_CLIENT_CONNECTIONSTRING" val="Connection String" />
+  <re cu="en-US" nm="MDL_Division" val="Division" />
+  <re cu="en-US" nm="CSMNU_DIVISION_POSITIONTYPE" val="Division Position Types" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_SELECTSECROLES" val="Select Security Role(s)" />
+  <re cu="en-US" nm="Download" val="Download" />
+  <re cu="en-US" nm="MDL_User_Privilege" val="User Privilege" />
+  <re cu="en-US" nm="FRM_VACRND_AssignCandToRev" val="Assign Candidates to Reviewers" />
+  <re cu="en-US" nm="FRM_PRF_Start_Date_Text" val="Start Date Text" />
+  <re cu="en-US" nm="FRM_PUB_PUBLICATIONDATE" val="Publication Date" />
+  <re cu="en-US" nm="MDL_Vacancy" val="OPPORTUNITY" />
+  <re cu="en-US" nm="SALARY_RANGE" val="Salary Range" />
+  <re cu="en-US" nm="FRM_LAN_SPEAK" val="Speak" />
+  <re cu="en-US" nm="FRM_PRF_Project_Name" val="Project Name" />
+  <re cu="en-US" nm="FRM_LAN_READ" val="Read" />
+  <re cu="en-US" nm="FRM_SER_Title_Description" val="Title / Description" />
+  <re cu="en-US" nm="Posted_On" val="Posted On" />
+  <re cu="en-US" nm="FRM_SER_Title_Location_1" val="Title / Location (1 COL)" />
+  <re cu="en-US" nm="FRM_USER_POS_POSNAME" val="Position Type" />
+  <re cu="en-US" nm="FRM_PRF_POSTOFFICEBOXNO" val="Post Office Box No" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_SYSTEMENTITY" val="System Entity" />
+  <re cu="en-US" nm="FRM_UPR_Password" val="Password (min 8 character)" />
+  <re cu="en-US" nm="SUBJECT" val="Subject" />
+  <re cu="en-US" nm="FRM_DIVPOS_DIVNAME" val="Division" />
+  <re cu="en-US" nm="FRM_Language" val="Language" />
+  <re cu="en-US" nm="LST_APP_PROFILE" val="Profile" />
+  <re cu="en-US" nm="FRM_UPV_System_Entity" val="System Entity" />
+  <re cu="en-US" nm="FRM_USER_SELECTADHOCDIVISION" val="Select Ad-Hoc Division(s)" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Personal_Info" val="Personal Info" />
+  <re cu="en-US" nm="FRM_VAC_Position_Type" val="Program Type" />
+  <re cu="en-US" nm="FRM_SER_Position_Type" val="Position Type" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_PUBLICATIONHISTORY" val="Add Publication" />
+  <re cu="en-US" nm="FRM_SPK_LOCATION" val="Location" />
+  <re cu="en-US" nm="FRM_PRF_Emergancy_Contact2_Phone" val="Alternate / Emergency Contact 2 Phone" />
+  <re cu="en-US" nm="LST_DIVPOS_POSNAME" val="Position Type" />
+  <re cu="en-US" nm="FRM_SEC_EXISTING_SECURITY_ROLES" val="Existing Security Roles" />
+  <re cu="en-US" nm="FRM_UPR_Username" val="User Name" />
+  <re cu="en-US" nm="FIRST_CONFIRM_THE_VACANCY" val="This Vacancy must be confirmed before you can open it" />
+  <re cu="en-US" nm="FRM_QUE_TYPE" val="Question Type" />
+  <re cu="en-US" nm="MNU_Search_Resume" val="SEARCH APPLICANTS" />
+  <re cu="en-US" nm="FRM_APP_REV_SAVE" val="Save Review Round" />
+  <re cu="en-US" nm="FRM_SPK_STARTDATE" val="Start Date" />
+  <re cu="en-US" nm="CSMNU_VACANCYTEMPLATES" val="OPPORTUNITY TEMPLATES" />
+  <re cu="en-US" nm="MDL_Vacancies" val="My Vacancies" />
+  <re cu="en-US" nm="FRM_PRF_Emergancy_Contact1_Phone" val="Alternate / Emergency Contact 1 Phone" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Mon" val="Mon" />
+  <re cu="en-US" nm="FRM_CLIENT_DBNAME" val="Database Name" />
+  <re cu="en-US" nm="FRM_VAC_Skill_And_Qualification" val="Compliance Requirements" />
+  <re cu="en-US" nm="FRM_VAC_Hrs_Per_Week" val="Hours Per Week" />
+  <re cu="en-US" nm="FRM_USER_TTL_LOGIN_DETAILS" val="Login Details" />
+  <re cu="en-US" nm="FRM_PRF_MARITALSTATUS" val="Marital Status" />
+  <re cu="en-US" nm="LST_DOC_FILE_NAME" val="File Name" />
+  <re cu="en-US" nm="FRM_LAN_LANGUAGECODE" val="Language" />
+  <re cu="en-US" nm="CSMNU_DEGREETYPE" val="DEGREE TYPES" />
+  <re cu="en-US" nm="Career_Home" val="Career Home" />
+  <re cu="en-US" nm="FRM_TITL_EXECUTIVESUMMARY" val="Executive Summary" />
+  <re cu="en-US" nm="FRM_USER_SELECTPOSITIONTYPE" val="Select Position Type" />
+  <re cu="en-US" nm="DEFAULT_NAME" val="Default Name" />
+  <re cu="en-US" nm="APPLIED_ON" val="Applied On" />
+  <re cu="en-US" nm="LST_ORDER" val="Order" />
+  <re cu="en-US" nm="FinishLater" val="Finish Later" />
+  <re cu="en-US" nm="ROUND_CONFIGURATION" val="Round Configuration" />
+  <re cu="en-US" nm="FRM_APP_REV_ADD" val="Add Review Round" />
+  <re cu="en-US" nm="FRM_ACH_ISSUINGAUTHORITY" val="Issuing Authority" />
+  <re cu="en-US" nm="FRM_UPR_Upload_Resume" val="Upload Resume" />
+  <re cu="en-US" nm="LST_VACANCYQUESTIONTYPE" val="Vacancy Question Type" />
+  <re cu="en-US" nm="FRM_PRF_Credential_UserName" val="User Name" />
+  <re cu="en-US" nm="SE_Job_Offer" val="Job Offer" />
+  <re cu="en-US" nm="SE_Rating" val="Rating" />
+  <re cu="en-US" nm="FRM_VACANCYTEMPLATE" val="Template Name" />
+  <re cu="en-US" nm="FRM_UPV_Sister_Division" val="Sister Division" />
+  <re cu="en-US" nm="STATUS" val="Status" />
+  <re cu="en-US" nm="VACANCY" val="Opportunity" />
+  <re cu="en-US" nm="FRM_VAC_Bonus_Potentials" val="Bonus Potential" />
+  <re cu="en-US" nm="FRM_PRF_Reffered_By" val="Referred By" />
+  <re cu="en-US" nm="INT_COMPLETED" val="My Completed Interviews" />
+  <re cu="en-US" nm="FRM_VAC_Hourly_Rate" val="Hourly Rate" />
+  <re cu="en-US" nm="FRM_PRF_Credential_IsActive" val="Active" />
+  <re cu="en-US" nm="FRM_VAC_Duties_And_Responsibility" val="Funding Opportunity Purpose" />
+  <re cu="en-US" nm="FRM_USER_DIV_USERNAME" val="User" />
+  <re cu="en-US" nm="TOOLTIP_DRAFT" val="Draft" />
+  <re cu="en-US" nm="FRM_VAC_ARC_VAC" val="ARCHIVE OPPORTUNITY" />
+  <re cu="en-US" nm="VACSTATUS_ALL" val="ALL" />
+  <re cu="en-US" nm="FRM_APP_REV_REVIEWER_REMOVE" val="Remove Reviewer" />
+  <re cu="en-US" nm="FRM_MAKEOFF_ENABLE_HOURLY_WAGE" val="Hourly Wage" />
+  <re cu="en-US" nm="FRM_VAC_Hourly_Min" val="Hourly Min" />
+  <re cu="en-US" nm="FRM_PRF_END_YEAR" val="End Year" />
+  <re cu="en-US" nm="FRM_APP_REV_REMOVE" val="Remove Review Round" />
+  <re cu="en-US" nm="FRM_USER_TTL_PERINFO" val="Personal Info" />
+  <re cu="en-US" nm="FRM_PRF_Emergancy_Contact1" val="Alternate / Emergency Contact 1" />
+  <re cu="en-US" nm="FRM_VAC_PDF" val="Full Profile" />
+  <re cu="en-US" nm="CSMNU_DECLINESTATUS" val="DECLINE APPLICANT REASONS" />
+  <re cu="en-US" nm="FRM_UPDATED_ON" val="Modified On" />
+  <re cu="en-US" nm="APPLY_JOB" val="Apply Job" />
+  <re cu="en-US" nm="FRM_VAC_Position_Owner" val="Opportunity Owner" />
+  <re cu="en-US" nm="FRM_SELECT" val="Select" />
+  <re cu="en-US" nm="FRM_PRF_Home_Phone" val="Home Phone" />
+  <re cu="en-US" nm="FRM_PRF_Application_Submision" val="If Yes, when and what for?" />
+  <re cu="en-US" nm="FRM_Language_UploadFile" val="Upload File" />
+  <re cu="en-US" nm="VACSTATUS_ARCHIVE" val="ARCHIVE" />
+  <re cu="en-US" nm="FRM_MAKEOFF_CAN_NOTICE_PER" val="Candidate Notice Period" />
+  <re cu="en-US" nm="FRM_VAC_DRAFT_VAC" val="DRAFT OPPORTUNITY" />
+  <re cu="en-US" nm="FRM_MAKEOFF_ENDDATE" val="Award End Date" />
+  <re cu="en-US" nm="MNU_CAREERHOME" val="Career Home" />
+  <re cu="en-US" nm="FRM_TITL_LICENCEANDCERTIFICATIONS" val="Licenses And Certifications" />
+  <re cu="en-US" nm="FRM_PRF_Reference_Email" val="Reference Email" />
+  <re cu="en-US" nm="START_DATE" val="Award Start Date" />
+  <re cu="en-US" nm="FRM_USER_POS_USERNAME" val="User" />
+  <re cu="en-US" nm="FRM_PRF_End_Date" val="End Date" />
+  <re cu="en-US" nm="ROUND_NAME" val="Round Name" />
+  <re cu="en-US" nm="Login" val="Login" />
+  <re cu="en-US" nm="FRM_VAC_Salary_Min" val="Salary Min" />
+  <re cu="en-US" nm="FRM_PRF_EDUSTATE" val="State" />
+  <re cu="en-US" nm="SE_Security_Role" val="Security Role" />
+  <re cu="en-US" nm="FRM_VAC_PROGRAM_OFFICER" val="Program Officer" />
+  <re cu="en-US" nm="APP_STAT_MNU_WITHDRAW" val="Withdraw Application" />
+  <re cu="en-US" nm="FRM_ASC_NAME" val="Name" />
+  <re cu="en-US" nm="LST_SKILLTYPE" val="Skill Type" />
+  <re cu="en-US" nm="FRM_PRF_Business_Phone_No" val="Best Phone to Reach Me" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Skills_And_Qualifications" val="Skills and Qualifications" />
+  <re cu="en-US" nm="FRM_VAC_DETAILS" val="Opportunity Details" />
+  <re cu="en-US" nm="NOT_ABLE_TO_UPDATE_RECORD" val="Not Able To Update Record" />
+  <re cu="en-US" nm="BeginInterview" val="Begin Interview" />
+  <re cu="en-US" nm="FRM_VAC_RESUME" val="Resume" />
+  <re cu="en-US" nm="FRM_WEIGHT" val="Weight" />
+  <re cu="en-US" nm="CSMNU_USER_DIVISION" val="User Division" />
+  <re cu="en-US" nm="DRP_Any" val="Any" />
+  <re cu="en-US" nm="INT_TERMINATED" val="My Terminated Interviews" />
+  <re cu="en-US" nm="REQUIRED_SCREENING_QUESTIONS" val="Required Screening Questions" />
+  <re cu="en-US" nm="FRM_PRF_State" val="State" />
+  <re cu="en-US" nm="FRM_QUE_ADD" val="Add Question" />
+  <re cu="en-US" nm="FRM_LOGO" val="Logo (Top Left Above)" />
+  <re cu="en-US" nm="FRM_Res_UseExisting_Profile" val="Or Use Existing Profile" />
+  <re cu="en-US" nm="ROUND_REVIEWERS_CANPROMOTE" val="Can Promote" />
+  <re cu="en-US" nm="FRM_REMOVE_VAC_TEMPLATE" val="Remove Opportunity Template" />
+  <re cu="en-US" nm="QT_SELF" val="Applicant Self-Evaluation" />
+  <re cu="en-US" nm="MDL_Position_Type" val="Position Type" />
+  <re cu="en-US" nm="FRM_ISSUINGAUTHORITY" val="Issuing Authority" />
+  <re cu="en-US" nm="FRM_PRF_City" val="City" />
+  <re cu="en-US" nm="FRM_ANSOPT_SAVE" val="Save Answer" />
+  <re cu="en-US" nm="SAVE_QUERY_BTN" val="Save Query" />
+  <re cu="en-US" nm="FRM_MAKEOFF_COMM_POTENTIAL" val="Commission Potential" />
+  <re cu="en-US" nm="FRM_USER_SELECTDIVISION" val="Select Division" />
+  <re cu="en-US" nm="FRM_QUE_DATA_TYPE" val="Question Data Type" />
+  <re cu="en-US" nm="FRM_ASC_ASSOCIATIONTYPE" val="Association Type" />
+  <re cu="en-US" nm="FRM_MAKEOFF_RESPONSE_APPLICANT" val="Response From Applicant" />
+  <re cu="en-US" nm="FRM_VACRND_PromoteCan" val="Promote Candidates Automatically" />
+  <re cu="en-US" nm="LST_JOB_JOBNAME" val="Program Office" />
+  <re cu="en-US" nm="FRM_EMAILDESCRIPTION" val="Email Description" />
+  <re cu="en-US" nm="MNU_MYVACANCIES" val="My Vacancies" />
+  <re cu="en-US" nm="FRM_QUE_REMOVE" val="Remove Question" />
+  <re cu="en-US" nm="FRM_PRF_Military_Service" val="Have you ever been in the Military Service?" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_SPERINFO" val="Personal Info" />
+  <re cu="en-US" nm="SIDEBAR_TEXT" val=" Simply upload your resume to create your profile and login." />
+  <re cu="en-US" nm="FRM_CurrencySign" val="Currency Sign" />
+  <re cu="en-US" nm="FRM_COMPANY_WEBSITE" val="Website" />
+  <re cu="en-US" nm="CSMNU_QUECAT" val="Question Category" />
+  <re cu="en-US" nm="FRM_PRF_SKILLEXPERIENCE" val="Experience" />
+  <re cu="en-US" nm="FRM_UPRESUME_CREATENEW" val="Create New" />
+  <re cu="en-US" nm="MDL_User_Division" val="User Division" />
+  <re cu="en-US" nm="LST_DIVPOS_DIVNAME" val="Division" />
+  <re cu="en-US" nm="FRM_COMPANY_ADD" val="Address" />
+  <re cu="en-US" nm="FRM_VALIDFROM" val="Valid From" />
+  <re cu="en-US" nm="FRM_MAKEOFF_MAX_VALUE" val="Max Value" />
+  <re cu="en-US" nm="APP_STAT_MNU_DRAFT" val="Save to draft" />
+  <re cu="en-US" nm="FRM_PRF_Military_Type_Discharge" val="If Yes , give type of discharge" />
+  <re cu="en-US" nm="FRM_VAC_Start_Date" val="Start Date" />
+  <re cu="en-US" nm="FRM_MAKEOFF_OFFDATE" val="Offer Date" />
+  <re cu="en-US" nm="FRM_PRF_Reference_Phone" val="Reference Phone" />
+  <re cu="en-US" nm="FRM_SER_Search_Listing" val="Search Listing" />
+  <re cu="en-US" nm="FRM_SHOWTOEMPLOYER" val="Show To Employer" />
+  <re cu="en-US" nm="FRM_UPR_TTL_Create_Profile" val="Create Profile" />
+  <re cu="en-US" nm="FRM_MAKEOFF_EDITABLE_BY_MANAGER" val="Editable By Manager" />
+  <re cu="en-US" nm="INT_PENDING" val="My Pending Interviews" />
+  <re cu="en-US" nm="Logout" val="Logout" />
+  <re cu="en-US" nm="FRM_PUB_ROLE" val="Role" />
+  <re cu="en-US" nm="FRM_LAN_WRITE" val="Write" />
+  <re cu="en-US" nm="LST_USER_USERNAME" val="User Name" />
+  <re cu="en-US" nm="FRM_APPBASEDSTATUSCATEGORY" val="Category" />
+  <re cu="en-US" nm="FRM_MAKEOFF_BONUS_POTENTIAL" val="Bonus Potential" />
+  <re cu="en-US" nm="InterviewReopened" val="Interview Reopened" />
+  <re cu="en-US" nm="INT_ALLPENDING" val="All Pending Interviews" />
+  <re cu="en-US" nm="FRM_Subscription_Price" val="Price" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_REFERENCES" val="Delete Reference" />
+  <re cu="en-US" nm="FRM_PRF_MEASURESYSTEM" val="Measure System" />
+  <re cu="en-US" nm="ANSOPT_VALUE" val="Value" />
+  <re cu="en-US" nm="FRM_PRF_WEBSITE" val="Website" />
+  <re cu="en-US" nm="LST_REVIEWROUNDS" val="Review Rounds" />
+  <re cu="en-US" nm="FRM_MAKEOFF_COM_IN" val="In" />
+  <re cu="en-US" nm="BTN_ADD_TEMPLLATE" val="Add Template" />
+  <re cu="en-US" nm="IN" val="In" />
+  <re cu="en-US" nm="FRM_PRF_STARTMONTHYEAR" val="Start Month/Year" />
+  <re cu="en-US" nm="FRM_UPRESUME_DTTL_CHANGEPRO" val="Change Profile" />
+  <re cu="en-US" nm="FRM_VAC_FUND_AMOUNT" val="Fund Amount" />
+  <re cu="en-US" nm="FRM_PUB_TYPE" val="Type" />
+  <re cu="en-US" nm="FRM_COMPANY_SUFF" val="Suffix Title" />
+  <re cu="en-US" nm="FRM_SPK_TITLE" val="Title" />
+  <re cu="en-US" nm="FRM_PRF_EXPERIENCE" val="Experience" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_PUBLICATIONHISTORY" val="Delete Publication History" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PAY_RATE" val="Pay Rate" />
+  <re cu="en-US" nm="FRM_VACRND_Promothersolscore" val="Promotion Threshold Score" />
+  <re cu="en-US" nm="FRM_PRF_LASTUSED" val="Last Used" />
+  <re cu="en-US" nm="LST_COMPANY_WEBSITE" val="Website" />
+  <re cu="en-US" nm="FRM_PRF_Willing_To_Work_Overtime" val="Willing To Work Over-time?" />
+  <re cu="en-US" nm="Action" val="Action" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Availibility" val="Availability" />
+  <re cu="en-US" nm="FRM_PRF_Description" val="Description" />
+  <re cu="en-US" nm="MNU_My_Candidates" val="MY APPLICANTS" />
+  <re cu="en-US" nm="FRM_PRF_START_YEAR" val="Start Year" />
+  <re cu="en-US" nm="MDL_MYAPPLICATIONS" val="My Applications" />
+  <re cu="en-US" nm="FRM_PRF_Degree_Type" val="Degree Type" />
+  <re cu="en-US" nm="SIDEBAR_TEXT2" val="Begin applying for jobs right away" />
+  <re cu="en-US" nm="FRM_UPR_Select_Resume" val="Select Resume" />
+  <re cu="en-US" nm="FRM_VAC_ANNOUNCE_DATE" val="Announcement Date" />
+  <re cu="en-US" nm="FRM_MAKEOFF_COMM_DESC" val="Commission Description" />
+  <re cu="en-US" nm="FRM_SER_Set_Default" val="Set as My Default" />
+  <re cu="en-US" nm="FRM_PRF_Relatives_Working_In_Company" val="Do you have any relatives working at this company?" />
+  <re cu="en-US" nm="SE_User" val="User" />
+  <re cu="en-US" nm="FRM_PRF_Starting_Position" val="Starting Position" />
+  <re cu="en-US" nm="FRM_MAKEOFF_NOTE_CAN" val="Note To Candidate" />
+  <re cu="en-US" nm="TOOLTIP_SHOW_ON_WEB" val="Show On Web" />
+  <re cu="en-US" nm="FRM_PRF_Misdemeanor" val="Have you ever been convicted of a felony or misdemeanor?" />
+  <re cu="en-US" nm="FRM_UPDATED_BY" val="Modified By" />
+  <re cu="en-US" nm="ROUND_QUESTIONS_TYPE" val="Type" />
+  <re cu="en-US" nm="CSMNU_RNDTYPE" val="Round Types" />
+  <re cu="en-US" nm="LST_USER_DIVISION" val="Division" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_ACHIEVEMENTS" val="Delete Achievements" />
+  <re cu="en-US" nm="LST_DEREETYPE" val="Degree Type" />
+  <re cu="en-US" nm="FRM_PUB_TITL_PUBLICATION" val="Publication History" />
+  <re cu="en-US" nm="SAVE_SEARCH_QUERY" val="Save Search Query" />
+  <re cu="en-US" nm="FRM_VAC_ANNOUNCE_TYPE" val="Announcement Type" />
+  <re cu="en-US" nm="APP_STAT_MNU_SUBMIT" val="Submit Application" />
+  <re cu="en-US" nm="FRM_CLIENT_ENDDATE" val="End Date" />
+  <re cu="en-US" nm="LST_DOC_TTL_PREVIEW" val="Preview" />
+  <re cu="en-US" nm="FRM_PRF_ENDMONTHYEAR" val="End Month/Year" />
+  <re cu="en-US" nm="FRM_MAKEOFF_NOTIFICATION_METHOD" val="Notification Method" />
+  <re cu="en-US" nm="FRM_PRF_JOBCATEGORY" val="Job Category" />
+  <re cu="en-US" nm="APP_STAT_SUBMIT" val="Applied" />
+  <re cu="en-US" nm="FRM_MAKEOFF_NOTE_APPLICANT" val="Note To Applicant" />
+  <re cu="en-US" nm="FRM_PRF_Zip" val="Zip" />
+  <re cu="en-US" nm="FRM_ACH_TITL_ACHIEVEMENT" val="Achievement" />
+  <re cu="en-US" nm="MDL_MYDOCUMENTS" val="My Documents" />
+  <re cu="en-US" nm="LST_DOC_DATE_UPLOADED" val="Date Uploaded" />
+  <re cu="en-US" nm="FRM_PUB_TITLE" val="Title" />
+  <re cu="en-US" nm="FRM_PRF_Supervisor_Name" val="Supervisor Name and Title" />
+  <re cu="en-US" nm="SEARCH_QUERY_NAME" val="Search Query Name" />
+  <re cu="en-US" nm="LST_ROUNDTYPE" val="Round Types" />
+  <re cu="en-US" nm="FRM_USER_SELECTJOBLOCATION" val="Select Job Location" />
+  <re cu="en-US" nm="FRM_VACSTATUSCATEGORY" val="Category" />
+  <re cu="en-US" nm="Upload_Resume" val="Upload Resume" />
+  <re cu="en-US" nm="FRM_VAC_CLIENT" val="Client" />
+  <re cu="en-US" nm="NEWVACANCY_CREATE_NEW" val="Create New Opportunity" />
+  <re cu="en-US" nm="FRM_Language_Culture" val="Culture" />
+  <re cu="en-US" nm="FRM_TITL_OBJECTIVEDETAILS" val="Objective" />
+  <re cu="en-US" nm="CSMNU_JOBLOCATION" val="PROGRAM OFFICES" />
+  <re cu="en-US" nm="MNU_HOME" val="Home" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Fri" val="Fri" />
+  <re cu="en-US" nm="FRM_NAME" val="Name" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PLACEMENT_LOC" val="Program Office" />
+  <re cu="en-US" nm="FRM_COMPANY_NAME" val="Company Name" />
+  <re cu="en-US" nm="FRM_PRO_PROFILENAME" val="Profile Name" />
+  <re cu="en-US" nm="FRM_CLIENT_CONTACTNO" val="Contact No" />
+  <re cu="en-US" nm="FRM_VAC_OPEN_DATE" val="Open Date" />
+  <re cu="en-US" nm="FRM_SAVE" val="Save" />
+  <re cu="en-US" nm="FRM_PRF_Relatives_If_Yes" val="If Yes, who?" />
+  <re cu="en-US" nm="FRM_VAC_Commission" val="Commission" />
+  <re cu="en-US" nm="LST_DIV_Name" val="Division" />
+  <re cu="en-US" nm="Location" val="Program Office" />
+  <re cu="en-US" nm="SE_Vacancy_Template" val="Vacancy Template" />
+  <re cu="en-US" nm="FRM_DEFAULTSTATUSSHOWTOEMPLOYER" val="Default Status Show To Employer" />
+  <re cu="en-US" nm="FRM_QUE" val="Question" />
+  <re cu="en-US" nm="FRM_VAC_Division" val="Division" />
+  <re cu="en-US" nm="FRM_UPR_Confirm_Password" val="Confirm Password" />
+  <re cu="en-US" nm="FRM_PRF_Starting_Pay" val="Starting Pay" />
+  <re cu="en-US" nm="POSITION_TYPE" val="Award Type" />
+  <re cu="en-US" nm="FRM_VAC_CLOSE_VAC" val="CLOSE OPPORTUNITY" />
+  <re cu="en-US" nm="FRM_EMAIL_SEND_NAME" val="Email Sender Name" />
+  <re cu="en-US" nm="APP_STAT_DRAFT" val="Draft" />
+  <re cu="en-US" nm="FRM_OBJECTIVEDETAILS" val="Objective" />
+  <re cu="en-US" nm="FRM_SPK_EVENTTYPE" val="Event Type" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Education" val="Education" />
+  <re cu="en-US" nm="RECORD_UPDATED_SUCCESSFULLY" val="Record Updated Successfully" />
+  <re cu="en-US" nm="Signup" val="Sign Up" />
+  <re cu="en-US" nm="MNU_SEARCHJOBS" val="Search Jobs" />
+  <re cu="en-US" nm="TOOLTIP_SAVE_TO_MY_JOB" val="Save To My Opportunities" />
+  <re cu="en-US" nm="FRM_CREATED_ON" val="Created On" />
+  <re cu="en-US" nm="FRM_PRF_Last_Name" val="Last Name" />
+  <re cu="en-US" nm="FRM_SPK_LINK" val="Link" />
+  <re cu="en-US" nm="FRM_UPV_Delete" val="Delete" />
+  <re cu="en-US" nm="FRM_APP_REV_QUE_REMOVE" val="Remove Question" />
+  <re cu="en-US" nm="APPLICATION_INCLUDES" val="Application Includes" />
+  <re cu="en-US" nm="FRM_PRF_RelationShip" val="Relationship" />
+  <re cu="en-US" nm="FRM_LAN_TITLE_LANGUAGES" val="Languages" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_DELETE" val="Delete" />
+  <re cu="en-US" nm="FRM_PRF_Skill_Type" val="Skill Type" />
+  <re cu="en-US" nm="FRM_QUE_PRIMARY_DIVISION" val="Primary Division" />
+  <re cu="en-US" nm="FRM_MAKEOFF_OFFER_DETAILS" val="Award Details" />
+  <re cu="en-US" nm="FRM_ASC_LINK" val="Link" />
+  <re cu="en-US" nm="FRM_PRF_START_MONTH" val="Start Month" />
+  <re cu="en-US" nm="CSMNU_CLIENT" val="Client" />
+  <re cu="en-US" nm="Add" val="Add" />
+  <re cu="en-US" nm="FRM_MAKEOFF_SALARY_TYPE" val="Salary Type" />
+  <re cu="en-US" nm="FRM_ASC_ROLE" val="Role" />
+  <re cu="en-US" nm="CSMNU_USER" val="USERS AND PRIVILEGES" />
+  <re cu="en-US" nm="FRM_QUE_CAT_REMOVE" val="Remove Category" />
+  <re cu="en-US" nm="CSMNU_SKILLTYPE" val="SKILL TYPES" />
+  <re cu="en-US" nm="FRM_UPV_Security_Roles" val="Select Security Role(s)" />
+  <re cu="en-US" nm="LST_VAC_Location" val="Location" />
+  <re cu="en-US" nm="FRM_MAKEOFF_CHARGE_RATE" val="Charge Rate" />
+  <re cu="en-US" nm="FRM_PRF_DEGREEDATE" val="Degree Date" />
+  <re cu="en-US" nm="CSMNU_USERPRIVILEGES" val="USER PRIVILEGES" />
+  <re cu="en-US" nm="Terminate" val="Terminated" />
+  <re cu="en-US" nm="FRM_VAL_Regex" val="is not valid" />
+  <re cu="en-US" nm="UPLOADDOCUMENT" val="Upload Document" />
+  <re cu="en-US" nm="FRM_Client" val="Client" />
+  <re cu="en-US" nm="APP_STAT_MNU_VIEW" val="View Application" />
+  <re cu="en-US" nm="FRM_Res_Apply" val="Apply" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_SPEAKINGEVENTHISTORY" val="Delete Speaking Event History" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PLUS_BON" val="Plus Bonus" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_ASSOCIATION" val="Delete Association" />
+  <re cu="en-US" nm="FRM_PRF_Employment_Preference" val="Employment Preference" />
+  <re cu="en-US" nm="FRM_CLIENT_CONTACTPERSON" val="Contact Person" />
+  <re cu="en-US" nm="FRM_PRF_Start_Date" val="Start Date" />
+  <re cu="en-US" nm="SE_Portal_Content" val="Portal Content" />
+  <re cu="en-US" nm="FRM_SER_Notify_Me" val="Notify Me" />
+  <re cu="en-US" nm="NOT_ABLE_TO_ADD_RECORD" val="Not Able To Add Record" />
+  <re cu="en-US" nm="FRM_MAKEOFF_TEMPLATE_NAME" val="Template Name" />
+  <re cu="en-US" nm="FRM_PRF_Reason_For_Leaving" val="Reason For Leaving" />
+  <re cu="en-US" nm="Description" val="Description" />
+  <re cu="en-US" nm="Search" val="Search" />
+  <re cu="en-US" nm="FRM_VAC_ACT_CODE" val="Activity Code" />
+  <re cu="en-US" nm="FRM_SPK_TITL_SPEAKINGEVENTHISTORY" val="Speaking Event History" />
+  <re cu="en-US" nm="FRM_PRF_MEASUREVALUE" val="Measure value" />
+  <re cu="en-US" nm="INT_ALLCOMPLETED" val="All Completed Interviews" />
+  <re cu="en-US" nm="FRM_LANGUAGE_BLOCK" val="Language Blocks" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_SELECTUSER" val="Select User" />
+  <re cu="en-US" nm="FRM_APP_REV_QUE_SAVE" val="Save Question" />
+  <re cu="en-US" nm="FRM_ACH_DATE" val="Date" />
+  <re cu="en-US" nm="FRM_QUE_CAT_SAVE" val="Save Category" />
+  <re cu="en-US" nm="FRM_VAC_Salary_Max" val="Salary Max" />
+  <re cu="en-US" nm="FRM_UPR_First_Name" val="First Name" />
+  <re cu="en-US" nm="FRM_MAKEOFF_CANDIDATE" val="Applicant" />
+  <re cu="en-US" nm="FRM_PRF_COUNTRY" val="Country" />
+  <re cu="en-US" nm="JOB_TYPE" val="Job Type" />
+  <re cu="en-US" nm="FRM_PRF_Ending_Pay" val="Ending Pay" />
+  <re cu="en-US" nm="LST_DIV_PDivision" val="Parent Division" />
+  <re cu="en-US" nm="FRM_SER_Employement_Type" val="Employment Type" />
+  <re cu="en-US" nm="LST_JOB_DIVNAME" val="Division" />
+  <re cu="en-US" nm="DRP_SELECT" val="--Select--" />
+  <re cu="en-US" nm="FRM_MAKEOFF_CAN_IN" val="In" />
+  <re cu="en-US" nm="FRM_ASC_ENDDATE" val="End Date" />
+  <re cu="en-US" nm="FRM_PRF_FAX" val="Fax" />
+  <re cu="en-US" nm="MDL_User_Position_Type" val="User Position Type" />
+  <re cu="en-US" nm="LST_VAC_Status" val="Status" />
+  <re cu="en-US" nm="FRM_USER_LOC_LOC" val="Location" />
+  <re cu="en-US" nm="FRM_Password" val="Password" />
+  <re cu="en-US" nm="FRM_VAC_PDF_RESUME" val="Resume" />
+  <re cu="en-US" nm="FRM_PRF_End_Date_Text" val="End Date Text" />
+  <re cu="en-US" nm="FRM_ANSOPT_ADD" val="Add Answer" />
+  <re cu="en-US" nm="SE_Interview" val="Interview" />
+  <re cu="en-US" nm="Remove" val="Remove" />
+  <re cu="en-US" nm="FRM_VACRND_ReviewRound" val="Review Round" />
+  <re cu="en-US" nm="LST_APP_COVERLETTER" val="Cover Letter" />
+  <re cu="en-US" nm="QT_PRESENT" val="Offer Question" />
+  <re cu="en-US" nm="LST_VAC_Placement" val="Placement" />
+  <re cu="en-US" nm="FRM_VACRND_ReviewRounds" val="Review Rounds" />
+  <re cu="en-US" nm="RECORD_DELETED_SUCCESSFULLY" val="Record Deleted Successfully" />
+  <re cu="en-US" nm="SELECTRESUME" val="Select Resume" />
+  <re cu="en-US" nm="FRM_MAKEOFF_OFFSTATUS" val="Award Status" />
+  <re cu="en-US" nm="POSITION_ID" val="Opportunity Id" />
+  <re cu="en-US" nm="MNU_INTERVIEW_CALENDER" val="INTERVIEW CALENDAR" />
+  <re cu="en-US" nm="FRM_PRF_EDUDESCRIPTION" val="Description" />
+  <re cu="en-US" nm="CSMNU_VACANCYSTATUS" val="VACANCY STATUS" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Other_Information" val="Other Information " />
+  <re cu="en-US" nm="FRM_SER_Title_Location_2" val="Title / Location (2 COL)" />
+  <re cu="en-US" nm="CSMNU_POSITIONTYPE" val="PROGRAM TYPES" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Sun" val="Sun" />
+  <re cu="en-US" nm="FRM_VAC_NEW_ROUND" val="New Round" />
+  <re cu="en-US" nm="FRM_VAC_APP_DUE_DATE" val="Application Due Date" />
+  <re cu="en-US" nm="FRM_MAKEOFF_EDITABLE_BY_CANDIDATE" val="Editable By Candidate" />
+  <re cu="en-US" nm="CSMNU_COMPANYINFO" val="ORGANIZATION INFO" />
+  <re cu="en-US" nm="FRM_MAKEOFF_EMAIL_TO_CANDIDATE" val="Email to Applicant" />
+  <re cu="en-US" nm="TOOLTIP_SHOW_FEATURE" val="Click to Feature On Web" />
+  <re cu="en-US" nm="FRM_EXECUTIVESUMMARY" val="Executive Summary" />
+  <re cu="en-US" nm="Delete" val="Delete" />
+  <re cu="en-US" nm="FRM_VAC_COVERLETTER" val="Cover Letter" />
+  <re cu="en-US" nm="FRM_VAC_Show_On_Web" val="show on web" />
+  <re cu="en-US" nm="FRM_VAC_MAN_LINK" val="Copy Manager Link" />
+  <re cu="en-US" nm="FRM_CLIENT_CLIENTNAME" val="Client Name" />
+  <re cu="en-US" nm="FRM_Send_Password" val="Send Password" />
+  <re cu="en-US" nm="FRM_MAKEOFF_VACANCY" val="Opportunity" />
+  <re cu="en-US" nm="FRM_PRF_Team_Size" val="Team Size" />
+  <re cu="en-US" nm="FRM_OFFERLETTERNAME" val="Award Letter Name" />
+  <re cu="en-US" nm="NEWVACANCY_CREATE_FROM_TEMPLATE" val="Create From Template" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_LANGUAGES" val="Add Language" />
+  <re cu="en-US" nm="FRM_USER_DIV_DIVNAME" val="Division" />
+  <re cu="en-US" nm="INT_ALLTERMINATED" val="All Terminated Interviews" />
+  <re cu="en-US" nm="FRM_SEC_ROLE_NAME" val="Role Name" />
+  <re cu="en-US" nm="ACTION_DRAFT" val="Draft" />
+  <re cu="en-US" nm="FRM_MAKEOFF_RATE" val="Rate" />
+  <re cu="en-US" nm="SE_VAC_RND" val="Opportunity Round" />
+  <re cu="en-US" nm="FRM_VAC_DEL_VAC" val="DELETE OPPORTUNITY" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_LANGUAGES" val="Delete Languages" />
+  <re cu="en-US" nm="QT_ASK" val="Ask to candidate" />
+  <re cu="en-US" nm="FRM_ASC_TITLE_ASSOCIATION" val="Associations" />
+  <re cu="en-US" nm="CSMNU_USER_LOCATION" val="User Location" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Sat" val="Sat" />
+  <re cu="en-US" nm="FRM_PRF_BTN_DELETE_SKILLSANDQUALIFICATION" val="Delete Skill / Qualification" />
+  <re cu="en-US" nm="FRM_LANGUAGE_BLOCK_DESCRIPTION" val="Description" />
+  <re cu="en-US" nm="FRM_PRF_Institution_Name" val="Institution Name" />
+  <re cu="en-US" nm="FRM_JOB_DIVNAME" val="Division" />
+  <re cu="en-US" nm="MNU_My_Vacancies" val="MY OPPORTUNITIES" />
+  <re cu="en-US" nm="FRM_MAKEOFF_JOBTYPE" val="Job Type" />
+  <re cu="en-US" nm="EMAIL_DESCRIPTION" val="Email Description" />
+  <re cu="en-US" nm="CSMNU_COLOROPTIONS" val="COLOR OPTIONS" />
+  <re cu="en-US" nm="FRM_PRF_How_Old" val="Are you 18 years or older?" />
+  <re cu="en-US" nm="FRM_SAVE_VAC_TEMPLATE" val="Save Opportunity Template" />
+  <re cu="en-US" nm="FRM_Res_Upload_Resume" val="Upload Resume" />
+  <re cu="en-US" nm="Save" val="Save" />
+  <re cu="en-US" nm="LST_POS_POSNAME" val="Program Type" />
+  <re cu="en-US" nm="CSMNU_LANGUAGEBLOCKS" val="LANGUAGE BLOCKS" />
+  <re cu="en-US" nm="FRM_PRF_Hrs_Tue" val="Tue" />
+  <re cu="en-US" nm="FRM_PRF_Address" val="Address" />
+  <re cu="en-US" nm="FRM_VAC_CASH_MATCH_REQ" val="Cash Match Requirement" />
+  <re cu="en-US" nm="SE_Candidate" val="Candidate" />
+  <re cu="en-US" nm="LST_COMPANY_COMNAME" val="Client" />
+  <re cu="en-US" nm="FRM_QUE_SAVE" val="Save Question" />
+  <re cu="en-US" nm="FRM_PRF_Duties_And_Responsibilites" val="Funding Opportunity Purpose" />
+  <re cu="en-US" nm="FRM_UPV_Create" val="Create" />
+  <re cu="en-US" nm="FRM_VAC_STATUS_REASON" val="Status Reason" />
+  <re cu="en-US" nm="ONBOARDING_MANAGER" val="Onboarding Manager" />
+  <re cu="en-US" nm="FRM_MAKEOFF_ENABLE_COUNTER_OFFER" val="Enable Counter Offers" />
+  <re cu="en-US" nm="FRM_PRF_EDUCITY" val="City" />
+  <re cu="en-US" nm="DOCUMENT_DESCRIPTION" val="Document Description" />
+  <re cu="en-US" nm="FRM_QUE_CAT_ADD" val="Add Category" />
+  <re cu="en-US" nm="FRM_PRF_Most_Recent_position" val="Most Recent Position" />
+  <re cu="en-US" nm="FRM_MAKEOFF_HOURSWEEK" val="Hours Per Week" />
+  <re cu="en-US" nm="FRM_MAKEOFF_COM_NOTICE_PER" val="Company Notice Period" />
+  <re cu="en-US" nm="FRM_ASC_STARTDATE" val="Start Date" />
+  <re cu="en-US" nm="FRM_VACSTATUSNAME" val="Name" />
+  <re cu="en-US" nm="FRM_PRF_Misdemeanor_Explain" val="If Yes, please explain" />
+  <re cu="en-US" nm="SE_Division" val="Division" />
+  <re cu="en-US" nm="FRM_APP_REV_REVIEWER_ADD" val="Add Reviewer" />
+  <re cu="en-US" nm="BACK" val="Back" />
+  <re cu="en-US" nm="CSMNU_SECURITY_TEMPLATES" val="SECURITY TEMPLATES" />
+  <re cu="en-US" nm="FRM_DIVISION_REQUIRED_MSG" val="Division is a required field" />
+  <re cu="en-US" nm="QT_RATE" val="Rate the candidate" />
+  <re cu="en-US" nm="TOOLTIP_SHOW_NOT_FEATURE" val="Click to not Feature On Web" />
+  <re cu="en-US" nm="Job_Title" val="Job Title" />
+  <re cu="en-US" nm="FRM_VAL_Required" val="is required" />
+  <re cu="en-US" nm="FRM_PRF_Company_Details" val="Company Details" />
+  <re cu="en-US" nm="FRM_COMPANY_COMNAME" val="Company Name" />
+  <re cu="en-US" nm="SE_SCHEDULE_DATE" val="Schedule Date" />
+  <re cu="en-US" nm="FRM_Res_UseExisting" val="Or Use Existing" />
+  <re cu="en-US" nm="FRM_MAKEOFF_OFFER_LETTER" val="Award Letter" />
+  <re cu="en-US" nm="DRP_Select_One" val="Select one or more" />
+  <re cu="en-US" nm="FRM_VAC_End_Date" val="End Date" />
+  <re cu="en-US" nm="FRM_PUB_DESCRIPTION" val="Description" />
+  <re cu="en-US" nm="MNU_MYDOCUMENTS" val="MY DOCUMENTS" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_VIEW" val="View" />
+  <re cu="en-US" nm="FRM_VAC_PDF_COVER_LETTER" val="Cover Letter" />
+  <re cu="en-US" nm="FRM_UPV_Modify" val="Modify" />
+  <re cu="en-US" nm="LST_VAC_Id" val="Id" />
+  <re cu="en-US" nm="LST_USER_DIV_DIVNAME" val="Division" />
+  <re cu="en-US" nm="FRM_DIVPOS_POSNAME" val="Position Type" />
+  <re cu="en-US" nm="YESNO_YES" val="Value For Yes" />
+  <re cu="en-US" nm="ALLOWED_EXTENSION_TYPES" val="Allowed Extension Types" />
+  <re cu="en-US" nm="LST_USER_POS_USERNAME" val="User" />
+  <re cu="en-US" nm="FRM_MAKEOFF_STARTDATE" val="Award Start Date" />
+  <re cu="en-US" nm="MDL_User_Location" val="User Location" />
+  <re cu="en-US" nm="FRM_CREATED_BY" val="Created By" />
+  <re cu="en-US" nm="FRM_UPR_Last_Name" val="Last Name" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PER" val="Per" />
+  <re cu="en-US" nm="FRM_UPV_All_Division" val="All Division" />
+  <re cu="en-US" nm="SE_Review_Panel" val="Review Panel" />
+  <re cu="en-US" nm="FRM_LAN_COMMENTS" val="Comments" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PICKLIST_SELECTION_EDITABLE_BY_MANAGER" val="Picklist selection editable by Manager" />
+  <re cu="en-US" nm="FRM_VAC_OPEN_VAC" val="OPEN OPPORTUNITY" />
+  <re cu="en-US" nm="FRM_PRF_END_MONTH" val="End Month" />
+  <re cu="en-US" nm="FRM_VAC_FULLPROFILE" val="Full Profile" />
+  <re cu="en-US" nm="SEARCH_JOBS" val="SEARCH OPPORTUNITIES" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_MODIFY" val="Modify" />
+  <re cu="en-US" nm="FRM_PRF_TTL_Emergancy" val="Emergency" />
+  <re cu="en-US" nm="FRM_DESCRIPTION" val="Description" />
+  <re cu="en-US" nm="FRM_PRF_Telephone" val="Telephone" />
+  <re cu="en-US" nm="FRM_SER_Date_Posted" val="Date Posted" />
+  <re cu="en-US" nm="FRM_CLIENT_STARTDATE" val="Start Date" />
+  <re cu="en-US" nm="FRM_DEFAULTSTATUSSHOWTOCANDIDATE" val="Default Status Show To Candidate" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_SKILLSANDQUALIFICATIONS" val="Add Skill / Qualification" />
+  <re cu="en-US" nm="CSMNU_USER_POSITIONTYPE" val="User Position Type" />
+  <re cu="en-US" nm="FRM_NEW_OFFER_TEMPLATE" val="New Offer Template" />
+  <re cu="en-US" nm="FRM_MAKEOFF_RATE_PERIOD" val="Rate Period" />
+  <re cu="en-US" nm="LST_VAC_Job_Title" val="Job Title" />
+  <re cu="en-US" nm="FRM_ANSOPT_REMOVE" val="Remove Answer" />
+  <re cu="en-US" nm="Jobs" val="Jobs" />
+  <re cu="en-US" nm="FRM_PRF_Date_Availability" val="Date Available" />
+  <re cu="en-US" nm="YESNO_NO" val="Value For No" />
+  <re cu="en-US" nm="FRM_APPBASEDSTATUSNAME" val="Name" />
+  <re cu="en-US" nm="FRM_PRF_DOB" val="Date of Birth" />
+  <re cu="en-US" nm="FRM_DIV_Parent_Division" val="Parent Division" />
+  <re cu="en-US" nm="CSMNU_OFFERTEMPLATE" val="AWARD TEMPLATES" />
+  <re cu="en-US" nm="FRM_PRF_PROFICIENCY" val="Proficiency" />
+  <re cu="en-US" nm="LST_USER_NAME" val="Name" />
+  <re cu="en-US" nm="MDL_Divisions" val="Divisions" />
+  <re cu="en-US" nm="FRM_VAC_Employment_Type" val="Employment Type" />
+  <re cu="en-US" nm="RECORD_ADDED_SUCCESSFULLY" val="Record Added Successfully" />
+  <re cu="en-US" nm="FRM_VAC_Vacancy_Applications" val="Award Applications" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_CREATE" val="Create" />
+  <re cu="en-US" nm="UPLOADDOCUMENTS" val="Upload Documents" />
+  <re cu="en-US" nm="MDL_Division_Position_type" val="Division Position Type" />
+  <re cu="en-US" nm="FRM_VAC_Annual_Salary" val="Annual Salary" />
+  <re cu="en-US" nm="FRM_SER_Job_Location" val="Job Location" />
+  <re cu="en-US" nm="APPLICATION_SUMMARY" val="Application Summary" />
+  <re cu="en-US" nm="Update" val="Update" />
+  <re cu="en-US" nm="MNU_Company_Setup" val="ORGANIZATION SETUP" />
+  <re cu="en-US" nm="SE_Job_Location" val="Job Location" />
+  <re cu="en-US" nm="Job" val="Job" />
+  <re cu="en-US" nm="FRM_PORTAL_BAN_TITLE" val="Portal Banner Title" />
+  <re cu="en-US" nm="MSG_DELETE_ALREADY_UNDERWAY_OR_COMPLETED" val="Sorry, you cannot delete an interview that is already underway or completed." />
+  <re cu="en-US" nm="FRM_SHOWTOCANDIDATE" val="Show to Applicant" />
+  <re cu="en-US" nm="FRM_PRF_Credential_Password" val="Password" />
+  <re cu="en-US" nm="LST_QUECATNAME" val="Question Category" />
+  <re cu="en-US" nm="SE_Application" val="Application" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_EDUCATION" val="Add Education" />
+  <re cu="en-US" nm="FRM_UPR_Profile_Name" val="Profile Name" />
+  <re cu="en-US" nm="FRM_VAC_Job_title" val="Opportunity Name" />
+  <re cu="en-US" nm="FRM_PRF_Pager" val="Pager" />
+  <re cu="en-US" nm="FRM_MAKEOFF_BONUS_CAP" val="Bonus Cap" />
+  <re cu="en-US" nm="FRM_SER_Search_Result" val="Search Result" />
+  <re cu="en-US" nm="FRM_USER_TTL_SECURITYROLE" val="Security Role" />
+  <re cu="en-US" nm="INVALID_DATE" val="Invalid Date" />
+  <re cu="en-US" nm="FRM_MAKEOFF_PLACEMENT_TYPE" val="Award Type" />
+  <re cu="en-US" nm="FRM_VACRND_AssignCanBatches" val="Assign Candidates in batches of" />
+  <re cu="en-US" nm="FRM_PUB_COMMENTS" val="Comments" />
+  <re cu="en-US" nm="FRM_APP_REV_WEIGHT" val="Weight" />
+  <re cu="en-US" nm="FRM_PRF_First_Name" val="First Name" />
+  <re cu="en-US" nm="CSMNU_REVIEWROUNDS" val="REVIEW ROUNDS" />
+  <re cu="en-US" nm="LST_VAC_Offers" val="Offers" />
+  <re cu="en-US" nm="ROUND_REVIEWERS_TITLE" val="Title" />
+  <re cu="en-US" nm="FRM_CATEGORY" val="Category" />
+  <re cu="en-US" nm="FRM_SER_FullT_PartT" val="Full-Time / Part-Time" />
+  <re cu="en-US" nm="SE_Resume" val="Resume" />
+  <re cu="en-US" nm="ROUND_REVIEWERS" val="Reviewers" />
+  <re cu="en-US" nm="TerminateAndDecline" val="Terminated And Declined" />
+  <re cu="en-US" nm="CSMNU_EMAILTEMPLATES" val="EMAIL TEMPLATES" />
+  <re cu="en-US" nm="LST_VAC_Posted_On" val="Posted On" />
+  <re cu="en-US" nm="FRM_PRF_Hours_Availibility" val="Hours Availibiity" />
+  <re cu="en-US" nm="FRM_MAKEOFF_COMM_CAP" val="Commission Cap" />
+  <re cu="en-US" nm="FRM_PRF_Target_Income" val="Target Annual Income" />
+  <re cu="en-US" nm="VACSTATUS_OPEN" val="OPEN" />
+  <re cu="en-US" nm="LST_USER_LOC_LOC" val="Location" />
+  <re cu="en-US" nm="UPLOADRESUME" val="Upload Resume" />
+  <re cu="en-US" nm="CREATE_PROFILE_OR_LOGIN_HERE" val="Create Profile or " />
+  <re cu="en-US" nm="FRM_SER_Salary_Range" val="Annual Salary Range" />
+  <re cu="en-US" nm="FRM_PRF_Emergancy_Contact2" val="Alternate / Emergency Contact 2" />
+  <re cu="en-US" nm="NOT_ABLE_TO_DELETE_RECORD" val="Not Able To Delete Record" />
+  <re cu="en-US" nm="FRM_PRF_Eligible_To_Work_In_Us" val="Are you eligible to work in the United States?" />
+  <re cu="en-US" nm="CSMNU_DIVISION" val="DIVISIONS" />
+  <re cu="en-US" nm="InterViewComplete" val="Interview Completed" />
+  <re cu="en-US" nm="CREATE_PROFILE" val="Create Profile" />
+  <re cu="en-US" nm="FRM_VAC_CAN_LINK" val="Copy Applicant Link" />
+  <re cu="en-US" nm="MNU_Message" val="Message" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_ACHIEVEMENTS" val="Add Achievement" />
+  <re cu="en-US" nm="VACSTATUS_CLOSED" val="CLOSED" />
+  <re cu="en-US" nm="ROUND_QUESTIONS" val="Questions" />
+  <re cu="en-US" nm="FRM_REMOVEDECLINESTATUS" val="Remove Decline Status" />
+  <re cu="en-US" nm="FEATURED_JOBS" val="FEATURED OPPORTUNITIES" />
+  <re cu="en-US" nm="Language" val="Language" />
+  <re cu="en-US" nm="SE_Position_Type" val="Position Type" />
+  <re cu="en-US" nm="FRM_APP_REV_QUE_ADD" val="Add Question" />
+  <re cu="en-US" nm="FRM_VAC_ADD_TEMPLATE" val="Add Template" />
+  <re cu="en-US" nm="FRM_PRF_AFFIX" val="Affix" />
+  <re cu="en-US" nm="FRM_VAC_EXP_DATE" val="Expiration Date" />
+  <re cu="en-US" nm="FRM_PRF_Submitted_Application_Before" val="Have you ever applied to this company before?" />
+  <re cu="en-US" nm="FRM_PRF_Work_Email" val="Work Email" />
+  <re cu="en-US" nm="FRM_VAC_Compensation_Info" val="Application Instructions" />
+  <re cu="en-US" nm="FRM_MAKEOFF_BONUS_DESC" val="Bonus Description" />
+  <re cu="en-US" nm="Details" val="Details" />
+  <re cu="en-US" nm="FRM_USER_PRIV_TTL_SECROLES" val="Security Roles" />
+  <re cu="en-US" nm="FRM_PRF_BTN_EDUCATIONDELETE" val="Delete Education" />
+  <re cu="en-US" nm="MNU_COMPANYSETUP" val="Company Setup" />
+  <re cu="en-US" nm="FRM_VAC_Job_Type" val="Full-Time / Part-Time" />
+  <re cu="en-US" nm="FRM_VAC_FOA" val="Funding Oppty Number (FOA)" />
+  <re cu="en-US" nm="FRM_PUB_NAME" val="Name" />
+  <re cu="en-US" nm="ACTION_SAVE_TO_MYJOBS" val="Save To &quot;My Jobs&quot;" />
+  <re cu="en-US" nm="FRM_OFFER_POSITIONTYPE" val="Award for Program Type" />
+  <re cu="en-US" nm="FRM_PRF_Major_Subject" val="Major Subject" />
+  <re cu="en-US" nm="Welcome" val="Welcome" />
+  <re cu="en-US" nm="FRM_VAC_Position_Requested_By" val="Position Requested By" />
+  <re cu="en-US" nm="FRM_USER_LOC_USERNAME" val="User" />
+  <re cu="en-US" nm="FRM_CLIENT_SUBDOMAIN" val="Subdomain" />
+  <re cu="en-US" nm="CSMNU_APPBASEDSTATUS" val="Application Based Status" />
+  <re cu="en-US" nm="FRM_PRF_Middle_Name" val="Middle Name" />
+  <re cu="en-US" nm="FRM_SER_Skill_Range" val="Skill Search" />
+  <re cu="en-US" nm="LST_AC_TITLE_APPLICANT_REVIEW_PROCESS" val="Applicant Review Process" />
+  <re cu="en-US" nm="MDL_CHANGE_STATUS" val="CHANGE STATUS" />
+  <re cu="en-US" nm="LST_USER_POS_POSNAME" val="Position Type" />
+  <re cu="en-US" nm="FRM_VAC_Featured_On_Web" val="Featured On Web" />
+  <re cu="en-US" nm="DOCUMENT_TYPE" val="Document Type" />
+  <re cu="en-US" nm="FRM_PRF_NATIONALITY" val="Nationality" />
+  <re cu="en-US" nm="BTN_LIC_DELETE" val="Delete License And Certification" />
+  <re cu="en-US" nm="FRM_VAC_Hourly_Max" val="Hourly Max" />
+  <re cu="en-US" nm="FRM_PRF_BTN_ADD_LICENCEANDCERTIFICATIONS" val="Add License / Certification" />
+  <re cu="en-US" nm="FRM_APP_REV_ROUND" val="Round" />
+  <re cu="en-US" nm="FRM_PRF_Company_Name" val="Company Name" />
+  <re cu="fr-CA" nm="FRM_APP_REV_ROUND" val="Tour" />
+  <re cu="fr-CA" nm="FRM_VAC_Hourly_Max" val="Horaire Max" />
+  <re cu="fr-CA" nm="FRM_PRF_Company_Name" val="Nom de l'entreprise" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_LICENCEANDCERTIFICATIONS" val="Ajouter une licence / Certification" />
+  <re cu="fr-CA" nm="FRM_VAC_Featured_On_Web" val="Sélection le Web" />
+  <re cu="fr-CA" nm="BTN_LIC_DELETE" val="Supprimer licence et certification" />
+  <re cu="fr-CA" nm="FRM_PRF_NATIONALITY" val="Nationalité" />
+  <re cu="fr-CA" nm="LST_USER_POS_POSNAME" val="Type de poste" />
+  <re cu="fr-CA" nm="FRM_PRF_Major_Subject" val="Sujet Majeur" />
+  <re cu="fr-CA" nm="MDL_CHANGE_STATUS" val="CHANGEMENT STATUT" />
+  <re cu="fr-CA" nm="LST_AC_TITLE_APPLICANT_REVIEW_PROCESS" val="Processus d'examen demandeur" />
+  <re cu="fr-CA" nm="FRM_PRF_Middle_Name" val="Deuxième Prénom" />
+  <re cu="fr-CA" nm="FRM_SER_Skill_Range" val="Savoir-faire Recherche" />
+  <re cu="fr-CA" nm="FRM_USER_LOC_USERNAME" val="Utilisateur" />
+  <re cu="fr-CA" nm="CSMNU_APPBASEDSTATUS" val="État de la demande Basé" />
+  <re cu="fr-CA" nm="FRM_CLIENT_SUBDOMAIN" val="Subdomain" />
+  <re cu="fr-CA" nm="FRM_VAC_Position_Requested_By" val="Position Demandé par" />
+  <re cu="fr-CA" nm="Welcome" val="Bienvenue" />
+  <re cu="fr-CA" nm="FRM_OFFER_POSITIONTYPE" val="Prix pour le type de programme" />
+  <re cu="fr-CA" nm="ACTION_SAVE_TO_MYJOBS" val="Enregistrer Pour &quot;My Jobs&quot;" />
+  <re cu="fr-CA" nm="FRM_PUB_NAME" val="Nom" />
+  <re cu="fr-CA" nm="FRM_VAC_Job_Type" val="Full-Time / Part-Time" />
+  <re cu="fr-CA" nm="FRM_VAC_FOA" val="Nombre de Oppty de financement (FOA)" />
+  <re cu="fr-CA" nm="MNU_COMPANYSETUP" val="Configuration de l'entreprise" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_EDUCATIONDELETE" val="Supprimer l'éducation" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_SECROLES" val="Rôles de sécurité" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_BONUS_DESC" val="Bonus description" />
+  <re cu="fr-CA" nm="Details" val="Détails" />
+  <re cu="fr-CA" nm="FRM_VAC_Compensation_Info" val="Instructions d'application" />
+  <re cu="fr-CA" nm="FRM_PRF_Work_Email" val="Email travail" />
+  <re cu="fr-CA" nm="FRM_PRF_AFFIX" val="Apposer" />
+  <re cu="fr-CA" nm="FRM_VAC_EXP_DATE" val="Date d' expiration" />
+  <re cu="fr-CA" nm="FRM_VAC_ADD_TEMPLATE" val="Ajouter un modèle" />
+  <re cu="fr-CA" nm="FRM_PRF_Submitted_Application_Before" val="Avez-vous déjà fait une demande à cette société avant?" />
+  <re cu="fr-CA" nm="Language" val="Langue" />
+  <re cu="fr-CA" nm="FRM_APP_REV_QUE_ADD" val="Ajouter une question" />
+  <re cu="fr-CA" nm="SE_Position_Type" val="Type de poste" />
+  <re cu="fr-CA" nm="FRM_REMOVEDECLINESTATUS" val="Retirer Déclin Statut" />
+  <re cu="fr-CA" nm="FEATURED_JOBS" val="Les emplois en vedette" />
+  <re cu="fr-CA" nm="VACSTATUS_CLOSED" val="FERMÉ" />
+  <re cu="fr-CA" nm="ROUND_QUESTIONS" val="Questions" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_ACHIEVEMENTS" val="Ajouter réalisation" />
+  <re cu="fr-CA" nm="CREATE_PROFILE_OR_LOGIN_HERE" val="Créer un profil ou" />
+  <re cu="fr-CA" nm="MNU_Message" val="Message" />
+  <re cu="fr-CA" nm="FRM_VAC_CAN_LINK" val="Copie Candidat Lien" />
+  <re cu="fr-CA" nm="CREATE_PROFILE" val="Créer un profil" />
+  <re cu="fr-CA" nm="InterViewComplete" val="Interview terminée" />
+  <re cu="fr-CA" nm="CSMNU_DIVISION" val="DIVISIONS" />
+  <re cu="fr-CA" nm="FRM_PRF_Eligible_To_Work_In_Us" val="Êtes-vous le droit de travailler aux États-Unis?" />
+  <re cu="fr-CA" nm="NOT_ABLE_TO_DELETE_RECORD" val="Pas en mesure de supprimer la fiche" />
+  <re cu="fr-CA" nm="FRM_PRF_Emergancy_Contact2" val="Alternate / Emergency Contact 2" />
+  <re cu="fr-CA" nm="FRM_SER_Salary_Range" val="L'échelle des salaires annuelle" />
+  <re cu="fr-CA" nm="UPLOADRESUME" val="Déposez votre CV" />
+  <re cu="fr-CA" nm="VACSTATUS_OPEN" val="OUVERT" />
+  <re cu="fr-CA" nm="LST_USER_LOC_LOC" val="Emplacement" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_COMM_CAP" val="Cap Commission" />
+  <re cu="fr-CA" nm="FRM_PRF_Target_Income" val="Cible de revenu annuel" />
+  <re cu="fr-CA" nm="LST_VAC_Posted_On" val="Posté Le" />
+  <re cu="fr-CA" nm="FRM_PRF_Hours_Availibility" val="Heures Availibiity" />
+  <re cu="fr-CA" nm="CSMNU_EMAILTEMPLATES" val="des modèles d'email" />
+  <re cu="fr-CA" nm="CSMNU_REVIEWROUNDS" val="Examen des rondes" />
+  <re cu="fr-CA" nm="TerminateAndDecline" val="Terminé Et Refusée" />
+  <re cu="fr-CA" nm="SE_Resume" val="Resume" />
+  <re cu="fr-CA" nm="ROUND_REVIEWERS" val="Réviseurs" />
+  <re cu="fr-CA" nm="FRM_CATEGORY" val="Catégorie" />
+  <re cu="fr-CA" nm="FRM_SER_FullT_PartT" val="Full-Time / Part-Time" />
+  <re cu="fr-CA" nm="ROUND_REVIEWERS_TITLE" val="Titre" />
+  <re cu="fr-CA" nm="LST_VAC_Offers" val="Offres" />
+  <re cu="fr-CA" nm="FRM_PRF_First_Name" val="Prénom" />
+  <re cu="fr-CA" nm="FRM_PUB_COMMENTS" val="Commentaires" />
+  <re cu="fr-CA" nm="FRM_APP_REV_WEIGHT" val="Poids" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PLACEMENT_TYPE" val="Type de Prix" />
+  <re cu="fr-CA" nm="FRM_VACRND_AssignCanBatches" val="Attribuer candidats dans des lots de" />
+  <re cu="fr-CA" nm="FRM_VAC_Job_title" val="Nom de lopportunité" />
+  <re cu="fr-CA" nm="INVALID_DATE" val="date invalide" />
+  <re cu="fr-CA" nm="FRM_SER_Search_Result" val="Résultat de la recherche" />
+  <re cu="fr-CA" nm="FRM_USER_TTL_SECURITYROLE" val="Rôle de sécurité" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_BONUS_CAP" val="Cap Bonus" />
+  <re cu="fr-CA" nm="FRM_PRF_Pager" val="Pager" />
+  <re cu="fr-CA" nm="FRM_UPR_Profile_Name" val="Nom De Profil" />
+  <re cu="fr-CA" nm="SE_Job_Location" val="Situation d'emploi" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_EDUCATION" val="Ajouter Education" />
+  <re cu="fr-CA" nm="LST_QUECATNAME" val="Question Catégorie" />
+  <re cu="fr-CA" nm="SE_Application" val="Demande" />
+  <re cu="fr-CA" nm="FRM_SHOWTOCANDIDATE" val="Pour montrer Candidat" />
+  <re cu="fr-CA" nm="FRM_PRF_Credential_Password" val="Mot de passe" />
+  <re cu="fr-CA" nm="MSG_DELETE_ALREADY_UNDERWAY_OR_COMPLETED" val="Désolé vous ne pouvez pas supprimer une interview qui est déjà en cours ou achevés." />
+  <re cu="fr-CA" nm="FRM_PORTAL_BAN_TITLE" val="Bannière du portail Titre" />
+  <re cu="fr-CA" nm="Job" val="Emploi" />
+  <re cu="fr-CA" nm="MNU_Company_Setup" val="ORGANISATION SETUP" />
+  <re cu="fr-CA" nm="Update" val="Mettre à jour" />
+  <re cu="fr-CA" nm="APPLICATION_SUMMARY" val="Sommaire de la demande" />
+  <re cu="fr-CA" nm="FRM_VAC_Employment_Type" val="Type d'emploi" />
+  <re cu="fr-CA" nm="FRM_SER_Job_Location" val="Situation d'emploi" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_CREATE" val="Créer" />
+  <re cu="fr-CA" nm="MDL_Division_Position_type" val="Type de Division de position" />
+  <re cu="fr-CA" nm="FRM_VAC_Vacancy_Applications" val="Applications Award" />
+  <re cu="fr-CA" nm="FRM_VAC_Annual_Salary" val="Salaire Annuel" />
+  <re cu="fr-CA" nm="RECORD_ADDED_SUCCESSFULLY" val="Enregistrez Supprimé avec succès" />
+  <re cu="fr-CA" nm="MDL_Divisions" val="Divisions" />
+  <re cu="fr-CA" nm="Jobs" val="Offres d'emploi" />
+  <re cu="fr-CA" nm="LST_USER_NAME" val="Nom" />
+  <re cu="fr-CA" nm="FRM_PRF_PROFICIENCY" val="Compétence" />
+  <re cu="fr-CA" nm="CSMNU_OFFERTEMPLATE" val="MODELES D'ATTRIBUTION" />
+  <re cu="fr-CA" nm="FRM_DIV_Parent_Division" val="Division de Parent" />
+  <re cu="fr-CA" nm="FRM_PRF_DOB" val="Date de naissance" />
+  <re cu="fr-CA" nm="FRM_APPBASEDSTATUSNAME" val="Nom" />
+  <re cu="fr-CA" nm="FRM_PRF_Date_Availability" val="Date De Disponibilité" />
+  <re cu="fr-CA" nm="LST_VAC_Job_Title" val="Titre du poste" />
+  <re cu="fr-CA" nm="FRM_ANSOPT_REMOVE" val="Retirer réponse" />
+  <re cu="fr-CA" nm="FRM_SER_Date_Posted" val="Date de publication" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_RATE_PERIOD" val="Période Taux" />
+  <re cu="fr-CA" nm="FRM_NEW_OFFER_TEMPLATE" val="Nouveau modèle d'offre" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_SKILLSANDQUALIFICATIONS" val="Ajouter Skill / Qualification" />
+  <re cu="fr-CA" nm="CSMNU_USER_POSITIONTYPE" val="Utilisateur Type de poste" />
+  <re cu="fr-CA" nm="FRM_DEFAULTSTATUSSHOWTOCANDIDATE" val="Statut par défaut Afficher Pour Candidat" />
+  <re cu="fr-CA" nm="FRM_CLIENT_STARTDATE" val="Date De Début" />
+  <re cu="fr-CA" nm="FRM_PRF_Telephone" val="Téléphone" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Emergancy" val="Urgence" />
+  <re cu="fr-CA" nm="FRM_DESCRIPTION" val="Description" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_MODIFY" val="modifier" />
+  <re cu="fr-CA" nm="SEARCH_JOBS" val="Recherche d'emploi" />
+  <re cu="fr-CA" nm="FRM_PRF_END_MONTH" val="Fin Mois" />
+  <re cu="fr-CA" nm="FRM_VAC_FULLPROFILE" val="Le profil complet" />
+  <re cu="fr-CA" nm="FRM_UPV_All_Division" val="Toutes Division" />
+  <re cu="fr-CA" nm="FRM_VAC_OPEN_VAC" val="Ouvrir Vacancy" />
+  <re cu="fr-CA" nm="FRM_LAN_COMMENTS" val="commentaires" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PICKLIST_SELECTION_EDITABLE_BY_MANAGER" val="Picklist sélection modifiable par le gestionnaire" />
+  <re cu="fr-CA" nm="SE_Review_Panel" val="La commission d'examen" />
+  <re cu="fr-CA" nm="FRM_CREATED_BY" val="Créé Par" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PER" val="Par" />
+  <re cu="fr-CA" nm="FRM_UPR_Last_Name" val="Nom De Famille" />
+  <re cu="fr-CA" nm="MDL_User_Location" val="Emplacement de l'utilisateur" />
+  <re cu="fr-CA" nm="FRM_DIVPOS_POSNAME" val="Type de poste" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_STARTDATE" val="Prix Date de début" />
+  <re cu="fr-CA" nm="LST_USER_POS_USERNAME" val="Utilisateur" />
+  <re cu="fr-CA" nm="LST_USER_DIV_DIVNAME" val="Division" />
+  <re cu="fr-CA" nm="FRM_UPV_Modify" val="Modifier" />
+  <re cu="fr-CA" nm="FRM_Res_UseExisting" val="Ou de l'emploi existant" />
+  <re cu="fr-CA" nm="LST_VAC_Id" val="Ça" />
+  <re cu="fr-CA" nm="FRM_VAC_PDF_COVER_LETTER" val="Lettre De Motivation" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_VIEW" val="Vue" />
+  <re cu="fr-CA" nm="FRM_PUB_DESCRIPTION" val="Description" />
+  <re cu="fr-CA" nm="MNU_MYDOCUMENTS" val="MES DOCUMENTS" />
+  <re cu="fr-CA" nm="FRM_VAC_End_Date" val="Date de fin" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_OFFER_LETTER" val="Lettre Award" />
+  <re cu="fr-CA" nm="DRP_Select_One" val="Sélectionnez un ou plusieurs" />
+  <re cu="fr-CA" nm="FRM_COMPANY_COMNAME" val="Nom de l'entreprise" />
+  <re cu="fr-CA" nm="FRM_PRF_Company_Details" val="Détails de la société" />
+  <re cu="fr-CA" nm="SE_SCHEDULE_DATE" val="date de l'annexe" />
+  <re cu="fr-CA" nm="FRM_VAL_Required" val="est requis" />
+  <re cu="fr-CA" nm="Job_Title" val="Titre du poste" />
+  <re cu="fr-CA" nm="TOOLTIP_SHOW_NOT_FEATURE" val="Cliquez sur pour ne pas figurer sur le Web" />
+  <re cu="fr-CA" nm="FRM_DIVISION_REQUIRED_MSG" val="Division est un champ obligatoire" />
+  <re cu="fr-CA" nm="FRM_APP_REV_REVIEWER_ADD" val="Ajouter un avis" />
+  <re cu="fr-CA" nm="QT_RATE" val="Évaluez le candidat" />
+  <re cu="fr-CA" nm="CSMNU_SECURITY_TEMPLATES" val="Les modèles de sécurité" />
+  <re cu="fr-CA" nm="BACK" val="dos" />
+  <re cu="fr-CA" nm="FRM_PRF_EDUCITY" val="ville" />
+  <re cu="fr-CA" nm="SE_Division" val="Division" />
+  <re cu="fr-CA" nm="FRM_PRF_Misdemeanor_Explain" val="Si oui, s'il vous plaît expliquer" />
+  <re cu="fr-CA" nm="FRM_ASC_STARTDATE" val="Date De Début" />
+  <re cu="fr-CA" nm="FRM_VACSTATUSNAME" val="Nom" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_COM_NOTICE_PER" val="Avis Société Période" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_HOURSWEEK" val="Heures par semaine" />
+  <re cu="fr-CA" nm="FRM_PRF_Most_Recent_position" val="Plus récent poste" />
+  <re cu="fr-CA" nm="FRM_QUE_CAT_ADD" val="Ajouter Catégorie" />
+  <re cu="fr-CA" nm="ONBOARDING_MANAGER" val="Gestionnaire Onboarding" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_ENABLE_COUNTER_OFFER" val="Activer Offres Compteur" />
+  <re cu="fr-CA" nm="FRM_PRF_Address" val="Adresse" />
+  <re cu="fr-CA" nm="FRM_VAC_STATUS_REASON" val="Raison du statut" />
+  <re cu="fr-CA" nm="FRM_PRF_Duties_And_Responsibilites" val="Possibilité de financement But" />
+  <re cu="fr-CA" nm="FRM_UPV_Create" val="Créer" />
+  <re cu="fr-CA" nm="FRM_QUE_SAVE" val="Sauvegarder question" />
+  <re cu="fr-CA" nm="LST_COMPANY_COMNAME" val="Client" />
+  <re cu="fr-CA" nm="FRM_VAC_CASH_MATCH_REQ" val="Trésorerie correspondent Exigence" />
+  <re cu="fr-CA" nm="SE_Candidate" val="Candidat" />
+  <re cu="fr-CA" nm="LST_POS_POSNAME" val="Type de programme" />
+  <re cu="fr-CA" nm="CSMNU_LANGUAGEBLOCKS" val="BLOCS DE LANGUE" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Tue" val="Mar" />
+  <re cu="fr-CA" nm="FRM_Res_Upload_Resume" val="Déposez votre CV" />
+  <re cu="fr-CA" nm="Save" val="Sauvegarder" />
+  <re cu="fr-CA" nm="FRM_PRF_How_Old" val="Avez-vous 18 ans ou plus?" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_JOBTYPE" val="Type d'emploi" />
+  <re cu="fr-CA" nm="FRM_SAVE_VAC_TEMPLATE" val="Sauvegarder Vacancy Template" />
+  <re cu="fr-CA" nm="FRM_JOB_DIVNAME" val="Division" />
+  <re cu="fr-CA" nm="MNU_My_Vacancies" val="MES CHANCES" />
+  <re cu="fr-CA" nm="FRM_PRF_Institution_Name" val="Nom De L'Institution" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETE_SKILLSANDQUALIFICATION" val="Supprimer Skill / Qualification" />
+  <re cu="fr-CA" nm="FRM_LANGUAGE_BLOCK_DESCRIPTION" val="Description" />
+  <re cu="fr-CA" nm="CSMNU_USER_LOCATION" val="Emplacement de l'utilisateur" />
+  <re cu="fr-CA" nm="FRM_ASC_TITLE_ASSOCIATION" val="Associations" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Sat" val="Sam" />
+  <re cu="fr-CA" nm="QT_ASK" val="Demandez à la candidate" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETE_LANGUAGES" val="Supprimer les langues" />
+  <re cu="fr-CA" nm="FRM_VAC_DEL_VAC" val="supprimer Vacancy" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_RATE" val="Taux" />
+  <re cu="fr-CA" nm="SE_VAC_RND" val="Vacancy ronde" />
+  <re cu="fr-CA" nm="ACTION_DRAFT" val="Avant-projet" />
+  <re cu="fr-CA" nm="FRM_SEC_ROLE_NAME" val="rôle Nom" />
+  <re cu="fr-CA" nm="INT_ALLTERMINATED" val="Toutes les entrevues terminées" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_LANGUAGES" val="Ajouter une langue" />
+  <re cu="fr-CA" nm="FRM_USER_DIV_DIVNAME" val="Division" />
+  <re cu="fr-CA" nm="FRM_OFFERLETTERNAME" val="Prix Nom Lettre" />
+  <re cu="fr-CA" nm="NEWVACANCY_CREATE_FROM_TEMPLATE" val="Créer partir d'un modèle" />
+  <re cu="fr-CA" nm="FRM_PRF_Team_Size" val="Taille de l'équipe" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_VACANCY" val="Occasion" />
+  <re cu="fr-CA" nm="CSMNU_COMPANYINFO" val="ORGANISATION INFO" />
+  <re cu="fr-CA" nm="FRM_Send_Password" val="Envoyer Mot de passe" />
+  <re cu="fr-CA" nm="FRM_CLIENT_CLIENTNAME" val="Nom du client" />
+  <re cu="fr-CA" nm="FRM_VAC_MAN_LINK" val="Copie Link Manager" />
+  <re cu="fr-CA" nm="FRM_VAC_Show_On_Web" val="montrer sur le web" />
+  <re cu="fr-CA" nm="Delete" val="Effacer" />
+  <re cu="fr-CA" nm="FRM_VAC_COVERLETTER" val="Lettre De Motivation" />
+  <re cu="fr-CA" nm="FRM_EXECUTIVESUMMARY" val="Résumé" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_EMAIL_TO_CANDIDATE" val="Envoyer au demandeur" />
+  <re cu="fr-CA" nm="TOOLTIP_SHOW_FEATURE" val="Cliquez pour figurer sur Web" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_EDITABLE_BY_CANDIDATE" val="Modifiable par le candidat" />
+  <re cu="fr-CA" nm="FRM_VAC_NEW_ROUND" val="Nouvelle Ronde" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Sun" val="Soleil" />
+  <re cu="fr-CA" nm="FRM_VAC_APP_DUE_DATE" val="Demande Due Date" />
+  <re cu="fr-CA" nm="CSMNU_VACANCYSTATUS" val="VACANCE STATUT" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_OFFSTATUS" val="Prix Statut" />
+  <re cu="fr-CA" nm="CSMNU_POSITIONTYPE" val="Types de programmes" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Other_Information" val="Autre Information" />
+  <re cu="fr-CA" nm="FRM_PRF_EDUDESCRIPTION" val="Description" />
+  <re cu="fr-CA" nm="MNU_INTERVIEW_CALENDER" val="Calendrier de Interview" />
+  <re cu="fr-CA" nm="FRM_SER_Title_Location_2" val="Titre / Localisation (2 COL)" />
+  <re cu="fr-CA" nm="SELECTRESUME" val="Sélectionnez Reprendre" />
+  <re cu="fr-CA" nm="FRM_VACRND_ReviewRounds" val="Critique Rounds" />
+  <re cu="fr-CA" nm="RECORD_DELETED_SUCCESSFULLY" val="Enregistrez Supprimé avec succès" />
+  <re cu="fr-CA" nm="QT_PRESENT" val="Offre question" />
+  <re cu="fr-CA" nm="LST_VAC_Placement" val="Placement" />
+  <re cu="fr-CA" nm="FRM_VACRND_ReviewRound" val="Revue ronde" />
+  <re cu="fr-CA" nm="FRM_PRF_FAX" val="Fax" />
+  <re cu="fr-CA" nm="LST_APP_COVERLETTER" val="Lettre De Motivation" />
+  <re cu="fr-CA" nm="Remove" val="Upprimer" />
+  <re cu="fr-CA" nm="FRM_ANSOPT_ADD" val="Ajouter réponse" />
+  <re cu="fr-CA" nm="SE_Interview" val="Interview" />
+  <re cu="fr-CA" nm="FRM_PRF_End_Date_Text" val="Date de fin de texte" />
+  <re cu="fr-CA" nm="FRM_VAC_PDF_RESUME" val="CV" />
+  <re cu="fr-CA" nm="FRM_Password" val="mot de passe" />
+  <re cu="fr-CA" nm="FRM_USER_LOC_LOC" val="Emplacement" />
+  <re cu="fr-CA" nm="LST_VAC_Status" val="Statut" />
+  <re cu="fr-CA" nm="MDL_User_Position_Type" val="Utilisateur Type de poste" />
+  <re cu="fr-CA" nm="FRM_ASC_ENDDATE" val="Date De Fin" />
+  <re cu="fr-CA" nm="LST_JOB_DIVNAME" val="Division" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_CAN_IN" val="À" />
+  <re cu="fr-CA" nm="FRM_SER_Employement_Type" val="Type d'emploi" />
+  <re cu="fr-CA" nm="DRP_SELECT" val="--sélectionnez--" />
+  <re cu="fr-CA" nm="LST_DIV_PDivision" val="Division de Parent" />
+  <re cu="fr-CA" nm="FRM_PRF_Ending_Pay" val="Fin Pay" />
+  <re cu="fr-CA" nm="FRM_PRF_COUNTRY" val="Pays" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_CANDIDATE" val="Demandeur" />
+  <re cu="fr-CA" nm="FRM_VAC_Salary_Max" val="salaire Max" />
+  <re cu="fr-CA" nm="FRM_UPR_First_Name" val="Prénom" />
+  <re cu="fr-CA" nm="FRM_QUE_CAT_SAVE" val="Sauvegarder Catégorie" />
+  <re cu="fr-CA" nm="FRM_APP_REV_QUE_SAVE" val="Sauvegarder question" />
+  <re cu="fr-CA" nm="FRM_ACH_DATE" val="Date" />
+  <re cu="fr-CA" nm="FRM_LANGUAGE_BLOCK" val="Blocs langue" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_SELECTUSER" val="Sélectionnez Utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_MEASUREVALUE" val="valeur de mesure" />
+  <re cu="fr-CA" nm="INT_ALLCOMPLETED" val="Toutes les entrevues réalisées" />
+  <re cu="fr-CA" nm="FRM_SPK_TITL_SPEAKINGEVENTHISTORY" val="Parlant d'histoire de l'événement" />
+  <re cu="fr-CA" nm="FRM_VAC_ACT_CODE" val="Code activité" />
+  <re cu="fr-CA" nm="Search" val="Recherche" />
+  <re cu="fr-CA" nm="FRM_PRF_Reason_For_Leaving" val="Raison De Vivre" />
+  <re cu="fr-CA" nm="FRM_SER_Notify_Me" val="Me prévenir" />
+  <re cu="fr-CA" nm="Description" val="Description" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_TEMPLATE_NAME" val="Nom du modèle" />
+  <re cu="fr-CA" nm="NOT_ABLE_TO_ADD_RECORD" val="Pas en mesure dajouter de la ficha" />
+  <re cu="fr-CA" nm="SE_Portal_Content" val="Content Portal" />
+  <re cu="fr-CA" nm="FRM_PRF_Start_Date" val="Date De Début" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PLUS_BON" val="Plus Bonus" />
+  <re cu="fr-CA" nm="FRM_CLIENT_CONTACTPERSON" val="Contact" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETE_ASSOCIATION" val="supprimer Association" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETE_SPEAKINGEVENTHISTORY" val="Supprimer Parlant Historique des événements" />
+  <re cu="fr-CA" nm="FRM_VAL_Regex" val="n'est pas valide" />
+  <re cu="fr-CA" nm="FRM_PRF_Employment_Preference" val="emploi préférence" />
+  <re cu="fr-CA" nm="APP_STAT_MNU_VIEW" val="Voir la demande" />
+  <re cu="fr-CA" nm="FRM_Res_Apply" val="Appliquer" />
+  <re cu="fr-CA" nm="FRM_Client" val="Client" />
+  <re cu="fr-CA" nm="UPLOADDOCUMENT" val="Télécharger le document" />
+  <re cu="fr-CA" nm="Terminate" val="Terminé" />
+  <re cu="fr-CA" nm="CSMNU_USERPRIVILEGES" val="Les privilèges d'utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_DEGREEDATE" val="Diplôme Date" />
+  <re cu="fr-CA" nm="LST_VAC_Location" val="Emplacement" />
+  <re cu="fr-CA" nm="FRM_UPV_Security_Roles" val="Rôle (s) de sélection de sécurité" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_CHARGE_RATE" val="Taux de charge" />
+  <re cu="fr-CA" nm="FRM_PRF_START_MONTH" val="Mois de début" />
+  <re cu="fr-CA" nm="FRM_QUE_CAT_REMOVE" val="Retirer Catégorie" />
+  <re cu="fr-CA" nm="CSMNU_SKILLTYPE" val="TYPES DE COMPÉTENCES" />
+  <re cu="fr-CA" nm="CSMNU_USER" val="UTILISATEURS ET DES PrivilEGES" />
+  <re cu="fr-CA" nm="FRM_ASC_ROLE" val="Rôle" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_SALARY_TYPE" val="Type de Salaire" />
+  <re cu="fr-CA" nm="Add" val="Ajouter" />
+  <re cu="fr-CA" nm="CSMNU_CLIENT" val="Client" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_OFFER_DETAILS" val="Détails Award" />
+  <re cu="fr-CA" nm="FRM_ASC_LINK" val="Lien" />
+  <re cu="fr-CA" nm="FRM_SPK_LINK" val="Lien" />
+  <re cu="fr-CA" nm="FRM_PRF_Skill_Type" val="Type de compétence" />
+  <re cu="fr-CA" nm="FRM_QUE_PRIMARY_DIVISION" val="Division primaire" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_DELETE" val="effacer" />
+  <re cu="fr-CA" nm="FRM_LAN_TITLE_LANGUAGES" val="Langues" />
+  <re cu="fr-CA" nm="FRM_PRF_RelationShip" val="Relations" />
+  <re cu="fr-CA" nm="FRM_APP_REV_QUE_REMOVE" val="Retirer question" />
+  <re cu="fr-CA" nm="APPLICATION_INCLUDES" val="Application inclut" />
+  <re cu="fr-CA" nm="FRM_UPV_Delete" val="Effacer" />
+  <re cu="fr-CA" nm="FRM_PRF_Last_Name" val="Nom De Famille" />
+  <re cu="fr-CA" nm="TOOLTIP_SAVE_TO_MY_JOB" val="Enregistrer dans Mes chances" />
+  <re cu="fr-CA" nm="FRM_CREATED_ON" val="Créé Sur" />
+  <re cu="fr-CA" nm="Signup" val="Signer" />
+  <re cu="fr-CA" nm="MNU_SEARCHJOBS" val="Chercher des emplois" />
+  <re cu="fr-CA" nm="RECORD_UPDATED_SUCCESSFULLY" val="RECORD correctement mis à jour" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Education" val="éducation" />
+  <re cu="fr-CA" nm="FRM_SPK_EVENTTYPE" val="Type d'événement" />
+  <re cu="fr-CA" nm="FRM_VAC_CLOSE_VAC" val="Fermer Vacancy" />
+  <re cu="fr-CA" nm="FRM_OBJECTIVEDETAILS" val="Objectif" />
+  <re cu="fr-CA" nm="APP_STAT_DRAFT" val="Avant-projet" />
+  <re cu="fr-CA" nm="FRM_EMAIL_SEND_NAME" val="Adresse Email Sender" />
+  <re cu="fr-CA" nm="FRM_UPR_Confirm_Password" val="Confirmez Le Mot De Passe" />
+  <re cu="fr-CA" nm="FRM_PRF_Starting_Pay" val="Le salaire de départ" />
+  <re cu="fr-CA" nm="POSITION_TYPE" val="Type de Prix" />
+  <re cu="fr-CA" nm="FRM_VAC_Division" val="Division" />
+  <re cu="fr-CA" nm="FRM_PRF_Relatives_If_Yes" val="Si oui, qui?" />
+  <re cu="fr-CA" nm="FRM_QUE" val="Question" />
+  <re cu="fr-CA" nm="FRM_DEFAULTSTATUSSHOWTOEMPLOYER" val="Statut par défaut Montrer à l'employeur" />
+  <re cu="fr-CA" nm="Location" val="Bureau de Programme" />
+  <re cu="fr-CA" nm="SE_Vacancy_Template" val="Vacancy Template" />
+  <re cu="fr-CA" nm="LST_DIV_Name" val="Division" />
+  <re cu="fr-CA" nm="FRM_VAC_Commission" val="Commission" />
+  <re cu="fr-CA" nm="FRM_CLIENT_CONTACTNO" val="Contact Aucune" />
+  <re cu="fr-CA" nm="FRM_VAC_OPEN_DATE" val="date d'ouverture" />
+  <re cu="fr-CA" nm="FRM_PRO_PROFILENAME" val="Nom De Profil" />
+  <re cu="fr-CA" nm="FRM_SAVE" val="Sauvegarder" />
+  <re cu="fr-CA" nm="FRM_COMPANY_NAME" val="Nom de entreprise" />
+  <re cu="fr-CA" nm="FRM_NAME" val="Nom" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PLACEMENT_LOC" val="Bureau de Programme" />
+  <re cu="fr-CA" nm="NEWVACANCY_CREATE_NEW" val="Créer de nouveaux débouchés" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Fri" val="Ven" />
+  <re cu="fr-CA" nm="CSMNU_JOBLOCATION" val="BUREAUX DU PROGRAMME" />
+  <re cu="fr-CA" nm="MNU_HOME" val="Maison" />
+  <re cu="fr-CA" nm="FRM_Language_Culture" val="Culture" />
+  <re cu="fr-CA" nm="FRM_TITL_OBJECTIVEDETAILS" val="Objectif" />
+  <re cu="fr-CA" nm="FRM_VAC_CLIENT" val="Client" />
+  <re cu="fr-CA" nm="Upload_Resume" val="Déposez votre CV" />
+  <re cu="fr-CA" nm="FRM_VACSTATUSCATEGORY" val="Catégorie" />
+  <re cu="fr-CA" nm="FRM_USER_SELECTJOBLOCATION" val="Sélectionnez l'offre Lieu" />
+  <re cu="fr-CA" nm="SEARCH_QUERY_NAME" val="Recherche Nom de la requête" />
+  <re cu="fr-CA" nm="LST_ROUNDTYPE" val="Types rondes" />
+  <re cu="fr-CA" nm="FRM_PUB_TITLE" val="Titre" />
+  <re cu="fr-CA" nm="FRM_PRF_Supervisor_Name" val="Superviseur Nom et titre" />
+  <re cu="fr-CA" nm="LST_DOC_DATE_UPLOADED" val="Date d'envoi" />
+  <re cu="fr-CA" nm="FRM_ACH_TITL_ACHIEVEMENT" val="Réalisation" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_NOTE_APPLICANT" val="Remarque au demandeur" />
+  <re cu="fr-CA" nm="MDL_MYDOCUMENTS" val="Mes Documents" />
+  <re cu="fr-CA" nm="FRM_PRF_Zip" val="Fermeture éclair" />
+  <re cu="fr-CA" nm="APP_STAT_MNU_SUBMIT" val="Présenter Une Demande" />
+  <re cu="fr-CA" nm="APP_STAT_SUBMIT" val="appliqué" />
+  <re cu="fr-CA" nm="FRM_PRF_JOBCATEGORY" val="Catégorie D'Emploi" />
+  <re cu="fr-CA" nm="FRM_PRF_ENDMONTHYEAR" val="Fin Mois / Année" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_NOTIFICATION_METHOD" val="Méthode de notification" />
+  <re cu="fr-CA" nm="LST_DOC_TTL_PREVIEW" val="Avant-première" />
+  <re cu="fr-CA" nm="FRM_CLIENT_ENDDATE" val="Date De Fin" />
+  <re cu="fr-CA" nm="SAVE_SEARCH_QUERY" val="Rechercher Sauvegarder la recherche" />
+  <re cu="fr-CA" nm="FRM_VAC_ANNOUNCE_TYPE" val="Type d'annonce" />
+  <re cu="fr-CA" nm="FRM_PUB_TITL_PUBLICATION" val="Histoire de publication" />
+  <re cu="fr-CA" nm="LST_USER_DIVISION" val="Division" />
+  <re cu="fr-CA" nm="LST_DEREETYPE" val="Type de Licence" />
+  <re cu="fr-CA" nm="CSMNU_RNDTYPE" val="Types rondes" />
+  <re cu="fr-CA" nm="ROUND_QUESTIONS_TYPE" val="Type" />
+  <re cu="fr-CA" nm="FRM_PRF_Misdemeanor" val="Avez-vous déjà été reconnu coupable d'un crime ou un délit ?" />
+  <re cu="fr-CA" nm="FRM_SER_Set_Default" val="Définir comme Mon défaut" />
+  <re cu="fr-CA" nm="FRM_UPDATED_BY" val="Modifié Par" />
+  <re cu="fr-CA" nm="TOOLTIP_SHOW_ON_WEB" val="Show On Web" />
+  <re cu="fr-CA" nm="FRM_PRF_Starting_Position" val="Position de départ" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_NOTE_CAN" val="Remarque Pour Candidat" />
+  <re cu="fr-CA" nm="SE_User" val="Utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_Relatives_Working_In_Company" val="Avez-vous des parents travaillant dans cette entreprise?" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_COMM_DESC" val="Conseil Description" />
+  <re cu="fr-CA" nm="FRM_VAC_ANNOUNCE_DATE" val="date de publication" />
+  <re cu="fr-CA" nm="FRM_PRF_Degree_Type" val="Type de Licence" />
+  <re cu="fr-CA" nm="FRM_UPR_Select_Resume" val="Sélectionnez Reprendre" />
+  <re cu="fr-CA" nm="SIDEBAR_TEXT2" val="Commencez postuler à des emplois tout de suite" />
+  <re cu="fr-CA" nm="FRM_PRF_Description" val="Description" />
+  <re cu="fr-CA" nm="MDL_MYAPPLICATIONS" val="Mes Applications" />
+  <re cu="fr-CA" nm="MNU_My_Candidates" val="MES CANDIDATS" />
+  <re cu="fr-CA" nm="FRM_PRF_START_YEAR" val="Année de début" />
+  <re cu="fr-CA" nm="Action" val="Action" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Availibility" val="Disponibilité" />
+  <re cu="fr-CA" nm="LST_COMPANY_WEBSITE" val="Site Web" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETE_PUBLICATIONHISTORY" val="Supprimer l'historique de publication" />
+  <re cu="fr-CA" nm="FRM_PRF_Willing_To_Work_Overtime" val="Disposé à travailler sur la durée ?" />
+  <re cu="fr-CA" nm="FRM_PRF_LASTUSED" val="Dernière occasion" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PAY_RATE" val="Taux De Rémunération" />
+  <re cu="fr-CA" nm="FRM_VACRND_Promothersolscore" val="Promotion Seuil Score" />
+  <re cu="fr-CA" nm="FRM_PRF_EXPERIENCE" val="Expérience" />
+  <re cu="fr-CA" nm="FRM_SPK_TITLE" val="Titre" />
+  <re cu="fr-CA" nm="FRM_COMPANY_SUFF" val="Suffixe Titre" />
+  <re cu="fr-CA" nm="FRM_PUB_TYPE" val="Type" />
+  <re cu="fr-CA" nm="FRM_VAC_FUND_AMOUNT" val="Montant du fonds" />
+  <re cu="fr-CA" nm="FRM_PRF_STARTMONTHYEAR" val="Lancer Mois / Année" />
+  <re cu="fr-CA" nm="FRM_UPRESUME_DTTL_CHANGEPRO" val="Modifier le profil " />
+  <re cu="fr-CA" nm="FRM_PRF_MEASURESYSTEM" val="Système de Mesure" />
+  <re cu="fr-CA" nm="BTN_ADD_TEMPLLATE" val="Ajouter un modèle" />
+  <re cu="fr-CA" nm="IN" val="À" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_COM_IN" val="À" />
+  <re cu="fr-CA" nm="LST_REVIEWROUNDS" val="Critique Rounds" />
+  <re cu="fr-CA" nm="ANSOPT_VALUE" val="Valeur" />
+  <re cu="fr-CA" nm="FRM_PRF_WEBSITE" val="Site Web" />
+  <re cu="fr-CA" nm="FRM_Subscription_Price" val="Prix" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETE_REFERENCES" val="supprimer de référence" />
+  <re cu="fr-CA" nm="InterviewReopened" val="Interview rouvert" />
+  <re cu="fr-CA" nm="FRM_APPBASEDSTATUSCATEGORY" val="Catégorie" />
+  <re cu="fr-CA" nm="INT_ALLPENDING" val="Toutes les interviews en suspens" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_BONUS_POTENTIAL" val="Bonus Potentiel" />
+  <re cu="fr-CA" nm="FRM_PUB_ROLE" val="Rôle" />
+  <re cu="fr-CA" nm="FRM_LAN_WRITE" val="Écrire" />
+  <re cu="fr-CA" nm="Logout" val="Se Déconnecter" />
+  <re cu="fr-CA" nm="LST_USER_USERNAME" val="Nom d'utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_Reference_Phone" val="Référence Téléphone" />
+  <re cu="fr-CA" nm="INT_PENDING" val="Mes entrevues en attente" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_EDITABLE_BY_MANAGER" val="Modifiable par le gestionnaire" />
+  <re cu="fr-CA" nm="FRM_UPR_TTL_Create_Profile" val="Créer un profil" />
+  <re cu="fr-CA" nm="FRM_SHOWTOEMPLOYER" val="Montrer à l'employeur" />
+  <re cu="fr-CA" nm="FRM_SER_Search_Listing" val="Recherche Listing" />
+  <re cu="fr-CA" nm="FRM_VAC_Start_Date" val="Date De Début" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_OFFDATE" val="Offre Date" />
+  <re cu="fr-CA" nm="FRM_PRF_Military_Type_Discharge" val="Si oui, type de décharge" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_MAX_VALUE" val="Valeur Max" />
+  <re cu="fr-CA" nm="APP_STAT_MNU_DRAFT" val="Enregistrer pour rédiger" />
+  <re cu="fr-CA" nm="FRM_COMPANY_ADD" val="Adresse" />
+  <re cu="fr-CA" nm="FRM_VALIDFROM" val="Valide À Partir De" />
+  <re cu="fr-CA" nm="LST_DIVPOS_DIVNAME" val="Division" />
+  <re cu="fr-CA" nm="MDL_User_Division" val="Division de l'utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_SKILLEXPERIENCE" val="Expérience" />
+  <re cu="fr-CA" nm="CSMNU_QUECAT" val="Question Catégorie" />
+  <re cu="fr-CA" nm="FRM_UPRESUME_CREATENEW" val="Créer Nouveau" />
+  <re cu="fr-CA" nm="FRM_QUE_DATA_TYPE" val="Question Type de données" />
+  <re cu="fr-CA" nm="FRM_COMPANY_WEBSITE" val="Site Web" />
+  <re cu="fr-CA" nm="SIDEBAR_TEXT" val="Il suffit de télécharger votre CV à créer votre profil et vous connecter." />
+  <re cu="fr-CA" nm="FRM_CurrencySign" val="Devise Connexion" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_SPERINFO" val="Informations Personnelles" />
+  <re cu="fr-CA" nm="FRM_QUE_REMOVE" val="Retirer question" />
+  <re cu="fr-CA" nm="FRM_PRF_Military_Service" val="Avez-vous déjà été dans le service militaire?" />
+  <re cu="fr-CA" nm="FRM_EMAILDESCRIPTION" val="Email Précisions" />
+  <re cu="fr-CA" nm="MNU_MYVACANCIES" val="Mes Vacants" />
+  <re cu="fr-CA" nm="LST_JOB_JOBNAME" val="Emplacement" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_RESPONSE_APPLICANT" val="Réponse du demandeur" />
+  <re cu="fr-CA" nm="FRM_VACRND_PromoteCan" val="Promouvoir candidats automatiquement" />
+  <re cu="fr-CA" nm="FRM_ASC_ASSOCIATIONTYPE" val="Type d'Association" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_COMM_POTENTIAL" val="Potentiel Commission" />
+  <re cu="fr-CA" nm="FRM_USER_SELECTDIVISION" val="Sélectionnez Division" />
+  <re cu="fr-CA" nm="SAVE_QUERY_BTN" val="Enregistrer la requête" />
+  <re cu="fr-CA" nm="FRM_ANSOPT_SAVE" val="Sauvegarder réponse" />
+  <re cu="fr-CA" nm="FRM_PRF_City" val="Ville" />
+  <re cu="fr-CA" nm="QT_SELF" val="Candidat auto-évaluation" />
+  <re cu="fr-CA" nm="MDL_Position_Type" val="Type de poste" />
+  <re cu="fr-CA" nm="ROUND_REVIEWERS_CANPROMOTE" val="Peut Promouvoir" />
+  <re cu="fr-CA" nm="FRM_ISSUINGAUTHORITY" val="Autorité De Délivrance" />
+  <re cu="fr-CA" nm="FRM_REMOVE_VAC_TEMPLATE" val="Retirer Vacancy Template" />
+  <re cu="fr-CA" nm="FRM_QUE_ADD" val="Ajouter une question" />
+  <re cu="fr-CA" nm="FRM_Res_UseExisting_Profile" val="Ou l'utilisation d'un profil existant" />
+  <re cu="fr-CA" nm="FRM_PRF_State" val="état" />
+  <re cu="fr-CA" nm="CSMNU_USER_DIVISION" val="Division de l'utilisateur" />
+  <re cu="fr-CA" nm="FRM_LOGO" val="Logo (Top Left Above)" />
+  <re cu="fr-CA" nm="REQUIRED_SCREENING_QUESTIONS" val="Questions de sélection obligatoires" />
+  <re cu="fr-CA" nm="INT_TERMINATED" val="Mes entrevues terminées" />
+  <re cu="fr-CA" nm="DRP_Any" val="Tout" />
+  <re cu="fr-CA" nm="FRM_WEIGHT" val="Poids" />
+  <re cu="fr-CA" nm="FRM_VAC_RESUME" val="Resume" />
+  <re cu="fr-CA" nm="FRM_VAC_DETAILS" val="Détails de l'opportunité" />
+  <re cu="fr-CA" nm="BeginInterview" val="Commencez Interview" />
+  <re cu="fr-CA" nm="FRM_PRF_Business_Phone_No" val="Meilleur Téléphone Pour me joindre" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Skills_And_Qualifications" val="Compétences et qualifications" />
+  <re cu="fr-CA" nm="SE_Security_Role" val="Rôle de sécurité" />
+  <re cu="fr-CA" nm="NOT_ABLE_TO_UPDATE_RECORD" val="Non pouvoir mettre à jour la fiche" />
+  <re cu="fr-CA" nm="LST_SKILLTYPE" val="Type de compétence" />
+  <re cu="fr-CA" nm="APP_STAT_MNU_WITHDRAW" val="Retirer une demande" />
+  <re cu="fr-CA" nm="FRM_ASC_NAME" val="Nom" />
+  <re cu="fr-CA" nm="FRM_VAC_PROGRAM_OFFICER" val="Agente de programme" />
+  <re cu="fr-CA" nm="FRM_VAC_DRAFT_VAC" val="Projet de vacance" />
+  <re cu="fr-CA" nm="FRM_PRF_EDUSTATE" val="État" />
+  <re cu="fr-CA" nm="FRM_VAC_Salary_Min" val="Salaire Min" />
+  <re cu="fr-CA" nm="Login" val="S'identifier" />
+  <re cu="fr-CA" nm="FRM_PRF_End_Date" val="Date De Fin" />
+  <re cu="fr-CA" nm="FRM_USER_POS_USERNAME" val="Utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_Reference_Email" val="Référence Email" />
+  <re cu="fr-CA" nm="MNU_CAREERHOME" val="Carrière Accueil" />
+  <re cu="fr-CA" nm="FRM_TITL_LICENCEANDCERTIFICATIONS" val="Licences et certifications" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_ENDDATE" val="Prix Date de fin" />
+  <re cu="fr-CA" nm="APPLY_JOB" val="appliquer emploi" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_CAN_NOTICE_PER" val="Candidat période d'avis" />
+  <re cu="fr-CA" nm="VACSTATUS_ARCHIVE" val="ARCHIVE" />
+  <re cu="fr-CA" nm="FRM_Language_UploadFile" val="Uploader Le Fichier" />
+  <re cu="fr-CA" nm="FRM_PRF_Application_Submision" val="Si oui, quand et pour quoi faire?" />
+  <re cu="fr-CA" nm="FRM_SELECT" val="sélectionner" />
+  <re cu="fr-CA" nm="FRM_PRF_Home_Phone" val="Téléphone Fixe" />
+  <re cu="fr-CA" nm="FRM_VAC_Position_Owner" val="opportunité Propriétaire" />
+  <re cu="fr-CA" nm="FRM_VAC_PDF" val="le profil complet" />
+  <re cu="fr-CA" nm="FRM_UPDATED_ON" val="Modifié Le" />
+  <re cu="fr-CA" nm="CSMNU_DECLINESTATUS" val="RAISONS BAISSE DU CANDIDAT" />
+  <re cu="fr-CA" nm="FRM_PRF_Emergancy_Contact1" val="Alternate / Emergency Contact 1" />
+  <re cu="fr-CA" nm="FRM_USER_TTL_PERINFO" val="Informations Personnelles" />
+  <re cu="fr-CA" nm="FRM_PRF_END_YEAR" val="Fin d'année" />
+  <re cu="fr-CA" nm="FRM_APP_REV_REMOVE" val="Retirer critique ronde" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_ENABLE_HOURLY_WAGE" val="Salaire Horaire" />
+  <re cu="fr-CA" nm="FRM_VAC_Hourly_Min" val="horaire Min" />
+  <re cu="fr-CA" nm="VACSTATUS_ALL" val="TOUS" />
+  <re cu="fr-CA" nm="TOOLTIP_DRAFT" val="Avant-projet" />
+  <re cu="fr-CA" nm="FRM_APP_REV_REVIEWER_REMOVE" val="Retirer un avis" />
+  <re cu="fr-CA" nm="FRM_VAC_ARC_VAC" val="Archive Vacancy" />
+  <re cu="fr-CA" nm="FRM_USER_DIV_USERNAME" val="Utilisateur" />
+  <re cu="fr-CA" nm="FRM_VAC_Duties_And_Responsibility" val="Possibilité de financement But" />
+  <re cu="fr-CA" nm="FRM_VAC_Hourly_Rate" val="Taux Horaire" />
+  <re cu="fr-CA" nm="FRM_PRF_Reffered_By" val="Référencé Par" />
+  <re cu="fr-CA" nm="INT_COMPLETED" val="Mes entrevues réalisées" />
+  <re cu="fr-CA" nm="FRM_VAC_Bonus_Potentials" val="Bonus Potentiel" />
+  <re cu="fr-CA" nm="FRM_PRF_Credential_IsActive" val="Actif" />
+  <re cu="fr-CA" nm="VACANCY" val="Occasion" />
+  <re cu="fr-CA" nm="FRM_UPV_Sister_Division" val="Division soeur" />
+  <re cu="fr-CA" nm="STATUS" val="Statut" />
+  <re cu="fr-CA" nm="SE_Rating" val="évaluation" />
+  <re cu="fr-CA" nm="FRM_VACANCYTEMPLATE" val="Nom du modèle" />
+  <re cu="fr-CA" nm="SE_Job_Offer" val="Offre d'emploi" />
+  <re cu="fr-CA" nm="LST_VACANCYQUESTIONTYPE" val="Vacancy Type de question" />
+  <re cu="fr-CA" nm="FRM_PRF_Credential_UserName" val="Nom d'utilisateur" />
+  <re cu="fr-CA" nm="FRM_APP_REV_ADD" val="Ajouter un commentaire ronde" />
+  <re cu="fr-CA" nm="FRM_UPR_Upload_Resume" val="Déposez votre CV" />
+  <re cu="fr-CA" nm="ROUND_CONFIGURATION" val="Configuration ronde" />
+  <re cu="fr-CA" nm="DEFAULT_NAME" val="Défaut Nom" />
+  <re cu="fr-CA" nm="FRM_ACH_ISSUINGAUTHORITY" val="Autorité De Délivrance" />
+  <re cu="fr-CA" nm="FinishLater" val="terminer plus tard" />
+  <re cu="fr-CA" nm="LST_ORDER" val="Ordre" />
+  <re cu="fr-CA" nm="APPLIED_ON" val="Sur appliquée" />
+  <re cu="fr-CA" nm="Career_Home" val="Carrière Accueil" />
+  <re cu="fr-CA" nm="FRM_USER_SELECTPOSITIONTYPE" val="Sélectionner le type de position" />
+  <re cu="fr-CA" nm="CSMNU_DEGREETYPE" val="type de diplôme" />
+  <re cu="fr-CA" nm="FRM_TITL_EXECUTIVESUMMARY" val="Résumé" />
+  <re cu="fr-CA" nm="FRM_LAN_LANGUAGECODE" val="Langue" />
+  <re cu="fr-CA" nm="LST_DOC_FILE_NAME" val="Nom de fichier" />
+  <re cu="fr-CA" nm="FRM_PRF_MARITALSTATUS" val="État Civil" />
+  <re cu="fr-CA" nm="FRM_VAC_Hrs_Per_Week" val="Heures par semaine" />
+  <re cu="fr-CA" nm="MDL_Vacancies" val="Mes Vacants" />
+  <re cu="fr-CA" nm="FRM_VAC_Skill_And_Qualification" val="Exigences de conformité" />
+  <re cu="fr-CA" nm="FRM_CLIENT_DBNAME" val="Nom de la base" />
+  <re cu="fr-CA" nm="FRM_PRF_Emergancy_Contact1_Phone" val="Alternate / Emergency Contact 1 Téléphone" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Mon" val="Lun" />
+  <re cu="fr-CA" nm="FRM_SPK_STARTDATE" val="Date De Début" />
+  <re cu="fr-CA" nm="CSMNU_VACANCYTEMPLATES" val="MODÈLES D' OCCASION" />
+  <re cu="fr-CA" nm="FRM_APP_REV_SAVE" val="Language Weaver ronde" />
+  <re cu="fr-CA" nm="MNU_Search_Resume" val="Rechercher les requérants" />
+  <re cu="fr-CA" nm="FIRST_CONFIRM_THE_VACANCY" val="Première constate la vacance" />
+  <re cu="fr-CA" nm="FRM_QUE_TYPE" val="Type de question" />
+  <re cu="fr-CA" nm="FRM_UPR_Username" val="Nom d'utilisateur" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_PUBLICATIONHISTORY" val="Ajouter une publication" />
+  <re cu="fr-CA" nm="FRM_SEC_EXISTING_SECURITY_ROLES" val="Rôles de sécurité existantes" />
+  <re cu="fr-CA" nm="LST_DIVPOS_POSNAME" val="Type de poste" />
+  <re cu="fr-CA" nm="FRM_PRF_Emergancy_Contact2_Phone" val="Alternate / Emergency Contact 2 Téléphone" />
+  <re cu="fr-CA" nm="FRM_SPK_LOCATION" val="Emplacement" />
+  <re cu="fr-CA" nm="FRM_SER_Position_Type" val="Type de poste" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_SYSTEMENTITY" val="Système Entité" />
+  <re cu="fr-CA" nm="FRM_VAC_Position_Type" val="Type de programme" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Personal_Info" val="Informations Personnelles" />
+  <re cu="fr-CA" nm="FRM_USER_SELECTADHOCDIVISION" val="Sélectionnez Ad - hoc Division (s )" />
+  <re cu="fr-CA" nm="FRM_UPV_System_Entity" val="Système Entité" />
+  <re cu="fr-CA" nm="LST_APP_PROFILE" val="Profil" />
+  <re cu="fr-CA" nm="FRM_Language" val="Langue" />
+  <re cu="fr-CA" nm="FRM_DIVPOS_DIVNAME" val="Division" />
+  <re cu="fr-CA" nm="FRM_UPR_Password" val="Mot de passe ( min 8 caractères)" />
+  <re cu="fr-CA" nm="FRM_USER_POS_POSNAME" val="Type de poste" />
+  <re cu="fr-CA" nm="FRM_PRF_POSTOFFICEBOXNO" val="Post Office Box Non" />
+  <re cu="fr-CA" nm="FRM_LAN_READ" val="lire" />
+  <re cu="fr-CA" nm="FRM_SER_Title_Location_1" val="Titre / Localisation (1 COL)" />
+  <re cu="fr-CA" nm="Posted_On" val="Posté Le" />
+  <re cu="fr-CA" nm="FRM_SER_Title_Description" val="Titre / Description" />
+  <re cu="fr-CA" nm="FRM_PRF_Project_Name" val="Nom Du Projet" />
+  <re cu="fr-CA" nm="FRM_LAN_SPEAK" val="parler" />
+  <re cu="fr-CA" nm="FRM_PUB_PUBLICATIONDATE" val="Date de publication" />
+  <re cu="fr-CA" nm="SALARY_RANGE" val="L'échelle des salaires" />
+  <re cu="fr-CA" nm="FRM_PRF_Start_Date_Text" val="Date de début texte" />
+  <re cu="fr-CA" nm="MDL_Vacancy" val="Vacance" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_TTL_SELECTSECROLES" val="Rôle (s ) de sélection de sécurité" />
+  <re cu="fr-CA" nm="FRM_VACRND_AssignCandToRev" val="Attribuer candidats à leurs auteurs" />
+  <re cu="fr-CA" nm="Download" val="Télécharger" />
+  <re cu="fr-CA" nm="MDL_User_Privilege" val="Privilège de l'utilisateur" />
+  <re cu="fr-CA" nm="MDL_Division" val="Division" />
+  <re cu="fr-CA" nm="FRM_VACRND_RndType" val="Type Rond" />
+  <re cu="fr-CA" nm="CSMNU_DIVISION_POSITIONTYPE" val="Types Division de position" />
+  <re cu="fr-CA" nm="FRM_CLIENT_CONNECTIONSTRING" val="Chaîne de connexion" />
+  <re cu="fr-CA" nm="FRM_OFFERDESCRIPTION" val="Prix Contenu Lettre" />
+  <re cu="fr-CA" nm="FRM_VAC_Remaing_Positions" val="Restant Nombre de positions" />
+  <re cu="fr-CA" nm="FRM_STATUSTEXT" val="Statut texte" />
+  <re cu="fr-CA" nm="FRM_Email_Address" val="Adresse e-mail" />
+  <re cu="fr-CA" nm="FRM_VACRND_ReqRev" val="Avis obligatoire Ce rondes" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_INCLUDE_IN_OFFER" val="Inclure dans Award" />
+  <re cu="fr-CA" nm="FRM_VAC_CONFIRM_REQUIRED" val="Confirmation Requise" />
+  <re cu="fr-CA" nm="FRM_PRF_Skill_And_Qualification" val="Savoir-faire / Qualification" />
+  <re cu="fr-CA" nm="ROUND_WEIGHT" val="Poids ( 1-100 )" />
+  <re cu="fr-CA" nm="FRM_VAC_Total_Positions" val="Total des positions" />
+  <re cu="fr-CA" nm="SE_Question" val="Question" />
+  <re cu="fr-CA" nm="Featured" val="Sélection" />
+  <re cu="fr-CA" nm="VACSTATUS_DRAFT" val="PROJET" />
+  <re cu="fr-CA" nm="FRM_PRF_POSTALCODE" val="Code Postal" />
+  <re cu="fr-CA" nm="FRM_APP_REV_REVIEWER_SAVE" val="Enregistrer un avis" />
+  <re cu="fr-CA" nm="LST_DOC_DOC_TYPE" val="Type De Document" />
+  <re cu="fr-CA" nm="CSMNU_OFFERLETTER" val="ATTRIBUTION DE LETTRES" />
+  <re cu="fr-CA" nm="TOOLTIP_APPLY_JOB" val="Demande de Financement" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_DELETCOMPANY" val="Supprimer Société" />
+  <re cu="fr-CA" nm="DRP_PLEASE_SELECT" val="--Veuillez Choisir--" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_EMAIL_CONTENT_EDITABLE_BY_MANAGER" val="Email contenu modifiable par le gestionnaire" />
+  <re cu="fr-CA" nm="FRM_VAC_Benefits" val="Conditions d éligibilité" />
+  <re cu="fr-CA" nm="FRM_Subscription" val="Abonnement" />
+  <re cu="fr-CA" nm="SE_START_TIME" val="Heure de début" />
+  <re cu="fr-CA" nm="ANSOPT_ANS" val="réponse " />
+  <re cu="fr-CA" nm="FRM_CAT_CAT_DETAILS" val="Catégorie Détails" />
+  <re cu="fr-CA" nm="FRM_VACRND_RndWeight" val="Poids ronde (1-100)" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_COMPANY" val="Ajouter entreprise" />
+  <re cu="fr-CA" nm="FRM_COMPANY_PHNO" val="Pas De Téléphone" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Wed" val="Nous D" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_REFERENCES" val="Ajouter une référence" />
+  <re cu="fr-CA" nm="FRM_Remember_Me" val="Souviens-Toi De Moi" />
+  <re cu="fr-CA" nm="LST_VAC_APPLICANTS" val="Les candidats" />
+  <re cu="fr-CA" nm="FRM_SPK_EVENTNAME" val="Nom de l'événement" />
+  <re cu="fr-CA" nm="FRM_JOB_LOC_MANAGER" val="Location Manager" />
+  <re cu="fr-CA" nm="FRM_VAC_Location" val="Bureau de Programme" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_MARKUP_VALUE" val="Valeur Markup" />
+  <re cu="fr-CA" nm="FRM_PRF_Mobile_Phone" val="portable" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_SPEAKINGEVENTHISTORY" val="Ajouter Parlant de l'événement" />
+  <re cu="fr-CA" nm="FRM_PRF_LEVEL" val="Niveau" />
+  <re cu="fr-CA" nm="FRM_USER_PRIV_BUT_ADDUSER" val="Ajouter un nouvel utilisateur" />
+  <re cu="fr-CA" nm="FRM_UPV_Select_User" val="Sélectionnez Utilisateur" />
+  <re cu="fr-CA" nm="FRM_UPRESUME_SELECTRESUME" val="Sélectionnez Reprendre" />
+  <re cu="fr-CA" nm="FRM_Res_Upload_Cover" val="Télécharger Lettre (Facultatif)" />
+  <re cu="fr-CA" nm="FRM_PRF_Reference_Name" val="Nom De Référence" />
+  <re cu="fr-CA" nm="FRM_PRF_Project_Details" val="Détails du projet" />
+  <re cu="fr-CA" nm="SE_Vacancy" val="Vacance" />
+  <re cu="fr-CA" nm="FRM_UPRESUME_UPDATEEXISTING" val="Mise à jour existant" />
+  <re cu="fr-CA" nm="MDL_Job_Location" val="Situation d'emploi" />
+  <re cu="fr-CA" nm="FRM_CLIENT_USERLIMIT" val="Limite de l'utilisateur" />
+  <re cu="fr-CA" nm="SE_Vacancy_Question" val="Vacancy question" />
+  <re cu="fr-CA" nm="MNU_MYPROFILES" val="Profils" />
+  <re cu="fr-CA" nm="FRM_VAC_Job_Description" val="Description de l'occasion" />
+  <re cu="fr-CA" nm="CSMNU_QUE" val="QUESTIONS" />
+  <re cu="fr-CA" nm="SE_END_TIME" val="Heure De Fin" />
+  <re cu="fr-CA" nm="FRM_UPV_View" val="Vue" />
+  <re cu="fr-CA" nm="FRM_VALIDTO" val="Valable Pour" />
+  <re cu="fr-CA" nm="FRM_USER_TTL_DIVISION" val="Division" />
+  <re cu="fr-CA" nm="FRM_PRF_Home_Email" val="Accueil Email" />
+  <re cu="fr-CA" nm="MNU_ANONY_SEARCHJOBS" val="Chercher des emplois" />
+  <re cu="fr-CA" nm="FRM_VAC_Vacancy_Status" val="opportunité Statut" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_PLUS_COMM" val="Commission plus" />
+  <re cu="fr-CA" nm="FRM_ACH_DESCRIPTION" val="Description" />
+  <re cu="fr-CA" nm="FRM_DIV_Default_Name" val="Défaut Nom" />
+  <re cu="fr-CA" nm="FRM_VAC_Vacancy_History" val="Histoire occasion" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_Record_Of_Employment" val="Relevé d'emploi" />
+  <re cu="fr-CA" nm="FRM_CLIENT_LANGUAGE" val="Langue" />
+  <re cu="fr-CA" nm="LST_USER_LOC_USERNAME" val="Utilisateur" />
+  <re cu="fr-CA" nm="FRM_JOB_ONBOARDING_MANAGER" val="Gestionnaire Onboarding" />
+  <re cu="fr-CA" nm="APPLY" val="appliquer" />
+  <re cu="fr-CA" nm="FRM_PRF_Hrs_Thu" val="Jeu" />
+  <re cu="fr-CA" nm="LST_VAC_Vacancies" val="Offres d'emploi" />
+  <re cu="fr-CA" nm="SE_Company" val="société" />
+  <re cu="fr-CA" nm="FRM_EMAILSUBJECT" val="Objet de l'email" />
+  <re cu="fr-CA" nm="FRM_PRF_BTN_ADD_ASSOCIATIONS" val="Ajouter Association" />
+  <re cu="fr-CA" nm="FRM_VAL_Length" val="la longueur doit être comprise entre" />
+  <re cu="fr-CA" nm="FRM_UPV_Own_Division" val="Propre Division" />
+  <re cu="fr-CA" nm="FRM_UPV_Permission_Type" val="Type d'autorisation" />
+  <re cu="fr-CA" nm="LST_VAC_OWNER" val="Propriétaire" />
+  <re cu="fr-CA" nm="FRM_UPV_Child_Division" val="Division enfants" />
+  <re cu="fr-CA" nm="FRM_PRF_Hear_About_The_Position" val="Comment avez-vous entendu parler de ce poste?" />
+  <re cu="fr-CA" nm="LST_USER_DIV_USERNAME" val="Utilisateur" />
+  <re cu="fr-CA" nm="FRM_USER_TTL_CREDENTIAL" val="Credential" />
+  <re cu="fr-CA" nm="LST_APP_RESUME" val="Resume" />
+  <re cu="fr-CA" nm="MNU_MYAPPLICATIONS" val="MES APPLICATIONS" />
+  <re cu="fr-CA" nm="FRM_MAKEOFF_SALARY_OFFERED" val="Salaire offert" />
+  <re cu="fr-CA" nm="MAYWECONTACT" val="Pouvons-nous contacter?" />
+  <re cu="fr-CA" nm="CSMNU_STATUSREASON" val="RAISONS D'ÉTAT" />
+  <re cu="fr-CA" nm="FRM_PRF_TTL_References" val="Références" />
+  <re cu="fr-CA" nm="FRM_VAC_Position_Id" val="opportunité ID" />
+  <re cu="es-ES" nm="MAYWECONTACT" val="Podemos ponernos en contacto?" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_References" val="Referencias" />
+  <re cu="es-ES" nm="CSMNU_STATUSREASON" val="RAZONES DE ESTADO" />
+  <re cu="es-ES" nm="MNU_MYAPPLICATIONS" val="MIS APLICACIONES" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_SALARY_OFFERED" val="Sueldo Ofrecido" />
+  <re cu="es-ES" nm="FRM_USER_TTL_CREDENTIAL" val="Credencial" />
+  <re cu="es-ES" nm="FRM_VAC_Position_Id" val="Oportunidad ID" />
+  <re cu="es-ES" nm="LST_APP_RESUME" val="Currículum" />
+  <re cu="es-ES" nm="LST_USER_DIV_USERNAME" val="Usuario" />
+  <re cu="es-ES" nm="FRM_PRF_Hear_About_The_Position" val="¿Cómo se enteró de esta posición?" />
+  <re cu="es-ES" nm="FRM_UPV_Child_Division" val="División de Niños" />
+  <re cu="es-ES" nm="LST_VAC_OWNER" val="Propietario" />
+  <re cu="es-ES" nm="FRM_UPV_Permission_Type" val="Tipo de Permiso" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_ASSOCIATIONS" val="Añadir Asociación" />
+  <re cu="es-ES" nm="FRM_UPV_Own_Division" val="División Propia" />
+  <re cu="es-ES" nm="FRM_VAL_Length" val="longitud debe ser entre" />
+  <re cu="es-ES" nm="FRM_EMAILSUBJECT" val="Asunto del correo" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Thu" val="Jue" />
+  <re cu="es-ES" nm="SE_Company" val="Empresa" />
+  <re cu="es-ES" nm="LST_VAC_Vacancies" val="Vacantes" />
+  <re cu="es-ES" nm="APPLY" val="Aplicar" />
+  <re cu="es-ES" nm="FRM_JOB_ONBOARDING_MANAGER" val="Gerente onboarding" />
+  <re cu="es-ES" nm="FRM_CLIENT_LANGUAGE" val="Idioma" />
+  <re cu="es-ES" nm="LST_USER_LOC_USERNAME" val="Usuario" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Record_Of_Employment" val="Grabación Del Empleo" />
+  <re cu="es-ES" nm="FRM_VAC_Vacancy_History" val="Historia Oportunidad" />
+  <re cu="es-ES" nm="FRM_ACH_DESCRIPTION" val="Descripción" />
+  <re cu="es-ES" nm="FRM_DIV_Default_Name" val="Por defecto Nombre" />
+  <re cu="es-ES" nm="FRM_USER_TTL_DIVISION" val="División" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PLUS_COMM" val="Comisión Plus" />
+  <re cu="es-ES" nm="FRM_VAC_Vacancy_Status" val="Estado de Oportunidades" />
+  <re cu="es-ES" nm="MNU_ANONY_SEARCHJOBS" val="Buscar Trabajos" />
+  <re cu="es-ES" nm="FRM_PRF_Home_Email" val="Inicio Correo" />
+  <re cu="es-ES" nm="FRM_VALIDTO" val="Válido Hasta" />
+  <re cu="es-ES" nm="FRM_UPV_View" val="Vista" />
+  <re cu="es-ES" nm="SE_END_TIME" val="Hora De Finalización" />
+  <re cu="es-ES" nm="SE_Vacancy_Question" val="Vacante pregunta" />
+  <re cu="es-ES" nm="CSMNU_QUE" val="PREGUNTAS" />
+  <re cu="es-ES" nm="FRM_VAC_Job_Description" val="Oportunidad Descripción" />
+  <re cu="es-ES" nm="MNU_MYPROFILES" val="Perfiles" />
+  <re cu="es-ES" nm="FRM_CLIENT_USERLIMIT" val="Límite de usuario" />
+  <re cu="es-ES" nm="MDL_Job_Location" val="Lugar del Trabajo" />
+  <re cu="es-ES" nm="FRM_UPRESUME_UPDATEEXISTING" val="Actualizar existente" />
+  <re cu="es-ES" nm="SE_Vacancy" val="Vacante" />
+  <re cu="es-ES" nm="FRM_PRF_Reference_Name" val="Nombre De Referencia" />
+  <re cu="es-ES" nm="FRM_PRF_Project_Details" val="Detalles del proyecto" />
+  <re cu="es-ES" nm="FRM_UPRESUME_SELECTRESUME" val="Seleccione Reanudar" />
+  <re cu="es-ES" nm="FRM_Res_Upload_Cover" val="Subir Carta de presentación (opcional)" />
+  <re cu="es-ES" nm="FRM_UPV_Select_User" val="Seleccionar usuario" />
+  <re cu="es-ES" nm="FRM_PRF_Mobile_Phone" val="Celular" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_BUT_ADDUSER" val="Añadir Nuevo Usuario" />
+  <re cu="es-ES" nm="FRM_PRF_LEVEL" val="Nivel" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_SPEAKINGEVENTHISTORY" val="Añadir Hablando Evento" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_MARKUP_VALUE" val="Valor de marcado" />
+  <re cu="es-ES" nm="FRM_VAC_Location" val="Oficina del Programa" />
+  <re cu="es-ES" nm="FRM_SPK_EVENTNAME" val="Nombre De Evento" />
+  <re cu="es-ES" nm="FRM_JOB_LOC_MANAGER" val="Location Manager" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_REFERENCES" val="Agregar referencia" />
+  <re cu="es-ES" nm="LST_VAC_APPLICANTS" val="Los solicitantes" />
+  <re cu="es-ES" nm="FRM_Remember_Me" val="Recuérdame" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Wed" val="Casarse" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_EMAIL_CONTENT_EDITABLE_BY_MANAGER" val="Email contenido editable por el Gerente" />
+  <re cu="es-ES" nm="FRM_COMPANY_PHNO" val="Telefono No" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_COMPANY" val="Añadir empresa" />
+  <re cu="es-ES" nm="FRM_VACRND_RndWeight" val="Peso Ronda (1-100)" />
+  <re cu="es-ES" nm="ANSOPT_ANS" val="Respuesta" />
+  <re cu="es-ES" nm="SE_START_TIME" val="Hora de inicio" />
+  <re cu="es-ES" nm="FRM_Subscription" val="Suscripción" />
+  <re cu="es-ES" nm="FRM_CAT_CAT_DETAILS" val="detalles de la categoría" />
+  <re cu="es-ES" nm="FRM_VAC_Benefits" val="Requisitos de elegibilidad" />
+  <re cu="es-ES" nm="DRP_PLEASE_SELECT" val="--Por Favor Seleccione--" />
+  <re cu="es-ES" nm="LST_DOC_DOC_TYPE" val="Tipo De Documento" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETCOMPANY" val="Eliminar de la empresa" />
+  <re cu="es-ES" nm="TOOLTIP_APPLY_JOB" val="Solicitar financiamiento" />
+  <re cu="es-ES" nm="CSMNU_OFFERLETTER" val="ADJUDICACIÓN CARTAS" />
+  <re cu="es-ES" nm="FRM_APP_REV_REVIEWER_SAVE" val="Guardar Crítico" />
+  <re cu="es-ES" nm="VACSTATUS_DRAFT" val="BORRADOR" />
+  <re cu="es-ES" nm="ROUND_WEIGHT" val="Peso(1-100)" />
+  <re cu="es-ES" nm="Featured" val="Destacado" />
+  <re cu="es-ES" nm="FRM_PRF_POSTALCODE" val="Código Postal" />
+  <re cu="es-ES" nm="SE_Question" val="Pregunta" />
+  <re cu="es-ES" nm="FRM_VAC_Total_Positions" val="Posiciones totales" />
+  <re cu="es-ES" nm="FRM_VAC_CONFIRM_REQUIRED" val="Confirmación Requerida" />
+  <re cu="es-ES" nm="FRM_PRF_Skill_And_Qualification" val="Habilidad / Calificación" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_INCLUDE_IN_OFFER" val="Incluir en Premio" />
+  <re cu="es-ES" nm="FRM_VACRND_ReqRev" val="Opiniones obligatorios esta Ronda" />
+  <re cu="es-ES" nm="FRM_VACRND_RndType" val="Tipo de Ronda" />
+  <re cu="es-ES" nm="FRM_Email_Address" val="Dirección De Correo Electrónico" />
+  <re cu="es-ES" nm="FRM_VAC_Remaing_Positions" val="Restante Número de posiciones" />
+  <re cu="es-ES" nm="FRM_STATUSTEXT" val="Texto estado" />
+  <re cu="es-ES" nm="FRM_OFFERDESCRIPTION" val="Premio Carta contenido" />
+  <re cu="es-ES" nm="FRM_CLIENT_CONNECTIONSTRING" val="Cadena de conexión" />
+  <re cu="es-ES" nm="MDL_Division" val="División" />
+  <re cu="es-ES" nm="CSMNU_DIVISION_POSITIONTYPE" val="División Posición Tipos" />
+  <re cu="es-ES" nm="Download" val="Descargar" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_SELECTSECROLES" val="Rol (s) Seleccione Seguridad" />
+  <re cu="es-ES" nm="MDL_User_Privilege" val="Privilegio del usuario" />
+  <re cu="es-ES" nm="FRM_VACRND_AssignCandToRev" val="Asignar los candidatos a los colaboradores" />
+  <re cu="es-ES" nm="MDL_Vacancy" val="Vacante" />
+  <re cu="es-ES" nm="FRM_PRF_Start_Date_Text" val="Fecha de Inicio del texto" />
+  <re cu="es-ES" nm="SALARY_RANGE" val="Rango Salarial" />
+  <re cu="es-ES" nm="FRM_LAN_SPEAK" val="Hablar" />
+  <re cu="es-ES" nm="FRM_PUB_PUBLICATIONDATE" val="Fecha De Publicación" />
+  <re cu="es-ES" nm="FRM_LAN_READ" val="Leer" />
+  <re cu="es-ES" nm="FRM_PRF_Project_Name" val="Nombre Del Proyecto" />
+  <re cu="es-ES" nm="FRM_SER_Title_Description" val="Título / Descripción" />
+  <re cu="es-ES" nm="Posted_On" val="Publicado el" />
+  <re cu="es-ES" nm="FRM_SER_Title_Location_1" val="Título / Localización (1 COL)" />
+  <re cu="es-ES" nm="FRM_USER_POS_POSNAME" val="Tipo de posición" />
+  <re cu="es-ES" nm="FRM_PRF_POSTOFFICEBOXNO" val="Post Office Box No" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_SYSTEMENTITY" val="Entidad Sistema" />
+  <re cu="es-ES" nm="FRM_UPR_Password" val="Contraseña (mínimo 8 caracteres)" />
+  <re cu="es-ES" nm="FRM_Language" val="Idioma" />
+  <re cu="es-ES" nm="FRM_DIVPOS_DIVNAME" val="División" />
+  <re cu="es-ES" nm="LST_APP_PROFILE" val="Perfil" />
+  <re cu="es-ES" nm="FRM_UPV_System_Entity" val="Entidad Sistema" />
+  <re cu="es-ES" nm="FRM_USER_SELECTADHOCDIVISION" val="Seleccionar División Ad-Hoc (s)" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Personal_Info" val="Información Personal" />
+  <re cu="es-ES" nm="FRM_VAC_Position_Type" val="Tipo de programa" />
+  <re cu="es-ES" nm="FRM_SPK_LOCATION" val="Ubicación" />
+  <re cu="es-ES" nm="FRM_PRF_Emergancy_Contact2_Phone" val="Suplente / Contacto de Emergencia 2 Teléfono" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_PUBLICATIONHISTORY" val="Añadir publicación" />
+  <re cu="es-ES" nm="FRM_SER_Position_Type" val="Tipo de posición" />
+  <re cu="es-ES" nm="LST_DIVPOS_POSNAME" val="Tipo de posición" />
+  <re cu="es-ES" nm="FRM_SEC_EXISTING_SECURITY_ROLES" val="Roles de seguridad existentes" />
+  <re cu="es-ES" nm="FRM_QUE_TYPE" val="Tipo De Pregunta" />
+  <re cu="es-ES" nm="MNU_Search_Resume" val="BUSCAR LOS SOLICITANTES" />
+  <re cu="es-ES" nm="FIRST_CONFIRM_THE_VACANCY" val="En primer lugar confirmar la vacante" />
+  <re cu="es-ES" nm="FRM_UPR_Username" val="Nombre de Usuario" />
+  <re cu="es-ES" nm="FRM_APP_REV_SAVE" val="Guardar Ronda Comentario" />
+  <re cu="es-ES" nm="FRM_SPK_STARTDATE" val="Fecha De Inicio" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Mon" val="Lun" />
+  <re cu="es-ES" nm="FRM_PRF_Emergancy_Contact1_Phone" val="Suplente / Contacto de Emergencia 1 Teléfono" />
+  <re cu="es-ES" nm="CSMNU_VACANCYTEMPLATES" val="PLANTILLAS DE OPORTUNIDAD" />
+  <re cu="es-ES" nm="MDL_Vacancies" val="Mis Vacantes" />
+  <re cu="es-ES" nm="FRM_VAC_Skill_And_Qualification" val="Requisitos de Cumplimiento" />
+  <re cu="es-ES" nm="FRM_CLIENT_DBNAME" val="Base de datos Nombre" />
+  <re cu="es-ES" nm="FRM_VAC_Hrs_Per_Week" val="Horas por semana" />
+  <re cu="es-ES" nm="LST_DOC_FILE_NAME" val="Nombre Del Archivo" />
+  <re cu="es-ES" nm="FRM_PRF_MARITALSTATUS" val="Estado Civil" />
+  <re cu="es-ES" nm="FRM_LAN_LANGUAGECODE" val="Idioma" />
+  <re cu="es-ES" nm="FRM_TITL_EXECUTIVESUMMARY" val="Resumen Ejecutivo" />
+  <re cu="es-ES" nm="CSMNU_DEGREETYPE" val="TIPO DE GRADO" />
+  <re cu="es-ES" nm="FRM_USER_SELECTPOSITIONTYPE" val="Seleccione Tipo de posición" />
+  <re cu="es-ES" nm="DEFAULT_NAME" val="Por defecto Nombre" />
+  <re cu="es-ES" nm="Career_Home" val="Empleo Inicio" />
+  <re cu="es-ES" nm="APPLIED_ON" val="Aplicada En" />
+  <re cu="es-ES" nm="LST_ORDER" val="Orden" />
+  <re cu="es-ES" nm="FinishLater" val="Termine tarde" />
+  <re cu="es-ES" nm="ROUND_CONFIGURATION" val="Configuración redonda" />
+  <re cu="es-ES" nm="FRM_UPR_Upload_Resume" val="Subir CV" />
+  <re cu="es-ES" nm="FRM_PRF_Credential_UserName" val="Nombre de Usuario" />
+  <re cu="es-ES" nm="LST_VACANCYQUESTIONTYPE" val="Vacante Tipo pregunta" />
+  <re cu="es-ES" nm="FRM_ACH_ISSUINGAUTHORITY" val="La Autoridad Emisora" />
+  <re cu="es-ES" nm="FRM_APP_REV_ADD" val="Añadir Comentario Ronda" />
+  <re cu="es-ES" nm="SE_Job_Offer" val="Oferta De Trabajo" />
+  <re cu="es-ES" nm="SE_Rating" val="Clasificación" />
+  <re cu="es-ES" nm="FRM_VACANCYTEMPLATE" val="Nombre de la plantilla" />
+  <re cu="es-ES" nm="FRM_UPV_Sister_Division" val="División de la hermana" />
+  <re cu="es-ES" nm="VACANCY" val="Oportunidad" />
+  <re cu="es-ES" nm="STATUS" val="Estado" />
+  <re cu="es-ES" nm="FRM_VAC_Bonus_Potentials" val="Potencial de experiencia" />
+  <re cu="es-ES" nm="INT_COMPLETED" val="Mis entrevistas completadas" />
+  <re cu="es-ES" nm="FRM_VAC_Hourly_Rate" val="Tarifa Por Hora" />
+  <re cu="es-ES" nm="FRM_VAC_Duties_And_Responsibility" val="Oportunidad de Financiamiento Propósito" />
+  <re cu="es-ES" nm="FRM_PRF_Credential_IsActive" val="Activo" />
+  <re cu="es-ES" nm="FRM_PRF_Reffered_By" val="Referido Por" />
+  <re cu="es-ES" nm="FRM_USER_DIV_USERNAME" val="Usuario" />
+  <re cu="es-ES" nm="VACSTATUS_ALL" val="TODOS" />
+  <re cu="es-ES" nm="TOOLTIP_DRAFT" val="Borrador" />
+  <re cu="es-ES" nm="FRM_VAC_ARC_VAC" val="Archivo Vacante" />
+  <re cu="es-ES" nm="FRM_APP_REV_REVIEWER_REMOVE" val="Retire Crítico" />
+  <re cu="es-ES" nm="FRM_VAC_Hourly_Min" val="Hora Min" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_ENABLE_HOURLY_WAGE" val="Salario Por Hora" />
+  <re cu="es-ES" nm="FRM_PRF_END_YEAR" val="Año de finalización" />
+  <re cu="es-ES" nm="FRM_USER_TTL_PERINFO" val="Información Personal" />
+  <re cu="es-ES" nm="FRM_APP_REV_REMOVE" val="Retire Revisión Ronda" />
+  <re cu="es-ES" nm="FRM_VAC_PDF" val="DePerfil completo" />
+  <re cu="es-ES" nm="FRM_PRF_Emergancy_Contact1" val="Suplente / Contacto de Emergencia 1" />
+  <re cu="es-ES" nm="CSMNU_DECLINESTATUS" val="RAZONES SOLICITANTE DECADENCIA" />
+  <re cu="es-ES" nm="FRM_UPDATED_ON" val="Modificado En" />
+  <re cu="es-ES" nm="APPLY_JOB" val="Aplicar Trabajo" />
+  <re cu="es-ES" nm="FRM_SELECT" val="seleccionar" />
+  <re cu="es-ES" nm="FRM_VAC_Position_Owner" val="Oportunidad propietario" />
+  <re cu="es-ES" nm="FRM_PRF_Home_Phone" val="Teléfono De Casa" />
+  <re cu="es-ES" nm="FRM_PRF_Application_Submision" val="En caso afirmativo, cuándo y para qué?" />
+  <re cu="es-ES" nm="FRM_Language_UploadFile" val="Subir Archivo" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_CAN_NOTICE_PER" val="Candidato Período Aviso" />
+  <re cu="es-ES" nm="VACSTATUS_ARCHIVE" val="ARCHIVO" />
+  <re cu="es-ES" nm="FRM_VAC_DRAFT_VAC" val="DRAFT OPPORTUNITY" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_ENDDATE" val="Premio Fin Fecha" />
+  <re cu="es-ES" nm="MNU_CAREERHOME" val="Empleo Inicio" />
+  <re cu="es-ES" nm="FRM_TITL_LICENCEANDCERTIFICATIONS" val="Licencias y certificaciones" />
+  <re cu="es-ES" nm="FRM_PRF_Reference_Email" val="Referencia Email" />
+  <re cu="es-ES" nm="FRM_USER_POS_USERNAME" val="Usuario" />
+  <re cu="es-ES" nm="FRM_PRF_End_Date" val="Fecha Final" />
+  <re cu="es-ES" nm="Login" val="Iniciar Sesión" />
+  <re cu="es-ES" nm="FRM_VAC_Salary_Min" val="Salario mínimo" />
+  <re cu="es-ES" nm="FRM_PRF_EDUSTATE" val="Estado" />
+  <re cu="es-ES" nm="SE_Security_Role" val="Papel Seguridad" />
+  <re cu="es-ES" nm="FRM_VAC_PROGRAM_OFFICER" val="Oficial de Programas" />
+  <re cu="es-ES" nm="APP_STAT_MNU_WITHDRAW" val="Retirar Aplicación" />
+  <re cu="es-ES" nm="FRM_ASC_NAME" val="Nombre" />
+  <re cu="es-ES" nm="LST_SKILLTYPE" val="Tipo de Habilidad" />
+  <re cu="es-ES" nm="NOT_ABLE_TO_UPDATE_RECORD" val="No capaz de actualizar el registro" />
+  <re cu="es-ES" nm="FRM_PRF_Business_Phone_No" val="Teléfono para mí" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Skills_And_Qualifications" val="Habilidades y calificaciones" />
+  <re cu="es-ES" nm="BeginInterview" val="Comience Entrevista" />
+  <re cu="es-ES" nm="FRM_VAC_RESUME" val="Currículum" />
+  <re cu="es-ES" nm="FRM_VAC_DETAILS" val="Detalles de la oportunidad" />
+  <re cu="es-ES" nm="FRM_WEIGHT" val="Peso" />
+  <re cu="es-ES" nm="DRP_Any" val="Cualquier" />
+  <re cu="es-ES" nm="CSMNU_USER_DIVISION" val="División de usuario" />
+  <re cu="es-ES" nm="INT_TERMINATED" val="Mis entrevistas terminados" />
+  <re cu="es-ES" nm="REQUIRED_SCREENING_QUESTIONS" val="Preguntas de detección obligatorios" />
+  <re cu="es-ES" nm="FRM_PRF_State" val="Estado" />
+  <re cu="es-ES" nm="FRM_LOGO" val="Logo (Top Left Above)" />
+  <re cu="es-ES" nm="FRM_Res_UseExisting_Profile" val="O Usar perfil existente" />
+  <re cu="es-ES" nm="FRM_REMOVE_VAC_TEMPLATE" val="Retire la plantilla de vacantes" />
+  <re cu="es-ES" nm="ROUND_REVIEWERS_CANPROMOTE" val="Puede promover" />
+  <re cu="es-ES" nm="FRM_QUE_ADD" val="Agregar pregunta" />
+  <re cu="es-ES" nm="FRM_ISSUINGAUTHORITY" val="La Autoridad Emisora" />
+  <re cu="es-ES" nm="QT_SELF" val="Candidato Autoevaluación" />
+  <re cu="es-ES" nm="MDL_Position_Type" val="Tipo de posición" />
+  <re cu="es-ES" nm="FRM_PRF_City" val="Ciudad" />
+  <re cu="es-ES" nm="FRM_ANSOPT_SAVE" val="Guardar respuesta" />
+  <re cu="es-ES" nm="SAVE_QUERY_BTN" val="Guardar consulta" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_COMM_POTENTIAL" val="Potencial Comisión" />
+  <re cu="es-ES" nm="FRM_USER_SELECTDIVISION" val="Seleccionar División" />
+  <re cu="es-ES" nm="FRM_ASC_ASSOCIATIONTYPE" val="Tipo de Asociación" />
+  <re cu="es-ES" nm="FRM_QUE_DATA_TYPE" val="Pregunta Tipo de datos" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_RESPONSE_APPLICANT" val="Respuesta De Solicitante" />
+  <re cu="es-ES" nm="LST_JOB_JOBNAME" val="Ubicación" />
+  <re cu="es-ES" nm="FRM_VACRND_PromoteCan" val="Promover candidatos automáticamente" />
+  <re cu="es-ES" nm="MNU_MYVACANCIES" val="Mis Vacantes" />
+  <re cu="es-ES" nm="FRM_EMAILDESCRIPTION" val="Email Descripción" />
+  <re cu="es-ES" nm="FRM_PRF_Military_Service" val="¿Alguna vez has estado en el servicio militar?" />
+  <re cu="es-ES" nm="FRM_QUE_REMOVE" val="Retire pregunta" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_SPERINFO" val="Información Personal" />
+  <re cu="es-ES" nm="SIDEBAR_TEXT" val="Basta con subir su currículum para crear su perfil y de inicio de sesión." />
+  <re cu="es-ES" nm="FRM_CurrencySign" val="Moneda Entrar" />
+  <re cu="es-ES" nm="FRM_COMPANY_WEBSITE" val="Sitio web" />
+  <re cu="es-ES" nm="FRM_PRF_SKILLEXPERIENCE" val="Experiencia" />
+  <re cu="es-ES" nm="FRM_UPRESUME_CREATENEW" val="Crear Nuevo" />
+  <re cu="es-ES" nm="CSMNU_QUECAT" val="Pregunta Categoría" />
+  <re cu="es-ES" nm="LST_DIVPOS_DIVNAME" val="División" />
+  <re cu="es-ES" nm="MDL_User_Division" val="División de usuario" />
+  <re cu="es-ES" nm="FRM_VALIDFROM" val="Válida Desde" />
+  <re cu="es-ES" nm="FRM_COMPANY_ADD" val="Dirección" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_MAX_VALUE" val="Valor Máximo" />
+  <re cu="es-ES" nm="APP_STAT_MNU_DRAFT" val="Guardar para redactar" />
+  <re cu="es-ES" nm="FRM_PRF_Military_Type_Discharge" val="En caso afirmativo, indique el tipo de descarga" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_OFFDATE" val="Fecha de Oferta" />
+  <re cu="es-ES" nm="FRM_VAC_Start_Date" val="Fecha De Inicio" />
+  <re cu="es-ES" nm="FRM_SER_Search_Listing" val="Buscar Listado" />
+  <re cu="es-ES" nm="FRM_PRF_Reference_Phone" val="Referencia Teléfono" />
+  <re cu="es-ES" nm="FRM_SHOWTOEMPLOYER" val="Mostrar Para Empleador" />
+  <re cu="es-ES" nm="FRM_UPR_TTL_Create_Profile" val="Crear Perfil" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_EDITABLE_BY_MANAGER" val="Editable Por Administrador" />
+  <re cu="es-ES" nm="INT_PENDING" val="Mis entrevistas pendientes" />
+  <re cu="es-ES" nm="LST_USER_USERNAME" val="Nombre de Usuario" />
+  <re cu="es-ES" nm="Logout" val="Cerrar Sesión" />
+  <re cu="es-ES" nm="FRM_LAN_WRITE" val="Escribir" />
+  <re cu="es-ES" nm="FRM_PUB_ROLE" val="Papel" />
+  <re cu="es-ES" nm="FRM_APPBASEDSTATUSCATEGORY" val="Categoría" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_BONUS_POTENTIAL" val="Potencial de experiencia" />
+  <re cu="es-ES" nm="InterviewReopened" val="Entrevista Reabierto" />
+  <re cu="es-ES" nm="INT_ALLPENDING" val="Todas las entrevistas pendientes" />
+  <re cu="es-ES" nm="FRM_Subscription_Price" val="Precio" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_REFERENCES" val="Eliminar Referencia" />
+  <re cu="es-ES" nm="FRM_PRF_MEASURESYSTEM" val="Medida Sistema" />
+  <re cu="es-ES" nm="ANSOPT_VALUE" val="Valor" />
+  <re cu="es-ES" nm="LST_REVIEWROUNDS" val="Revisión Rondas" />
+  <re cu="es-ES" nm="FRM_PRF_WEBSITE" val="Sitio web" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_COM_IN" val="En" />
+  <re cu="es-ES" nm="BTN_ADD_TEMPLLATE" val="Añadir plantilla" />
+  <re cu="es-ES" nm="IN" val="En" />
+  <re cu="es-ES" nm="FRM_PRF_STARTMONTHYEAR" val="Iniciar Mes / Año" />
+  <re cu="es-ES" nm="FRM_UPRESUME_DTTL_CHANGEPRO" val="Cambiar perfil" />
+  <re cu="es-ES" nm="FRM_VAC_FUND_AMOUNT" val="Monto Fondo" />
+  <re cu="es-ES" nm="FRM_PUB_TYPE" val="Tipo" />
+  <re cu="es-ES" nm="FRM_COMPANY_SUFF" val="Sufijo Título" />
+  <re cu="es-ES" nm="FRM_SPK_TITLE" val="Título" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_PUBLICATIONHISTORY" val="Eliminar el historial de publicación" />
+  <re cu="es-ES" nm="FRM_PRF_EXPERIENCE" val="Experiencia" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PAY_RATE" val="Tasa De Pago" />
+  <re cu="es-ES" nm="FRM_PRF_LASTUSED" val="Utilizado Por Última Vez" />
+  <re cu="es-ES" nm="FRM_VACRND_Promothersolscore" val="Promoción puntuación mínima:" />
+  <re cu="es-ES" nm="LST_COMPANY_WEBSITE" val="Sitio web" />
+  <re cu="es-ES" nm="FRM_PRF_Willing_To_Work_Overtime" val="Dispuesto a trabajar sobre-tiempo?" />
+  <re cu="es-ES" nm="Action" val="Acción" />
+  <re cu="es-ES" nm="FRM_PRF_START_YEAR" val="Año de inicio" />
+  <re cu="es-ES" nm="MDL_MYAPPLICATIONS" val="Mis Aplicaciones" />
+  <re cu="es-ES" nm="MNU_My_Candidates" val="MIS SOLICITANTES" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Availibility" val="Disponibilidad" />
+  <re cu="es-ES" nm="FRM_PRF_Description" val="Descripción" />
+  <re cu="es-ES" nm="FRM_PRF_Degree_Type" val="Tipo de Grado" />
+  <re cu="es-ES" nm="SIDEBAR_TEXT2" val="Comience la solicitud de empleo de inmediato" />
+  <re cu="es-ES" nm="FRM_UPR_Select_Resume" val="Seleccione Reanudar" />
+  <re cu="es-ES" nm="FRM_VAC_ANNOUNCE_DATE" val="Anuncio Fecha" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_COMM_DESC" val="Comisión Descripción" />
+  <re cu="es-ES" nm="FRM_PRF_Relatives_Working_In_Company" val="¿Tiene algún familiar que trabajan en esta empresa?" />
+  <re cu="es-ES" nm="FRM_SER_Set_Default" val="Establecer como Mi defecto" />
+  <re cu="es-ES" nm="SE_User" val="Usuario" />
+  <re cu="es-ES" nm="FRM_PRF_Starting_Position" val="Posición Inicial" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_NOTE_CAN" val="Nota Para Candidato" />
+  <re cu="es-ES" nm="FRM_PRF_Misdemeanor" val="Alguna vez ha sido condenado por un delito grave o delito menor?" />
+  <re cu="es-ES" nm="TOOLTIP_SHOW_ON_WEB" val="Show On Web" />
+  <re cu="es-ES" nm="FRM_UPDATED_BY" val="Modificado Por" />
+  <re cu="es-ES" nm="ROUND_QUESTIONS_TYPE" val="Tipo" />
+  <re cu="es-ES" nm="CSMNU_RNDTYPE" val="Tipos de Ronda" />
+  <re cu="es-ES" nm="LST_USER_DIVISION" val="División" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_ACHIEVEMENTS" val="Eliminar Logros" />
+  <re cu="es-ES" nm="SAVE_SEARCH_QUERY" val="Guardar búsqueda de consultas" />
+  <re cu="es-ES" nm="LST_DEREETYPE" val="Tipo de Grado" />
+  <re cu="es-ES" nm="FRM_PUB_TITL_PUBLICATION" val="Historia de la publicación" />
+  <re cu="es-ES" nm="FRM_VAC_ANNOUNCE_TYPE" val="Tipo de Anuncio" />
+  <re cu="es-ES" nm="FRM_CLIENT_ENDDATE" val="Fecha Final" />
+  <re cu="es-ES" nm="APP_STAT_MNU_SUBMIT" val="Presentar La Solicitud" />
+  <re cu="es-ES" nm="LST_DOC_TTL_PREVIEW" val="Preestreno" />
+  <re cu="es-ES" nm="FRM_PRF_ENDMONTHYEAR" val="Termine Mes / Año" />
+  <re cu="es-ES" nm="FRM_PRF_JOBCATEGORY" val="Categoría De Trabajo" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_NOTIFICATION_METHOD" val="Método de notificación" />
+  <re cu="es-ES" nm="APP_STAT_SUBMIT" val="Aplicado" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_NOTE_APPLICANT" val="Nota Para Solicitante" />
+  <re cu="es-ES" nm="MDL_MYDOCUMENTS" val="Mis Documentos" />
+  <re cu="es-ES" nm="FRM_ACH_TITL_ACHIEVEMENT" val="Logro" />
+  <re cu="es-ES" nm="FRM_PRF_Zip" val="Cremallera" />
+  <re cu="es-ES" nm="LST_DOC_DATE_UPLOADED" val="Fecha Subido" />
+  <re cu="es-ES" nm="FRM_PRF_Supervisor_Name" val="Supervisor Nombre y cargo" />
+  <re cu="es-ES" nm="SEARCH_QUERY_NAME" val="Buscar Nombre de la consulta" />
+  <re cu="es-ES" nm="FRM_PUB_TITLE" val="Título" />
+  <re cu="es-ES" nm="LST_ROUNDTYPE" val="Tipos de Ronda" />
+  <re cu="es-ES" nm="FRM_USER_SELECTJOBLOCATION" val="Seleccione Lugar del Trabajo" />
+  <re cu="es-ES" nm="FRM_VACSTATUSCATEGORY" val="Categoría" />
+  <re cu="es-ES" nm="Upload_Resume" val="Subir CV" />
+  <re cu="es-ES" nm="FRM_VAC_CLIENT" val="Cliente" />
+  <re cu="es-ES" nm="FRM_TITL_OBJECTIVEDETAILS" val="Objetivo" />
+  <re cu="es-ES" nm="FRM_Language_Culture" val="Cultura" />
+  <re cu="es-ES" nm="NEWVACANCY_CREATE_NEW" val="Crear nueva oportunidad" />
+  <re cu="es-ES" nm="MNU_HOME" val="Casa" />
+  <re cu="es-ES" nm="CSMNU_JOBLOCATION" val="OFICINAS DEL PROGRAMA" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Fri" val="Vie" />
+  <re cu="es-ES" nm="FRM_NAME" val="Nombre" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PLACEMENT_LOC" val="Oficina del Programa" />
+  <re cu="es-ES" nm="FRM_COMPANY_NAME" val="Nombre De La Empresa" />
+  <re cu="es-ES" nm="FRM_SAVE" val="Guardar" />
+  <re cu="es-ES" nm="FRM_PRO_PROFILENAME" val="Nombre De Perfil" />
+  <re cu="es-ES" nm="FRM_VAC_OPEN_DATE" val="abierta Fecha" />
+  <re cu="es-ES" nm="FRM_CLIENT_CONTACTNO" val="Contacto No" />
+  <re cu="es-ES" nm="FRM_PRF_Relatives_If_Yes" val="En caso afirmativo, ¿quién?" />
+  <re cu="es-ES" nm="FRM_VAC_Commission" val="Comisión" />
+  <re cu="es-ES" nm="LST_DIV_Name" val="División" />
+  <re cu="es-ES" nm="SE_Vacancy_Template" val="Plantilla Vacante" />
+  <re cu="es-ES" nm="Location" val="Oficina del Programa" />
+  <re cu="es-ES" nm="FRM_DEFAULTSTATUSSHOWTOEMPLOYER" val="Estado predeterminado Mostrar Para Empleador" />
+  <re cu="es-ES" nm="FRM_QUE" val="Pregunta" />
+  <re cu="es-ES" nm="FRM_VAC_Division" val="División" />
+  <re cu="es-ES" nm="FRM_UPR_Confirm_Password" val="Confirmar Contraseña" />
+  <re cu="es-ES" nm="FRM_PRF_Starting_Pay" val="A partir de pago" />
+  <re cu="es-ES" nm="POSITION_TYPE" val="Tipo de Premio" />
+  <re cu="es-ES" nm="FRM_VAC_CLOSE_VAC" val="Cerrar Vacante" />
+  <re cu="es-ES" nm="FRM_EMAIL_SEND_NAME" val="Email Sender Dirección" />
+  <re cu="es-ES" nm="APP_STAT_DRAFT" val="Borrador" />
+  <re cu="es-ES" nm="FRM_OBJECTIVEDETAILS" val="Objetivo" />
+  <re cu="es-ES" nm="FRM_SPK_EVENTTYPE" val="Tipo De Evento" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Education" val="Educación" />
+  <re cu="es-ES" nm="RECORD_UPDATED_SUCCESSFULLY" val="RÉCORD ACTUALIZADO CON ÉXITO" />
+  <re cu="es-ES" nm="Signup" val="Contratar" />
+  <re cu="es-ES" nm="MNU_SEARCHJOBS" val="Buscar Trabajos" />
+  <re cu="es-ES" nm="TOOLTIP_SAVE_TO_MY_JOB" val="Guardar en Mis Oportunidades" />
+  <re cu="es-ES" nm="FRM_CREATED_ON" val="Creado En" />
+  <re cu="es-ES" nm="FRM_PRF_Last_Name" val="Apellido" />
+  <re cu="es-ES" nm="FRM_SPK_LINK" val="Enlace" />
+  <re cu="es-ES" nm="FRM_UPV_Delete" val="Borrar" />
+  <re cu="es-ES" nm="APPLICATION_INCLUDES" val="Incluye la aplicación" />
+  <re cu="es-ES" nm="FRM_APP_REV_QUE_REMOVE" val="Retire pregunta" />
+  <re cu="es-ES" nm="FRM_PRF_RelationShip" val="Relación" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_DELETE" val="Borrar" />
+  <re cu="es-ES" nm="FRM_LAN_TITLE_LANGUAGES" val="Idiomas" />
+  <re cu="es-ES" nm="FRM_PRF_Skill_Type" val="Tipo de Habilidad" />
+  <re cu="es-ES" nm="FRM_QUE_PRIMARY_DIVISION" val="División Primaria" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_OFFER_DETAILS" val="Premio Detalles" />
+  <re cu="es-ES" nm="CSMNU_CLIENT" val="Cliente" />
+  <re cu="es-ES" nm="FRM_PRF_START_MONTH" val="Inicio Mes" />
+  <re cu="es-ES" nm="FRM_ASC_LINK" val="Enlace" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_SALARY_TYPE" val="Tipo Salario" />
+  <re cu="es-ES" nm="Add" val="Añadir" />
+  <re cu="es-ES" nm="FRM_ASC_ROLE" val="Papel" />
+  <re cu="es-ES" nm="CSMNU_USER" val="USUARIOS Y PRIVILEGIOS" />
+  <re cu="es-ES" nm="FRM_QUE_CAT_REMOVE" val="Eliminar Categoría" />
+  <re cu="es-ES" nm="CSMNU_SKILLTYPE" val="TIPOS DE HABILIDAD" />
+  <re cu="es-ES" nm="FRM_UPV_Security_Roles" val="Rol (s) Seleccione Seguridad" />
+  <re cu="es-ES" nm="LST_VAC_Location" val="Ubicación" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_CHARGE_RATE" val="Índice de carga" />
+  <re cu="es-ES" nm="FRM_PRF_DEGREEDATE" val="Grado Fecha" />
+  <re cu="es-ES" nm="CSMNU_USERPRIVILEGES" val="Los privilegios de usuario" />
+  <re cu="es-ES" nm="FRM_VAL_Regex" val="no es válido" />
+  <re cu="es-ES" nm="Terminate" val="Finalizado" />
+  <re cu="es-ES" nm="UPLOADDOCUMENT" val="Cargar documento" />
+  <re cu="es-ES" nm="FRM_Client" val="Cliente" />
+  <re cu="es-ES" nm="APP_STAT_MNU_VIEW" val="Ver Aplicación" />
+  <re cu="es-ES" nm="FRM_Res_Apply" val="Aplicar" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_SPEAKINGEVENTHISTORY" val="Eliminar Hablando historial de eventos" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PLUS_BON" val="Prima" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_ASSOCIATION" val="Eliminar Asociación" />
+  <re cu="es-ES" nm="FRM_CLIENT_CONTACTPERSON" val="Persona De Contacto" />
+  <re cu="es-ES" nm="FRM_PRF_Employment_Preference" val="Preferencia de Empleo" />
+  <re cu="es-ES" nm="FRM_PRF_Start_Date" val="Fecha De Inicio" />
+  <re cu="es-ES" nm="SE_Portal_Content" val="Contenido Portal" />
+  <re cu="es-ES" nm="FRM_SER_Notify_Me" val="Avísame" />
+  <re cu="es-ES" nm="FRM_PRF_Reason_For_Leaving" val="Motivo de retiro" />
+  <re cu="es-ES" nm="NOT_ABLE_TO_ADD_RECORD" val="No capaz de añadir registro" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_TEMPLATE_NAME" val="Nombre de la plantilla" />
+  <re cu="es-ES" nm="Description" val="Descripción" />
+  <re cu="es-ES" nm="Search" val="Búsqueda" />
+  <re cu="es-ES" nm="FRM_VAC_ACT_CODE" val="Código de actividad" />
+  <re cu="es-ES" nm="FRM_PRF_MEASUREVALUE" val="Valor Medida" />
+  <re cu="es-ES" nm="FRM_SPK_TITL_SPEAKINGEVENTHISTORY" val="Hablando historial de eventos" />
+  <re cu="es-ES" nm="INT_ALLCOMPLETED" val="Todas las entrevistas completadas" />
+  <re cu="es-ES" nm="FRM_LANGUAGE_BLOCK" val="Bloques de Idiomas" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_SELECTUSER" val="Seleccionar usuario" />
+  <re cu="es-ES" nm="FRM_APP_REV_QUE_SAVE" val="Guardar pregunta" />
+  <re cu="es-ES" nm="FRM_ACH_DATE" val="Fecha" />
+  <re cu="es-ES" nm="FRM_QUE_CAT_SAVE" val="Guardar Categoría" />
+  <re cu="es-ES" nm="FRM_VAC_Salary_Max" val="Sueldo Max" />
+  <re cu="es-ES" nm="FRM_UPR_First_Name" val="Nombre" />
+  <re cu="es-ES" nm="FRM_PRF_COUNTRY" val="País" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_CANDIDATE" val="Aspirante" />
+  <re cu="es-ES" nm="FRM_PRF_Ending_Pay" val="Terminar de pago" />
+  <re cu="es-ES" nm="LST_DIV_PDivision" val="División de Padres" />
+  <re cu="es-ES" nm="LST_JOB_DIVNAME" val="División" />
+  <re cu="es-ES" nm="DRP_SELECT" val="--Seleccionar--" />
+  <re cu="es-ES" nm="FRM_ASC_ENDDATE" val="Fecha Final" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_CAN_IN" val="En" />
+  <re cu="es-ES" nm="FRM_SER_Employement_Type" val="Tipo De Empleo" />
+  <re cu="es-ES" nm="MDL_User_Position_Type" val="Posición Usuario Tipo" />
+  <re cu="es-ES" nm="FRM_PRF_FAX" val="Fax" />
+  <re cu="es-ES" nm="LST_VAC_Status" val="Estado" />
+  <re cu="es-ES" nm="FRM_USER_LOC_LOC" val="Ubicación" />
+  <re cu="es-ES" nm="FRM_Password" val="Contraseña" />
+  <re cu="es-ES" nm="FRM_VAC_PDF_RESUME" val="Currículum" />
+  <re cu="es-ES" nm="FRM_PRF_End_Date_Text" val="Fecha de finalización del texto" />
+  <re cu="es-ES" nm="FRM_ANSOPT_ADD" val="Añadir respuesta" />
+  <re cu="es-ES" nm="SE_Interview" val="Entrevista" />
+  <re cu="es-ES" nm="Remove" val="Quitar" />
+  <re cu="es-ES" nm="FRM_VACRND_ReviewRound" val="Revisión Ronda" />
+  <re cu="es-ES" nm="LST_APP_COVERLETTER" val="Carta De Presentación" />
+  <re cu="es-ES" nm="QT_PRESENT" val="Oferta pregunta" />
+  <re cu="es-ES" nm="RECORD_DELETED_SUCCESSFULLY" val="Registro eliminado correctamente" />
+  <re cu="es-ES" nm="FRM_PRF_EDUDESCRIPTION" val="Descripción" />
+  <re cu="es-ES" nm="FRM_VACRND_ReviewRounds" val="Revisión Rondas" />
+  <re cu="es-ES" nm="LST_VAC_Placement" val="Colocación" />
+  <re cu="es-ES" nm="SELECTRESUME" val="Seleccione Reanudar" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_OFFSTATUS" val="Estado del Premio" />
+  <re cu="es-ES" nm="MNU_INTERVIEW_CALENDER" val="Calendario Entrevista" />
+  <re cu="es-ES" nm="FRM_SER_Title_Location_2" val="Título / Localización (2 COL)" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Other_Information" val="Otra Información" />
+  <re cu="es-ES" nm="CSMNU_POSITIONTYPE" val="TIPOS DE PROGRAMAS" />
+  <re cu="es-ES" nm="CSMNU_VACANCYSTATUS" val="ESTADO DE VACANTE" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Sun" val="Sol" />
+  <re cu="es-ES" nm="FRM_VAC_NEW_ROUND" val="Nueva Ronda" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_EDITABLE_BY_CANDIDATE" val="Editable Por Candidato" />
+  <re cu="es-ES" nm="FRM_VAC_APP_DUE_DATE" val="Aplicación Fecha de vencimiento" />
+  <re cu="es-ES" nm="TOOLTIP_SHOW_FEATURE" val="Haga clic para figurar en la Web" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_EMAIL_TO_CANDIDATE" val="Enviar al Solicitante" />
+  <re cu="es-ES" nm="CSMNU_COMPANYINFO" val="ORGANIZACIÓN INFO" />
+  <re cu="es-ES" nm="FRM_EXECUTIVESUMMARY" val="Resumen Ejecutivo" />
+  <re cu="es-ES" nm="Delete" val="Borrar" />
+  <re cu="es-ES" nm="FRM_VAC_COVERLETTER" val="Carta De Presentación" />
+  <re cu="es-ES" nm="FRM_VAC_Show_On_Web" val="mostrar en la web" />
+  <re cu="es-ES" nm="FRM_VAC_MAN_LINK" val="Copy Manager Enlace" />
+  <re cu="es-ES" nm="FRM_CLIENT_CLIENTNAME" val="Nombre Del Cliente" />
+  <re cu="es-ES" nm="FRM_Send_Password" val="Enviar contraseña" />
+  <re cu="es-ES" nm="FRM_OFFERLETTERNAME" val="Premio Nombre Carta" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_VACANCY" val="Oportunidad" />
+  <re cu="es-ES" nm="FRM_PRF_Team_Size" val="Tamaño del equipo" />
+  <re cu="es-ES" nm="NEWVACANCY_CREATE_FROM_TEMPLATE" val="Crear desde plantilla" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_LANGUAGES" val="Agregar idioma" />
+  <re cu="es-ES" nm="INT_ALLTERMINATED" val="Todas las entrevistas terminados" />
+  <re cu="es-ES" nm="FRM_USER_DIV_DIVNAME" val="División" />
+  <re cu="es-ES" nm="FRM_SEC_ROLE_NAME" val="Nombre de rol" />
+  <re cu="es-ES" nm="ACTION_DRAFT" val="Borrador" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_RATE" val="Tarifa" />
+  <re cu="es-ES" nm="SE_VAC_RND" val="Puesto a Ronda" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_LANGUAGES" val="Eliminar Idiomas" />
+  <re cu="es-ES" nm="FRM_VAC_DEL_VAC" val="Eliminar Vacante" />
+  <re cu="es-ES" nm="QT_ASK" val="Pida candidato" />
+  <re cu="es-ES" nm="FRM_ASC_TITLE_ASSOCIATION" val="Asociaciones" />
+  <re cu="es-ES" nm="CSMNU_USER_LOCATION" val="Usuario Ubicación" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Sat" val="Sáb" />
+  <re cu="es-ES" nm="FRM_PRF_Institution_Name" val="Nombre De La Institución" />
+  <re cu="es-ES" nm="FRM_LANGUAGE_BLOCK_DESCRIPTION" val="descripción" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_DELETE_SKILLSANDQUALIFICATION" val="Eliminar Habilidad / Calificación" />
+  <re cu="es-ES" nm="FRM_JOB_DIVNAME" val="División" />
+  <re cu="es-ES" nm="MNU_My_Vacancies" val="MIS OPORTUNIDADES" />
+  <re cu="es-ES" nm="FRM_SAVE_VAC_TEMPLATE" val="Guardar plantilla Vacante" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_JOBTYPE" val="Tipo De Trabajo" />
+  <re cu="es-ES" nm="FRM_PRF_How_Old" val="¿Eres mayor de 18 años?" />
+  <re cu="es-ES" nm="LST_POS_POSNAME" val="Tipo de programa" />
+  <re cu="es-ES" nm="Save" val="Guardar" />
+  <re cu="es-ES" nm="FRM_Res_Upload_Resume" val="Subir CV" />
+  <re cu="es-ES" nm="FRM_PRF_Hrs_Tue" val="Mar" />
+  <re cu="es-ES" nm="CSMNU_LANGUAGEBLOCKS" val="BLOQUES DE IDIOMAS" />
+  <re cu="es-ES" nm="FRM_PRF_Address" val="Dirección" />
+  <re cu="es-ES" nm="SE_Candidate" val="Candidato" />
+  <re cu="es-ES" nm="FRM_VAC_CASH_MATCH_REQ" val="Requisito Partido Efectivo" />
+  <re cu="es-ES" nm="LST_COMPANY_COMNAME" val="Cliente" />
+  <re cu="es-ES" nm="FRM_QUE_SAVE" val="Guardar pregunta" />
+  <re cu="es-ES" nm="FRM_PRF_Duties_And_Responsibilites" val="Oportunidad de Financiamiento Propósito" />
+  <re cu="es-ES" nm="FRM_UPV_Create" val="Crear" />
+  <re cu="es-ES" nm="FRM_VAC_STATUS_REASON" val="Razón para el estado" />
+  <re cu="es-ES" nm="ONBOARDING_MANAGER" val="Gerente Onboarding" />
+  <re cu="es-ES" nm="FRM_QUE_CAT_ADD" val="Guardar Categoría" />
+  <re cu="es-ES" nm="FRM_PRF_EDUCITY" val="Ciudad" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_ENABLE_COUNTER_OFFER" val="Habilitar contra ofertas" />
+  <re cu="es-ES" nm="FRM_PRF_Most_Recent_position" val="La mayoría Posición recientes" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_COM_NOTICE_PER" val="Empresa Período Aviso" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_HOURSWEEK" val="Horas por semana" />
+  <re cu="es-ES" nm="FRM_VACSTATUSNAME" val="Nombre" />
+  <re cu="es-ES" nm="FRM_ASC_STARTDATE" val="Fecha De Inicio" />
+  <re cu="es-ES" nm="FRM_PRF_Misdemeanor_Explain" val="En caso afirmativo, por favor explique" />
+  <re cu="es-ES" nm="SE_Division" val="División" />
+  <re cu="es-ES" nm="FRM_APP_REV_REVIEWER_ADD" val="Añadir Crítico" />
+  <re cu="es-ES" nm="BACK" val="Espalda" />
+  <re cu="es-ES" nm="FRM_DIVISION_REQUIRED_MSG" val="La división es un campo obligatorio" />
+  <re cu="es-ES" nm="CSMNU_SECURITY_TEMPLATES" val="Plantillas de seguridad" />
+  <re cu="es-ES" nm="QT_RATE" val="Valorar el candidato" />
+  <re cu="es-ES" nm="TOOLTIP_SHOW_NOT_FEATURE" val="Haz clic aquí para no figurar en la Web" />
+  <re cu="es-ES" nm="Job_Title" val="Título Profesional" />
+  <re cu="es-ES" nm="SE_SCHEDULE_DATE" val="Horario Fecha" />
+  <re cu="es-ES" nm="FRM_COMPANY_COMNAME" val="Nombre De La Empresa" />
+  <re cu="es-ES" nm="FRM_VAL_Required" val="se requiere" />
+  <re cu="es-ES" nm="FRM_PRF_Company_Details" val="Detalles De La Compañía" />
+  <re cu="es-ES" nm="DRP_Select_One" val="Seleccionar una o más" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_OFFER_LETTER" val="Carta de adjudicación" />
+  <re cu="es-ES" nm="FRM_Res_UseExisting" val="O Use Existing" />
+  <re cu="es-ES" nm="FRM_VAC_End_Date" val="Fecha final" />
+  <re cu="es-ES" nm="FRM_PUB_DESCRIPTION" val="Descripción" />
+  <re cu="es-ES" nm="MNU_MYDOCUMENTS" val="MIS DOCUMENTOS" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_VIEW" val="Vista" />
+  <re cu="es-ES" nm="FRM_UPV_Modify" val="Modificar" />
+  <re cu="es-ES" nm="FRM_VAC_PDF_COVER_LETTER" val="Descargar carta de presentación" />
+  <re cu="es-ES" nm="LST_VAC_Id" val="Identificación" />
+  <re cu="es-ES" nm="LST_USER_DIV_DIVNAME" val="División" />
+  <re cu="es-ES" nm="FRM_DIVPOS_POSNAME" val="Tipo de posición" />
+  <re cu="es-ES" nm="LST_USER_POS_USERNAME" val="Usuario" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_STARTDATE" val="Premio Fecha de Inicio" />
+  <re cu="es-ES" nm="MDL_User_Location" val="Usuario Ubicación" />
+  <re cu="es-ES" nm="FRM_CREATED_BY" val="Creado Por" />
+  <re cu="es-ES" nm="FRM_UPR_Last_Name" val="Apellido" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PER" val="Por" />
+  <re cu="es-ES" nm="FRM_UPV_All_Division" val="Todo División" />
+  <re cu="es-ES" nm="FRM_LAN_COMMENTS" val="Comentarios" />
+  <re cu="es-ES" nm="SE_Review_Panel" val="Panel de Revisión" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PICKLIST_SELECTION_EDITABLE_BY_MANAGER" val="Selección de lista de selección editable por el Gerente" />
+  <re cu="es-ES" nm="FRM_VAC_OPEN_VAC" val="Abrir Vacante" />
+  <re cu="es-ES" nm="SEARCH_JOBS" val="BUSCAR EMPLEO" />
+  <re cu="es-ES" nm="FRM_VAC_FULLPROFILE" val="Perfil completo" />
+  <re cu="es-ES" nm="FRM_PRF_END_MONTH" val="Fin Mes" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_MODIFY" val="Modificar" />
+  <re cu="es-ES" nm="FRM_PRF_TTL_Emergancy" val="Emergencia" />
+  <re cu="es-ES" nm="FRM_DESCRIPTION" val="Descripción" />
+  <re cu="es-ES" nm="FRM_PRF_Telephone" val="Teléfono" />
+  <re cu="es-ES" nm="FRM_CLIENT_STARTDATE" val="Fecha De Inicio" />
+  <re cu="es-ES" nm="FRM_SER_Date_Posted" val="Fecha De Publicación" />
+  <re cu="es-ES" nm="FRM_DEFAULTSTATUSSHOWTOCANDIDATE" val="Estado predeterminado Mostrar Para Candidato" />
+  <re cu="es-ES" nm="CSMNU_USER_POSITIONTYPE" val="Posición Usuario Tipo" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_SKILLSANDQUALIFICATIONS" val="Añadir Habilidad / Calificación" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_RATE_PERIOD" val="Período Tarifario" />
+  <re cu="es-ES" nm="FRM_NEW_OFFER_TEMPLATE" val="Nueva plantilla Oferta" />
+  <re cu="es-ES" nm="LST_VAC_Job_Title" val="Título Profesional" />
+  <re cu="es-ES" nm="FRM_ANSOPT_REMOVE" val="Retire respuesta" />
+  <re cu="es-ES" nm="Jobs" val="Empleos" />
+  <re cu="es-ES" nm="FRM_PRF_Date_Availability" val="Fecha Disponible" />
+  <re cu="es-ES" nm="FRM_APPBASEDSTATUSNAME" val="Nombre" />
+  <re cu="es-ES" nm="FRM_PRF_DOB" val="Fecha de nacimiento" />
+  <re cu="es-ES" nm="FRM_DIV_Parent_Division" val="División de Padres" />
+  <re cu="es-ES" nm="CSMNU_OFFERTEMPLATE" val="PLANTILLAS DE ADJUDICACIÓN" />
+  <re cu="es-ES" nm="FRM_PRF_PROFICIENCY" val="Competencia" />
+  <re cu="es-ES" nm="LST_USER_NAME" val="Nombre" />
+  <re cu="es-ES" nm="MDL_Divisions" val="Divisiones" />
+  <re cu="es-ES" nm="FRM_VAC_Employment_Type" val="Tipo De Empleo" />
+  <re cu="es-ES" nm="RECORD_ADDED_SUCCESSFULLY" val="Registro eliminado correctamente" />
+  <re cu="es-ES" nm="FRM_VAC_Vacancy_Applications" val="Aplicaciones de adjudicación" />
+  <re cu="es-ES" nm="FRM_VAC_Annual_Salary" val="Salario Anual" />
+  <re cu="es-ES" nm="MDL_Division_Position_type" val="División Posición Tipo" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_CREATE" val="Crear" />
+  <re cu="es-ES" nm="FRM_SER_Job_Location" val="Lugar del Trabajo" />
+  <re cu="es-ES" nm="APPLICATION_SUMMARY" val="Resumen de aplicaciones" />
+  <re cu="es-ES" nm="Update" val="Actualización" />
+  <re cu="es-ES" nm="MNU_Company_Setup" val="CONFIGURACIÓN DE ORGANIZACIÓN" />
+  <re cu="es-ES" nm="SE_Job_Location" val="Lugar del Trabajo" />
+  <re cu="es-ES" nm="Job" val="Trabajo" />
+  <re cu="es-ES" nm="FRM_PORTAL_BAN_TITLE" val="Portal Banner Título" />
+  <re cu="es-ES" nm="FRM_SHOWTOCANDIDATE" val="Mostrar Para Candidato" />
+  <re cu="es-ES" nm="MSG_DELETE_ALREADY_UNDERWAY_OR_COMPLETED" val="Lo sentimos no se puede eliminar una entrevista que ya está en marcha o finalizados." />
+  <re cu="es-ES" nm="FRM_PRF_Credential_Password" val="Contraseña" />
+  <re cu="es-ES" nm="LST_QUECATNAME" val="Pregunta Categoría" />
+  <re cu="es-ES" nm="SE_Application" val="Aplicación" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_EDUCATION" val="Añadir Educación" />
+  <re cu="es-ES" nm="FRM_UPR_Profile_Name" val="Nombre De Perfil" />
+  <re cu="es-ES" nm="FRM_PRF_Pager" val="Buscapersonas" />
+  <re cu="es-ES" nm="FRM_VAC_Job_title" val="Oportunidad Nombre" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_BONUS_CAP" val="Cap Bono" />
+  <re cu="es-ES" nm="FRM_SER_Search_Result" val="Resultado De Búsqueda" />
+  <re cu="es-ES" nm="FRM_USER_TTL_SECURITYROLE" val="Papel Seguridad" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_PLACEMENT_TYPE" val="Tipo de Premio" />
+  <re cu="es-ES" nm="INVALID_DATE" val="Fecha Invalida" />
+  <re cu="es-ES" nm="FRM_VACRND_AssignCanBatches" val="Asignar candidatos en lotes de" />
+  <re cu="es-ES" nm="FRM_APP_REV_WEIGHT" val="Peso" />
+  <re cu="es-ES" nm="FRM_PUB_COMMENTS" val="Comentarios" />
+  <re cu="es-ES" nm="FRM_PRF_First_Name" val="Nombre" />
+  <re cu="es-ES" nm="CSMNU_REVIEWROUNDS" val="RONDAS DE REVISIÓN" />
+  <re cu="es-ES" nm="LST_VAC_Offers" val="Ofertas" />
+  <re cu="es-ES" nm="ROUND_REVIEWERS_TITLE" val="Título" />
+  <re cu="es-ES" nm="FRM_CATEGORY" val="Categoría" />
+  <re cu="es-ES" nm="ROUND_REVIEWERS" val="Los revisores" />
+  <re cu="es-ES" nm="SE_Resume" val="Currículum" />
+  <re cu="es-ES" nm="FRM_SER_FullT_PartT" val="Full-Time / Part-Time" />
+  <re cu="es-ES" nm="TerminateAndDecline" val="Terminado Y Rehusó" />
+  <re cu="es-ES" nm="CSMNU_EMAILTEMPLATES" val="Plantillas de correo electrónico" />
+  <re cu="es-ES" nm="LST_VAC_Posted_On" val="Publicado el" />
+  <re cu="es-ES" nm="FRM_PRF_Hours_Availibility" val="Horas Availibiity" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_COMM_CAP" val="Comisión Cap" />
+  <re cu="es-ES" nm="FRM_PRF_Target_Income" val="Ingreso Anual Objetivo" />
+  <re cu="es-ES" nm="VACSTATUS_OPEN" val="ABIERTO" />
+  <re cu="es-ES" nm="LST_USER_LOC_LOC" val="Ubicación" />
+  <re cu="es-ES" nm="UPLOADRESUME" val="Subir CV" />
+  <re cu="es-ES" nm="FRM_SER_Salary_Range" val="Rango de Salario anual" />
+  <re cu="es-ES" nm="CREATE_PROFILE_OR_LOGIN_HERE" val="Crear perfil o" />
+  <re cu="es-ES" nm="FRM_PRF_Emergancy_Contact2" val="Suplente / Contacto de Emergencia 2" />
+  <re cu="es-ES" nm="FRM_PRF_Eligible_To_Work_In_Us" val="¿Es usted elegible para trabajar en los Estados Unidos?" />
+  <re cu="es-ES" nm="NOT_ABLE_TO_DELETE_RECORD" val="No capaz de Eliminar registro" />
+  <re cu="es-ES" nm="InterViewComplete" val="Entrevista Completado" />
+  <re cu="es-ES" nm="CSMNU_DIVISION" val="DIVISIONES" />
+  <re cu="es-ES" nm="CREATE_PROFILE" val="Crear Perfil" />
+  <re cu="es-ES" nm="FRM_VAC_CAN_LINK" val="Copia Candidato Enlace" />
+  <re cu="es-ES" nm="MNU_Message" val="Mensaje" />
+  <re cu="es-ES" nm="VACSTATUS_CLOSED" val="CERRADO" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_ACHIEVEMENTS" val="Añadir Logro" />
+  <re cu="es-ES" nm="ROUND_QUESTIONS" val="Preguntas" />
+  <re cu="es-ES" nm="FRM_REMOVEDECLINESTATUS" val="Retire Estado Decline" />
+  <re cu="es-ES" nm="FEATURED_JOBS" val="TRABAJOS DESTACADOS" />
+  <re cu="es-ES" nm="SE_Position_Type" val="Tipo de posición" />
+  <re cu="es-ES" nm="Language" val="Idioma" />
+  <re cu="es-ES" nm="FRM_APP_REV_QUE_ADD" val="Agregar pregunta" />
+  <re cu="es-ES" nm="FRM_VAC_ADD_TEMPLATE" val="Añadir plantilla" />
+  <re cu="es-ES" nm="FRM_PRF_Submitted_Application_Before" val="¿Alguna vez ha aplicado a esta compañía antes?" />
+  <re cu="es-ES" nm="FRM_VAC_EXP_DATE" val="Fecha de caducidad" />
+  <re cu="es-ES" nm="FRM_PRF_AFFIX" val="Afijo" />
+  <re cu="es-ES" nm="FRM_PRF_Work_Email" val="Trabajo Correo" />
+  <re cu="es-ES" nm="FRM_VAC_Compensation_Info" val="Instrucciones de Aplicación" />
+  <re cu="es-ES" nm="Details" val="Detalles" />
+  <re cu="es-ES" nm="FRM_MAKEOFF_BONUS_DESC" val="Bono Descripción" />
+  <re cu="es-ES" nm="FRM_USER_PRIV_TTL_SECROLES" val="Roles de seguridad" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_EDUCATIONDELETE" val="Eliminar Educación" />
+  <re cu="es-ES" nm="MNU_COMPANYSETUP" val="Configuración de la compañía" />
+  <re cu="es-ES" nm="FRM_VAC_FOA" val="Número Oppty Financiamiento (FOA)" />
+  <re cu="es-ES" nm="FRM_VAC_Job_Type" val="Completo-Tiempos / Parte-Tiempo" />
+  <re cu="es-ES" nm="FRM_PUB_NAME" val="Nombre" />
+  <re cu="es-ES" nm="ACTION_SAVE_TO_MYJOBS" val="Save To &quot;Mis trabajos&quot;" />
+  <re cu="es-ES" nm="FRM_OFFER_POSITIONTYPE" val="Premio al tipo de programa" />
+  <re cu="es-ES" nm="Welcome" val="Bienvenida" />
+  <re cu="es-ES" nm="FRM_PRF_Major_Subject" val="Mayor Asunto" />
+  <re cu="es-ES" nm="FRM_VAC_Position_Requested_By" val="Posición solicitada por" />
+  <re cu="es-ES" nm="CSMNU_APPBASEDSTATUS" val="Aplicación de estado base" />
+  <re cu="es-ES" nm="FRM_PRF_Middle_Name" val="Segundo Nombre" />
+  <re cu="es-ES" nm="FRM_CLIENT_SUBDOMAIN" val="Subdominio" />
+  <re cu="es-ES" nm="FRM_USER_LOC_USERNAME" val="Usuario" />
+  <re cu="es-ES" nm="FRM_SER_Skill_Range" val="Habilidad Buscar" />
+  <re cu="es-ES" nm="LST_AC_TITLE_APPLICANT_REVIEW_PROCESS" val="Proceso de Revisión del solicitante" />
+  <re cu="es-ES" nm="MDL_CHANGE_STATUS" val="CAMBIO ESTADO" />
+  <re cu="es-ES" nm="LST_USER_POS_POSNAME" val="Tipo de posición" />
+  <re cu="es-ES" nm="FRM_VAC_Featured_On_Web" val="Utilizado en la Web" />
+  <re cu="es-ES" nm="FRM_PRF_NATIONALITY" val="Nacionalidad" />
+  <re cu="es-ES" nm="BTN_LIC_DELETE" val="Eliminar Licencia y Certificación" />
+  <re cu="es-ES" nm="FRM_PRF_BTN_ADD_LICENCEANDCERTIFICATIONS" val="Añadir Licencia / Certificación" />
+  <re cu="es-ES" nm="FRM_VAC_Hourly_Max" val="Hora Max" />
+  <re cu="es-ES" nm="FRM_APP_REV_ROUND" val="Ronda" />
+  <re cu="es-ES" nm="FRM_PRF_Company_Name" val="Nombre De La Empresa" />
+</res>

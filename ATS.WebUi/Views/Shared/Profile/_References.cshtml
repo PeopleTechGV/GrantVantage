@@ -1,0 +1,154 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.References
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header" recordid='@Model.ReferencesId'>
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@String.Format("{0}", String.IsNullOrEmpty(Model.ReferenceName) ? "New Reference" : ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.ReferenceName))</span>
+        <span class="notification" style="display:none;"></span>
+        <span class="Save" style="display:none;"><button type="button" onclick="return outerSave(this);"></button></span>
+        <span class="delete"><a href='@Url.Action("RemoveReferences", "Profile", new { @area = "", @precordId = Model.ReferencesId })' recordid='@Model.ReferencesId' onclick="return DeleteReferences(this);"><img src="~/Content/images/delete_16.png" /></a></span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    @using (Ajax.BeginForm("AddUpdateReferences", "Profile", new { area = "" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "ReferencesSuccess(data ,'" + Model.ReferencesId + "')",
+        OnFailure = "ReferencesFailure",
+    }, new { id = "frmReferences", isFormChange = "false" }))
+    {
+        <text>
+
+            <script>
+                function outerSave(element) {
+                    var head = $(element).closest('.acc-header');
+                    var myform = $(head).next().children().get(0);
+                    var isvalidate = $(myform).valid();
+                    if (isvalidate) {
+                        $(myform).submit();
+                    }
+                    return false;
+                }
+
+                function CopyReferenceName(changeVal) {
+                    var cur = $(changeVal);
+                    VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+                }
+
+                function ReferencesSuccess(data, custom) {
+                    data = JSON.parse(data);
+                    //change delete link value
+                    var deletelink = $("a[recordid='" + custom + "']").get(0);
+                    if (data.Data !== "" && !data.IsError) {
+                        //change primary key value which is stored in hidden field
+                        var stext = $("input[value='" + custom + "']");
+                        stext.val(data.Data);
+
+                        var currentForm = $(stext.parents("form#frmReferences"));
+                        var attrText = currentForm.attr("data-ajax-success")
+                        currentForm.attr("data-ajax-success", attrText.replace(custom, data.Data));
+
+                        deletelink.href = deletelink.href.replace(custom, data.Data)
+                        $(deletelink).attr("recordid", data.Data);
+                    }
+                    VacancyModel.DisplayProfileNotification(data, deletelink);
+                    return false;
+                }
+                /*Delete Record*/
+                function DeleteReferences(changeVal) {
+                    var _title = $(changeVal).parents('.acc-Content').prev().children('.prfle-tab-head').text();
+                    var _index = _title.indexOf("(");
+                    _title = _title.substring(1, _index) + '"' + $($(changeVal).parent().siblings(".ttldb").first()).text() + '"';
+
+
+                    VacancyModel.ConfirmDialog("ConfirmDiv", "Are you sure you want to delete?", 300, _title, "Yes", "Cancel", "RemoveReferencesDiv", changeVal, "References");
+                    return false;
+                }
+
+                function RemoveReferencesDiv(Result, element, RemoveDivName) {
+                    if (Result == true) {
+                        $.ajax({
+                            url: element.href,
+                            cache: false,
+                            success: function (data) {
+                                data = JSON.parse(data);
+                                if (data.IsError == false) {
+                                    var head = $(element).closest('.acc-header');
+                                    head.next().remove();
+                                    head.remove();
+                                    var $header = $("#accReferences").parent().parent().prev();
+                                    var headcount = $("#accReferences").find(".acc-header").size();
+                                    $header.find('.prfle-tab-head > .count').html("(" + headcount + ")")
+                                    VacancyModel.ProfileHeaderCount($header);
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert(xhr.status);
+                                alert(thrownError);
+                            }
+                        });
+                    }
+                }
+
+                function ReferencesFailure(data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+            </script>
+        </text>
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        @Html.HiddenFor(m => m.ReferencesId, new { @class = "ignore" })
+
+                        @Html.HiddenFor(m => m.UserId, new { @class = "ignore" })
+                        @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+
+                        <div class="left-div">
+
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ReferenceName, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.ReferenceName, new { @class = "detail-input", @onchange = "CopyReferenceName(this);", @tabindex = "5" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ReferencePhone, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.ReferencePhone, new { @class = "detail-input", @tabindex = "7" })
+                            </div>
+
+
+                        </div>
+                        <div class="right-div">
+
+                            <div class="box">
+
+                                @Html.LanguageLabelFor(m => m.Relationship, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.Relationship, new { @class = "detail-input", @tabindex = "6" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ReferenceEmail, new { @class = "label" })
+
+                                @Html.TextBoxFor(m => m.ReferenceEmail, new { @class = "detail-input", @tabindex = "8" })
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper">Save Reference</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

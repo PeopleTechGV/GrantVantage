@@ -1,0 +1,10 @@
+﻿@model ATS.BusinessEntity.ReActivate
+@Html.ValidationSummary()
+
+@using (Html.BeginForm("ResendActivationLinkForSignUp", "Home"))
+{
+    @Html.HiddenFor(m => m.UserName)
+    <div style="margin-top:0px;">
+        <input type="Submit" value="Resend the Activation Link" id="Act" class="btn-Activation-key" />
+    </div>
+}

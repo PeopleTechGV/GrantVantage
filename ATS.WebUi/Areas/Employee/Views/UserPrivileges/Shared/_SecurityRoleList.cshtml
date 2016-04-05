@@ -1,0 +1,132 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@model ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<ATSModel>>
+@using BEUserPrivilegesConst = ATS.BusinessEntity.Common.UserPrivilegesConst
+
+
+<div class="acc-Content">
+    <div class="ats-roles-box">
+
+        <div class="roles-title spctop-btm">
+            @Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_SELECTSECROLES)
+        </div>
+        @{string[] value = ViewBag.DisableSecurityRoles;
+        var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns);
+        if (ViewBag.IsHorizontal == 1)
+        {
+            htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 3, new { @class = "styled_list", id = "RoleChk" });
+        }
+        else
+        {
+            htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 1, new { @class = "styled_list", id = "RoleChk" });
+        }
+
+        @Html.CheckBoxListFor(Model => Model.obj.obj.objATSSecurityRolePrivilagesMaster.SRP_Ids,
+                                                Model => Model.obj.obj.AvailableSecurityRoleList,
+                              divis => divis.SRP_Id,
+                              divis => divis.RoleLocalName,
+                                                                  Model => Model.obj.obj.SelectedSecurityRoleList, new { @class = "styled_checkbox", @style = "color: #345E8E !important;" }, htmlListInfo, value, x => new { @onclick = "CommonPrivilege()" })
+
+        }
+       
+    
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+    function CommonPrivilege(userid ) {
+        if ('@ViewBag.IsFromUser' == '1') {
+        }
+        
+        else {
+            userid = document.getElementById('drp_User').value;
+            var PrivilegeList = GetAdHocRights();
+            var SecurityRoleIds = '';
+            var ListOfSecurityRoleIds = document.getElementsByName("obj.obj.objATSSecurityRolePrivilagesMaster.SRP_Ids");
+            for (var v = 0; v < ListOfSecurityRoleIds.length; v++) {
+                if (ListOfSecurityRoleIds[v].checked == true) {
+                    if (SecurityRoleIds == '') {
+                        SecurityRoleIds = ListOfSecurityRoleIds[v].value;
+                    }
+                    else { SecurityRoleIds = SecurityRoleIds + ',' + ListOfSecurityRoleIds[v].value; }
+                }
+            }
+            if (MySecurityRole != SecurityRoleIds) {
+                userid = undefined;
+            }
+            if (SecurityRoleIds != '' ) {
+                $.post("UserPrivileges/GetAllPrivilegeBySecurityRoleId", { SecurityRoleId: SecurityRoleIds }
+            , function (data) {
+                data = JSON.parse(data);
+                EnableEntity(data.PrivilegeList, data.DisableList);
+                if (PrivilegeList.length > 0 && MySecurityRole == SecurityRoleIds) {
+                    ApplyAdHocRights(PrivilegeList);
+                }
+                if(userid!=undefined){
+                    console.log('GetAdHocRoles');
+                    $.post("UserPrivileges/GetAdHocRoles", { UserId: userid }, function (data) {
+                        data = JSON.parse(data);
+                        if (data.length > 0) {
+                            ApplyAdHocRights(data);
+                        }
+                        if('@ViewBag.IsReadOnly' == '1')
+                        {
+                            VacancyModel.MakeFormReadOnly('frmCompanySetup');
+                            $('#frmCompanySetup').find('#drp_User').find('option').removeAttr('disabled');
+                            isFormReadOnly = true;
+                        }
+                        callSuccessSaved();
+                    });
+                }
+            });
+            }
+            else  {
+                $.post("UserPrivileges/GetAllATSPrevilegeByClientAndLanguage", {}
+            , function (data) {
+                data = JSON.parse(data);
+                for (var v = 0; v < data.length; v++) {
+                    var objList = document.getElementById('Name_' + data[v].PrivilegeId);
+                    if (objList != null) {
+                        var All = objList.children[0];
+
+                        var Sister = objList.children[1];
+                        var Children = objList.children[2];
+                        var Own = objList.children[3];
+                        UncheckedAllCheckBox(All, Sister, Children, Own);
+                        DisableAllCheckBox(All, Sister, Children, Own);
+                        for (var i = 1; i <= 4; i++) {
+                            ShowPermissionAsLabel(data[v].PrivilegeId, i, All, Sister, Children, Own);
+                        }
+                    }
+                }
+            });
+            }
+           
+        }
+    }
+
+    function OnClickValidate() {
+        if ($("#frmCompanySetup").attr('id') != undefined && !$("#frmCompanySetup").valid()) {
+            $("#frmCompanySetup").submit();
+            var validator = $("#frmCompanySetup").validate();
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', validator.errorList[0].message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                return false;
+            }
+        }
+        var securityRole = document.getElementsByName('obj.obj.objATSSecurityRolePrivilagesMaster.SRP_Ids');
+        var checkedSecurityRole = 0;
+        for (var v = 0; v < securityRole.length; v++) {
+            if (securityRole[v].checked == true)
+            { checkedSecurityRole += 1; }
+        }
+        if (checkedSecurityRole == 0) {
+            
+            VacancyModel.DisplayErrorMeesage('#commonMessage', 'Select atleast one security role.', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            return false;
+        }
+        else { return true; }
+    }
+</script>

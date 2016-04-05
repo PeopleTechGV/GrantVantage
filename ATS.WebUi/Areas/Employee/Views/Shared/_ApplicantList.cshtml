@@ -1,0 +1,375 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@model IList<BEClient.VacancyApplicant>
+
+@{
+    string imgpath = HttpContext.Current.Request.Url.ToString().Substring(0, HttpContext.Current.Request.Url.ToString().IndexOf("/Employee"));
+
+}
+<style>
+    .profileImg {
+        background-image: none;
+    }
+
+    .profileImg {
+        -webkit-transition: all 1s ease; /* Safari and Chrome */
+        -moz-transition: all 1s ease; /* Firefox */
+        -ms-transition: all 1s ease; /* IE 9 */
+        -o-transition: all 1s ease; /* Opera */
+        transition: all 1s ease;
+        position: relative;
+    }
+
+        .profileImg:hover {
+            -webkit-transform: scale(2.25); /* Safari and Chrome */
+            -moz-transform: scale(2.25); /* Firefox */
+            -ms-transform: scale(2.25); /* IE 9 */
+            -o-transform: scale(2.25); /* Opera */
+            transform: scale(2.25);
+        }
+
+    .profileImg {
+        border: 2px solid #345E8E;
+        border-radius: 2px;
+    }
+</style>
+
+
+
+<div class="GridContainer AccGrid" style="margin-left: 2%;">
+    <ul class="RowHeader">
+        <li class="w5">&nbsp;</li>
+        <li class="w30">Applicant Name</li>
+        <li class="w15">Applied On</li>
+        <li class="w25">Status</li>
+        <li class="w15">Score</li>
+        <li class="w10">Actions</li>
+    </ul>
+    @foreach (BEClient.VacancyApplicant _VacancyApplicant in Model)
+    {
+        int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByVacRndId(_VacancyApplicant.objVacancyRound.VacancyRoundId);
+        var IsSurveyPending = false;
+        if (RndAttrNo == (int)BERndAttr.CandidateSurvey)
+        {
+            IsSurveyPending = ATS.WebUi.Common.CommonFunctions.GetAnswerStatusByVacRndId(_VacancyApplicant.ApplicationId, _VacancyApplicant.objVacancyRound.VacancyRoundId);
+        }
+
+        <ul class="RowContent CursorPointer" data-vacancyid="@_VacancyApplicant.VacancyId" data-id="@_VacancyApplicant.ApplicationId" data-isnotviewable="@_VacancyApplicant.IsNotViewable">
+            <li class="w5 absProfileImg">
+                @if (_VacancyApplicant.ProfileImage != "")
+                {
+                    <img class="profileImg" src="@imgpath/UploadImages/ProfileImage/@_VacancyApplicant.ProfileImage" width="32" />
+                }
+                else
+                {
+                    <img src="@imgpath/UploadImages/ProfileImage/Candidate_32.png" width="32" />
+                }
+            </li>
+            <li class="w30 SMW80 cntName">@_VacancyApplicant.ApplicantName</li>
+            <li class="w15 SMW80 cntAppliedOn">@_VacancyApplicant.AppliedOn.ToString("MM/dd/yyyy")</li>
+            <li class="w25 SMW80 cntStatus">@_VacancyApplicant.ApplicantionStatus</li>
+            <li class="w15 SMW80 cntScore">@ATS.BusinessEntity.Common.CommonFunction.GetScoreFormat(_VacancyApplicant.Score)</li>
+            <li class="w10 absAction" data-vacrndid='@_VacancyApplicant.objVacancyRound.VacancyRoundId'>
+                <ul id="VacStatus" class="DropMenu">
+                    <li>
+                        <a><img src='@Url.Content("~/Content/images/Options_Gear_24.png")' /></a>
+                        <ul>
+                            @if (_VacancyApplicant.objVacancyRound.isReviewer)
+                            {
+                                if (_VacancyApplicant.objApplicationReviewProcess.IsApplicationDecline)
+                                {
+                                    <li><a class="WithIcon bgReactivate" onclick="ReactiveCandidateApplication(this)">Reactive Applicant</a></li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a onmouseover="setMenuPosition(this,'#ulDeclineReasons')" class="WithIcon bgDecline">Decline Applicant<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /> </a>
+                                        <ul id="ulDeclineReasons">
+                                            @foreach (var v in _VacancyApplicant.objApplicationReviewProcess.ApplicationBasedStatusList.Where(x => x.Category == "Declined").ToList())
+                                            {
+                                                <li><a id="btnClose" data-appstatusid='@v.ApplicationBasedStatusId' onclick="UpdateApplication(this)">@v.LocalName</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    if (_VacancyApplicant.objVacancyRound.IsRndActive)
+                                    {
+                                        if (_VacancyApplicant.objVacancyRound.RndOrder == _VacancyApplicant.objVacancyRound.RndCnt)
+                                        {
+                                            <li><a id="btnDemote" class="WithIcon bgDemote" onclick="DemoteCandidateApp(this);">Demote Applicant</a></li>
+                                        }
+                                        else if (_VacancyApplicant.objVacancyRound.RndOrder < _VacancyApplicant.objVacancyRound.RndCnt && _VacancyApplicant.objVacancyRound.RndOrder > 1)
+                                        {
+                                            if (_VacancyApplicant.objVacancyRound.RoundAttributeNo != Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.OfferRound))
+                                            {
+                                                if (IsSurveyPending)
+                                                {
+                                                    <li><a id="btnSurveyReminder" class="WithIcon bgResend" onclick="ResendSurveyReminder(this);">Resend Survey Link</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a id="btnPromote" class="WithIcon bgPromote" onclick="PromoteCandidateApp(this);">Promote Applicant</a></li>
+                                                }
+                                            }
+                                            <li><a id="btnDemote" class="WithIcon bgDemote" onclick="DemoteCandidateApp(this);">Demote Applicant</a></li>
+                                        }
+                                        else
+                                        {
+                                            if (IsSurveyPending)
+                                            {
+                                                <li><a id="btnSurveyReminder" class="WithIcon bgResend" onclick="ResendSurveyReminder(this);">Resend Survey Link</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a id="btnPromote" class="WithIcon bgPromote" onclick="PromoteCandidateApp(this);">Promote Applicant</a></li>
+                                            }
+                                        }
+                                        if (_VacancyApplicant.objVacancyRound.RoundAttributeNo != Convert.ToInt32(ATS.BusinessEntity.RndAttrNo.OfferRound) &&
+                                            _VacancyApplicant.objVacancyRound.OfferStatusId == Convert.ToInt32(ATS.BusinessEntity.VacancyOfferStatus.Company_Confirmed))
+                                        {
+                                            <li><a id="btnHireCandidate" class="WithIcon bgHireCandidate">Hire Applicant</a></li>
+                                        }
+                                    }
+                                }
+                            }
+                            <li>
+                                <a onmouseover="setMenuPosition(this, '#ulAppDocsList')" class="WithIcon bgExport16 showData">Download<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow" /></a>
+                                <ul id="ulAppDocsList">
+                                    @if (_VacancyApplicant.objApplicationReviewProcess.ObjApplicationDocuments != null && _VacancyApplicant.objApplicationReviewProcess.ObjApplicationDocuments.Count > 0)
+                                    {
+                                        string _path = HttpContext.Current.Request.Url.AbsoluteUri.Substring(0, HttpContext.Current.Request.Url.AbsoluteUri.IndexOf("/Employee"));
+                                        foreach (BEClient.ApplicationDocuments objDoc in _VacancyApplicant.objApplicationReviewProcess.ObjApplicationDocuments)
+                                        {
+                                            <li><a class="WithIcon bgResume" target="_blank" href='@_path@objDoc.Path.Replace("~", "")'>@objDoc.RequiredDocumentName</a></li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><a id="btnPreviewResume" class="WithIcon bgResume" onclick="PreviewResume(this);" filepath='@String.Format("{0}{1}", ATS.WebUi.Common.ConfigurationMapped.Instance.ResumeURL, _VacancyApplicant.NewFileName)'>Preview Resume</a></li>
+                                        if (!_VacancyApplicant.CoverLetterId.Equals(Guid.Empty))
+                                        {
+                                            <li><a id="btnPreviewCoverLetter" class="WithIcon bgCoverLetter" onclick="PreviewCoverLetter(this);" filepath='@String.Format("{0}{1}", ATS.WebUi.Common.ConfigurationMapped.Instance.ResumeURL, _VacancyApplicant.NewCoverLetterName)'>Preview Cover Letter</a></li>
+                                        }
+                                    }
+                                    <li><a id="btnFullProfile" class="WithIcon bgPdf" data-client='@ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname' data-user='@ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.UserId' onclick="ShowData2(this)">@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_VAC_PDF)</a></li>
+                                    <li><a href='@Html.Raw(Url.Action("DownloadAllAppDocsZipByApplicationId", "MyVacancy", new { ApplicationId = _VacancyApplicant.ApplicationId, UserId = Guid.Empty }))' id="btnAllZip" class="WithIcon bgZip id=" btnallzip" class="WithIcon bgZip">All (zip file)</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li id="btnViewDetailsMob" class="ViewDetailsMob MobView" onclick="btnViewDetailsMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+        <div id="viewdoc" style="display: none; width: 710px;" height="700">
+            <iframe id="DocViewer" src="" width="100%" height="700" style="border: none;"></iframe>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".mnuVSAction").hover(function (event) {
+            $(this).parents(".acc-Content").addClass("AccRevRatMain");
+        }, function () {
+            $(this).parents(".acc-Content").removeClass("AccRevRatMain");
+        });
+        //Overflow issue in chrome for image & Gearbox hover option
+        $(".RowContent img").each(function () {
+            $(this).hover(function () {
+                $(this).parents(".acc-Content").css("overflow", "visible");
+            });
+        });
+    });
+
+    function PreviewResume(data) {
+        var Loc = $(data).attr('filepath');
+        var GoogleHref = 'http://docs.google.com/viewer?url=' + Loc + '&embedded=false';
+        window.open(GoogleHref, GoogleHref, "width=1000,height=800,scrollbars=yes,resizable = yes");
+    }
+
+    function PreviewCoverLetter(data) {
+        var Loc = $(data).attr('filepath');
+        var GoogleHref = 'http://docs.google.com/viewer?url=' + Loc + '&embedded=false';
+        window.open(GoogleHref, GoogleHref, "width=1000,height=800,scrollbars=yes,resizable = yes");
+    }
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var divisionId = $(this).attr("data-id");
+        var isNotViewable = $(this).attr("data-isNotViewable");
+        if (isNotViewable == "False") {
+            var dLink = '@Html.Raw(Url.Action("GetCandidateProfile", "MyCandidates", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_DATAID_" }))';
+            dLink = dLink.replace("_DATAID_", divisionId);
+            window.location = dLink;
+        }
+    });
+
+    function btnViewDetailsMob(element) {
+        var ApplicationId = $(element).parents(".RowContent").attr("data-id")
+        var isNotViewable = $(element).parents(".RowContent").attr("data-isNotViewable");
+        if (isNotViewable == "False") {
+            var dLink = '@Html.Raw(Url.Action("GetCandidateProfile", "MyCandidates", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ApplicationId = "_DATAID_" }))';
+            dLink = dLink.replace("_DATAID_", ApplicationId);
+            window.location = dLink;
+        }
+    }
+
+    function ResendSurveyReminder(element) {
+        var VacRndId = $(element).parents('#VacStatus').parent('li').attr('data-vacrndid');
+        var Applicationid = $(element).parents('.RowContent').attr('data-id');
+        var dataLink = '@Html.Raw(Url.Action("ResendSurveyReminder", "Application", new { ApplicationId = "_APPLICATIONID_", VacRndId = "_VACRNDID_" }))';
+        dataLink = dataLink.replace("_APPLICATIONID_", Applicationid);
+        dataLink = dataLink.replace("_VACRNDID_", VacRndId);
+        VacancyModel.CallPostMethod(dataLink, function (data) {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', "Applicant survey link sent successfully", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        });
+    }
+
+    function PromoteCandidateApp(element) {
+        var _ele = $(element);
+        var promoteVacrndid = $(_ele).parents('#VacStatus').parent('li').attr('data-vacrndid');
+        var appid = $(_ele).parents('.RowContent').attr('data-id');
+        var vacid = $(_ele).parents('.RowContent').attr('data-vacancyid');
+        if (appid != undefined || promoteVacrndid != undefined) {
+            var _datalink = '@Html.Raw(Url.Action("promoteCandidateApp", "Application", new { AppId = "_APPID_", VacRndId = "_VACRNDID_", VacancyId = "_VACID_"}))';
+            _datalink = _datalink.replace("_APPID_", appid);
+            _datalink = _datalink.replace("_VACRNDID_", promoteVacrndid);
+            _datalink = _datalink.replace("_VACID_", vacid);
+            VacancyModel.CallPostMethod(_datalink, function (data) {
+                var active = $(_ele).closest("#VacancyAcc").accordion("option", "active");
+                $(_ele).closest("#VacancyAcc").accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", active);
+                var SelectedStatus = $("#SelectedStatus").html();
+                ReplaceApplicationStatusMenu(data, SelectedStatus);
+            });
+        }
+    }
+
+    function DemoteCandidateApp(element) {
+        var _ele = $(element);
+        var promoteVacrndid = $(_ele).parents('#VacStatus').parent('li').attr('data-vacrndid');
+        var appid = $(_ele).parents('.RowContent').attr('data-id');
+        var vacid = $(_ele).parents('.RowContent').attr('data-vacancyid');
+        if (appid != undefined || promoteVacrndid != undefined) {
+            var _datalink = '@Html.Raw(Url.Action("DemoteCandidateApp", "Application", new { AppId = "_APPID_", VacRndId = "_VACRNDID_", VacancyId = "_VACID_"}))';
+            _datalink = _datalink.replace("_APPID_", appid);
+            _datalink = _datalink.replace("_VACRNDID_", promoteVacrndid);
+            _datalink = _datalink.replace("_VACID_", vacid);
+            VacancyModel.CallPostMethod(_datalink, function (data) {
+                var active = $(_ele).closest("#VacancyAcc").accordion("option", "active");
+                $(_ele).closest("#VacancyAcc").accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", active);
+                var SelectedStatus = $("#SelectedStatus").html();
+                ReplaceApplicationStatusMenu(data, SelectedStatus);
+            });
+        }
+    }
+
+    function UpdateApplication(element) {
+        var _ele = $(element);
+        var _appstatusid = $(_ele).attr('data-AppStatusId');
+        var _appid = $(_ele).parents('.GridContainer').find(".RowContent").attr('data-id');
+        var _vacid = $(_ele).parents('.GridContainer').find('.RowContent').attr('data-vacancyid');
+        var _url = '@Html.Raw(Url.Action("UpdateApplicationBasedStatus", "MyVacancy", new { ApplicationId = "_APPID_", ApplicationBasedStatusId = "_APPBASEDSTATUS_", VacancyId = "_VACID_" }))';
+        _url = _url.replace("_APPID_", _appid);
+        _url = _url.replace("_VACID_", _vacid);
+        _url = _url.replace("_APPBASEDSTATUS_", _appstatusid);
+        $.post(_url, function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                var active = $(_ele).closest("#VacancyAcc").accordion("option", "active");
+                $(_ele).closest("#VacancyAcc").accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", active);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                var SelectedStatus = $("#SelectedStatus").html();
+                ReplaceApplicationStatusMenu(jsonData.Data, SelectedStatus);
+            }
+            else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+    }
+
+    function ReactiveCandidateApplication(element) {
+        var _ele = $(element);
+        var _appstatusid = $(_ele).attr('data-AppStatusId');
+        var _appid = $(_ele).parents('.GridContainer').find(".RowContent").attr('data-id');
+        var _vacid = $(_ele).parents('.GridContainer').find('.RowContent').attr('data-vacancyid');
+        var _url = '@Html.Raw(Url.Action("ReactiveBasedStatus", "MyVacancy", new { ApplicationId = "_APPID_", VacancyId = "_VACID_" }))';
+        _url = _url.replace("_APPID_", _appid);
+        _url = _url.replace("_VACID_", _vacid);
+        $.post(_url, function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                var active = $(_ele).closest("#VacancyAcc").accordion("option", "active");
+                $(_ele).closest("#VacancyAcc").accordion('destroy').accordion(VacancyModel.AccFirstAttr).accordion("option", "active", active);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                var SelectedStatus = $("#SelectedStatus").html();
+                ReplaceApplicationStatusMenu(jsonData.Data, SelectedStatus);
+            }
+            else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+    }
+
+    function ShowData(element) {
+        var _ele = $(element)
+        var _appid = $(_ele).parents('.GridContainer').find(".RowContent").attr('data-id');
+        var url = '@Html.Raw(@Url.Action("Index", "CandidateDetails", new {ApplicationId = "_APPID_" ,ClientName = "_CLIENTNAME_" , UserId = "_USERID_"}))';
+        var clientid = $(_ele).attr('data-client');
+        var userid = $(_ele).attr('data-user');
+        url = url.replace("_APPID_", _appid);
+        url = url.replace("_CLIENTNAME_", clientid);
+        url = url.replace("_USERID_", userid);
+        window.open(url, null, "width=1000,height=800,scrollbars=yes,resizable = yes");
+    }
+
+    function ShowData2(element) {
+        var _ele = $(element)
+        var _appid = $(_ele).parents('.GridContainer').find(".RowContent").attr('data-id');
+        var url1 = '@Html.Raw(Url.Action("Index", "CandidateDetails", new { ApplicationId = "_APPID_", ClientName = "_CLIENTNAME_", UserId = "_USERID_" }))';
+        var clientid = $(_ele).attr('data-client');
+        var userid = $(_ele).attr('data-user');
+        url1 = url1.replace("_APPID_", _appid);
+        url1 = url1.replace("_CLIENTNAME_", clientid);
+        url1 = url1.replace("_USERID_", userid);
+        window.open(url1, null, "width=1000,height=700,scrollbars=yes,resizable = yes");
+    }
+
+    function ReplaceApplicationStatusMenu(data, SelectedStatus) {
+        $(".ddlVacApplication").html('').html(data);
+        $("#SelectedStatus").html(SelectedStatus);
+        $("ul.ddlVacStatusItems li").each(function () {
+            if ($(this).children("a").attr("data-vacstatus") == SelectedStatus) {
+                $("#SelectedStatusCount").html($(this).children("a").children("span").html());
+            }
+        });
+    }
+
+    function setMenuPosition(element, ulList) {
+        var _currEle = $(element).next(ulList);
+        var mousePosition = {};
+        var menuPostion = {};
+        var menuDimension = {};
+        var contextMenu = $(_currEle);
+        var parentControl = $(_currEle).parent();
+        var position = parentControl.offset();
+        menuDimension.x = contextMenu.outerWidth();
+        menuDimension.y = contextMenu.outerHeight();
+        mousePosition.x = position.left;
+        mousePosition.y = position.top;
+        if (mousePosition.x + menuDimension.x > $(window).width() + $(window).scrollLeft()) {
+            menuPostion.x = mousePosition.x - menuDimension.x;
+        }
+        else {
+            menuPostion.x = mousePosition.x;
+        }
+
+        if ((mousePosition.y + menuDimension.y) > $(window).height() + $(window).scrollTop()) {
+            menuPostion.y = (mousePosition.y - menuDimension.y) + 28;
+        }
+        else {
+            menuPostion.y = mousePosition.y;
+        }
+        $(_currEle).offset({ top: menuPostion.y, left: menuPostion.x - contextMenu.outerWidth() });
+    }
+</script>

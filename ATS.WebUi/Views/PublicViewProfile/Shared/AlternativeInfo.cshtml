@@ -1,0 +1,49 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.UserDetails
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div>
+    <div id="topPersonalInfo" class="HomePersonalInfo">
+        <div id="btomPersonalInfo">
+            <div style="float: left; width: 100%; margin-bottom: 10px;">
+                <div class="head_resum_aa">
+                    Alternative Info
+                </div>
+
+                <table>
+                    <tr>
+                        <td>
+                            <div class="vacancy-Details">
+                                <div class="left-div">
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.EmergencyContact1, new { @class = "label" })
+
+                                        @Model.EmergencyContact1
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.EmergencyContact2, new { @class = "label" })
+
+                                        @Model.EmergencyContact2
+                                    </div>
+
+                                </div>
+                                <div class="right-div">
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.EmergencyContact1Phone, new { @class = "label" })
+
+                                        @Model.EmergencyContact1Phone
+                                    </div>
+                                    <div class="box">
+                                        @Html.LanguageLabelFor(m => m.EmergencyContact2Phone, new { @class = "label" })
+
+                                        @Model.EmergencyContact2Phone
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

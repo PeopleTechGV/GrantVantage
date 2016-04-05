@@ -1,0 +1,142 @@
+﻿@model ATS.BusinessEntity.ScheduleInt
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant;
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@System.Web.Optimization.Styles.Render("~/bundles/CalendricalCSS")
+@System.Web.Optimization.Scripts.Render("~/bundles/CalendricalJS")
+
+<div>
+    <script type="text/javascript">
+        $(function () {
+            $("#ScheduleDate").datepicker({
+                dateFormat: VacancyModel.DateFormat,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true
+            });
+        });
+
+        function RemoveScheduleConfig(element) {
+            $(element).parents('.edit-schedule').parent().prev().click();
+            //$(element).closest("form").parent().next(".Content").show();
+            $(element).closest("form").remove();
+            return false;
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#timepicker_start, #timepicker_end').calendricalTimeRange();
+            //$('#timepicker_start').timepicker({
+            //    showPeriod: true,
+            //    showLeadingZero: true,
+            //    onSelect: tpStartSelect,
+
+            //});
+            //$('#timepicker_end').timepicker({
+            //    showPeriod: true,
+            //    showLeadingZero: true,
+            //    onSelect: tpEndSelect,
+            //    minTime: {
+            //        hour: parseInt($('#timepicker_start').attr("hours")), minute: parseInt($('#timepicker_start').attr("min"))
+            //    }
+            //});
+        });
+        //function tpStartSelect(time, endTimePickerInst) {
+        //    $('#timepicker_end').timepicker('option', {
+        //        minTime: {
+        //            hour: endTimePickerInst.hours,
+        //            minute: endTimePickerInst.minutes
+        //        }
+        //    });
+        //}
+        //// when end time change, update maximum for start timepicker
+        //function tpEndSelect(time, startTimePickerInst) {
+        //    $('#timepicker_start').timepicker('option', {
+        //        maxTime: {
+        //            hour: startTimePickerInst.hours,
+        //            minute: startTimePickerInst.minutes
+        //        }
+        //    });
+        //}
+    </script>
+</div>
+
+@using (Ajax.BeginForm("CRUScheduleInt", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "CRUScheduleIntSuccess(data,'" + Model.ApplicationId + "')",
+            OnFailure = "CRUScheduleIntFailure"
+        }, new { id = "frmSchInt" }))
+{
+    <script>
+        var formSchInt = $("#frmSchInt");
+        $.validator.unobtrusive.parse(formSchInt);
+    </script>
+    <div class="vacancy-Details InterviewForm w93">
+        <div class="box SchForm">
+            @Html.HiddenFor(m => m.ApplicationId)
+            @Html.HiddenFor(m => m.ScheduleIntId)
+
+            @if (Model.IsBeginInterview != null && Model.IsBeginInterview)
+            {
+                <div class="box SchFormBox">
+                    @Html.LanguageLabelFor(m => m.VacRndId, new { @class = "label w90" })
+                    @Html.DropDownListFor(m => m.VacRndId, (SelectList)ViewBag.RoundType, "--Select--", new { @id = "ddlRoundType", @class = "detail-select w50 SMW100", @style = "width:50%;", @disabled = "disabled" })
+                    @Html.HiddenFor(m => m.VacRndId)
+                </div>
+            }
+            else
+            {
+                <div class="box SchFormBox">
+                    @Html.LanguageLabelFor(m => m.VacRndId, new { @class = "label w90" })
+                    @Html.DropDownListFor(m => m.VacRndId, (SelectList)ViewBag.RoundType, "--Select--", new { @id = "ddlRoundType", @class = "detail-select w50 SMW100", @style = "width:50%;" })
+                </div>
+            }
+            <div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.ScheduleDate, new { @class = "label w90" })
+                @Html.TextBoxFor(m => m.ScheduleDateStr, new { @class = "detail-input w50 SMW100", @id = "ScheduleDate", @readOnly = "readOnly", @style = "width:50%;" })
+            </div>
+            <div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.StartTime, new { @class = "label w90" })
+                @Html.TextBoxFor(m => m.StartTime, new { @class = "detail-input w50 SMW100", @id = "timepicker_start", @readOnly = "readOnly", @style = "width:50%;" })
+            </div>
+            <div class="box SchFormBox">
+                @Html.LanguageLabelFor(m => m.EndTime, new { @class = "label w90" })
+                @Html.TextBoxFor(m => m.EndTime, new { @class = "detail-input w50 SMW100", @id = "timepicker_end", @readOnly = "readOnly", @style = "width:50%;" })
+            </div>
+        </div>
+        <div class="box SchFormAction">
+            <button type="submit" class="prfle-button-save CaseUpper">Save Interview</button>
+            <button type="button" id="RemoveRound" class="prfle-button-delete CaseUpper" onclick="RemoveScheduleConfig(this);">Remove Interview</button>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function CRUScheduleIntSuccess(data, appid) {
+        var $acc = $(".AccApplication > div.acc-header[data-pkid='" + appid + "']").next().find(".CanInterview:first");
+        var $accHeader = $($acc.find("div.acc-header[data-index='1']"));
+        var $accPanel = $($accHeader.next());
+        var response = JSON.parse(data);
+        //if (!response.IsError)
+        {
+            $accPanel.find('.Interviews').append($('<div>' + response.Data + '</div>').html()).accordion(VacancyModel.AccSecondAttr).accordion('refresh');;
+            $accPanel.find('.Interviews').next().html('');
+            var _parentAcc = $acc;
+            var active = _parentAcc.accordion("option", "active");
+            _parentAcc.accordion("option", "active", false).accordion("refresh");
+            _parentAcc.accordion("option", "active", active);
+
+            $accPanel.find('.Content').show();
+            //Begin Interview
+            VacancyModel.GetBeginInterviews(appid);
+            //End
+        }
+    }
+</script>

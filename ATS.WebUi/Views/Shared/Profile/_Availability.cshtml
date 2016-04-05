@@ -1,0 +1,186 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.Availability
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        @Html.LanguageLabel(ATS.BusinessEntity.Common.AvailabilityConstant.FRM_PRF_TTL_AVAILIBILITY)
+        <span class="Save" recordid='@Model.AvailibilityId' style="display:none;"><button type="button" onclick="return outerSave(this);"></button></span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    @using (Ajax.BeginForm("Availability", "Profile", new { area = "" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "AvailabilitySuccess(data,'" + Model.AvailibilityId + "')",
+        OnFailure = "Availabilityfailure"
+    }, new { id = "frmAvailability", isFormChange = "false" }))
+    {
+        @System.Web.Optimization.Scripts.Render("~/bundles/jMultiSelectDropdown")
+
+        <script>
+            $(document).ready(function () {
+                $("#DateAvailability").datepicker({
+                    dateFormat: VacancyModel.DateFormat,
+                    changeMonth: true,
+                    changeYear: true,
+                    showWeeks: true,
+                    currentText: 'Now',
+                    minDate: 0,
+                    autoSize: true,
+                    gotoCurrent: true,
+                    highlightWeek: true
+
+                });
+                $("#DateAvailability").datepicker("setDate", new Date());
+            });
+
+            function AvailabilitySuccess(data, custom) {
+                data = JSON.parse(data);
+                var Savelink = $("span[recordid='" + custom + "']").get(0);
+                VacancyModel.DisplayProfileCommonNotification(data, $(Savelink));
+            }
+
+            function Availabilityfailure(data) {
+                data = JSON.parse(data);
+                if (data.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+            }
+        </script>
+        
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                @Html.HiddenFor(m => m.AvailibilityId, new { @class = "ignore" })
+                                @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+                                @Html.HiddenFor(m => m.CreatedBy, new { @class = "ignore" })
+                                @Html.LanguageLabelFor(m => m.DateAvailability, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.DateAvailabilityText, new { @class = "detail-input", @id = "DateAvailability", @readOnly = "readOnly" })
+                            </div>
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.TargetIncome, new { @id = "lblTargetInc", @class = "label lblAuto" })
+                                <span id="lblTargetIncCurr" class="label lblAuto">&nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                                @Html.TextBoxFor(m => m.TargetIncomeText, new { @class = "detail-input", @onKeyup = "VacancyModel.commaSeparateNumber(this);" })
+                            </div>
+                        </div>
+                        <div class="left-div" style="width:95%;">
+                            <div class="box">
+                                <label class="label" for="ObjAvailability_HrsMon">Select the options you are available to work</label>
+                            </div>
+                            <div class="box" style="min-width:91%; margin-bottom: 10px;">
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsMon, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsMon, ViewBag.MonAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsTue, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsTue, ViewBag.TueAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsWed, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsWed, ViewBag.WedAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsThu, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsThu, ViewBag.ThuAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsFri, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsFri, ViewBag.FriAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsSat, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsSat, ViewBag.SatAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                                <div class="hrs-box">
+                                    @Html.LanguageLabelFor(m => m.HrsSun, new { @class = "hrs-lable" })
+                                    @Html.ListBoxFor(m => m.ListHrsSun, ViewBag.SatAvailability as MultiSelectList, new { @class = "hrs-input ddlMultiSelect" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="left-div">
+                            <div class="box">
+                                <label class="label">Availability Comments</label>
+                                @Html.TextBoxFor(m => m.AvailabilityComments, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.RelativesWorkingInCompany, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.RelativesWorkingInCompany, (SelectList)ViewBag.YesNoDropDownRelativesWorkingInCompany, new { @class = "detail-select" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.SubmittedApplicationBefore, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.SubmittedApplicationBefore, (SelectList)ViewBag.YesNoDropDownSubmittedApplicationBefore, new { @class = "detail-select" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.HearAboutThePosition, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.HearAboutThePosition, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.HowOld, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.HowOld, (SelectList)ViewBag.YesNoDropDownyearsOld, new { @class = "detail-select" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EligibleToWorkInUS, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.EligibleToWorkInUS, (SelectList)ViewBag.YesNoDropDownEligibleToWorkInUS, new { @class = "detail-select" })
+                            </div>
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.EmploymentPreference, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.EmploymentPreference, (SelectList)ViewBag._EmploymentPreferenceList, "---Please Select---", new { @class = "detail-select" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.RelativesIfYes, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.RelativesIfYes, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.AppicationSubmision, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.AppicationSubmision, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.ReferredBy, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.ReferredBy, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.WillingToWorkOverTime, new { @class = "label" })
+                                @Html.DropDownListFor(m => m.WillingToWorkOverTime, (SelectList)ViewBag.YesNoDropDownWillingToWorkOverTime, new { @class = "detail-select" })
+                            </div>
+                        </div>
+                    </div>
+                    <br clear="all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper">Save Availability</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <script>
+            $(".ddlMultiSelect").dropdownchecklist(
+                {
+                    emptyText: "None",
+                    onItemClick: function (checkbox, selector) {
+                        var values = "";
+                        for (i = 0; i < selector.options.length; i++) {
+                            if (selector.options[i].selected && (selector.options[i].value != "")) {
+                                if (values != "")
+                                    values += ",";
+                                values += selector.options[i].value;
+                            }
+                        }
+                    }
+                });
+        </script>
+    }
+</div>

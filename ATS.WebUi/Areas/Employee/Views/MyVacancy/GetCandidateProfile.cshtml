@@ -1,0 +1,101 @@
+﻿@using BEClient = ATS.BusinessEntity
+@*@model BEClient.CandidateProfile*@
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.CandidateProfile>>
+@{
+    ViewBag.Title = "GetCandidateProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    .btn-back-vacancy {
+        background: url('@Url.Content("~/Content/images/Back_To_Search_32.png")') no-repeat scroll 7px 7px rgba(0, 0, 0, 0);
+        border: 1px solid #BEC0C4;
+        padding: 6px 6px 5px 45px;
+        text-align: bottom;
+        vertical-align:bottom;
+        width:50px;
+        color: #6A788E;
+        float: right;
+        height: 35px;
+        text-decoration:none;
+    }
+      .btn-pdf-vacancy {
+    background: url('@Url.Content("~/Content/images/pdf.png")') no-repeat scroll 7px 7px rgba(0, 0, 0, 0);
+        border: 1px solid #BEC0C4;
+        padding: 6px 6px 5px 45px;
+        text-align: bottom;
+        vertical-align:bottom;
+        width:50px;
+        color: #6A788E;
+        float: right;
+        height: 35px;
+        text-decoration:none;
+        margin-right:5px;
+    }
+
+
+</style>
+
+
+<div id="Messages" style="width: auto; float: left;margin-left:300px;">
+</div>
+<script>
+    $(function () {
+        var h2data = '<div style="padding-left:10px;color:#951300;float:left;width:15%;">Resume Name   </div>'
+        $($("#frmMyProfileCandidate").find("h2").get(0)).html(h2data + '@Model.obj.obj.objProfile.ProfileName');
+
+    });
+</script>
+<div>
+    <div class="std_width spctop-btm" style="position: relative;width:50%;">
+        <div id="search-resumes">
+            <div class="nav-bar clearfix">
+                <ul class="saved-searches">
+                    @Html.Partial("_BreadCrumb", Model)
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div>
+        <span class="seting-icon" style="right:6%;">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#"><img src='@Url.Content("~/Content/images/options.png")' alt="" border="0" /></a>
+                        <ul>
+                            <li>
+                                <a href='@Url.Action("DownloadResume", "MyVacancy", new { UserId = Model.obj.obj.objUserDetails.UserId, profileId = Model.obj.obj.objProfile.ProfileId })'>
+                                    <img src='@Url.Content("~/Content/images/PDF_16.png")' border="0" align="absmiddle" style="margin-right:5px;" />@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_VAC_PDF)
+                                </a>
+                            </li>
+                           @if(!(@ViewBag.CoverLetter).Equals( Guid.Empty))
+                           {
+                             <li><a href='@Url.Action("DownloadCandidateResumeAndCoverLetter", "MyVacancy", new { AtsResumeId = @ViewBag.CoverLetter })'><img src='@Url.Content("~/Content/images/Modify_16.png")' border="0" align="absmiddle" style="margin-right:5px;" />@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_VAC_PDF_COVER_LETTER)</a></li>
+                           }
+                               <li><a href='@Url.Action("DownloadCandidateResumeAndCoverLetter", "MyVacancy", new { AtsResumeId = @ViewBag.Resume })'><img src='@Url.Content("~/Content/images/Modify_16.png")' border="0" align="absmiddle"  style="margin-right:5px;" />@Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.FRM_VAC_PDF_RESUME) </a></li>
+                        </ul>
+                    </li>
+               </ul>
+            </nav>
+        </span>
+    </div>*@
+@Html.Partial("_SettingOption", Model.obj.obj)
+<div style="margin-top:50px;">
+    @Html.Partial("Profile/_Profile", Model.obj.obj)
+</div>
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+
+
+}

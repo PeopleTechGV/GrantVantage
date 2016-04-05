@@ -1,0 +1,27 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.SRPEntity.DynamicSRP<BEClient.UserDivisionSecurityRole>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+<div class="ats-roles-box">
+    <div class="security-title">
+     @Html.LanguageLabel(BEUserConst.FRM_USER_SELECTADHOCDIVISION)
+    </div>
+    @{
+        string[] value = ViewBag.DisableDivision;
+        var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 3, new { @class = "styled_list", id = "RoleChk" });
+        @Html.CheckBoxListFor(Model => Model.obj.obj.objDivision.DivisionId,
+                                       Model => Model.obj.obj.AvailableDivisionList,
+                              divis => divis.DivisionId,
+                              divis => divis.DivisionName,
+                                       Model => Model.obj.obj.SelectedDivisionList, new { @class = "styled_checkbox" }, htmlListInfo, value, x => new { })
+
+    }
+    @*<ul class="roles-type">
+        @foreach(var v in Model)
+        {
+            <li>
+
+                <input type="checkbox" class="roles-selection" />
+                @v.DivisionName</li>
+            }
+        </ul>*@
+</div>

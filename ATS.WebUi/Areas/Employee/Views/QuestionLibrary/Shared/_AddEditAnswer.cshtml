@@ -1,0 +1,101 @@
+﻿@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using HtmlHelpers.BeginCollectionItem
+@model ATS.BusinessEntity.AnsOpt
+@using BELabel = ATS.BusinessEntity.Common.AnsOpt;
+
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@using (Ajax.BeginForm("CRUAnsOpt", "QuestionLibrary", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "AnsOptSuccess",
+            OnFailure = "AnsOptFailure",
+        }, new { id = "frmAnsOpt" }))
+{
+    <script>        
+        var formAOpt = $("#frmAnsOpt");
+        $.validator.unobtrusive.parse(formAOpt);
+    </script>
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.AnsOptId)
+    @Html.HiddenFor(m => m.QueId)
+
+    <div class="vacancy-Details QueLibraryForm SMW92">
+        <div class="box" style="margin-left: 1%;">
+            @Html.HiddenFor(m => m.Order)
+            @Html.HiddenFor(m => m.QueDataType)
+
+            @Html.LanguageLabelFor(m => m.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.DefaultName, new { @class = "detail-input", @onchange = "CopyAns(this);", })
+            @for (int i = 0; i < Model.AnsOptEntityLanguageList.Count(); i++)
+            {
+                <text>
+                    <br />
+                    @{
+                String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.AnsOptEntityLanguageList[i].LanguageId)).First().objLanguage.LanguageName;
+                    }
+                    @Html.Label(Html.LanguageLabel(BELabel.ANSOPT_ANS) + " " + Html.LanguageLabel(BECommonConstantConst.IN) + " " + languageame, new { @class = "label" })
+                    @Html.HiddenFor(m => m.AnsOptEntityLanguageList[i].LanguageId, new { @class = "detail-input" })
+                    @Html.TextBoxFor(m => m.AnsOptEntityLanguageList[i].LocalName, new { @class = "detail-input" })
+                </text>
+            }
+
+            @Html.LanguageLabelFor(m => m.Weight, new { @class = "label" })
+            @Html.TextBoxFor(m => m.Weight, new { @class = "detail-input", id = "AnsWeight", @onchange = "CopyWight(this);" })
+            @Html.HiddenFor(m => m.IsActive)
+        </div>
+
+        <div class="vacancy-Details ARPInlineAction">
+            <button type="submit" id="SubmitAnsOpt" class="prfle-button-save CaseUpper">@Html.LanguageLabel(BECommonConstantConst.FRM_ANSOPT_SAVE)</button>
+        </div>
+    </div>
+    <script>
+        function CopyAns(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+        }
+        function CopyWight(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "ttldblue", cur.val())
+        }
+
+        function AnsOptSuccess(response) {
+            var jsonData = JSON.parse(response);
+            var QueAccClassName = ".QueAccordian";
+            var AnsAccClassName = ".AnsAccordian";
+            var newJsonData = "<div>" + jsonData.Data + "</div>";
+            var _QueId = $(newJsonData).find(".acc-header").attr('data-queid');
+            var $QueAcc = $(QueAccClassName).find("div[data-pkid='" + _QueId + "']");
+            var _AnsId = $(newJsonData).find(".acc-header").attr("data-pkid");
+            var $ansAcc = $QueAcc.next().find(AnsAccClassName);
+            if (!jsonData.IsError) {
+                $ansAcc.find('form').remove();
+                if ($ansAcc.find("div[data-pkid='" + _AnsId + "']").length > 0) {
+                    var active = $ansAcc.accordion("option", "active");
+                    $ansAcc.find("div[data-pkid='" + _AnsId + "']").html($(newJsonData).find("div[data-pkid='" + _AnsId + "']").html());
+                    $ansAcc.find("div[data-pkid='" + _AnsId + "']").next().find('.editsection').hide();
+                    $ansAcc.accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active);
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+                else {
+                    $ansAcc.find("div[class^='acc-header'][aria-selected='true']").remove('div')
+                    $ansAcc.find("div[class^='acc-Content'][style^='display: block;']").remove('div');
+                    $ansAcc.append(jsonData.Data).accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion({ active: $(this).find(".acc-header").size() - 1 });
+                    VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                }
+
+                $ansAcc.on("accordionbeforeactivate", function (event, ui) {
+                    event.stopImmediatePropagation();
+                });
+
+                VacancyModel.IgnoreAccordianHeaderClick("AnsAccordian");
+            }
+            else {
+            }
+        }
+        function AnsOptFailure() {
+            alert('ERROR');
+        }
+    </script>
+}
+

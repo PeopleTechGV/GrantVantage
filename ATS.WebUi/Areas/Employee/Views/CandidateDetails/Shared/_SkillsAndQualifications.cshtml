@@ -1,0 +1,36 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.Skills
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.SkillAndQualification)</span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.SkillAndQualification, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.SkillAndQualification, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Description, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.Description, new { @class = "detail-input txtarea" })
+                        </div>
+                    </div>
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.SkillType, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.SkillType, (SelectList)ViewBag.SkillTypeName, "---Please Select---", new { @class = "detail-select" })
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

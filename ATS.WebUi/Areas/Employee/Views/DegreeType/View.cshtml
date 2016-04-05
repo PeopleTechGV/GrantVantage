@@ -1,0 +1,82 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.DegreeType>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string action = ViewBag.RedirectAction;
+    ViewBag.MenuDisplayName = "Degree Types";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(action, "DegreeType", FormMethod.Post, new { id = "frmDegreeType" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.DegreeTypeId, new { Id = "DegreeTypeId" })
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DefaultName, new { @class = "detail-input" })
+        </div>
+        @for (int i = 0; i < Model.obj.obj.DegreeTypeEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.DegreeTypeEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.DegreeTypeEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.obj.obj.DegreeTypeEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Priority, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.Priority, new { @class = "detail-input" })
+        </div>
+    </div>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    $(document).ready(function(){
+        $("#lblCount").html($("#Count_CSMNU_DEGREETYPE").html());
+    });
+
+    function OnClickValidate()
+    {
+        $('#frmDegreeType').submit();
+    }
+
+    $(".btn-remove-vacancy").live("click", function () {
+        var EducationCount =""
+        if(@Model.obj.obj.RecordExistsCount.Count > 0)
+            EducationCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "EducationHistory").Select(x => x.Count).FirstOrDefault()
+            VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Degree Type", 300, "Are you sure want to delete this Degree Type ? <br /> The following records will also be deleted: <br />" + EducationCount +" Education", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "DegreeType", new { id = @Model.obj.obj.DegreeTypeId })'
+            window.location.href = deletelink;
+        }
+    }
+</script>

@@ -1,0 +1,160 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateProfile>
+@{
+    ViewBag.Title = "GetCandidateProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div id="btnBack" class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgMyVacancy24W"></div>
+        <span class="navTitle navActivePage">
+            MY OPPORTUNITIES
+        </span>
+        <span class="chevron"></span>
+    </div>
+
+    <div class="NavItems">
+        @if (Model.ImagePath.Contains("UploadImages"))
+        {
+            <div class="MenuItemIcon bgCandidate16W profileImg"><img width="20" height="20" src="@Model.ImagePath" /></div>
+        }
+        else
+        {
+            <div class="MenuItemIcon bgCandidate16W"></div>
+        }
+        <span class="navTitle">@Model.DisplayName</span>
+        <span class="chevron"></span>
+    </div>
+    @if (Model.ImagePath.Contains("UploadImages"))
+    {
+        <style>
+            .profileImg {
+                background-image: none;
+            }
+
+            .NavItems > .profileImg {
+                -webkit-transition: all 1s ease; /* Safari and Chrome */
+                -moz-transition: all 1s ease; /* Firefox */
+                -ms-transition: all 1s ease; /* IE 9 */
+                -o-transition: all 1s ease; /* Opera */
+                transition: all 1s ease;
+                position: relative;
+            }
+
+                .NavItems > .profileImg:hover {
+                    -webkit-transform: scale(5.25); /* Safari and Chrome */
+                    -moz-transform: scale(5.25); /* Firefox */
+                    -ms-transform: scale(5.25); /* IE 9 */
+                    -o-transform: scale(5.25); /* Opera */
+                    transform: scale(5.25);
+                }
+
+            .profileImg > img {
+                border: 1px solid #345E8E;
+                border-radius: 2px;
+            }
+        </style>
+    }
+    @if (Model.objRecentViewedList != null)
+    {
+        <div class="NavItems hasDropdown MobDisable">
+            <span class="navTitle ActionVacancyName">@Model.ItemName</span>
+            <span class="chevron"></span>
+            <ul class="dropdownMenu menuAqua">
+                @Html.Partial("_RecentViewed", Model.objRecentViewedList)
+            </ul>
+        </div>
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(Model.ItemName))
+        {
+            <div id="NavRecViewedVac" class="NavItems HoverNone MobDisable">
+                <span class="navTitle">@Model.ItemName</span>
+                <span class="chevron"></span>
+            </div>
+        }
+    }
+}
+
+
+<div id="Messages" style="width: auto; float: left;margin-left:300px;"></div>
+
+<script>
+    $(function () {
+        var h2data = '<div style="padding-left:10px;color:#953634;float:left;width:15%;">Resume Name   </div>'
+        $($("#frmMyProfileCandidate").find("h2").get(0)).html(h2data + '@Model.obj.objProfile.ProfileName');
+    });
+</script>
+<ul class="ActionBar">
+    <li>
+        <a class="bgExport16 ComboDropdown" href='javascript:void(0);'>
+            Download
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="#"><img src="/content/images/Down_Chevron_8.png" /></a>
+                <ul id="ulRequiredDocs" class="MobRight" user-id='@Model.obj.objUserDetails.UserId'>
+                    @Html.Partial("_SettingOption", Model.obj)
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <li class="applicantdetails" style="display:none;">
+        <a class="bgInterview16 ComboDropdown" href='javascript:void(0);'>
+            BEGIN INTERVIEW
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+                <ul id="BeginInterview" class="MobRight"></ul>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="applicantdetails" style="display:none;">
+        <a class="bgScheduleInterview16 ComboDropdown" href='javascript:void(0);'>
+            SCHEDULE INTERVIEW
+        </a>
+        <ul class="DropMenu ActionOptions">
+            <li>
+                <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+            </li>
+        </ul>
+    </li>
+</ul>
+<div>
+    @Html.Partial("Profile/_Profile", Model.obj)
+</div>
+<script>
+    function BeginInterview(element) {
+        var ScheduleIntId = $(element).attr("data-scheduleintid");
+        var VacRndId = $(element).attr("data-vacrndid");
+        var dLink = '@Html.Raw(Url.Action("ConductInterview", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, ScheduleIntId = "_SCHEDULEINTID_", VacRndId = "_VACRNDID_", ReturnUrl = "Application" }))';
+        dLink = dLink.replace("_SCHEDULEINTID_", ScheduleIntId);
+        dLink = dLink.replace("_VACRNDID_", VacRndId);
+        window.location = dLink;
+    }
+
+    $(document).ready(function () {
+        var Index = $(".contnt-left > ul.LeftMenu").find("li:has('.activeMenu')").index();
+        if (Index == "1") {
+            $(".NavItems > .navActivePage").html("MY APPLICANTS");
+            $(".NavItems > .navActivePage").prev(".MenuItemIcon").removeClass("bgMyVacancy24W");
+            $(".NavItems > .navActivePage").prev(".MenuItemIcon").addClass("bgMyCandidate24W");
+        }
+        else {
+            $(".NavItems > .navActivePage").html("MY OPPORTUNITIES");
+            $(".NavItems > .navActivePage").prev(".MenuItemIcon").removeClass("bgMyCandidate24W");
+            $(".NavItems > .navActivePage").prev(".MenuItemIcon").addClass("bgMyVacancy24W");
+        }
+        var backLink = $(".contnt-left > ul.LeftMenu").find("a.activeMenu").attr("href");
+        $("#btnBack").attr("BackUrl", backLink);
+        $("#btnBack").click(function () {
+            window.location = $(this).attr("BackUrl");
+        });
+    });
+</script>

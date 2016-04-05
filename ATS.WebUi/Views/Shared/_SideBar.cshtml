@@ -1,0 +1,24 @@
+﻿@using BECommon = ATS.BusinessEntity.Common;
+@using BECommonConstantConstant = ATS.BusinessEntity.Common.CommonConstant
+
+@if (!HttpContext.Current.Request.Url.ToString().Contains("AnonymousUserProfile"))
+{
+    if (ViewBag.VacancyId != null)
+    {
+        <div class="upload-resume">
+            <button id="Upload" class="ApplyNow" onclick="javascript: window.location = '@Url.Action("AnonymousUserProfile", "Account", new { area = ATS.WebUi.Common.Constants.AREA_ROOT, VacancyId = @ViewBag.VacancyId })'" title='@Html.LanguageLabel(ATS.BusinessEntity.Common.TooltipConstant.TOOLTIP_APPLY_JOB)'></button>
+        </div>
+    }
+    <div id="btnApplyNow" class="upload-resume" style="display: none;">
+        <input id="hdnVacancyId" type="hidden" />
+        <button id="Upload" class="ApplyNow" title='@Html.LanguageLabel(ATS.BusinessEntity.Common.TooltipConstant.TOOLTIP_APPLY_JOB)'></button>
+    </div>
+}
+<script>
+    $("#btnApplyNow").click(function () {
+        var VacancyId = $("#hdnVacancyId").val();
+        var datalink = '@Url.Action("AnonymousUserProfile", "Account", new { area = ATS.WebUi.Common.Constants.AREA_ROOT, VacancyId ="_VACANCYID_" })';
+        datalink = datalink.replace("_VACANCYID_", VacancyId);
+        window.location.href = datalink;
+    });
+</script>

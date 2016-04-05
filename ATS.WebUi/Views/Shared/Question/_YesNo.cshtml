@@ -1,0 +1,23 @@
+﻿@model  ATS.WebUi.Models.Question.ATSYesNo
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+
+<div class="one-div-full">
+    <div class="box ATSYesNo">
+        <span class="label">@Model.QuestionText</span>
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_DRAFT)
+        {
+            @Html.DropDownListFor(m => m.Answer, Model.AllValues, "--Select--", new { @class = "detail-select" })
+            @Html.HiddenFor(m => m.VacQueId, new { id = "hdnQueId" })
+            @Html.HiddenFor(m => m.VacRndId, new { id = "hdnVacRndId" })
+        }
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+        {
+            <br />
+            <ul style="margin-bottom: 8px;">
+                <li style="clear: both; list-style-type: square; margin-left: 20px;">
+                    <span>@Model.Answer</span>
+                </li>
+            </ul>
+        }
+    </div>
+</div>

@@ -1,0 +1,91 @@
+﻿@model ATS.BusinessEntity.Common.IBreadCrumb
+@{
+    bool allow = false;
+    List<ATS.BusinessEntity.BreadCrumb> myNav = null;
+    string classname = String.Empty;
+}
+
+@if (ATS.WebUi.Common.CurrentSession.Instance != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient != null && ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs != null)
+{
+    allow = true;
+    if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.Count() > 1)
+    {
+        myNav = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.Take(ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs.Count() - 1).ToList();
+    }
+    else
+    {
+        myNav = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.BreadCrumbs;
+    }
+
+}
+@if (allow)
+{
+    foreach (var v in myNav)
+    {
+        if (v.ordinal > 1)
+        {
+            classname = "mid";
+        }
+        <li id="RespMenuHead" class="select-saved-searches RespMenuHead @classname">
+            <a id="mnuLft1" class="active-left @classname">
+                <span class="dumy-right"></span>
+                <div>
+                    <img src='@v.ImagePath' width="24" height="24" align="absmiddle">
+                </div>
+                <span class="thetaIcon">&#9660;</span>
+                <span class="dumy-left"></span>
+            </a>
+        </li>
+
+        <li class="MobDisable select-saved-searches @classname">
+            <a class="active-left @classname" href='@v.URL'>
+                <span class="dumy-right"></span>
+                <div>
+                    <img src='@v.ImagePath' width="24" height="24" align="absmiddle">
+                </div>
+                @*<span class="left_menu_space">My Profile(s)</span>*@
+                <span class="dumy-left" title="@String.Format("{0}",v.ToolTip)"></span>
+            </a>
+        </li>
+
+        <div id="nav-bar1">
+            <ul>
+                @Html.Partial("_LeftMenu")
+            </ul>
+        </div>
+    }
+    if (Model != null && Model.ImagePath != null)
+    {
+        <li class="select-saved-searches mid">
+            <a class="active-left new-search" href="javascript:;">
+                <span class="dumy-right"></span>
+
+                <div class="BSInnerDiv">
+                    <img src='@Model.ImagePath' alt="" align="absmiddle" />
+                    <span class="left_menu_space" style="display: marker; overflow: hidden; text-overflow: ellipsis; white-space: normal; ">&nbsp;@Html.Raw(Html.LanguageLabel(Model.DisplayName))</span>
+                </div>
+
+                @*<span class="dumy-left" title="@Html.Raw(Model.ToolTip)"></span>*@
+                <span class="dumy-left"></span>
+            </a>
+        </li>
+    }
+
+}
+
+<script>
+    $(function () {
+        $(".dumy-left").tooltip({
+            tooltipClass: "tooltip",
+            content: function () {
+                var element = $(this);
+                return element.attr('title');
+            }
+        });
+    });
+    $("#mnuLft1").click(function () {
+        $("#nav-bar1").slideToggle(250);
+    });
+</script>
+
+

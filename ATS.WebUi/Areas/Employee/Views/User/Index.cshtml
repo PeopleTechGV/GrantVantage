@@ -1,0 +1,53 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.UserDivisionSecurityRole>>> 
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="Messages" style="width: auto; float: left; margin-left: 20px; ">
+</div>
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@Html.Partial("Buttons/_ListGear", Model.obj)
+@*@Html.Partial("Shared/_UserCommandBar")*@
+@Html.Partial("Shared/_UserList")
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+
+    @*$("#btn-remove-vacancy").live("click", function () {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete User(s)", 300, "Are you sure you want to delete selected User(s)?", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+
+    function Delete(Result) {
+        if (Result) {
+            var ids = '';
+            $(".ui-selected").each(function () {
+                debugger;
+                var userid = $(this).attr('data-id');
+                if (ids == '')
+                    ids = userid;
+                else
+                    ids = ids + ',' + userid;
+            });
+            var deletelink = '@Url.Action("DeleteMultiple", "User", new { id = "_UserIds_" })';
+            deletelink = deletelink.replace("_UserIds_", ids);
+            window.location.href = deletelink;
+        }
+    }*@
+</script>

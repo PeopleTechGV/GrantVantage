@@ -1,0 +1,84 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@model BEClient.AnonymousUser
+
+
+@using (Ajax.BeginForm("CASaveAnonymsUserDetails", "Account", new { returnUrl = ViewBag.ReturnURL }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "SignupSuccess",
+            OnFailure = "SignupFailed"
+        }, new { @id = "LoginForm" }))
+{
+    <div id="ErrorMessage">
+    </div>
+    @Html.HiddenFor(m => m.ObjVacancy.VacancyId)
+    @Html.HiddenFor(m => m.ObjUser.FileUploadType, new { id = "hdnFileUploadType" })
+    @Html.HiddenFor(m => m.ObjUser.DropBoxFileName, new { id = "hdnDropBoxName" })
+    @Html.HiddenFor(m => m.ObjUser.DropBoxFileUrl, new { id = "hdnDropBoxUrl" })
+
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjCandidate.objUserDetails.FirstName, new { @class = "label" })
+        @Html.TextBoxFor(m => m.ObjCandidate.objUserDetails.FirstName, new { @id = "txtFirstname", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjCandidate.objUserDetails.LastName, new { @class = "label" })
+        @Html.TextBoxFor(m => m.ObjCandidate.objUserDetails.LastName, new { @id = "txtLastname", @class = "detail-input" })
+    </div>
+     //CR-1
+     <div class="box">
+        @*@Html.LanguageLabelFor(m => m.ObjOrganization.OrganizationName, new { @class = "label" })*@
+         @Html.Label("Organization Name", new { @class = "label" })
+        @Html.TextBoxFor(m => m.ObjOrganization.OrganizationName, new { @id = "txtorgname", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjUser.Username, new { @class = "label" })
+      
+        @Html.TextBoxFor(m => m.ObjUser.Username, new { @id = "txtUsername", @class = "detail-input" })
+    </div>
+   
+    <div class="box">
+        @Html.LanguageLabelFor(m => m.ObjUser.Password, new { @class = "label", @id = "boxlabel20" })<span class="label" id="boxlabel20">&nbsp;@Html.Label("(min 8 characters)")</span>
+        @Html.PasswordFor(m => m.ObjUser.Password, new { @id = "txtPassword", @class = "detail-input" })
+    </div>
+    <div class="box">
+        @Html.LabelFor(m => m.ObjUser.ConfirmPassword, new { @class = "label" })
+        @Html.PasswordFor(m => m.ObjUser.ConfirmPassword, new { @id = "txtConfirmname", @class = "detail-input" })
+    </div>
+    <div class="box" style="margin-top: 12px !important">
+        <span>&nbsp;</span>
+        <input id="lockText" type="hidden" value="Slide the bar to the right to submit the form. Press the lock icon if using an iPad">
+        <input id="unlockText" type="hidden" value="Yeah! You're not a robot!">
+        <div class="QapTcha1" style="width: 202px; float: left;">
+        </div>
+        <button class="btn-icon24-right bgNext24 floatright RegDisabled" id="btnSub" type="submit" disabled="disabled">NEXT</button>
+    </div>
+}
+
+
+<script type="text/javascript">
+    function SignupSuccess(result) {
+        $('.validation-summary-errors').html('');
+        result = JSON.parse(result);
+        if (result.IsError == true) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', result.Message, 3000);
+        }
+        else {
+            window.location = result.Url;
+        }
+    }
+
+    $(document).ready(function () {
+        // Simple call
+        $('.QapTcha1').QapTcha1({
+            autoSubmit: true,
+            autoRevert: true
+        });
+    });
+
+    function SubmitSignup() {
+        
+        $('#LoginForm').submit();
+    }
+</script>

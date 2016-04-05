@@ -1,0 +1,276 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@using BEOfferStatus = ATS.BusinessEntity.VacancyOfferStatus;
+@model BEClient.VacancyOffer
+
+@{
+    BEOfferStatus OfferStatus = (BEOfferStatus)Model.OfferStatusId;
+    var PDFPartialUrl = "/Resume/OfferPDF/pdf-" + Model.VacancyOfferId.ToString() + ".pdf";
+    if (OfferStatus == BEOfferStatus.Company_Confirmed)
+    {
+        PDFPartialUrl = "/Resume/OfferPDF/OfferLetter-" + Model.VacancyOfferId.ToString() + ".pdf";
+    }
+    var PDFUrl = "http://" + Prompt.Shared.Utility.Library.Methods.GetAppSettingValue("DomainName") + PDFPartialUrl;
+    var greyButttonClass = "";
+    var disableControl = "";
+    if (!Model.CanMakeOffer)
+    {
+        greyButttonClass = "OfferActionGrey";
+        disableControl = "disabled = 'disabled'";
+    }
+}
+
+@if (OfferStatus == 0 || OfferStatus == BEOfferStatus.Draft || Model.IsNewOffer)
+{
+    <input id="btnDraft" type="submit" class="offerbtn" value="Save Draft" name="EmployeeAction" onclick="SaveDraft()">
+    <input id="btnMakeOffer" type="button" class="offerbtn @greyButttonClass" value="Make Award" onclick="SetConfirmModel()" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Offer_Made)
+{
+    <input id="btnReviseOffer_1" type="button" class="offerbtn @greyButttonClass" value="Revise Award" onclick="AllowReviseOffer('1')" @disableControl>
+    <input id="btnReviseOffer" type="button" class="offerbtn @greyButttonClass" value="Update Revise Award" onclick="SetConfirmModel()" @disableControl>
+    <input id="btnRetractOffer" type="submit" class="offerbtn @greyButttonClass" value="Retract Award" name="EmployeeAction" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Candidate_Declined)
+{
+    <input id="btnMakeOffer_1" type="button" class="offerbtn @greyButttonClass" value="Create New Award" onclick="AllowReviseOffer('3')" @disableControl>
+    <input id="btnMakeOffer" type="button" class="offerbtn @greyButttonClass" value="Make Award" onclick="SetConfirmModel()" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Candidate_Countered)
+{
+    <input id="btnAcceptCounter" type="button" class="offerbtn @greyButttonClass" value="Accept Counter" onclick="RemoveAddValidation(0); SetConfirmButton();" @disableControl>
+    <input id="btnCounterOffer_1" type="button" class="offerbtn @greyButttonClass" value="Counter Award" onclick="AllowReviseOffer('2')" @disableControl>
+    <input id="btnCounterOffer" type="button" class="offerbtn @greyButttonClass" value="Update Counter Award" onclick="RemoveAddValidation(1); SetConfirmModel()" @disableControl>
+    <input id="btnRetractOffer" type="submit" class="offerbtn @greyButttonClass" value="Retract Award" name="EmployeeAction" onclick="RemoveAddValidation(1)" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Company_Countered)
+{
+    <input id="btnReviseOffer_1" type="button" class="offerbtn @greyButttonClass" value="Revise Award" onclick="AllowReviseOffer('1')" @disableControl>
+    <input id="btnReviseOffer" type="button" class="offerbtn @greyButttonClass" value="Update Revise Award" onclick="SetConfirmModel()" @disableControl>
+    <input id="btnRetractOffer" type="submit" class="offerbtn @greyButttonClass" value="Retract Award" name="EmployeeAction" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Candidate_Accepted)
+{
+    <input id="btnAcceptOffer" type="submit" class="offerbtn @greyButttonClass" value="Confirm Acceptance" name="EmployeeAction" onclick="RemoveAddValidation(0)" @disableControl>
+    <input id="btnRetractOffer" type="submit" class="offerbtn @greyButttonClass" value="Retract Award" name="EmployeeAction" onclick="RemoveAddValidation(1)" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Company_Confirmed)
+{
+    <input id="btnHiring" type="button" class="@greyButttonClass" value="Hire Candidate" @disableControl>
+}
+
+else if (OfferStatus == BEOfferStatus.Candidate_Retracted || OfferStatus == BEOfferStatus.Retracted)
+{
+    <input id="btnMakeOffer_1" type="button" class="offerbtn @greyButttonClass" value="Create New Award" onclick="AllowReviseOffer('3')" @disableControl>
+    <input id="btnMakeOffer" type="button" class="offerbtn @greyButttonClass" value="Make Award" onclick="SetConfirmModel()" @disableControl>
+}
+
+<input id="btnCancelOffer" type="button" value="Cancel" onclick="MakeOffer.CancelOffer(this);" data-offerid='@Model.VacancyOfferId'>
+
+@if (OfferStatus != BEOfferStatus.Retracted && System.IO.File.Exists(Server.MapPath(PDFPartialUrl)))
+{
+    <a href='@PDFUrl' class="btnMakeOffer floatleft" style="width: 115px;" target="_blank">
+        View Award PDF
+    </a>
+}
+
+@if (Model.VacancyOfferId != Guid.Empty)
+{
+    if (OfferStatus != 0 && OfferStatus != BEOfferStatus.Draft && !Model.IsNewOffer)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ddlPlacementType").attr("disabled", true);
+                $(".OfferMain select.CanRevise").attr("disabled", true);
+                $(".OfferMain input.CanRevise[type=text]").attr("readonly", true);
+
+                $('.OfferMain input[type=text][readonly]').addClass("greyColor");
+                $("select:disabled").addClass("greyColor");
+                $(".OfferMain input:disabled").addClass("greyColor");
+            });
+        </script>
+    }
+}
+@if ((OfferStatus == BEOfferStatus.Offer_Made && Model.VacancyOfferId != Guid.Empty) || OfferStatus == BEOfferStatus.Candidate_Countered || OfferStatus == BEOfferStatus.Candidate_Declined || OfferStatus == BEOfferStatus.Candidate_Retracted || OfferStatus == BEOfferStatus.Retracted)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnReviseOffer_1").show();
+            $("#btnReviseOffer").hide();
+
+            $("#btnCounterOffer_1").show();
+            $("#btnCounterOffer").hide();
+
+            $("#btnMakeOffer_1").show();
+            $("#btnMakeOffer").hide();
+
+        });
+
+        function AllowReviseOffer(num) {
+            if (num == '1') {
+                $("#btnReviseOffer_1").hide();
+                $("#btnReviseOffer").show();
+            }
+            else if (num == '2') {
+                $("#btnCounterOffer_1").hide();
+                $("#btnCounterOffer").show();
+
+            }
+            else if (num == '3') {
+                $("#btnMakeOffer_1").hide();
+                $("#btnMakeOffer").show();
+
+            }
+
+            $("#ddlPlacementType").attr("disabled", false);
+            $(".OfferMain select.CanRevise").attr("disabled", false);
+            $(".OfferMain input.CanRevise[type=text]").attr("readonly", false);
+
+            $('.OfferMain input[type=text]:not([readonly])').removeClass("greyColor");
+            $("select:enabled").removeClass("greyColor");
+            $(".OfferMain input:enabled").removeClass("greyColor");
+
+        }
+    </script>
+}
+<script>
+    function CloseVacOfferModel() {
+        $("#VacOfferModel").css("display", "none");
+        $(".cover").css("display", "none");
+    }
+    function CloseCandidateAcceptModel() {
+        var dummy = 1;
+    }
+    function CloseCandidateDeclineModel() {
+        var dummy = 1;
+    }
+    function CloseCandidateCounterModel() {
+        var dummy = 1;
+    }
+    function CloseCandidateRetractAcceptanceModel() {
+        var dummy = 1;
+    }
+
+    function SetConfirmModel() {
+        var validationError = false;
+        validationError = ChkValidation();
+        var Error = $(".OfferMain .OfferBox:visible").find(".input-validation-error").length;
+        if (Error != 0)
+            validationError = true;
+
+        if (validationError) {
+            return false;
+        }
+        else {
+            $("#VacOfferModel .OfferBox:not(.ModelValue) .CandDetailsRight").html('');
+
+            if ($("#RatePeriod").val() != undefined && $("#RatePeriod").val() != "")
+                $("#lblRatePeriod").html($("#RatePeriod option:selected").text());
+
+            if ($("#CandidateNoticePeriod").val() != "")
+                $("#lblCandidateNotice").html($("#CandidateNoticePeriod option:selected").text());
+
+            if ($("#CompanyNoticePeriod").val() != "")
+                $("#lblCompanyNotice").html($("#CompanyNoticePeriod option:selected").text());
+
+            if ($("#CandidateNoticePeriodType").val() != "")
+                $("#lblCanNoticeIn").html($("#CandidateNoticePeriodType option:selected").text());
+
+            if ($("#CompanyNoticePeriodType").val() != "")
+                $("#lblComNoticeIn").html($("#CompanyNoticePeriodType option:selected").text());
+
+            //if ($("#JobType").val() != "")
+            //    $("#lblJobType").html($("#JobType option:selected").text());
+
+            if ($("#Location").val() != "")
+                $("#lblLocation").html($("#Location option:selected").text());
+
+            ////Used in GV
+            if ($("#txtAwardAmount").val() != undefined && $("#txtAwardAmount").val() != "")
+                $("#lblAwardAmount").html('$' + $("#txtAwardAmount").val());
+            if ($("#txtCashMatchRequired").val() != undefined && $("#txtCashMatchRequired").val() != "")
+                $("#lblCashMatchRequired").html($("#txtCashMatchRequired").val() + '(%)');
+            if ($("#txtAwardIssueDate").val() != undefined && $("#txtAwardIssueDate").val() != "")
+                $("#lblAwardIssueDate").html($("#txtAwardIssueDate").val());
+
+
+            //if ($("#txtSalaryOffered").val() != undefined && $("#txtSalaryOffered").val() != "")
+            //    $("#lblSalaryOffered").html('$' + $("#txtSalaryOffered").val());
+
+            //if ($("#txtChargeRate").val() != undefined && $("#txtChargeRate").val() != "")
+            //    $("#lblChargeRate").html('$' + $("#txtChargeRate").val());
+
+            //if ($("#txtPayRate").val() != undefined && $("#txtPayRate").val() != "")
+            //    $("#lblPayRate").html('$' + $("#txtPayRate").val());
+
+            //if ($("#txtMarkupValue").val() != undefined && $("#txtMarkupValue").val() != "")
+            //    $("#lblMarkupValue").html('$' + $("#txtMarkupValue").val());
+
+            //if ($("#txtCommissionPotential").val() != undefined && $("#txtCommissionPotential").val() != "")
+            //    $("#lblCommPotential").html('$' + $("#txtCommissionPotential").val());
+
+            //if ($("#txtCommissionCap").val() != undefined && $("#txtCommissionCap").val() != "")
+            //    $("#lblCommissionCap").html('$' + $("#txtCommissionCap").val());
+
+            //if ($("#txtBonusPotential").val() != undefined && $("#txtBonusPotential").val() != "")
+            //    $("#lblBunusPotential").html('$' + $("#txtBonusPotential").val());
+
+            //if ($("#txtBonusCap").val() != undefined && $("#txtBonusCap").val() != "")
+            //    $("#lblBunusCap").html('$' + $("#txtBonusCap").val());
+
+            //if ($("#SalaryType").val() != undefined && $("#SalaryType").val() != "")
+            //    $("#lblSalaryType").html($("#SalaryType option:selected").text());
+
+            //if ($("#txtHourlyWage").val() != undefined && $("#txtHourlyWage").val() != "")
+            //    $("#lblHourlyWage").html('$' + $("#txtHourlyWage").val());
+
+            //if ($("#txtPieceRate").val() != undefined && $("#txtPieceRate").val() != "")
+            //    $("#lblPieceRate").html('$' + $("#txtPieceRate").val());
+
+            if ($("#PlusBonus").val() == "False") {
+                $(".PlusBonus").css("display", "none");
+            }
+            else { $(".PlusBonus").css("display", "block"); }
+
+            if ($("#PlusCommission").val() == "False") {
+                $(".PlusCommission").css("display", "none");
+            }
+            else {
+                $(".PlusCommission").css("display", "block");
+            }
+
+            if ($("#IncludeCandidateNotice").val() == "False") {
+                $(".CandidateNotice").css("display", "none");
+            }
+            else {
+                $(".CandidateNotice").css("display", "block");
+            }
+
+            if ($("#IncludeCompanyNotice").val() == "False") {
+                $(".CompanyNotice").css("display", "none");
+            }
+            else {
+                $(".CompanyNotice").css("display", "block");
+            }
+
+
+            $("#lblPerWeek").html($("#txtHoursPerWeek").val());
+            $("#lblPiecePer").html('$' + $("#txtPiecePer").val());
+            $("#lblPlacementType").html($("#ddlPlacementType option:selected").text());
+            $("#lblStartDate").html($("#txtStartDate").val());
+            $("#lblEndDate").html($("#txtEndDate").val());
+            $("#lblCommission").html($("#txtCommissionDesc").val());
+            $("#lblBonus").html($("#txtBonusDesc").val());
+            $("#VacOfferModel").css("display", "block");
+            $(".cover").css("display", "block");
+            $(".input-validation-error").removeClass('input-validation-error');
+            $("#btnConfirmOffer").hide();
+            $("#btnMakeOffer").show();
+        }
+    }
+</script>

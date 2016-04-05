@@ -1,0 +1,131 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.EmploymentHistory
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BERecordOfEmploymentConst = ATS.BusinessEntity.Common.RecordOfEmployementConstant
+
+@{
+    SelectList monthList = (SelectList)ViewBag.StartMonthsList;
+    String startMonth = monthList.Where(x => x.Value.Equals(Model.StartMonth.ToString())).Count() > 0 ? monthList.Where(x => x.Value.Equals(Model.StartMonth.ToString())).First().Text : "";
+    String endMonth = monthList.Where(x => x.Value.Equals(Model.EndMonth.ToString())).Count() > 0 ? monthList.Where(x => x.Value.Equals(Model.EndMonth.ToString())).First().Text : "";
+    SelectList YearList = (SelectList)ViewBag.StartYearList;
+    String startYear = YearList.Where(x => x.Value.Equals(Model.StartYear.ToString())).Count() > 0 ? YearList.Where(x => x.Value.Equals(Model.StartYear.ToString())).First().Text : "";
+    String EndYear = YearList.Where(x => x.Value.Equals(Model.EndYear.ToString())).Count() > 0 ? YearList.Where(x => x.Value.Equals(Model.EndYear.ToString())).First().Text : "";
+}
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@String.Format("{0}", String.IsNullOrEmpty(Model.CompanyName) ? "New Company" : ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.CompanyName))</span>,
+        <span class='ttllb'>@String.Format("{0}", String.IsNullOrEmpty(Model.MostRecentPosition) ? "" : ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.MostRecentPosition))</span>
+        <span class='ttllbrown'>
+            <span class="startMonth">@String.Format("{0}", String.IsNullOrEmpty(startMonth) ? "" : startMonth)</span>
+            <span class="startYear">@String.Format("{0}", String.IsNullOrEmpty(startYear) ? "" : startYear)</span>
+            <span class="dash" style="display:none;">-</span>
+            <span class="endMonth">@String.Format("{0}", String.IsNullOrEmpty(endMonth) ? "" : endMonth)</span>
+            <span class="endYear">@String.Format("{0}", String.IsNullOrEmpty(EndYear) ? "" : EndYear)</span>
+        </span>
+        <span class="notification" style="display:none;"></span>
+        <span class="Save" style="display:none;"><button type="button" onclick="return outerSave(this);">&nbsp;</button></span>
+        <span class="delete"><a href='@Url.Action("RemoveJobHistory", "Profile", new { @area = "", @precordId = Model.EmployementId })' recordid='@Model.EmployementId' onclick="return DeleteJobHistory(this);">@*<img src="~/Content/images/remove_16.png" />*@</a></span>
+    </p>
+</div>
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.CompanyName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.SupervisorName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.SupervisorName, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Address, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Address, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.State, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.State, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.StartigPosition, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.StartigPosition, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.StartingPay, new { @class = "label" })
+                            <span class="label"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                            @Html.TextBoxFor(m => m.StartingPayText, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            <span class="label">
+                                @Html.LanguageLabel(BERecordOfEmploymentConst.FRM_PRF_STARTMONTHYEAR)
+                            </span>
+                        </div>
+                        <div class="box">
+                            @Html.DropDownListFor(m => m.StartMonth, (SelectList)monthList, "---Please Select---", new { @class = "detail-input-halfcontainer", @style = "margin-right:12px;" })
+                            @Html.DropDownListFor(m => m.StartYear, (SelectList)ViewBag.StartYearList, "---Please Select---", new { @class = "detail-input-halfcontainer" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.JobCategory, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.JobCategory, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.ReasonForLeaving, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.ReasonForLeaving, new { @class = "detail-input txtarea" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.DutiesAndResponsibilities, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.DutiesAndResponsibilities, new { @class = "detail-input txtarea" })
+                        </div>
+                    </div>
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.MayWeContact, new { @class = "label" })
+                            @Html.DropDownListFor(m => m.MayWeContact, (SelectList)ViewBag.YesNoDropDownMayWeContact, new { @class = "detail-select" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Telephone, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Telephone, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.City, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.City, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Zip, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Zip, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.MostRecentPosition, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.MostRecentPosition, new { @class = "detail-input", @onchange = "CopyRecentPosition(this);" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EndingPay, new { @class = "label" })
+                            <span class="label"> &nbsp;( @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol )</span>
+                            @Html.TextBoxFor(m => m.EndingPayText, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            <span class="label">
+                                @Html.LanguageLabel(BERecordOfEmploymentConst.FRM_PRF_ENDMONTHYEAR)
+                            </span>
+                        </div>
+                        <div class="box">
+                            @Html.DropDownListFor(m => m.EndMonth, (SelectList)monthList, "---Please Select---", new { @class = "detail-input-halfcontainer", @style = "margin-right:12px;" })
+                            @Html.DropDownListFor(m => m.EndYear, (SelectList)ViewBag.EndYearList, "---Please Select---", new { @class = "detail-input-halfcontainer" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Experience, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Experience, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                </div>
+                <br clear="all" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+

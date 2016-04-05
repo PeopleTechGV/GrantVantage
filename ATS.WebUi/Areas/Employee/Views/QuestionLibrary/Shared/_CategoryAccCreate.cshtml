@@ -1,0 +1,32 @@
+﻿@model ATS.BusinessEntity.QueCat
+@using BEClient = ATS.BusinessEntity;
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@using BeQl = ATS.BusinessEntity.Common.QuestinoLibraryConstant
+
+<div class="acc-header" data-catidonly="@Model.QueCatId">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        <span class="ttldb">@Model.LocalName</span>
+        @if (ViewBag.QuestionPermission != null)
+        {
+            List<ATS.BusinessEntity.SRPEntity.UserPermissionWithScope> UserPermissionWithScope = ViewBag.QuestionPermission;
+
+            if (UserPermissionWithScope != null)
+            {
+                if (UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Modify)).Count() > 0)
+                {
+                    <span class="edit" style="display:none;"><a href='javascript:void(0);' id="editCategory" data-url='@Url.Action("GetQuestion", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @QueId = Model.QueCatId })' data-id='@Model.QueCatId' onclick="return editCategory(this);"><img src="~/Content/images/Edit_16.png" /></a></span>
+                }
+            }
+        }
+        <span class="notification" style="display:none;"></span>
+        <span class="floatright" style="white-space: nowrap; padding-right:2px;">
+            <span class="ttllbrown floatleft">@Html.LanguageLabel(BeQl.FRM_WEIGHT):&nbsp;</span>
+            <span id="rndweight" class="ttldblue floatright">@Model.Weight</span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content" data-catid="@Model.QueCatId">
+    <span class="editsection">
+        @Html.Partial("Shared/_AddEditCategory", Model)
+    </span>
+</div>

@@ -1,0 +1,191 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.Division>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+<script src="~/Content/PageScript/Division.js"></script>
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool IsOwn = ViewBag.IsMyDivision == null ? false : ViewBag.IsMyDivision;
+    ViewBag.MenuDisplayName = "Divisions";
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+@if (ATS.WebUi.Common.CommonFunctions.GetPageMode(Model.obj.RecordPermissionType, ViewBag.PageMode) == ATS.BusinessEntity.PageMode.View)
+{
+    <script>
+        $(function () {
+            VacancyModel.MakeFormReadOnly('frmDivision');
+        });
+    </script>
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+@using (Html.BeginForm(Model.obj.ActionName, "Division", FormMethod.Post, new { id = "frmDivision" }))
+{
+    @Html.Partial("Buttons/_ViewGear", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.DivisionId, new { Id = "DivisionId" })
+    @Html.HiddenFor(m => m.obj.obj.ClientId)
+    @Html.HiddenFor(m => m.obj.obj.SelectedPositionTypeList, new { @id = "strSelectedPositionTypeList" })
+    @Html.HiddenFor(m => m.obj.obj.SelectePositionType, new { id = "SelectPositionType" })
+    @Html.HiddenFor(m => m.obj.obj.SelectedJobLocationList, new { @id = "strSelectedJobLocationList" })
+    @Html.HiddenFor(m => m.obj.obj.SelecteJobLocation, new { id = "SelectJobLocation" })
+
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DefaultName, new { @class = "detail-input" })
+            @if (ViewBag.IsEdit == 1)
+            {
+                <div class="form-chkActive">
+                    @Html.CheckBoxFor(m => m.obj.obj.IsActive, new { @id = "isActive", @style = "float: left;" })
+                    <span style="float: left; margin-top: -2px;">@Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)</span>
+                </div>
+            }
+        </div>
+        @for (int i = 0; i < Model.obj.obj.DivisionEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.DivisionEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.DivisionEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.obj.obj.DivisionEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.ParentDivisionId, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.obj.ParentDivisionId, (SelectList)ViewBag.ParentDivisionList, "- Select one -", new { @class = "detail-select", @id = "ParentDivisionDrp" })
+        </div>
+    </div>
+}
+@if (Model.obj.obj.DivisionId != null && Model.obj.obj.DivisionId != Guid.Empty)
+{
+    <div id="DivisionAcc" class="ClearFloat">
+        <div class="acc-header" data-index="0" data-pkid="@Model.obj.obj.DivisionId">
+            <p class="prfle-tab-head-brown">
+                Program Types associated with this Division
+            </p>
+        </div>
+        <div class="acc-Content" data-mode="@ViewBag.PageMode">
+            @*@Html.Partial("Shared/_PositionType", Model)*@
+        </div>
+
+        <div class="acc-header" data-index="1" data-pkid="@Model.obj.obj.DivisionId">
+            <p class="prfle-tab-head-brown">
+                Program Offices associated with this Division
+            </p>
+        </div>
+        <div class="acc-Content" data-mode="@ViewBag.PageMode">
+            <div class="acc-inner" style="clear: both; display: block; padding: 0 1% 0 2.5%;">
+
+            </div>
+        </div>
+    </div>
+}
+
+<div id="ConfirmDiv">
+</div>
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    function PositionTypeSuccess(data) {
+        var jsonData = JSON.parse(data);
+        if(!jsonData.IsError)
+        {
+            $('#DivisionAcc').accordion("destroy").accordion(VacancyModel.AccFirstAttr).accordion({ active: 0 })
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+    }
+
+    $(function (){
+        Division.GetAllPositionType = '@Html.Raw(Url.Action("GetPositionTypeForDivision", "Division"))';
+        Division.GetPositionTypeModel = '@Html.Raw(Url.Action("GetPositionTypeModel", "Division"))';
+        Division.GetJobLocationModel = '@Html.Raw(Url.Action("GetJobLocationModel", "Division"))';
+        Division.GetAllJobLocation = '@Html.Raw(Url.Action("GetJobLocationByDivision", "Division"))';
+    });
+
+    $(document).ready(function(){
+        $("#lblCount").html($("#Count_CSMNU_DIVISION").html());
+    });
+
+    function OnClickValidate()
+    {
+        $('#frmDivision').submit();
+    }
+
+    $(function () {
+        $("#isActive").click(function () {
+            msg = "Are you sure you want to deactivate this Division?"
+            VacancyModel.DeactivationConfirm(this, msg);
+        });
+    });
+
+    function Success(IsError, Url, Data, Message) {
+        if (IsError != 'true') {
+            $("#NewLanguage").html($(Data).find("#NewLanguage").html());
+            $("#ParentDivisionDrp").html($(Data).find("#ParentDivisionDrp").html());
+            $("#DivisionDescription").html($(Data).find("#DivisionDescription").html());
+        }
+    }
+
+    function Deactivate(Result) {
+        if (Result == true)
+        {$('#isActive').attr('checked', false);}
+        else
+        { $('#isActive').attr('checked', true); }
+    }
+</script>
+
+<script>
+    $(".btn-remove-vacancy").on("click", function () {
+        var VacancyCount =""
+        var ApplicantCount=""
+        var UserSaveVacancyCount=""
+        var UserCount=""
+        if('@IsOwn'=='True')
+        {
+            var _title = "Delete Division";
+            var _divisionname = '@Model.obj.obj.DivisionName';
+            VacancyModel.NotificationDialog("ConfirmDiv", _title, 320, _divisionname + " You cannot delete your own division.", "OK");
+            return false;
+        }
+
+        if(@Model.obj.obj.RecordExistsCount.Count > 0)
+        {
+            VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()
+            UserSaveVacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "User Saved Vacancy").Select(x => x.Count).FirstOrDefault()
+            ApplicantCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Applicants").Select(x => x.Count).FirstOrDefault()
+            UserCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Users").Select(x => x.Count).FirstOrDefault()
+            }
+
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Division", 300, "Are you sure you want to delete this Division ? <br /> The following records will also be deleted: <br />" + VacancyCount +" Vacancies <br />" + UserSaveVacancyCount + " Saved User-Saved Vacancies <br />" + ApplicantCount + " Applicant <br /> " + UserCount +" Users", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "Division", new { id = @Model.obj.obj.DivisionId })'
+            window.location.href = deletelink;
+        }
+    }
+</script>

@@ -1,0 +1,14 @@
+﻿@model List<ATS.BusinessEntity.ApplicationDocuments>
+
+<div class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w40">Document Name</li>
+        <li class="w40">File Name</li>
+        <li class="w20">Browse</li>
+    </ul>
+    @foreach (var _Current in Model)
+    {
+        @Html.Partial("Shared/_RequiredDocumentSingle", _Current)
+    }
+
+</div>

@@ -1,0 +1,61 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@model ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<ATSModel>>
+
+<div class="acc-Content" style="overflow: visible !important;">
+    @Html.HiddenFor(m => m.obj.obj.objUserDetail.UserId, new { @id = "objUserDetail.UserId" })
+    <div class="std_width SMAccInner">
+        <div class="std_hlfwdth spctop-btm">
+            <div class="std_width ">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_FIRST_NAME)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.FirstName, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_LAST_NAME)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.LastName, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_ADDRESS)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.Address, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_CITY)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.City, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_STATE)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.State, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_ZIP)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.Zip, new { @class = "detail-input" })
+            </div>
+        </div>
+        <div class="std_hlfwdth spctop-btm">
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_BUSINESS_PHONE_NO)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.BusinessPhoneNo, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_HOME_PHONE)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.HomePhone, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_MOBILE_PHONE)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.MobilePhone, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_PAGER)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.Pager, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_HOME_EMAIL)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.HomeEmail, new { @class = "detail-input" })
+            </div>
+            <div class="std_width">
+                <div class="security-title">@Html.LanguageLabel(ATS.BusinessEntity.Common.PersonalInfoConstant.FRM_PRF_WORK_EMAIL)</div>
+                @Html.TextBoxFor(m => m.obj.obj.objUserDetail.WorkEmail, new { @class = "detail-input" })
+            </div>
+        </div>
+    </div>
+</div>

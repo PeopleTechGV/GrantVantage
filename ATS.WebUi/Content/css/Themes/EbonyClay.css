@@ -1,0 +1,261 @@
+﻿/*#region HEADER */
+header {
+    background-color: #2B3D50;
+}
+/*#endregion */
+
+/*#region TOP NAVIGATION BAR */
+.NavigationBar {
+    padding-left: 231px;
+    background-color: #1A2530;
+}
+
+    .NavigationBar > .NavItems > .navTitle {
+        font-size: 10pt;
+        float: left;
+        height: 40px;
+        color: #FFFFFF;
+        font-weight: normal;
+        padding: 10px 0;
+    }
+
+ul.dropdownMenu {
+    padding: 0px;
+    box-shadow: 2px 2px 2px #888;
+    background-color: #2b3d50;
+}
+
+
+    ul.dropdownMenu > li {
+        background-color: #2b3d50;
+        margin-bottom: 0;
+        border-bottom: 1px solid #334558;
+    }
+
+        ul.dropdownMenu > li > a {
+            opacity: 0.65;
+            padding: 12px;
+            border-left: 3px solid transparent;
+        }
+
+            ul.dropdownMenu > li > a.activeMenu {
+                background-color: #223447;
+                opacity: 1;
+                border-left: 3px solid #AB3334;
+            }
+
+                ul.dropdownMenu > li > a:hover, ul.dropdownMenu > li > a.activeMenu:hover {
+                    background-color: #223447;
+                    color: #FFF;
+                    text-decoration: none;
+                    opacity: 1;
+                    border-left: 3px solid #AB3334;
+                }
+
+ul.MenuRight {
+    box-shadow: -2px 2px 2px #888;
+}
+
+.hasDropdown:hover {
+    background-color: #111c27;
+}
+
+    .hasDropdown:hover > .navTitle {
+        color: #FFFFFF;
+    }
+
+ul.menuAqua > li > a {
+    background-color: #2B3D50;
+}
+
+    ul.menuAqua > li > a:hover {
+        background-color: #223447;
+    }
+
+ul.menuPurple > li > a {
+    background-color: #2B3D50;
+}
+
+    ul.menuPurple > li > a:hover {
+        background-color: #223447;
+    }
+
+ul.hasIcon > li > a {
+    padding-left: 36px;
+}
+
+.dropdownMenu > .dropdownInfo {
+    border-bottom: medium none;
+    color: #75879a;
+    padding-top: 4px;
+    text-indent: 4px;
+}
+
+ul.multiColumns {
+    width: 460px;
+}
+
+    ul.multiColumns > li:nth-child(2n+1) {
+        border-right: 1px solid #334558;
+        margin-right: 0;
+    }
+
+/*#endregion */
+
+/*#region GRID CONTAINER */
+.GridContainer ul.RowContent:hover {
+    background-color: #e6e6e6;
+}
+/*#endregion */
+
+/*#region LEFT SECTION*/
+.contnt-left {
+    background-color: #2B3D50;
+    display: block;
+    float: left;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 230px;
+    z-index: 10;
+}
+
+ul.LeftMenu > li {
+    background-color: transparent;
+    display: block;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+    ul.LeftMenu > li > a {
+        background-position: 12px center;
+        background-size: 16px 16px;
+        border-left: 3px solid transparent;
+        color: #ffffff;
+        display: block;
+        font-size: 10pt;
+        height: auto;
+        padding: 14px 14px 14px 38px;
+        opacity: 0.65;
+    }
+
+        ul.LeftMenu > li > a.activeMenu {
+            border-color: #AB3334;
+            background-color: #223447;
+            opacity: 1;
+        }
+
+            ul.LeftMenu > li > a:hover, ul.LeftMenu > li > a.activeMenu:hover {
+                border-color: #AB3334;
+                background-color: #223447;
+                color: #FFF;
+                opacity: 1;
+            }
+
+.btn-upload-resume {
+    background: url("/content/images/Upload_Documents_white_24.png") no-repeat 95% center #00A65A;
+    border: medium none;
+    bottom: 50px;
+    color: #FFF;
+    display: block;
+    font-size: 12px;
+    left: -135px;
+    margin: 0 auto;
+    padding: 8px 42px 8px 8px;
+    position: fixed;
+    text-align: left;
+    width: 175px;
+    transition: all .75s ease;
+}
+
+    .btn-upload-resume:hover {
+        transition: all .75s ease;
+        left: 0;
+        background-color: #00A65A;
+    }
+
+.user-image > img {
+    border: 2px solid #5e7083;
+}
+
+#UploadPhotoSideForm {
+    display: none;
+}
+
+/*#endregion */
+
+/*#region RIGHT SECTION */
+.contnt-right {
+    width: calc(100% - 230px);
+}
+
+table.grid-table tr.grid-row:hover {
+    background-color: #E6E6E6 !important;
+}
+
+.Search-Job-Box {
+    background-color: #E6E6E6;
+    border: 1px solid #d5d5d5;
+}
+
+/*#region ACCORDION */
+div.acc-header:hover {
+    background-color: #e6e6e6 !important;
+}
+/*#endregion */
+
+/*#region CSMenu */
+ul.CSMenu > li > a:hover {
+    background-color: #E6E6E6;
+}
+/*#endregion */
+
+/*#region ACTIONBAR */
+.ActionBar > li:hover,
+.ActionBar > li > a:hover,
+.ActionBar > li:hover > .ActionOptions,
+.ActionBar > li > .ActionOptions:hover {
+    background-color: #E6E6E6;
+}
+/*#endregion */
+
+/*#region SELECTABLE */
+#selectable div.ui-selected,
+#selectable ul.ui-selected,
+table.grid-table tr.grid-row-selected td {
+    background-color: #E1E1E1 !important;
+}
+/*#endregion */
+
+/*#region ALL BUTTONS */
+.set-as-my-default:hover, .search-listing:hover, .prfle-button-save:hover, a.btn:hover, .doneround:hover, .prfle-button-delete:hover {
+    background-color: #E6E6E6 !important;
+    border: 1px solid #CCC;
+}
+/*#endregion */
+
+/*#region SEARCH CANDIDATES */
+a.btn-new-criteria {
+    border-color: #CCCCCC !important;
+}
+
+    a.btn-new-criteria:hover, a.btn-new-criteria.clicked {
+        background-color: #E6E6E6 !important;
+        border-color: #CCCCCC !important;
+    }
+
+ul.new-criteria.options-dd > li > a:hover, ul.change-field.options-dd > li > a:hover, ul.change-operator.options-dd > li > a:hover, ul.options-dd.grouping-type > li > a:hover, ul.options-dd.select-value > li > a:hover {
+    background-color: #E6E6E6 !important;
+    border-color: #CCCCCC !important;
+}
+/*#endregion */
+
+/*#region DROP MENU */
+.DropMenu ul li a:hover {
+    background-color: #e6e6e6;
+    border: 1px solid #d5d5d5;
+}
+/*#endregion */
+
+/*#endregion */

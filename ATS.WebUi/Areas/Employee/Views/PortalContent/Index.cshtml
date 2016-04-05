@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Portal Content";
+    Layout = "~/Areas/Employee/Views/CompanySetup/CompanySetUpMaster.cshtml";
+}
+<div id="Messages" style="width: auto; float: left;">
+</div>
+<div class="featured-jobs" style="clear:left;">
+    <div class="search">
+        <div class="vacancies-heading">
+            </div>        
+            <a href ='@Url.Action("View", "PortalContent")' class="btn-add-new" >
+                Add New Portal Content</a>
+    </div>
+</div>
+@Html.Partial("Shared/_PortalContentList")
+@if (ViewBag.IsError != null && ViewBag.IsError==true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError==false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

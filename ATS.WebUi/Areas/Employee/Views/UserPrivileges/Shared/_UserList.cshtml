@@ -1,0 +1,11 @@
+﻿@using BESrp = ATS.BusinessEntity.SRPEntity;
+@using ATSModel = ATS.BusinessEntity.UserDivisionSecurityRole;
+@using BEUserPrivilegesConst = ATS.BusinessEntity.Common.UserPrivilegesConst
+@model  ATS.WebUi.Models.BreadScrumbModel<BESrp.DynamicSRP<ATSModel>>
+<div class="security-title">
+    <span style="margin-left:4%">@Html.LanguageLabel(BEUserPrivilegesConst.FRM_USER_PRIV_TTL_SELECTUSER)</span></div>
+<div class="std_width">
+    <div class="ats-user-box" style="margin-left: 4%;">
+        @Html.DropDownListFor(m => m.obj.obj.UserId, (SelectList)ViewBag.UserList, new { @class = "user-select", @id = "drp_User", @onchange = "ChangeUser()" })
+    </div>
+</div>

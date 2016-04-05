@@ -1,0 +1,74 @@
+﻿@model ATS.BusinessEntity.ApplicationReviewProcess
+@using BEClient = ATS.BusinessEntity;
+@using CommonConst = ATS.BusinessEntity.Common.VacancyRound;
+@{
+    bool AllowAdd = Model.objVacancyQuestionlst.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0 ? true : false;
+}
+<div class="acc-inner">
+    <div class="VacQueGrid Content">
+        <div class="std_width reviewer-tab-head">
+            <div class="reviewer-name w50">@Html.LanguageLabel(CommonConst.ROUND_QUESTIONS)</div>
+            <div class="reviewer-name w20 textcenter">@Html.LanguageLabel(CommonConst.ROUND_QUESTIONS_TYPE)</div>
+            <div class="reviewer-name w10 textcenter">@Html.LanguageLabel(CommonConst.ROUND_WEIGHT)</div>
+            @*CR-9*@
+            <div class="reviewer-name w20 textcenter">@Html.Label("Integration Key")</div>
+        </div>
+        @if (Model.objVacancyQuestionlst.obj != null)
+        {
+            int TotalCount = Model.objVacancyQuestionlst.obj.Count();
+            foreach (BEClient.VacancyQuestion _Current in Model.objVacancyQuestionlst.obj)
+            {
+                _Current.VacQueCnt = TotalCount;
+                @Html.Partial("Shared/Questions/_SingleVacQue", _Current)
+            }
+        }
+    </div>
+    @*<div class="std_width">
+            @if (AllowAdd) {
+            <a id="addQuestion" href="javascript void();" class="btn">Add Question</a>
+            }
+        </div>*@
+</div>
+<script>
+
+    $("#deleteQue").live("click", function () {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Question", 300, "Are you sure you want to delete this Question?", "Yes", "Cancel", "RemoveVacQue", this, "test");
+        return false;
+    });
+    function RemoveVacQue(Result, element) {
+        if (Result == true) {
+            var $accContent = $(element).parents('.acc-Content:first');
+            var dataid = $(element).attr('data-id')
+            var _dataLink = '@Url.Action("RemoveVacQue", "MyVacancy", new { VacQueId = "_DATAID_" })';
+            _dataLink = _dataLink.replace("_DATAID_", dataid)
+            $.ajax({
+                url: _dataLink,
+                type: "POST",
+                success: function (response) {
+                    var data = JSON.parse(response)
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                    else {
+                        $(element).parent().parent().remove();
+                        var QueCountOld = $accContent.parents().find('.lblTotalQueCount').text();
+                        var newQueCount = parseInt(QueCountOld) - 1;
+                        $accContent.parents().find('.lblTotalQueCount').text(newQueCount);
+
+                        var VacQueCountOld = $accContent.prev().find('.lblVacQueCount').text();
+                        var newVacQueCount = parseInt(VacQueCountOld) - 1;
+                        $accContent.prev().find('.lblVacQueCount').text(newVacQueCount);
+                        
+                        var _parentAcc = $('.AccRoundDetail');
+                        var _rndacc = $('.VacQueCat');
+                        var _rndactive = _rndacc.accordion("option", "active");
+                        _parentAcc.find(_rndacc).accordion("option", "active", false);
+                        _parentAcc.find(_rndacc).accordion("option", "active", _rndactive);
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+
+                }
+            });
+        }
+    }
+</script>

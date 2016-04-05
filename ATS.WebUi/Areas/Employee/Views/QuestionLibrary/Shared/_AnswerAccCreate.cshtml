@@ -1,0 +1,36 @@
+﻿@model ATS.BusinessEntity.AnsOpt
+@using BEClient = ATS.BusinessEntity;
+@using BELabel = ATS.BusinessEntity.Common.AnsOpt;
+@{
+    bool AllowEdit = false;
+}
+<div class="acc-header" data-pkid="@Model.AnsOptId" data-queid="@Model.QueId">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        @if (Model != null || String.IsNullOrEmpty(Model.DefaultName.ToString()))
+        {
+            <span class="ttldb" style="float:left;width:25%;">New Answer</span>
+        }
+        else
+        {
+            <span class="ttldb" style="float:left;width:25%;">@Model.DefaultName</span>
+        }
+        <span style="float:right;white-space:nowrap;">
+            <span class="ttllbrown">@Html.LanguageLabel(BELabel.ANSOPT_VALUE): </span>
+            <span id="rndweight" class="ttldblue">@Model.Weight</span>
+        </span>
+
+        <span style="padding-right: 1%;padding-left: 1%;" class="ansoption">
+            @if (AllowEdit)
+            {
+                <span class="up"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("AnsOptReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId, @QueId = Model.QueId,@OrderDir = "Up" })' data-neworder='@Convert.ToString(Model.Order - 1)' data-id='@Model.AnsOptId' onclick="return SetAnsOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                <span class="down"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("AnsOptReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId, @QueId = Model.QueId, @OrderDir = "Down" })' data-neworder='@Convert.ToString(Model.Order + 1)' data-id='@Model.AnsOptId' onclick="return SetAnsOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+    <span class="update" style="display:none;"><a href='javascript:void(0);' id="editAnswer" data-url='@Url.Action("GetAnsOpt", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId })' data-id='@Model.AnsOptId' onclick="return editAnswer(this);"><img src="~/Content/images/Edit_16.png" height="15" width="15" /></a></span>
+            }
+        </span>
+    </p>
+</div>
+<div class="acc-Content" data-ansid="@Model.AnsOptId" data-queid="@Model.QueId">
+    <span class="editsection">
+        @Html.Partial("Shared/_AddEditAnswer", Model)
+    </span>
+</div>

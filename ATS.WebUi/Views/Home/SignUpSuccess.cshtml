@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Validate your Email Address";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ATS.BusinessEntity.ReActivate _myModel = null;
+    if (Request.QueryString["Username"] != null)
+    {
+        _myModel = new ATS.BusinessEntity.ReActivate();
+        _myModel.UserName = Request.QueryString["Username"].ToString();
+    }
+}
+<table cellspacing="10">
+    <tr>
+        <td style="text-align: justify; font-size: 20px;">
+            <div id="MiddleTitle" style="height: 40px; color: #37698C;">
+                Congratulations...!!
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="color: #55667f; font-size: 12px; padding-right: 15px; text-align: justify;">
+            <div id="MiddleDescription">
+                <p>
+                    An activation link has been sent to the email address you provided. Click the link in that email to activate your account and access the @ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.Clientname Job Portal.
+                </p>
+            </div>
+        </td>
+        <td style="padding-left: 15px;">
+            @if (_myModel != null && !String.IsNullOrEmpty(_myModel.UserName))
+            {
+                @Html.Partial("ActiveUsers", _myModel);
+            }
+        </td>
+    </tr>
+</table>

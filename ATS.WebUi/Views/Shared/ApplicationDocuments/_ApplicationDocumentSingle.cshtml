@@ -1,0 +1,30 @@
+﻿@model ATS.BusinessEntity.ApplicationDocuments
+
+<ul class="RowContent" data-id="@Model.DocumentTypeId">
+    <li class="w40 SMW100 cntDocumentType">
+        @Model.RequiredDocumentName
+        @if (Model.IsOptional)
+        { <span class="lblNbrown lblRoundBraces">Optional</span> }
+    </li>
+    @if (Model.IsPending)
+    {
+        <li class="w40 SMW80 ColFileName lblPending">Pending...</li>
+    }
+    else
+    {
+        <li class="w40 SMW100 ColFileName cntFileName">
+            <a class="lnkDownloadDocument" href='@Model.Path.Replace("~","")' target="_blank">
+                @Model.UploadedFileName &nbsp;
+            </a>
+        </li>
+    }
+    @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.DivisionId == Guid.Empty)
+    {
+        <li class="w20 SMW100 ColBrowse">
+            @*CR-8*@
+            @*<a class="btnUploadAppDocs" href='@Url.Action("GetUploadRequiredDocumentModel", "MyApplications", Model)' onclick="return VacancyModel.OpenPostRequestForm(this)" title="Upload @Model.RequiredDocumentName" dialog-width="400" dialog-close-button="false" dialog-title='Upload @Model.RequiredDocumentName'>*@
+                <img src="/Content/images/Upload_Documents_16.png" />
+            @*</a>*@
+        </li>
+    }
+</ul>

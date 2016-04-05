@@ -1,0 +1,42 @@
+﻿@model ATS.BusinessEntity.ApplicationReviewProcess
+@using CommonConst = ATS.BusinessEntity.Common.VacancyRound;
+@using BERndAttr = ATS.BusinessEntity.RndAttrNo;
+@{
+    int RndAttrNo = ATS.WebUi.Common.CommonFunctions.GetAttributesNoByRndTypeId(Model.objVacancyRound.RndTypeId);
+    BERndAttr RndAttr = (BERndAttr)RndAttrNo;
+    ViewBag.RndAttr = RndAttr;
+}
+
+<div class="acc-inner ARPReviewersMain">
+    <div class="Content">
+        <div class="std_width reviewer-tab-head">
+            <div class="reviewer-name w30">@Html.LanguageLabel(CommonConst.ROUND_REVIEWERS)</div>
+            <div class="reviewer-name w20">@Html.LanguageLabel(CommonConst.ROUND_REVIEWERS_TITLE)</div>
+            @if (RndAttr != BERndAttr.OfferRound)
+            {
+                <div class="reviewer-name w20 textcenter">@Html.LanguageLabel(CommonConst.ROUND_WEIGHT)</div>
+                <div class="reviewer-name w20 textcenter">@Html.LanguageLabel(CommonConst.ROUND_REVIEWERS_CANPROMOTE)</div>
+            }
+            @if (RndAttr == BERndAttr.OfferRound)
+            {
+                <div class="reviewer-name w20 textcenter">Can Edit Award</div>
+                <div class="reviewer-name w20 textcenter">Can Make Award</div>
+            }
+        </div>
+        @if (Model.objReviewerslst != null)
+        {
+            foreach (var v in Model.objReviewerslst.obj)
+            {
+                @Html.Partial("Shared/Reviewers/_ReviewerList", v)
+            }
+        }
+    </div>
+    <div class="Content" style="">
+        @if (Model.objReviewerslst.UserPermissionWithScope.Where(x => x.PermissionType.Contains(ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0)
+        {
+            <a id="addReviewers" href="javascript void();" class="btn CaseUpper">
+                Add Reviewer
+            </a>
+        }
+    </div>
+</div>

@@ -1,0 +1,14 @@
+﻿@using BEVacancyConst = ATS.BusinessEntity.Common.VacancyConstant
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.TVac>>
+
+@if (Model.obj.obj.VacancyRoundList != null)
+{
+    foreach (var v in Model.obj.obj.VacancyRoundList)
+    {
+        ATS.BusinessEntity.VacancyTemplate objVacancyTemplate = new ATS.BusinessEntity.VacancyTemplate();
+        objVacancyTemplate.objTVacancyRound = v;
+        objVacancyTemplate.RndCnt = Model.obj.obj.RndCount;
+        @Html.Partial("Shared/ApplicationReviewProcess", objVacancyTemplate)
+    }
+}

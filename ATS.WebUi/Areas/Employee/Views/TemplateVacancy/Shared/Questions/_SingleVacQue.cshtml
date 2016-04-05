@@ -1,0 +1,154 @@
+﻿@model ATS.BusinessEntity.TVacQue
+@using BEClient = ATS.BusinessEntity;
+@{
+    bool ViewSaveBtn = false;
+    bool ViewRemoveBtn = false;
+}
+@if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.PermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, BEClient.PageMode.Update))
+{
+    ViewSaveBtn = true;
+}
+@if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.PermissionType, ATS.BusinessEntity.ATSPermissionType.Delete, BEClient.PageMode.Update))
+{
+    ViewRemoveBtn = true;
+}
+@{
+    var addClassName = String.Empty;
+    if (ATS.WebUi.Common.CommonFunctions.AllowAnsOptQuestionType.Where(x => x.Key.Equals(Model.QueType)).Count() > 0)
+    {
+        addClassName = "question";
+    }
+
+}
+<div class="std_width reviewer-fld ARPVacDetails @addClassName" data-pkid="@Model.TVacQueId" title="" data-queid="@Model.QueId" data->
+    <div class="reviewer-name w50 SMW80"><label class="r-name round-question">@Model.LocalName</label></div>
+    <div class="reviewer-name w20 SMW80 textcenter cntTypeBBlue"><label class="r-wght">@Model.QueTypeLocalName</label></div>
+    <div class="reviewer-name w20 SMW80 textcenter cntWeightBBlue"><label class="r-wght">@Model.Weight</label></div>
+    @if (@Model.Order == 1 && @Model.TVacQueCnt > 1)
+    {
+        <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("TVacQueReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacQueCatId = Model.TVacQueCatId, @TVacQueId = Model.TVacQueId, @OrderDir = "Down" })' onclick="return SetTVacQueOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+
+    }
+    else if (@Model.Order == @Model.TVacQueCnt && @Model.TVacQueCnt > 1)
+    {
+        <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("TVacQueReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacQueCatId = Model.TVacQueCatId, @TVacQueId = Model.TVacQueId, @OrderDir = "Up" })' onclick="return SetTVacQueOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+
+    }
+    else
+    {
+        if (@Model.TVacQueCnt > 1)
+        {
+            <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("TVacQueReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacQueCatId = Model.TVacQueCatId, @TVacQueId = Model.TVacQueId, @OrderDir = "Up" })' onclick="return SetTVacQueOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+            <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("TVacQueReorder", "TemplateVacancy", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @TVacQueCatId = Model.TVacQueCatId, @TVacQueId = Model.TVacQueId, @OrderDir = "Down" })' onclick="return SetTVacQueOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+        }
+    }
+    <span class="delete deleteIcon floatright" style="margin-right: 5px;">
+        @if (ViewRemoveBtn)
+        {
+            <a id="deleteQue" onclick="" data-id="@Model.TVacQueId" data-url="" href="javascript:void(0);">
+                <img width="15" height="15" src="/Content/images/delete_16.png">
+            </a>
+        }
+    </span>
+
+    <span class="edit floatright" style="margin-right: 5px;">
+        @if (ViewSaveBtn)
+        {
+            <a id="edit" onclick="EditTVacQue(this)" data-id="@Model.TVacQueId" data-rndid="@Model.TVacRndId" data-url="" href="javascript:void(0);">
+                <img width="15" height="15" src="/Content/images/Edit_16.png">
+            </a>
+        }
+    </span>
+
+</div>
+
+<script>
+    $(function () {
+        $("div.question").tooltip({
+            track: false,
+            position: { my: "left top+1", at: "left bottom", collision: "flipfit" },
+            content: function (callback) {
+                if ($(this).find('form').length <= 0) {
+                    callback("connecting......");
+                    var element = $(this);
+
+                    var queId = element.attr("data-queid");
+                    var _Link = '@Url.Action("GetAnswerTooltip", "MyVacancy", new { VacQueId = "_VACQUEID_"})';
+                    _Link = _Link.replace("_VACQUEID_", queId);
+                    // here retrieve the id of the teacher
+                    $.ajax({
+                        url: _Link,
+                        global: false,
+                        success: function (response) {
+                            response = JSON.parse(response);
+                            if (!response.IsError) {
+
+                                $(this).removeAttr("title");
+                                if ($.trim(response.Data) != "") {
+                                    $(this).attr("title", "");
+                                    callback(response.Data);
+                                }
+
+                            }
+                        }
+                    });
+                }
+            },
+        })
+    });
+
+
+
+    function EditTVacQue(element) {
+        $(element).parents('.QuestionDetails').next().find('a').remove();
+        $(element).parents('.QuestionDetails').next(".Content").find('#frmVacQue').remove();
+
+        var dataid = $(element).attr('data-id');
+        var rndid = $(element).attr('data-rndid');
+        var _vacQueCatId = $(element).parents('.acc-Content:first').prev().attr('data-pkid')
+        var _Link = '@Html.Raw(Url.Action("GetTVacQueById", "TemplateVacancy", new { TVacQueId = "_DATAID_", TVacRndId = "_VACRNDID_", TVacQueCatId="_VACQUECATID_" }))';
+        _Link = _Link.replace("_DATAID_", dataid);
+        _Link = _Link.replace("_VACRNDID_", rndid);
+        _Link = _Link.replace("_VACQUECATID_", _vacQueCatId);
+        var $replaceelement = $(element).parent().parent();
+        $.ajax({
+            url: _Link,
+            type: "GET",
+            success: function (response) {
+                response = JSON.parse(response);
+                if (!response.IsError) {
+                    var $fin = $(response.Data);
+                    TemplateMyVacancy.CreateSelectMenu($fin.find('#peopleC'));
+                    //var _dataLink = '@Html.Raw(Url.Action("GetQueDetails", "TemplateVacancy", new { QueId = "_SELDATA_", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_", VacQueCatId = "_VACQUECATID_", newQueId = "_NEWVAL_" }))'
+                    //MyVacancy.CreateSelectMenu($fin.find('form').find('#peopleC'));
+                    @*$fin.find('form').find('#peopleC').selectmenu().selectmenu({
+                        width: 250,
+                        change: function (event, ui) {
+                            var _dataLink = '@Html.Raw(Url.Action("GetQueDetails", "TemplateVacancy", new { QueId = "_SELDATA_", VacRndId = "_VACRNDID_", VacQueId = "_VACQUEID_", VacQueCatId = "_VACQUECATID_", newQueId = "_NEWVAL_" }))'
+                            MyVacancy.DropVacQueOnChange($(this), ui.item.value, _dataLink);
+                        },
+                        _renderMenu: function (ul, items) {
+                            $(ul).addClass('r-right');
+                        }
+                    }).selectmenu("menuWidget").addClass("overflow");*@
+                    $replaceelement.html($fin);
+                }
+            }
+        });
+    }
+
+    function SetTVacQueOrder(element) {
+        var _ele = $(element);
+        $.get($(element).attr("data-url"), function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                var _parentAcc = $(element).parents('.AccRoundDetail');
+                var _rndacc = $(element).parents('.VacQueCat');
+                var _rndactive = _rndacc.accordion("option", "active");
+                _parentAcc.find(_rndacc).accordion("option", "active", false);
+                _parentAcc.find(_rndacc).accordion("option", "active", _rndactive);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, 3000);
+            }
+        });
+    }
+</script>

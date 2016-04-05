@@ -1,0 +1,196 @@
+﻿@using BEVacancyConst = ATS.BusinessEntity.Common.VacancyConstant
+@using BeCommonConst = ATS.BusinessEntity.Common.CommonConstant
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.Vacancy>>
+
+@if (Model.obj.obj.VacancyRoundList != null)
+{
+    int TotalRounds = Model.obj.obj.VacancyRoundList.Count();
+    foreach (var v in Model.obj.obj.VacancyRoundList)
+    {
+        v.RndCnt = TotalRounds;
+        ATS.BusinessEntity.ApplicationReviewProcess objApplicationReviewProcess = new ATS.BusinessEntity.ApplicationReviewProcess();
+        objApplicationReviewProcess.objVacancyRound = v;
+        objApplicationReviewProcess.ApplicationBasedStatusList = Model.obj.obj.ApplicationBasedStatusList;
+        objApplicationReviewProcess.IsApplicationDecline = Model.obj.obj.IsDeclineApplication;
+        if (Model.obj.obj.objATSResume != null)
+        {
+            objApplicationReviewProcess.ATSCoverLetterId = Model.obj.obj.objATSResume.CoverLetterId;
+            objApplicationReviewProcess.ATSResumeId = Model.obj.obj.objATSResume.ATSResumeId;
+            objApplicationReviewProcess.ATSResumeNewName = Model.obj.obj.objATSResume.ResumeName;
+            objApplicationReviewProcess.ATSCoverLetterNewName = Model.obj.obj.objATSResume.CoverLetterName;
+            //objApplicationReviewProcess.AppId = Model.obj.obj.AppId;
+
+        }
+        objApplicationReviewProcess.AppId = Model.obj.obj.AppId;
+        @Html.Partial("Shared/ApplicationReviewProcess", objApplicationReviewProcess)
+    }
+}
+
+<script>
+    function ResendSurveyReminder(element) {
+        var VacRndId = $(element).parents('.acc-header').attr('data-pkid');
+        var Applicationid = $(element).parents('.acc-header').parents('.CanInterview').parents('.acc-Content').prev().first().attr('data-pkid');
+        var dataLink = '@Html.Raw(Url.Action("ResendSurveyReminder", "Application", new { ApplicationId = "_APPLICATIONID_", VacRndId = "_VACRNDID_" }))';
+        dataLink = dataLink.replace("_APPLICATIONID_", Applicationid);
+        dataLink = dataLink.replace("_VACRNDID_", VacRndId);
+        VacancyModel.CallPostMethod(dataLink, function (data) {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', "Applicant survey link sent successfully", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        });
+    }
+
+    function PromoteCandidate(element) {
+        var _ele = $(element);
+        var appid;
+        var promoteVacele = $(_ele).parents('.acc-header').next().next();
+        if ($(promoteVacele).length > 0) {
+            var promoteVacrndid = $(promoteVacele).attr('data-pkid');
+        }
+        var appele = $(_ele).parents('.acc-header').parents('.CanInterview').parents('.acc-Content').prev().first();
+        if ($(appele).length > 0) {
+            appid = $(appele).attr('data-pkid');
+        }
+        if (appid != undefined || promoteVacrndid != undefined) {
+            var _datalink = '@Html.Raw(Url.Action("promoteCandidate", "Application", new { AppId = "_APPID_", VacRndId = "_VACRNDID_", Status = "Promote" }))';
+            _datalink = _datalink.replace("_APPID_", appid);
+            _datalink = _datalink.replace("_VACRNDID_", promoteVacrndid);
+            VacancyModel.CallPostMethod(_datalink, function (data) {
+                var active = $(_ele).closest(".CanInterview").accordion("option", "active");
+                $(_ele).closest(".CanInterview").accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active);
+                var status = $(promoteVacele).find('#rndtype').text();
+                var rndno = $(promoteVacele).find('span.Save').find('.cntRound').text();
+                $(appele).find('#rndweight').text("Round " + rndno + ": " + status);
+
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', "Applicant Promoted Successfully.", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+
+            });
+        }
+    }
+
+    function DemoteCandidate(element) {
+        var _ele = $(element);
+        var DemoteVacrndid;
+        var appid
+        var DemoteVacele = $(_ele).parents('.acc-header').prev().prev();
+        if ($(DemoteVacele).length > 0) {
+            DemoteVacrndid = $(DemoteVacele).attr('data-pkid');
+        }
+        var appele = $(_ele).parents('.acc-header').parents('.CanInterview').parents('.acc-Content').prev().first();
+        if ($(appele).length > 0) {
+            appid = $(appele).attr('data-pkid');
+        }
+
+        if (appid != undefined || DemoteVacrndid != undefined) {
+            var _datalink = '@Html.Raw(Url.Action("promoteCandidate", "Application", new { AppId = "_APPID_", VacRndId = "_VACRNDID_", Status = "Demote"}))';
+            _datalink = _datalink.replace("_APPID_", appid);
+            _datalink = _datalink.replace("_VACRNDID_", DemoteVacrndid);
+            VacancyModel.CallPostMethod(_datalink, function (data) {
+                var active = $(_ele).closest(".CanInterview").accordion("option", "active");
+                $(_ele).closest(".CanInterview").accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active);
+                var status = $(DemoteVacele).find('#rndtype').text();
+                var rndno = $(DemoteVacele).find('span.Save').find('.cntRound').text();
+                $(appele).find('#rndweight').text("Round " + rndno + ": " + status);
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', "Applicant Demoted Successfully.", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+
+            });
+        }
+    }
+
+    function UpdateApplication(element) {
+        var _ele = $(element);
+        var _appstatusid = $(_ele).attr('data-AppStatusId');
+        var _appid = $(_ele).parents('.CanInterview').parents('.acc-Content').prev().attr('data-pkid');
+        var _url = '@Html.Raw(Url.Action("UpdateApplicationBasedStatus", "MyVacancy", new { ApplicationId = "_APPID_", ApplicationBasedStatusId = "_APPBASEDSTATUS_" }))';
+        _url = _url.replace("_APPID_", _appid);
+        _url = _url.replace("_APPBASEDSTATUS_", _appstatusid);
+        _ele.parents('.CanInterview').parents('.acc-Content').prev().attr('data-isdeclined', "True")
+        $('#BeginInterview').html('');
+        $('.applicantdetails').css("display", "none");
+        $.post(_url, function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                var active = $(_ele).closest(".AccApplication").accordion("option", "active");
+                var active1 = $(_ele).closest(".CanInterview").accordion("option", "active");
+                $(_ele).closest(".AccApplication").accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active);
+                $(_ele).closest(".AccApplication").find(".CanInterview").accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active1);
+                var appstatustext = $(_ele).text();
+                $(_ele).parents('.CanInterview').parents('.acc-Content').prev().find('#rndweight').text("Decline(" + appstatustext + ")");
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+    }
+
+    function ReactiveCandidateApplication(element) {
+        var _ele = $(element);
+        var _appstatusid = $(_ele).attr('data-AppStatusId');
+        var _appid = $(_ele).parents('.CanInterview').parents('.acc-Content').prev().attr('data-pkid');
+        var _url = '@Html.Raw(Url.Action("ReactiveBasedStatus", "MyVacancy", new { ApplicationId = "_APPID_" }))';
+        _url = _url.replace("_APPID_", _appid);
+        $.post(_url, function (response) {
+            var jsonData = JSON.parse(response);
+            if (!jsonData.IsError) {
+                //BeginInterviewList Start
+                _ele.parents('.CanInterview').parents('.acc-Content').prev().attr('data-isdeclined', "False")
+                $('.applicantdetails').css("display", "block");
+                $.post("/MyCandidates/GetBeginInterviews", { ApplicationId: _appid }, function (data) {
+                    data = JSON.parse(data);
+                    $('#BeginInterview').html('');
+                    if (data.ScheduleIntId.length == 0) {
+                        $('#BeginInterview').append('<li class="NoRecords">No Pending Interviews</li>')
+                    }
+                    else {
+                        for (var i = 0; i < data.ScheduleIntId.length; i++) {
+                            var AppendHtml = '<li><a OnClick="return BeginInterview(this);" data-scheduleintid=' + data.ScheduleIntId[i] + ' data-vacrndid=' + data.VacRndId[i] + '>' + data.RoundDetail[i] + '</a></li>';
+                            $('#BeginInterview').append(AppendHtml);
+                        }
+                    }
+                });
+                var active = $(_ele).closest(".AccApplication").accordion("option", "active");
+                var active1 = $(_ele).closest(".CanInterview").accordion("option", "active");
+                $(_ele).closest(".AccApplication").accordion('destroy').accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active);
+                $(_ele).closest(".AccApplication").find(".CanInterview").accordion(VacancyModel.AccSecondAttr).accordion("option", "active", active1);
+                var reassignele = $(_ele).parents('.acc-header').parents('.AccRevRat').find('.activeCan').prev();
+                if ($(reassignele).length > 0) {
+                    var retext = $(reassignele).text();
+                    $(_ele).parents('.CanInterview').parents('.acc-Content').prev().find('#rndweight').text(retext);
+                }
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $(".AccGearBox").hover(function (event) {
+            $(this).parents(".acc-Content").addClass("acc-visible", { duration: 0 });
+        }, function () {
+            $(this).parents(".acc-Content").removeClass("acc-visible", { duration: 335 });
+        });
+    });
+
+    function HireCandidate(element) {
+        var _ele = $(element);
+        var appid;
+        var appele = $(_ele).parents('.acc-header').parents('.CanInterview').parents('.acc-Content').prev().first();
+        if ($(appele).length > 0) {
+            appid = $(appele).attr('data-pkid');
+        }
+        var _datalink = '@Html.Raw(Url.Action("CreateCsv", "Application", new { AppId = "_APPID_" }))';
+        _datalink = _datalink.replace("_APPID_", appid);
+        $.get(_datalink, function (data) {
+            var jsonData = JSON.parse(data);
+            if (!jsonData.IsError) {
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+
+            }
+        });
+
+    }
+</script>

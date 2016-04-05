@@ -1,0 +1,41 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.References
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header">
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@ATS.WebUi.Common.CommonFunctions.TruncateProfileTitleString(Model.ReferenceName)</span>
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.ReferenceName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.ReferenceName, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.ReferencePhone, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.ReferencePhone, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.Relationship, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Relationship, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.ReferenceEmail, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.ReferenceEmail, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

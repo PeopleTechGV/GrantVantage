@@ -1,0 +1,101 @@
+﻿@using BENewVacancyConst = ATS.BusinessEntity.Common.NewVacancyOption
+@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.Vacancy>
+
+@System.Web.Optimization.Scripts.Render("~/bundles/jNewVacancy")
+@System.Web.Optimization.Scripts.Render("~/bundles/jMyVacancy")
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+@{
+    ViewBag.Title = "AddVacancyOption";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon bgMyVacancy24W"></div>
+        <span class="navTitle">@Html.LanguageLabel(ATS.BusinessEntity.Common.NewVacancyOption.NEWVACANCY_CREATE_NEW).ToString().ToUpper()</span>
+        <span class="chevron"></span>
+    </div>
+}
+
+<style>
+    .label_radio {
+        float: left;
+    }
+
+        .label_radio > .lblNewVacancy {
+            float: left;
+            font-size: 10pt;
+            font-weight: 600;
+            margin-left: 2px;
+        }
+</style>
+
+<div id="NewVacancyAcc" style="margin-top:6px;">
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            New Opportunity
+        </p>
+    </div>
+
+    <div class="acc-Content" name="NewvacancyDetail">
+        <div id="newVacancyOption">
+            <label class="label_radio" for="radio-01">
+                <input name="NewVac-radio" id="radio-01" value="1" class="popup_radio" type="radio" checked="checked" />
+                <span class="lblNewVacancy">@Html.LanguageLabel(BENewVacancyConst.NEWVACANCY_CREATE_NEW)</span>
+            </label>
+
+            <label class="label_radio" for="radio-02" style="margin-top: 10px;">
+                <input name="NewVac-radio" id="radio-02" value="1" class="popup_radio" type="radio" />
+                <span class="lblNewVacancy">@Html.LanguageLabel(BENewVacancyConst.NEWVACANCY_CREATE_FROM_TEMPLATE)</span>
+            </label>
+
+            <div id="divTemplateDropDown">
+            </div>
+
+            <div id="Vactemplate" style="float: left; margin-top: 16px; text-align: right; width: 329px; ">
+                <a id="btnNextToComplete" class="btn-icon24-right bgNext24" href="javascript:void(0);">NEXT</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        // For initial load--Start--
+        var mainEle = $('#btnNextToComplete');
+        $('#radio-01').attr('checked', 'checked');
+        var _mainlink = '@Url.Action("View", "MyVacancy")';
+        $(mainEle).attr('href', _mainlink);
+        //--end--
+
+        $('#radio-01').on("change", function () {
+            var _link = '@Url.Action("View", "MyVacancy")';
+            var ele = $('#btnNextToComplete');;
+            $(ele).attr('href', _link);
+            $("#frmApplyVacTemplate").remove(); .3
+
+
+        });
+        $('#radio-02').on("change", function () {
+            var mainEle = $('#btnNextToComplete');
+            var _mainlink = '@Url.Action("View", "MyVacancy")';
+            var _link = '@Url.Action("GetApplyTemplate", "MyVacancy")';
+            VacancyModel.CallGetMethod(_link, function (data, message) {
+                var _ele = $('#divTemplateDropDown');
+                $(_ele).html('');
+                $(_ele).append(data);
+            });
+        });
+
+        $("#btnNextToComplete").click(function () {
+            if ($("#TVacId").length > 0) {
+                if ($("#TVacId").val() == "") {
+                    $("#TVacId").addClass('input-validation-error');
+                    return false;
+                }
+            }
+        });
+    });
+</script>
+
+

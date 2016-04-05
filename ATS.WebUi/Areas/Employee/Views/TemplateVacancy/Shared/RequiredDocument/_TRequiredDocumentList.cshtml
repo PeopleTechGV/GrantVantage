@@ -1,0 +1,60 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model List<BEClient.TRequiredDocument>
+@using BEDocTypeConstant = ATS.BusinessEntity.Common.DocumentTypeConstant;
+
+<div class="acc-inner">
+    <div class="Content ReviewrDetailsMain">
+        <div class="std_width reviewer-tab-head">
+            <div class="reviewer-name w20">@Html.LanguageLabel(BEDocTypeConstant.DOCUMENT_NAME)</div>
+            <div class="reviewer-name w30">@Html.LanguageLabel(BEDocTypeConstant.DOCUMENT_DESCRIPTION)</div>
+            <div class="reviewer-name w30">@Html.LanguageLabel(BEDocTypeConstant.ALLOWED_EXTENSION_TYPES)</div>
+        </div>
+        @if (Model.Count != 0)
+        {
+            foreach (var _item in Model)
+            {
+                @Html.Partial("Shared/RequiredDocument/_TRequiredDocumentSingle", _item);
+            }
+        }
+    </div>
+
+
+    <div class="AddEditSection">
+
+    </div>
+
+    <div class="AddRequiredDocument ClearFloat" style="margin-left: 20px;">
+        <a id="btnAddRequiredDoc" class="btnAddRequiredDoc btn CaseUpper">Add Required Document</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var RDCount = '@Model.Count';
+        $(".AccRoundDetail").find(".lblReqDocCount").html(RDCount);
+    });
+
+    $('.btnAddRequiredDoc').click(function () {
+        var element = $(this);
+        var TVacRndId = $(this).parents('.acc-Content').prev().attr('data-roundid');
+        var dataLink = '@Url.Action("GetAddTRequiredDocuments", "TemplateVacancy", new { TVacRndId = "_TVACRNDID_" })';
+        dataLink = dataLink.replace("_TVACRNDID_", TVacRndId);
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+            $(element).parent(".AddRequiredDocument").siblings(".AddEditSection").html('');
+            $(".AddEditSection").append(data);
+        });
+    });
+</script>
+
+<style>
+    .AddEditSection {
+        float: left;
+        margin-left: 20px;
+        padding: 0 6px;
+        width: 98%;
+    }
+
+        .AddEditSection:hover {
+            background-color: #C6E4FF;
+        }
+</style>

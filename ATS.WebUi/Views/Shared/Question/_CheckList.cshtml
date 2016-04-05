@@ -1,0 +1,48 @@
+﻿@model  ATS.WebUi.Models.Question.ATSCheckBox
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+<div class="one-div-full">
+    <div class="box ATSCheckBox" style="margin-bottom: 10px;">
+        <span class="label">@Model.QuestionText</span><br />
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_DRAFT)
+        {
+            @Html.CheckBoxListFor(m => m.Answer,
+                              m => m.AllValues,
+                              divis => divis.Value,
+                              divis => divis.Text,
+                              m => m.SelectedList, Position.Horizontal)
+
+            @Html.HiddenFor(m => m.VacQueId, new { id = "hdnQueId" })
+            @Html.HiddenFor(m => m.VacRndId, new { id = "hdnVacRndId" })
+        }
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+        {
+            <ul style="margin-bottom: 8px;">
+                @foreach (ATS.BusinessEntity.AnsOpt item in Model.AllValues.Items)
+                {
+                    <li style="clear: both; list-style-type: square; margin-left: 20px;">
+                        @item.LocalName
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("input[type='checkbox']").live('change', function () {
+            var $self = $(this);
+            $checkboxlist = $self.parent();
+            var ansOptId = '';
+            $checkboxlist.find("input[type='checkbox']").each(function (index) {
+                if ($(this).attr('checked') == 'checked') {
+                    $checkboxlist.removeClass('input-validation-error');
+                    var str = $(this).attr('value') + ",";
+                    ansOptId += str;
+                }
+                if ($.trim(ansOptId) == '') {
+                    $checkboxlist.addClass('input-validation-error');
+                }
+            });
+        });
+    });
+</script>

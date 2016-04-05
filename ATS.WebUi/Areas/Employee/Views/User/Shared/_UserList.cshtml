@@ -1,0 +1,47 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.UserDivisionSecurityRole>>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w30">@Html.LanguageLabel(BEUserConst.LST_USER_NAME)</li>
+        <li class="w50">@Html.LanguageLabel(BEUserConst.LST_USER_USERNAME)</li>
+        <li class="w20">@Html.LanguageLabel(BEUserConst.LST_USER_DIVISION)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.UserDivisionSecurityRole current in Model.obj.obj)
+    {
+        ATS.BusinessEntity.PageMode pageMode = ATS.WebUi.Common.CommonFunctions.GetPageMode(current.PermissionType, ViewBag.PageMode);
+        string strPermissionType = current.PermissionType != null ? string.Join(",", current.PermissionType) : "";
+        if (pageMode != ATS.BusinessEntity.PageMode.Other)
+        {
+            <ul class="RowContent CursorPointer" data-id='@current.UserId' data-auth="@strPermissionType">
+                <li class="w30 cntName">@current.objUserDetail.FirstName @current.objUserDetail.LastName</li>
+                <li class="w50 cntUserName">@current.objUserDetail.UserName</li>
+                <li class="w20 cntDivision">@current.DivisionName</li>
+                <li id="btnUserMob" class="ViewDetailsMob MobView" onclick="btnUserMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+            </ul>
+        }
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "User")';
+    });
+
+    var divPodbl = $(".RowContent");
+    divPodbl.dblclick(function () {
+        var dpId = $(this).attr("data-id");
+        var dpLink = '@Url.Action("View", "User", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    });
+
+    function btnUserMob(element) {
+        var dpId = $(element).parents(".RowContent").attr("data-id");
+        var dpLink = '@Url.Action("View", "User", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dpLink = dpLink.replace("_DATAID_", dpId);
+        window.location = dpLink;
+    }
+</script>

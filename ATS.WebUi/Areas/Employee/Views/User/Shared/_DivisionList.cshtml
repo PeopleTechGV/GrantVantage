@@ -1,0 +1,128 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model ATS.WebUi.Models.BreadScrumbModel<BEClient.SRPEntity.DynamicSRP<BEClient.UserDivisionSecurityRole>>
+@using BEUserConst = ATS.BusinessEntity.Common.UserConst
+<div class="acc-Content">
+    <div class="security-title">
+        @Html.LanguageLabel(BEUserConst.FRM_USER_SELECTDIVISION)
+    </div>
+    <div class="ats-user-box">
+        @Html.DropDownListFor(m => m.obj.obj.DivisionId, (SelectList)ViewBag.DivisionList, "Please Select", new { @class = "user-select", @onchange = "disabledivision()", @id = "drp_Division" })
+        @*@if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.SecurityRoles.FirstOrDefault().AtsSecurityRole == ATS.BusinessEntity.ATSSecurityRole.SystemAdministrator)
+        {
+            @Html.DropDownListFor(m => m.obj.obj.DivisionId, (SelectList)ViewBag.DivisionList, "Please Select", new { @class = "user-select", @onchange = "disabledivision()", @id = "drp_Division" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.obj.obj.DivisionId)
+            @Html.DropDownListFor(m => m.obj.obj.DivisionId, (SelectList)ViewBag.DivisionList, "Please Select", new { @class = "user-select", @onchange = "disabledivision()", @id = "drp_Division", @disabled = "disabled" })
+        }*@
+    </div>
+    @*@Html.Partial("Shared/_AdHocList", Model);*@
+    @if (Model.obj.obj.UserId != Guid.Empty)
+    {
+        <div class="floatleft w100" style="padding-top: 10px;">
+            <p class="bottomline">
+                <span class="ttldbrown">Ad Hoc Divisions</span> (where you would like this user to have additional privileges)<span class="ttldblue">
+                </span>
+            </p>
+
+            <div id="divisionLst">
+                @if (Model.obj.obj.LstUserDivisionPermission.Count() > 0)
+                {
+                    @Html.Partial("Shared/_AdHocDivisionList", Model.obj.obj.LstUserDivisionPermission)
+                }
+            </div>
+        </div>
+
+
+
+        <div id="adhocdrpdown">
+            @*@Html.Partial("Shared/_AdHocDrpDown", Model)*@
+        </div>
+        if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.SecurityRoles.FirstOrDefault().AtsSecurityRole == ATS.BusinessEntity.ATSSecurityRole.SystemAdministrator)
+        {
+            <div class="floatleft">
+                <a href="javascript:void(0);" id="addDivision" class="btn CaseUpper bgAdd16B" onclick="GetDivisionDropDown(this);"><span class="ttldbrown">Add Division</span></a>
+            </div>
+        }
+    }
+
+</div>
+
+<script type="text/javascript">
+    function disabledivision() {
+        var selectedDivision = document.getElementById('drp_Division').value;
+        var AdhocDivision = document.getElementsByName('obj.obj.objDivision.DivisionId');
+
+        for (var v = 0; v < AdhocDivision.length; v++) {
+            if (AdhocDivision[v].value == selectedDivision) {
+                AdhocDivision[v].checked = false;
+                AdhocDivision[v].disabled = true;
+            }
+            else { AdhocDivision[v].disabled = false; }
+        }
+    }
+
+    function GetDivisionDropDown() {
+        var selectedDivision = document.getElementById('drp_Division').value;
+
+        var _dataLink = '@Html.Raw(Url.Action("GetDivisionDropDown", "User", new { UserId = "_USERID_", SelectedDivision = "_DIVISIONID_" }))';
+        _dataLink = _dataLink.replace("_USERID_", '@Model.obj.obj.UserId');
+        _dataLink = _dataLink.replace("_DIVISIONID_", selectedDivision);
+        VacancyModel.CallGetMethod(_dataLink, function (response) {
+            $("#adhocdrpdown").append(response);
+            var ids = $(response).find("#strdivisionlist").val();
+            if (ids != "") {
+                var IdsArray = new Array();
+                IdsArray = ids.split(',');
+                for (var i = 0; i < IdsArray.length; i++) {
+                    $(".ui-dropdownchecklist-dropcontainer div.ui-dropdownchecklist-item input[type=checkbox]").filter("[value='" + IdsArray[i] + "']").attr('checked', 'selected');
+                    $(".ui-dropdownchecklist-dropcontainer div.ui-dropdownchecklist-item input[type=checkbox]").filter("[value='" + IdsArray[i] + "']").parent().attr('style', 'display:none')
+                    //$(".ui-dropdownchecklist-dropcontainer div.ui-dropdownchecklist-item input[type=checkbox]").filter("[value='" + IdsArray[i] + "']").attr('style', 'display:none');
+                }
+
+                //   var _ele = $(".ui-dropdownchecklist-dropcontainer div.ui-dropdownchecklist-item input[type=checkbox]").filter("[value='" + selectedDivision + "']");
+
+                // var val = $(_ele).prop('disabled');
+
+            }
+            $("#addDivision").hide();
+        });
+    }
+    function saveAdhocDivision(element) {
+        var _divids = "";
+        var UserId = $("#UserId").val();
+        $("#drpdivision option:selected").each(function (index, value) {
+            if (_divids != "") {
+                _divids += ",";
+            }
+            _divids += $(this).val();
+        });
+        var _dataLink = '@Html.Raw(Url.Action("AddAdhocDivision", "User", new { UserId = "_USERID_", LstOfDivisionId = "_DIVISIONID_" }))';
+        _dataLink = _dataLink.replace("_DIVISIONID_", _divids);
+        _dataLink = _dataLink.replace("_USERID_", UserId);
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+            $('#divisionLst').html('');
+            $('#divisionLst').append(data);
+            $("#adhocdrpdown").html('');
+            $("#addDivision").show();
+        });
+    }
+
+    function DeleteAdhoc(element) {
+        var _ele = $(element);
+        var _dataLink = $(_ele).attr("data-url");
+        VacancyModel.CallGetMethod(_dataLink, function (data) {
+            $('#divisionLst').html('');
+            $('#divisionLst').append(data);
+        });
+
+
+    }
+
+    function removeAdhocDivision(element) {
+        $("#adhocdrpdown").html('');
+        $("#addDivision").show();
+    }
+
+</script>

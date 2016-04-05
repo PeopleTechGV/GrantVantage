@@ -1,0 +1,22 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+
+<div id="CandidateDeclineModel" class="OfferMain borderedModel">
+    <div class="OfferHeader">
+        Decline Award
+        <a class="btnClosePopup" onclick="CloseCandidateDeclineModel();"></a>
+    </div>
+
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW100">
+                <span>We are sorry to hear you are declining this award. Please tell us why.</span>
+                @Html.TextAreaFor(m => m.CandidateDeclineReason, new { @id = "txtDeclineReason" })
+            </div>
+        </div>
+    </div>
+    <div class="OfferAction" style="margin-top: 15px;">
+        <input id="btnDeclineOffer" type="submit" name="CandidateAction" value="Decline Award">
+        <input id="btnCloseDecline" onclick="CloseCandidateDeclineModel(); return false;" type="button" value="Cancel">
+        @*<a class="btnMakeOffer" onclick="CloseCandidateDeclineModel();">Cancel</a>*@
+    </div>
+</div>

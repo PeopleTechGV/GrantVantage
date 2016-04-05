@@ -1,0 +1,120 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.DocumentType>>
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@using BEDocTypeConstant = ATS.BusinessEntity.Common.DocumentTypeConstant;
+<link href="~/Content/css/tag-it.css" rel="stylesheet" />
+<script src="~/Content/js/tag-it.min.js"></script>
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string action = ViewBag.RedirectAction;
+    ViewBag.MenuDisplayName = "Document Types";
+}
+
+<script>
+    $(function () {
+        $('#ExtensionList').tagit({
+            preprocessTag:function (val){
+                var _ext = val;
+                if (_ext != "" && _ext.charAt(0) != ".")
+                {
+                    _ext = "." + _ext
+                
+                }
+                return _ext;
+            },
+            singleField: true,
+            singleFieldNode: $('#txtExtensionList')
+        });
+    });
+
+   
+</script>
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+
+@using (Html.BeginForm(action, "DocumentType", FormMethod.Post, new { id = "frmDocumentType" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.obj.obj.DocumentTypeId, new { Id = "DocumentTypeId" })
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.DocumentName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.DocumentName, new { @class = "detail-input" })
+        </div>
+
+        @for (int i = 0; i < Model.obj.obj.DocumentTypeEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.DocumentTypeEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(Html.LanguageLabel(BEDocTypeConstant.DOCUMENT_TYPE) + " " + Html.LanguageLabel(BECommonConstantConst.IN) + " " + languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.obj.obj.DocumentTypeEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.obj.obj.DocumentTypeEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Description, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.Description, new { @class = "detail-input" })
+        </div>
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.ExtensionTypes, new { @class = "label" })
+            <ul id="ExtensionList"></ul>
+            @Html.HiddenFor(m => m.obj.obj.ExtensionTypes, new { @class = "detail-input", @id = "txtExtensionList"})
+        </div>
+    </div>
+}
+
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    $(document).ready(function () {
+        $("#lblCount").html($("#Count_CSMNU_DOCUMENTTYPES").html());
+    });
+
+
+    function OnClickValidate() {
+        var exList = $("#txtExtensionList");
+        if (exList.val() == "") {
+            $("#txtExtensionList").rules('add', { required: true });
+            $("#ExtensionList").addClass('input-validation-error');
+            return false;
+        }
+        else {
+            $("#ExtensionList").removeClass('input-validation-error');
+        }
+        $('#frmDocumentType').submit();
+    }
+
+    $(".btn-remove-vacancy").live("click", function () {
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Document Type", 300, "Are you sure want to delete this Document Type?", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "DocumentType", new { id = @Model.obj.obj.DocumentTypeId })'
+            window.location.href = deletelink;
+        }
+    }
+</script>

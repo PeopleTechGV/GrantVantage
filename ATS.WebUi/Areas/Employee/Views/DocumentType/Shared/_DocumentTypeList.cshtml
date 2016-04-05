@@ -1,0 +1,42 @@
+﻿@model  IList<ATS.BusinessEntity.DocumentType>
+@using BEDocTypeConstant = ATS.BusinessEntity.Common.DocumentTypeConstant;
+
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w20">@Html.LanguageLabel(BEDocTypeConstant.DOCUMENT_TYPE)</li>
+        <li class="w40">@Html.LanguageLabel(BEDocTypeConstant.DOCUMENT_DESCRIPTION)</li>
+        <li class="w35">@Html.LanguageLabel(BEDocTypeConstant.ALLOWED_EXTENSION_TYPES)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.DocumentType current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.DocumentTypeId'>
+            <li class="w20 cntDocumentType">@current.DocumentName</li>
+            <li class="w40 cntDescription">@current.Description &nbsp;</li>
+            <li class="w35 cntExtensionTypes">@current.ExtensionTypes</li>
+            <li id="MobDocumentType" class="ViewDetailsMob MobView" onclick="MobDocumentType(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "DocumentType")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var DocumentTypeId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "DocumentType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", DocumentTypeId);
+        window.location = dLink;
+    });
+
+    function MobDocumentType(element) {
+        var DocumentTypeId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "DocumentType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", DocumentTypeId);
+        window.location = dLink;
+    }
+</script>

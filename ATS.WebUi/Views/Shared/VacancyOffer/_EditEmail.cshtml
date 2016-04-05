@@ -1,0 +1,92 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.VacancyOffer
+<style>
+    ul .options-dd {
+        width: 177px !important;
+    }
+
+    .cleditorMain {
+        float: left;
+        background-color: white;
+        border: 1px solid #999;
+        padding: 0 1px 1px;
+        width: 99% !important;
+        height: 449px;
+    }
+
+        .cleditorMain textarea {
+            width: 100% !important;
+        }
+
+        .cleditorMain, .cleditorPopup, .cleditorMain * {
+            box-sizing: border-box;
+        }
+
+    .cleditorIdentifier {
+        background: url("/CLEditor/images/addidentifier.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+        float: left;
+        height: 24px;
+        margin: 1px 0;
+        width: 150px !important;
+        background-position: 0px !important;
+    }
+
+    .cleditorMain > iframe {
+        width: 100% !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $(".CLE-textareaEmail").cleditor({
+            controls:
+        "source | bold italic underline | font size color | bullets numbering | outdent " +
+        "indent | alignleft center alignright justify | " +
+        "link unlink image | undo redo | copy pastetext | identifier ",
+            height: "420px",
+            width: "90%"
+        });
+    });
+    function GetImage() {
+        var formdata = new FormData(); //FormData object
+        var fileInput = document.getElementById('fileinput');
+
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+        var httprequest = new XMLHttpRequest();
+        var dataLink = '@Html.Raw(Url.Action("GetImage","OfferLetters"))';
+        var reUrl = "";
+        httprequest.onreadystatechange = function () {
+            if (httprequest.readyState == 4) {
+                reUrl = JSON.parse(httprequest.responseText);
+            }
+        }
+        httprequest.open('Post', dataLink, false);
+        httprequest.send(formdata);
+        return reUrl;
+    }
+</script>
+
+<div id="EditEmailModel" class="OfferMain borderedModel">
+    <div class="OfferHeader">
+        Edit Email
+        <a class="btnClosePopup" onclick="CloseEditEmailModel();"></a>
+    </div>
+
+    <div class="OfferContent">
+        <div class="OfferDetails">
+            <div class="OfferBox OW100">
+                @Html.LanguageLabelFor(m => m.EmailSubject, new { @class = "lblBbrown" })
+                @Html.TextBoxFor(m => m.EmailSubject, new { @class = "detail-input w100", @style = "height: 22px;" })
+            </div>
+            <div class="OfferBox OW100">
+                @Html.LanguageLabelFor(m => m.EmailDescription, new { @class = "lblBbrown" })
+                @Html.TextAreaFor(m => m.EmailDescription, new { @class = "text-data CLE-textareaEmail" })
+            </div>
+        </div>
+    </div>
+    <div class="w100 OfferAction" style="text-align:center;">
+        <input id="btnCloseEmail" type="button" class="offerbtn w10 SMW20" value="Save" onclick="CloseEditEmailModel()">
+    </div>
+</div>

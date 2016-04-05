@@ -1,0 +1,35 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.DivisionPositionType>> 
+@{
+    ViewBag.Title = "Division Program Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="Messages" style="width: auto; float: left; margin-left: 25px;">
+</div>
+<div id="search-resumes">
+    <div class="nav-bar clearfix">
+        <ul class="saved-searches">
+            @Html.Partial("_BreadCrumb", null)
+            @Html.Partial("_CompanySetupDropDown", Model)
+        </ul>
+
+    </div>
+</div>
+<div class="featured-jobs">
+    <div class="search">
+        @Html.Partial("Buttons/_CreateBtn", Model) 
+    </div>
+</div>
+@Html.Partial("Shared/_DivisionPositionType",Model.obj)
+@if (ViewBag.IsError != null && ViewBag.IsError==true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError==false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

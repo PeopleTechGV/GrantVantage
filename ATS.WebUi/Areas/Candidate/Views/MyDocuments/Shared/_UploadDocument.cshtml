@@ -1,0 +1,86 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using RootModels = ATS.WebUi.Models
+@using BECommonConstant = ATS.BusinessEntity.Common.CommonConstant
+@model RootModels.BreadScrumbModel<BEClient.Profile>
+
+<div id="ErrorMessage">
+</div>
+
+@if (Model.obj.ProfileId != Guid.Empty)
+{
+    using (Html.BeginForm("UpdateResume", "MyProfile", FormMethod.Post, new { enctype = "multipart/form-data", @id = "UploadDocumentForm" }))
+    {
+        @Html.HiddenFor(m => m.obj.ProfileId)
+        @Html.HiddenFor(m => m.obj.AtsResumeId)
+        @*@Html.HiddenFor(m => m.obj.ExtensionTypes)*@
+        <input type="hidden" value="@Model.obj.ExtensionTypes" name="obj.ExtensionTypes">
+        <div class="w100 floatleft" style="padding: 10px 0;">
+            <input type="file" value="Browse" name="documentFile" id="UploadDoc" data-extensiontypes="@Model.obj.ExtensionTypes" />
+            <div class="ttldblue"><span class="ttllbrown">Ex: </span>@Model.obj.ExtensionTypes</div>
+        </div>
+        <br /><br />
+        <div class="w100 floatleft" style="padding: 10px 0;">
+            <button class="btn-icon24 bgUploadDocument24 floatright bordered CaseUpper" id="btnSubDoc" title="Update Document">
+                @*@Html.LanguageLabel(BECommonConstant.UPLOADDOCUMENT)*@
+                Update Document
+            </button>
+        </div>
+    }
+}
+else
+{
+    using (Html.BeginForm("UploadCoverLetter", "MyDocuments", FormMethod.Post, new { enctype = "multipart/form-data", @id = "UploadDocumentForm" }))
+    {
+        @Html.HiddenFor(m => m.obj.AtsResumeId)
+        @*@Html.HiddenFor(m => m.obj.ExtensionTypes)*@
+        <input type="hidden" value="@Model.obj.ExtensionTypes" name="obj.ExtensionTypes">
+        <div style="width: 100%; float: left;">
+            <input type="file" value="Browse" name="documentFile" id="UploadDoc" data-extensiontypes="@Model.obj.ExtensionTypes" />
+            <div class="ttldblue"><span class="ttllbrown">Ex: </span>@Model.obj.ExtensionTypes</div>
+        </div>
+        <br /><br />
+        <div class="w100 floatleft" style="padding: 10px 0;">
+            <button class="btn-icon24 bgUploadDocument24 floatright bordered CaseUpper" id="btnSubDoc" title="Update Document">
+                Update Document
+            </button>
+        </div>
+    }
+}
+
+<script>
+    function SubmitCreateForm() {
+        $('#UploadDocumentForm').submit();
+    }
+    //$(function () {
+    $('#btnSubDoc').click(function () {
+        if ($("#UploadDoc")[0].files[0] == undefined)
+        {            
+            $('#UploadDoc').addClass('input-validation-error');
+            return false;
+        }
+        var iSize = ($("#UploadDoc")[0].files[0].size / 1024);
+        var iisize = iSize / 1024;
+
+        if (iisize > 10) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', "Maximum file size is 10 MB", '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            return false;
+        }
+        else {
+            var uploadDocument = $("#UploadDoc").val();
+            var _exetype = $("#UploadDoc").attr("data-extensiontypes");
+            //var obj = VacancyModel.ValidateFile(uploadDocument, true);
+            var obj = VacancyModel.ValidateDocumentType(uploadDocument, _exetype, true);
+
+            if (obj.IsError) {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', obj.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                $('#UploadDoc').addClass('input-validation-error');
+                return false;
+            }
+            else {
+                $('#UploadDoc').removeClass('input-validation-error');
+            }
+            SubmitCreateForm();
+        }
+    });
+    //});
+</script>

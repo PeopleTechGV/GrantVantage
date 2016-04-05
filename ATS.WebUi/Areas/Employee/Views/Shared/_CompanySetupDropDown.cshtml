@@ -1,0 +1,31 @@
+﻿@model ATS.BusinessEntity.Common.IBreadCrumb
+<li class="select-saved-searches mid">
+    <a class="active-left new-search" href="javascript:;">
+        <span class="dumy-right"></span>
+        <div class="companysetup-dd">
+            <span class=" left_menu_space" style="display: marker; overflow: hidden; text-overflow: ellipsis; white-space: normal; ">
+                @Html.LanguageLabel(Model.DisplayName)
+            </span>
+            <span class="ddlCompanySetup">&#9660;</span>
+        </div>
+        <span class="dumy-left"></span>
+    </a>
+    <ul class="options-dd">
+        @{
+            List<ATS.WebUi.Models.CompanySetup> companysetupList = ATS.WebUi.Common.CommonFunctions.CompanySetupMenu();
+        }
+        @if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+        {
+            companysetupList = null;
+            companysetupList = ATS.WebUi.Common.CommonFunctions.AdminCompanySetupMenu();
+        }
+        @foreach (ATS.WebUi.Models.CompanySetup _current in companysetupList)
+        {
+            <li>
+                <a href='@Url.Action(_current.Action, _current.Controller, _current.param)' class="menuItem ">
+                    @Html.LanguageLabel(_current.DisplayName)
+                </a>
+            </li>
+        }
+    </ul>
+</li>

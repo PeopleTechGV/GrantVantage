@@ -1,0 +1,122 @@
+﻿@using BEClient = ATS.BusinessEntity;
+@model BEClient.DeclinedAutoEmail
+
+@using (Ajax.BeginForm("InsertDeclinedAutoEmail", "MyVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "AppCommentSuccess",
+        OnFailure = "AppCommentFail",
+    }, new { id = "frmAutomatedEmail" }))
+{
+    @Html.HiddenFor(m => m.VacancyId)
+    <div class="acc-inner SMW90" style="margin-left: 22px;">
+        <div class="FormContent">
+            @Html.CheckBoxFor(m => m.EmailOnSubmitApp, new { @id = "chkApplyEmail" })
+            <label> Send an email response when an applicant submits an application for this opportunity:</label>
+        </div>
+        <div class="FormSubContent SubClass">
+            @Html.LabelFor(m => m.ApplyEmailTemplateId)
+            @Html.DropDownListFor(m => m.ApplyEmailTemplateId, (SelectList)ViewBag.DRPEmailTemplates, "--Select--", new { @id = "DRPApplyEmailTemplate", @class = "GeneralDropdown", @style = "margin-left: 5px; width:36%;" })
+        </div>
+        <div class="FormContent">
+            <input id="chkDeclineEmail" type="checkbox">
+            <label>Send an email response when an applicant application is declined:</label>
+        </div>
+        <div class="FormSubContent">
+            @Html.CheckBoxListFor(m => m.ListApplicationBasedStatusId,
+                              m => m.AllValues,
+                              divis => divis.Value,
+                              divis => divis.Text,
+                              m => m.SelectedList, Position.Vertical)
+        </div>
+        <div class="FormActionBox">
+            <button type="submit" class="prfle-button-save CaseUpper" onclick="return checkValidation();">Save Automated Emails</button>
+        </div>
+    </div>
+}
+
+<script>
+    function AppCommentSuccess() {
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', 'Record Updated Successfully', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    }
+    function AppCommentFail() {
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', 'Record Updated Failed', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    }
+    function checkValidation() {
+
+        var IsChecked = $("#chkApplyEmail").is(":checked")
+        if (IsChecked == true) {
+            var selectedValue = $('#DRPApplyEmailTemplate').val();
+            if (selectedValue == "") {
+                $('#DRPApplyEmailTemplate').addClass("input-validation-error");
+                return false;
+            }
+            else {
+                $('#DRPApplyEmailTemplate').removeClass("input-validation-error");
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+    $(document).ready(function () {
+        CheckAllDeclined();
+        if ('@Model.EmailOnSubmitApp.ToString().ToLower()' == "true") {
+            $(".SubClass").show();
+        }
+        else {
+            $(".SubClass").hide();
+        }
+
+        $("#chkApplyEmail").click(function () {
+            var IsChecked = $("#chkApplyEmail").is(":checked");
+            if (IsChecked == true) {
+                $(".SubClass").show();
+            }
+            else {
+                $('#DRPApplyEmailTemplate').removeClass("input-validation-error");
+                $('#DRPApplyEmailTemplate').val(0)
+                $(".SubClass").hide();
+            }
+        });
+
+        $("#chkDeclineEmail").click(function () {
+            var IsChecked = $("#chkDeclineEmail").is(":checked");
+            if (IsChecked == true) {
+                $(".FormSubContent input[type=checkbox]").attr('checked', true);
+            }
+            else {
+                $(".FormSubContent input[type=checkbox]").attr('checked', false);
+            }
+        });
+
+        $(".FormSubContent input[type=checkbox]").click(function () {
+            CheckAllDeclined();
+        });
+
+        function CheckAllDeclined() {
+            var ChkAll = true;
+            $(".FormSubContent input[type=checkbox]").each(function () {
+                if ($(this).is(":checked") == false) {
+                    ChkAll = false;
+                }
+                if (ChkAll == true) {
+                    $("#chkDeclineEmail").attr('checked', true);
+                }
+                else {
+
+
+                    $("#chkDeclineEmail").attr('checked', false);
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+
+

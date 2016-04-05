@@ -1,0 +1,106 @@
+﻿@model ATS.BusinessEntity.Common.IBreadCrumb
+@using BEClient = ATS.BusinessEntity
+@using CommonFunctions = ATS.WebUi.Common.CommonFunctions
+@using BEMenuConstant = ATS.BusinessEntity.Common.EmployeeMenuConstant;
+
+@{
+    List<ATS.WebUi.Models.CompanySetup> companysetupList2 = CommonFunctions.CompanySetupMenu();
+    List<BEClient.CSNavigation> CSCountList2 = CommonFunctions.GetCSNavigationCount();
+}
+
+@if (ATS.WebUi.Common.CommonFunctions.IsCurrentUserIsSystemAdmin())
+{
+    companysetupList2 = null;
+    companysetupList2 = ATS.WebUi.Common.CommonFunctions.AdminCompanySetupMenu();
+}
+<div id="NavCompanySetupMenu" class="NavItems hasDropdown">
+    <div class="MenuItemIcon bgCompanySetup24W"></div>
+    <span class="navTitle">@Html.LanguageLabel(BEMenuConstant.MNU_COMPANY_SETUP)</span>
+    <span class="chevron"></span>
+    <ul class="dropdownMenu menuPurple multiColumns">
+        @foreach (ATS.WebUi.Models.CompanySetup _current2 in companysetupList2)
+        {
+            var CSCount2 = CSCountList2.Where(m => m.Name == _current2.DisplayName).FirstOrDefault();
+            <li>
+                <a href='@Url.Action(_current2.Action, _current2.Controller, _current2.param)'>
+                    @Html.LanguageLabel(_current2.DisplayName)
+                    @if (CSCount2 != null)
+                    {
+                        <span id="@String.Concat("Count_", CSCount2.Name)" class="lblNavCount">@CSCount2.Count</span>
+                    }
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+@if (Model != null)
+{
+    <div id="btnBack" class="NavItems HoverNone sm-disabled">
+        <span class="navTitle">
+            @Html.LanguageLabel(Model.DisplayName)
+            <span id="lblCount" class="lblNavCount"></span>
+        </span>
+        <span class="chevron"></span>
+        <a href=""></a>
+    </div>
+
+    if (Model.objRecentViewedList != null)
+    {
+        <div class="NavItems hasDropdown MobDisable">
+            <span class="navTitle">@Model.ItemName</span>
+            <span class="chevron"></span>
+            <ul class="dropdownMenu menuAqua">
+                @Html.Partial("_RecentViewed", Model.objRecentViewedList)
+            </ul>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                var backLink = document.getElementById(CSName);
+                backLink = $(backLink).parent().attr("href");
+                $("#btnBack").attr("BackUrl", backLink);
+                $("#btnBack").addClass("hasDropdown");
+            });
+
+            $("#btnBack").click(function () {
+                window.location = $(this).attr("BackUrl");
+            });
+        </script>
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(Model.ItemName))
+        {
+            <div id="NavRecViewedVac" class="NavItems HoverNone MobDisable">
+                <span class="navTitle">@Model.ItemName</span>
+                <span class="chevron"></span>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    var backLink = document.getElementById(CSName);
+                    backLink = $(backLink).parent().attr("href");
+                    $("#btnBack").attr("BackUrl", backLink);
+                    $("#btnBack").addClass("hasDropdown");
+                });
+
+                $("#btnBack").click(function () {
+                    window.location = $(this).attr("BackUrl");
+                });
+            </script>
+        }
+    }
+
+    <script>
+        var CSName = '@string.Concat("Count_", Model.DisplayName)';
+        $(document).ready(function () {
+            if (document.getElementById(CSName) != null) {
+                $("#lblCount").html(document.getElementById(CSName).innerHTML);
+            }
+            else {
+                $("#lblCount").remove();
+            }
+        });
+    </script>
+}

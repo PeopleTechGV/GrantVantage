@@ -1,0 +1,32 @@
+﻿@model ATS.BusinessEntity.AnsOpt
+@using BELabel = ATS.BusinessEntity.Common.AnsOpt;
+@using BEClient = ATS.BusinessEntity;
+@{
+    bool AllowEdit = false;
+}
+@if (ATS.WebUi.Common.CommonFunctions.ComparePageMode(Model.PermissionType, ATS.BusinessEntity.ATSPermissionType.Modify, BEClient.PageMode.Update))
+{
+    AllowEdit = true;
+}
+<div class="acc-header" data-pkid="@Model.AnsOptId" data-queid="@Model.QueId">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        <span class="ttldb" style="float:left;width:60%;">@Model.DefaultName</span>
+        <span class="floatright sm-disabled" style="white-space:nowrap;">
+            <span class="ttllbrown">@Html.LanguageLabel(BELabel.ANSOPT_VALUE):</span>
+            <span id="rndweight" class="ttldblue">@Model.Weight</span>
+        </span>
+        <span style="padding-right: 1%;padding-left: 1%;" class="ansoption">
+            @if (AllowEdit)
+            {
+                <span class="up sm-disabled"><a href='javascript:void(0);' id="OrderUp" data-url='@Url.Action("AnsOptReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId, @QueId = Model.QueId,@OrderDir = "Up" })' data-id='@Model.AnsOptId' onclick="return SetAnsOrder(this);"><img src="~/Content/images/up_arrow_16.png" height="13" width="13" /></a></span>
+                <span class="down sm-disabled"><a href='javascript:void(0);' id="OrderDown" data-url='@Url.Action("AnsOptReorder", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId, @QueId = Model.QueId,@OrderDir = "Down" })' data-id='@Model.AnsOptId' onclick="return SetAnsOrder(this);"><img src="~/Content/images/down_arrow_16.png" height="13" width="13" /></a></span>
+                <span class="update sm-disabled" style="display:none;"><a href='javascript:void(0);' id="editAnswer" data-url='@Url.Action("GetAnsOpt", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId })' data-id='@Model.AnsOptId' onclick="return editAnswer(this);"><img src="~/Content/images/Edit_16.png" height="15" width="15" /></a></span>
+            }
+            <span class="delete"><a href='javascript:void(0);' onclick="return DeleteAnsOptConfirm(this);" data-url='@Url.Action("DeleteAnsOpt", "QuestionLibrary", new { @area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, @AnsOptId = Model.AnsOptId }) ' id="deleteAnsOpt"><img src="~/Content/images/delete_16.png" /></a></span>
+        </span>
+    </p>
+</div>
+<div class="acc-Content" data-ansid="@Model.AnsOptId" data-queid="@Model.QueId">
+    <span class="editsection" style="display:none;">
+    </span>
+</div>

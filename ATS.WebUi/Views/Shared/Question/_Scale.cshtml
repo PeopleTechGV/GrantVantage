@@ -1,0 +1,44 @@
+﻿@model  ATS.WebUi.Models.Question.ATSScale
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_DRAFT)
+{
+    @System.Web.Optimization.Styles.Render("~/Content/cssSalaryRange")
+    @System.Web.Optimization.Scripts.Render("~/bundles/jSalaryRange")
+}
+@{
+    if (Model.Answer == null)
+    {
+        Model.Answer = 0;
+    }
+}
+
+<div class="one-div-full">
+    <div class="box">
+        <span class="label">@Model.QuestionText</span>
+
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_DRAFT)
+        {
+            <br />
+            <div style="margin:10px 0 0 5px;">
+                @Html.TextBoxFor(m => m.Answer, new { id = "ScaleData", @class = "ScaleData" })
+            </div>
+            @Html.HiddenFor(m => m.VacQueId, new { id = "hdnQueId" })
+            @Html.HiddenFor(m => m.VacRndId, new { id = "hdnVacRndId" })
+        }
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+        {
+            <br />
+            <ul style="margin-bottom: 8px;">
+                <li style="clear: both; list-style-type: square; margin-left: 20px;">
+                    <span>@Model.Answer</span>
+                </li>
+            </ul>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".ScaleData").slider(VacancyModel.ScaleScore);
+    });
+
+</script>

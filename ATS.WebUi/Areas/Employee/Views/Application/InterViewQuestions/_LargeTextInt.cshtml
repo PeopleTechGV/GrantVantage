@@ -1,0 +1,23 @@
+﻿@model ATS.WebUi.Models.Question.ATSTextArea
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+
+<div class="one-div-full reviewer-textarea">
+    <div class="box ATSTextArea">
+        @Html.TextAreaFor(m => m.Answer, new { @class = "input-details IntSaveAnswer", rows = "4", @id = "LargetextAns" })
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#LargetextAns").live('change', function () {
+            var $self = $(this);
+            var ansOptId = $self.val();
+            if ($.trim(ansOptId) != "") {
+                $self.removeClass('input-validation-error');
+            }
+            else {
+                $self.addClass('input-validation-error');
+                
+            }
+        });
+    });
+</script>

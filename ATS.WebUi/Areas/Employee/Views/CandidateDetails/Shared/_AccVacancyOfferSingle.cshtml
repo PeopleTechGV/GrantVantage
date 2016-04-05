@@ -1,0 +1,193 @@
+﻿@model ATS.BusinessEntity.VacancyOffer
+@using BEMakeOfferConstant = ATS.BusinessEntity.Common.MakeOffer
+@using BEClient = ATS.BusinessEntity
+@{
+    string NoteToCandidate = "";
+    NoteToCandidate = ATS.WebUi.Common.CommonFunctions.GetLangBlockContent(BEClient.LanguageBlock.NoteToCandidate);
+}
+<div class="acc-header">
+    <p class="prfle-tab-head-brown" style="border-bottom-width:1px !important; overflow: hidden;">
+        <span class='floatleft w50 ttllbrown'>
+            Offer @Model.RndNo: &nbsp;<span class="ttldblue">@Model.OfferDate.ToString("MM/dd/yyyy")</span>
+        </span>
+        <span class='floatright w50 ttllbrown' style="text-align: right">@Model.OfferStatusText</span>
+    </p>
+</div>
+<div class="acc-Content">
+    <div class="OfferMain">
+        @*<div class="OfferHeader">
+            Make Offer123
+        </div>*@
+        <div class="OfferContent">
+            <div class="OfferDetails">
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.CandidateName):</span>
+                    <span class="CandDetailsRight">@Model.CandidateName</span>
+                </div>
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.OfferTypeText):</span>
+                    <span class="CandDetailsRight">@Model.OfferTypeText</span>
+                </div>
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.JobTitle):</span>
+                    <span class="CandDetailsRight" style="white-space: nowrap">@Model.JobTitle</span>
+                </div>
+                <div class="OfferBox OW50">
+                    <span class="CandDetailsLeft">@Html.LanguageLabelFor(m => m.OfferStatusText):</span>
+                    <span class="CandDetailsRight">@Model.OfferStatusText</span>
+                </div>
+                <hr class="BreakLine" />
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.PlacementType)</span>
+                    @Html.TextBoxFor(m => m.PlacementTypeText)
+                </div>
+                <div class="OfferBox OW25">
+                    <span>@Html.LanguageLabelFor(m => m.StartDate)</span>
+                    @Html.TextBoxFor(m => m.StartDateText, "{0:MM/dd/yyyy}", new { @id = "txtStartDate", @ReadOnly = true })
+                </div>
+                @if (Model.PlacementType != Convert.ToInt32(BEClient.PlaceMentType.Permanent).ToString())
+                {
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.EndDate)</span>
+                        @Html.TextBoxFor(m => m.EndDateText, "{0:MM/dd/yyyy}", new { @id = "txtEndDate", @ReadOnly = true })
+                    </div>
+                }
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.JobType)</span>
+                    @Html.TextBoxFor(m => m.JobTypeText)
+                </div>
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.Location)</span>
+                    @Html.TextBoxFor(m => m.LocationText)
+                </div>
+            </div>
+            <div class="OfferDetails">
+                
+                <span>@Html.LanguageLabel(BEMakeOfferConstant.FRM_MAKEOFF_OFFER_DETAILS)</span>
+                @if (Model.PlacementType == Convert.ToInt32(BEClient.PlaceMentType.Permanent).ToString())
+                {
+                    
+                    if (Model.SalaryType == Convert.ToInt32(BEClient.SalaryType.Salary))
+                    {
+                        <div class="OfferBox OW25">
+                            <span>@Html.LanguageLabelFor(m => m.SalaryType)</span>
+                            @Html.TextBoxFor(m => m.SalaryTypeText)
+                        </div>
+                        <div class="OfferBox OW25">
+                            <span>@Html.LanguageLabelFor(m => m.SalaryOffered)</span>
+                            @Html.TextBoxFor(m => m.SalaryOffered, new { @id = "txtSalaryOffered" })
+                        </div>
+                    }
+                    else if (Model.SalaryType == Convert.ToInt32(BEClient.SalaryType.Hourly))
+                    {
+                        <div class="OfferBox OW25">
+                            <span>Hour Per Week</span>
+                            @Html.TextBoxFor(m => m.HoursPerWeek, new { @id = "txtHoursPerWeek" })
+                        </div>
+                        <div class="OfferBox OW25">
+                            <span>Hourly Wage</span>
+                            @Html.TextBoxFor(m => m.HourlyWage, new { @id = "txtHourlyWage" })
+                        </div>
+                    }
+                    else if (Model.SalaryType == Convert.ToInt32(BEClient.SalaryType.PieceType))
+                    {
+                        <div class="OfferBox OW25">
+                            <span>Rate</span>
+                            @Html.TextBoxFor(m => m.Rate, new { @id = "txtPieceRate" })
+                        </div>
+                        <div class="OfferBox OW25">
+                            <span>Per</span>
+                            @Html.TextBoxFor(m => m.Per, new { @id = "txtPiecePer" })
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.PayRate)</span>
+                        @Html.TextBoxFor(m => m.PayRate, new { @id = "txtPayRate" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.RatePeriod)</span>
+                        @Html.TextBoxFor(m => m.RatePeriod)
+                    </div>
+                }
+                @if (Model.PlusCommission)
+                {
+                    <div class="OfferBox OW50 ClearFloat">
+                        <span>@Html.LanguageLabelFor(m => m.CommissionDescriprion)</span>
+                        @Html.TextBoxFor(m => m.CommissionDescriprion, new { @id = "txtCommissionDesc" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AnnualCommissionPotential)</span>
+                        @Html.TextBoxFor(m => m.AnnualCommissionPotential, new { @id = "txtCommissionPotential", @PlaceHolder = "Annual Commission" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CommissionCap)</span>
+                        @Html.TextBoxFor(m => m.CommissionCap, new { @id = "txtCommissionCap" })
+                    </div>
+                }
+                @if (Model.PlusBonus)
+                {
+                    <div class="OfferBox OW50 ClearFloat">
+                        <span>@Html.LanguageLabelFor(m => m.BonusDescription)</span>
+                        @Html.TextBoxFor(m => m.BonusDescription, new { @id = "txtBonusDesc" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AnnualBonusPotential)</span>
+                        @Html.TextBoxFor(m => m.AnnualBonusPotential, new { @id = "txtBonusPotential", @PlaceHolder = "Annual Bonus" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.BonusCap)</span>
+                        @Html.TextBoxFor(m => m.BonusCap, new { @id = "txtBonusCap" })
+                    </div>
+                }
+                @if (Model.IncludeCandidateNotice)
+                {
+                    <div class="OfferBox OW25 ClearFloat">
+                        <span>@Html.LanguageLabelFor(m => m.CandidateNoticePeriod)</span>
+                        @Html.TextBoxFor(m => m.CandidateNoticePeriodText)
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CandidateNoticePeriodType)</span>
+                        @Html.TextBoxFor(m => m.CandidateNoticePeriodTypeText)
+                    </div>
+                }
+                @if (Model.IncludeCompanyNotice)
+                {
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CompanyNoticePeriod)</span>
+                        @Html.TextBoxFor(m => m.CompanyNoticePeriodText)
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CompanyNoticePeriodType)</span>
+                        @Html.TextBoxFor(m => m.CompanyNoticePeriodTypeText)
+                    </div>
+                }                
+                <br clear="all" />
+                @if (!string.IsNullOrEmpty(Model.ResponseFromApplicant))
+                {
+                    <div class="OfferBox OW50">
+                        <span>@Html.LanguageLabelFor(m => m.ResponseFromApplicant)</span>
+                        @Html.TextAreaFor(m => m.ResponseFromApplicant, new { @ReadOnly = true })
+                    </div>
+                }
+                @if (Model.objApplicationHistory != null && Model.objApplicationHistory.Count > 0)
+                {
+                    <div class="OfferBox OW50">
+                        @*<span>@Html.LanguageLabel("Offer History")</span>*@
+                        <span>Award History</span>
+                        <div class="previous-remarks" style="max-height: 50px; overflow: auto; font-size: 10px; padding-left: 6px; border: 1px solid #bec0c4;width:100%; margin-top: 1px;">
+                            <ul>
+                                @foreach (ATS.BusinessEntity.ApplicationHistory objOfferHistory in Model.objApplicationHistory)
+                                {
+                                    <li>@objOfferHistory.UpdatedOn.ToString("MM/dd/yy hh:mmtt").ToLower()@Html.Raw(" UTC: ") @objOfferHistory.Description</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

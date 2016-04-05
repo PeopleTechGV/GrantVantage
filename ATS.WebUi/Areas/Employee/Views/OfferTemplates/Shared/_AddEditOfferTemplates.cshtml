@@ -1,0 +1,426 @@
+﻿@model ATS.BusinessEntity.OfferTemplates
+@using BECommon = ATS.BusinessEntity.Common;
+@using BEMakeOfferConstant = ATS.BusinessEntity.Common.MakeOffer
+@System.Web.Optimization.Scripts.Render("~/bundles/jMultiSelectDropdown")
+@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")
+@System.Web.Optimization.Scripts.Render("~/bundles/jAjaxFileUpload")
+
+@{
+    String selectone = Html.LanguageLabel(BECommon.DropDownConstant.DRP_SELECT_ONE).ToString();
+}
+
+<div class="OfferTemplateMain">
+    <div class="OfferTemplateContent">
+        @using (Ajax.BeginForm("AddOfferTemplate", "OfferTemplates", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "TemplateOffer.AddOfferTemplateSuccess(data,'" + Model.OfferTemplateId + "')",
+            OnFailure = "TemplateOffer.AddOfferTemplateFailed"
+        }, new { id = "frmOfferTemplate" }))
+        {
+            @Html.HiddenFor(m => m.OfferTemplateId)
+            @Html.HiddenFor(m => m.IncludeAttachments)
+            <div class="OfferDetails">
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.OfferTemplateName)</span>
+                    @Html.TextBoxFor(m => m.OfferTemplateName)
+                </div>
+
+                <div class="OfferBox OW50">
+                    <span>@Html.LanguageLabelFor(m => m.PositionType)</span>
+                    @Html.DropDownListFor(m => m.PositionType, (SelectList)ViewBag.DRPPositionType, "--Select--", new { @id = "drpPositionType", @onchange = "GetOfferLettersByPositiontype()" })
+                </div>
+
+                @*<div class="OfferBox OW50" style="margin: 10px 0;">
+                        @Html.CheckBoxFor(m => m.EnableCounterOffers, new { @onclick = "TemplateOffer.EnableCounterOffers(this);" })
+                        @Html.LanguageLabelFor(m => m.EnableCounterOffers, new { @class = "chkEnableCounterOffer" })
+                    </div>*@
+
+                <div class="OfferBox OW50 ClearFloat">
+                    <span>@Html.LanguageLabelFor(m => m.EmailToCandidateId)</span>
+                    @Html.ListBoxFor(m => m.ListEmailToCandidateId, ViewBag.DRPEmailTemplates as MultiSelectList, new { @id = "lstEmailToCandidate" })
+                    @Html.CheckBoxFor(m => m.EmailToCandidate_EditContent)
+                    @Html.LanguageLabelFor(m => m.EmailToCandidate_EditContent, new { @class = "label" })
+                </div>
+
+                <div class="OfferBox OW50" id="drpOfferLetterCtrl">
+                    <span>@Html.LanguageLabelFor(m => m.OfferLetterId)</span>
+                    @Html.ListBoxFor(m => m.ListOfferLetterId, ViewBag.DRPOfferLetters as MultiSelectList, new { @id = "lstOfferLetters" })
+                    @Html.CheckBoxFor(m => m.OfferLetterId_EditContent)
+                    @Html.LanguageLabelFor(m => m.OfferLetterId_EditContent, new { @class = "label" })
+                </div>
+            </div>
+
+            <div class="OfferDetails">
+                <span>@Html.LanguageLabel(BEMakeOfferConstant.FRM_MAKEOFF_OFFER_DETAILS)</span>
+                <div class="OfferBox OW25">
+                    <span>@Html.LanguageLabelFor(m => m.PlacementType)</span>
+                    @Html.DropDownListFor(m => m.PlacementType, (SelectList)ViewBag.DRPPlacementType, "--Select--", new { @id = "ddlPlacementType", @OnChange = "TemplateOffer.PlacementTypeChange(this);" })
+                    @Html.CheckBoxFor(m => m.PlacementType_EM, new { @class = "label" })
+                    @Html.LanguageLabelFor(m => m.PlacementType_EM, new { @class = "label" })
+                    @Html.CheckBoxFor(m => m.PlacementType_EC, new { @class = "EditableByCandidate" })
+                    @Html.LanguageLabelFor(m => m.PlacementType_EC, new { @class = "EditableByCandidate" })
+                </div>
+                <div class="OfferBox OW25">
+                    <span>@Html.LanguageLabelFor(m => m.AwardIssueDate)</span>
+                    @Html.TextBoxFor(m => m.AwardIssueDateText, new { @class = "dpclassEnd", @id = "AwardIssueDate", @ReadOnly = false })
+                </div>
+                @*<div class="OfferBox OW50">
+                        <span>@Html.LanguageLabelFor(m => m.JobType)</span>
+                        @Html.DropDownListFor(m => m.JobType, (SelectList)ViewBag.DRPJobType, "--Select--")
+                        @Html.CheckBoxFor(m => m.JobType_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.JobType_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.JobType_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.JobType_EC, new { @class = "EditableByCandidate" })
+                    </div>*@
+                <br clear="all" />
+                <div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AwardAmount)</span>
+                        @Html.TextBoxFor(m => m.AwardAmount, new { @class = "RegNumeric ValueColumn" })
+                        @Html.CheckBoxFor(m => m.AwardAmount_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.AwardAmount_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.AwardAmount_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.AwardAmount_EC, new { @class = "EditableByCandidate" })
+                    </div>
+                    @*CR-14*@
+                    @*<div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AwardAmountMax)</span>
+                        @Html.TextBoxFor(m => m.AwardAmountMax, new { @class = "RegNumeric MaxValue" })
+                    </div>*@
+
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CashMatchRequired) (%)</span>
+                        @Html.TextBoxFor(m => m.CashMatchRequired, new { @class = "RegNumeric ValueColumn" })
+                        @Html.CheckBoxFor(m => m.CashMatchRequired_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CashMatchRequired_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.CashMatchRequired_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.CashMatchRequired_EC, new { @class = "EditableByCandidate" })
+                    </div>
+                    @*CR-14*@
+                    @*<div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CashMatchRequiredMax)</span>
+                        @Html.TextBoxFor(m => m.CashMatchRequiredMax, new { @class = "RegNumeric MaxValue" })
+                    </div>*@
+                </div>
+                <br clear="all" />
+            </div>
+        @*CR-14*@
+            @*<div class="OfferDetails">
+                <div class="IncludeInOffer">
+                    <span>Bonus Option</span>
+                    <div class="RightAction">
+                        @Html.CheckBoxFor(m => m.IncludeBonus, new { @class = "chkInclude" })
+                        @Html.LanguageLabelFor(m => m.IncludeBonus, new { @class = "label" })
+                    </div>
+                </div>*@
+                @*<div class="IncludeOption">
+                    <div class="OfferBox OW50">
+                        <span>@Html.LanguageLabelFor(m => m.BonusDescription)</span>
+                        @Html.TextBoxFor(m => m.BonusDescription)
+                        @Html.CheckBoxFor(m => m.BonusDescription_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.BonusDescription_EM, new { @class = "label" })
+                    </div>*@
+
+                    @*<div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AnnualBonusPotential)</span>
+                        @Html.TextBoxFor(m => m.AnnualBonusPotential, new { @PlaceHolder = "Annual Bonus", @class = "RegNumeric ValueColumn" })
+                        @Html.CheckBoxFor(m => m.AnnualBonusPotential_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.AnnualBonusPotential_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.AnnualBonusPotential_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.AnnualBonusPotential_EC, new { @class = "EditableByCandidate" })
+                    </div>*@
+
+                    @*<div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.BonusCap)</span>
+                        @Html.TextBoxFor(m => m.BonusCap, new { @class = "RegNumeric ValueColumn" })
+                        @Html.CheckBoxFor(m => m.BonusCap_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.BonusCap_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.BonusCap_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.BonusCap_EC, new { @class = "EditableByCandidate" })
+                    </div>*@
+                    @*<div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.AnnualBonusPotentialMax)</span>
+                @Html.TextBoxFor(m => m.AnnualBonusPotentialMax, new { @class = "RegNumeric MaxValue" })
+            </div>
+            <div class="OfferBox OW25">
+                <span>@Html.LanguageLabelFor(m => m.BonusCapMax)</span>
+                @Html.TextBoxFor(m => m.BonusCapMax, new { @class = "RegNumeric MaxValue" })
+            </div>
+        </div>
+    </div>*@
+
+            @*<div class="OfferDetails">
+                <div class="IncludeInOffer">
+                    <span>Commission Option</span>
+                    <div class="RightAction">
+                        @Html.CheckBoxFor(m => m.IncludeCommission, new { @class = "chkInclude" })
+                        @Html.LanguageLabelFor(m => m.IncludeCommission, new { @class = "label" })
+                    </div>
+                </div>
+                <div class="IncludeOption">
+                    <div class="OfferBox OW50">
+                        <span>@Html.LanguageLabelFor(m => m.CommissionDescriprion)</span>
+                        @Html.TextBoxFor(m => m.CommissionDescriprion)
+                        @Html.CheckBoxFor(m => m.CommissionDescriprion_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CommissionDescriprion_EM, new { @class = "label" })
+                    </div>
+
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AnnualCommissionPotential)</span>
+                        @Html.TextBoxFor(m => m.AnnualCommissionPotential, new { @PlaceHolder = "Annual Commission", @class = "RegNumeric ValueColumn" })
+                        @Html.CheckBoxFor(m => m.AnnualCommissionPotential_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.AnnualCommissionPotential_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.AnnualCommissionPotential_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.AnnualCommissionPotential_EC, new { @class = "EditableByCandidate" })
+                    </div>
+
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CommissionCap)</span>
+                        @Html.TextBoxFor(m => m.CommissionCap, new { @class = "RegNumeric ValueColumn" })
+                        @Html.CheckBoxFor(m => m.CommissionCap_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CommissionCap_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.CommissionCap_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.CommissionCap_EC, new { @class = "EditableByCandidate" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.AnnualCommissionPotentialMax)</span>
+                        @Html.TextBoxFor(m => m.AnnualCommissionPotentialMax, new { @class = "RegNumeric MaxValue" })
+                    </div>
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CommissionCapMax)</span>
+                        @Html.TextBoxFor(m => m.CommissionCapMax, new { @class = "RegNumeric MaxValue" })
+                    </div>
+                </div>
+            </div>*@
+
+            @*<div class="OfferDetails">
+                <div class="IncludeInOffer">
+                    <span>Applicant Notice Option</span>
+                    <div class="RightAction">
+                        @Html.CheckBoxFor(m => m.IncludeCandidateNotice, new { @class = "chkInclude" })
+                        @Html.LanguageLabelFor(m => m.IncludeCandidateNotice, new { @class = "label" })
+                    </div>
+                </div>
+                <div class="IncludeOption">
+                    <div class="OfferBox OW25 ClearFloat">
+                        <span>@Html.LanguageLabelFor(m => m.CandidateNoticePeriod)</span>
+                        @Html.DropDownListFor(m => m.CandidateNoticePeriod, (SelectList)ViewBag.DRPNoticePeriod, "--Select--")
+                        @Html.CheckBoxFor(m => m.CandidateNoticePeriod_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CandidateNoticePeriod_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.CandidateNoticePeriod_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.CandidateNoticePeriod_EC, new { @class = "EditableByCandidate" })
+                    </div>
+
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CandidateNoticePeriodType)</span>
+                        @Html.DropDownListFor(m => m.CandidateNoticePeriodType, (SelectList)ViewBag.DRPNoticePeriodDaysType, "--Select--")
+                        @Html.CheckBoxFor(m => m.CandidateNoticePeriodType_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CandidateNoticePeriodType_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.CandidateNoticePeriodType_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.CandidateNoticePeriodType_EC, new { @class = "EditableByCandidate" })
+                    </div>
+                </div>
+            </div>*@
+
+            @*<div class="OfferDetails">
+                <div class="IncludeInOffer">
+                    <span>Company Notice Option</span>
+                    <div class="RightAction">
+                        @Html.CheckBoxFor(m => m.IncludeCompanyNotice, new { @class = "chkInclude" })
+                        @Html.LanguageLabelFor(m => m.IncludeCompanyNotice, new { @class = "label" })
+                    </div>
+                </div>
+                <div class="IncludeOption">
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CompanyNoticePeriod)</span>
+                        @Html.DropDownListFor(m => m.CompanyNoticePeriod, (SelectList)ViewBag.DRPNoticePeriod)
+                        @Html.CheckBoxFor(m => m.CompanyNoticePeriod_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CompanyNoticePeriod_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.CompanyNoticePeriod_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.CompanyNoticePeriod_EC, new { @class = "EditableByCandidate" })
+                    </div>
+
+                    <div class="OfferBox OW25">
+                        <span>@Html.LanguageLabelFor(m => m.CompanyNoticePeriodType)</span>
+                        @Html.DropDownListFor(m => m.CompanyNoticePeriodType, (SelectList)ViewBag.DRPNoticePeriodDaysType, "--Select--")
+                        @Html.CheckBoxFor(m => m.CompanyNoticePeriodType_EM, new { @class = "label" })
+                        @Html.LanguageLabelFor(m => m.CompanyNoticePeriodType_EM, new { @class = "label" })
+                        @Html.CheckBoxFor(m => m.CompanyNoticePeriodType_EC, new { @class = "EditableByCandidate" })
+                        @Html.LanguageLabelFor(m => m.CompanyNoticePeriodType_EC, new { @class = "EditableByCandidate" })
+                    </div>
+                </div>
+            </div>*@
+        }
+
+        <div class="AdditionalOfferAttachments">
+            @if (Model.OfferTemplateId != Guid.Empty)
+            {
+                @Html.Partial("Shared/_AdditionalOfferAttachments", Model)
+            }
+        </div>
+
+    </div>
+</div>
+@if (ViewBag.PageMode == ATS.BusinessEntity.PageMode.Create || (ViewBag.IsAllowModify != null && (bool)ViewBag.IsAllowModify))
+{
+    <div style="display: inline-block; margin: 0 14px 4px;">
+        <input id="btnInsertTemplate" type="submit" class="prfle-button-save CaseUpper btnSaveTemplate" value="Save Award Template" />
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        TemplateOffer.MakeNumberCommaSeparate();
+
+        CheckboxSalaryType(this);
+        TemplateOffer.PlacementTypeChange("#ddlPlacementType");
+        TemplateOffer.EnableCounterOffers("#EnableCounterOffers");
+        var includeAttachment = $("#IncludeAttachments").val();
+        if (includeAttachment.toLowerCase() == 'true') {
+            $("#chkIncludeAttachments").prop("checked", true);
+        }
+        else {
+            $("#chkIncludeAttachments").prop("checked", false);
+        }
+
+        $('.chkInclude').each(function (i, el) {
+            TemplateOffer.IncludeInOffer(this);
+        });
+
+        $(".btnSaveTemplate").click(function () {
+            $('#frmOfferTemplate').submit();
+        });
+
+        $(".RegNumeric").keypress(function (e) {
+            if (e.which == 46) {
+                if ($(this).val().indexOf('.') > 0) {
+                    return false;
+                }
+            }
+            else if (e.which >= 37 && e.which <= 40) {
+                return true;
+            }
+            else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+
+        $("#lstEmailToCandidate").dropdownchecklist({
+            emptyText: '@selectone',
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+            }
+        });
+
+        $("#lstOfferLetters").dropdownchecklist({
+            emptyText: '@selectone',
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+            }
+        });
+
+        $(".chkSalaryTypeEM").click(function () {
+            CheckboxSalaryType(this);
+        });
+
+        function CheckboxSalaryType(element) {
+            if ($(".chkSalaryTypeEM").is(":checked") == false) {
+                $(".chkSalaryTypeEC").prop("checked", false);
+                $(".chkSalaryTypeEC").attr("disabled", "disabled");
+            }
+            else {
+                $(".chkSalaryTypeEC").removeAttr("disabled");
+            }
+        }
+
+        $(".ValueColumn").keyup(function (e) {
+            $(this).rules("remove");
+            if (e.which == 9 || (e.which >= 37 && e.which <= 40)) {
+                return true;
+            }
+            var maxValueCtlId = '#' + $(this).attr("id") + 'Max';
+            var maxValCtl = $(maxValueCtlId);
+            var MaxAmount = parseFloat($(maxValCtl).val().replace(/,/g, ""));
+            var CurrentAmount = parseFloat($(this).val().replace(/,/g, ""));
+
+            if (CurrentAmount.toString() != 'NaN') {
+                if (MaxAmount == '' || MaxAmount < CurrentAmount) {
+                    $(maxValCtl).val(CurrentAmount)
+                }
+            }
+            VacancyModel.commaSeparateNumber(this);
+            VacancyModel.commaSeparateNumber(maxValCtl);
+        });
+
+        $(".MaxValue").blur(function (e) {
+            $(this).rules("remove");
+            var ValueCtlId = '#' + $(this).attr("id").replace('Max', '');
+            var ValCtl = $(ValueCtlId);
+            var ValueAmount = parseFloat($(ValCtl).val().replace(/,/g, ""));
+            var MaxAmount = parseFloat($(this).val().replace(/,/g, ""));
+            if (ValueAmount != '' && ValueAmount > MaxAmount && MaxAmount.toString() != 'NaN') {
+                $(this).val(ValueAmount);
+            }
+            else if ($(this).val() == '' && ValueAmount != Nan) {
+                $(this).val(ValueAmount);
+            }
+            VacancyModel.commaSeparateNumber(this);
+            VacancyModel.commaSeparateNumber(ValCtl);
+        });
+
+
+        $(".MaxValue").keyup(function (e) {
+            VacancyModel.commaSeparateNumber(this);
+        });
+
+        $('#frmOfferTemplate').submit(function () {
+            TemplateOffer.RemoveNumberCommaSeparate();
+            var url = '@Url.Action("AddOfferTemplate", "OfferTemplates")';
+            $('#frmOfferTemplate').prop('action', url);
+            return true;
+        });
+    });
+
+    function GetOfferLettersByPositiontype() {
+        var positiontypeId = document.getElementById('drpPositionType').value;
+        var _dataLink = '@Html.Raw(Url.Action("GetOfferLettersByPositionType", "OfferTemplates", new { @positionTypeId = "_PositionType_" }))';
+        _dataLink = _dataLink.replace("_PositionType_", positiontypeId);
+        $.post(_dataLink, function (data) {
+            data = JSON.parse(data);
+            if (!data.IsError) {
+                var sel = $('#drpOfferLetterCtrl');
+                $(sel).html('');
+                $(sel).append($(data.Data));
+            }
+        });
+    }
+
+    $(function () {
+        var dates = $("#AwardIssueDate").datepicker({
+            onSelect: function (selectedDate) {
+                var option = this.id == "txtOfferStartDate" ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = $.datepicker.parseDate(
+                instance.settings.dateFormat ||
+                $.datepicker._defaults.dateFormat,
+                selectedDate, instance.settings);
+                dates.not(this).datepicker("option", option, date);
+            }
+        });
+    });
+</script>

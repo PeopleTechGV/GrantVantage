@@ -1,0 +1,24 @@
+﻿@model ATS.WebUi.Models.Question.ATSTextArea
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+
+<div class="one-div-full">
+    <div class="box ATSTextArea">
+        <span class="label">@Model.QuestionText</span>
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_DRAFT)
+        {
+            @Html.TextAreaFor(m => m.Answer, new { @class = "input-details", rows = "4" })
+            @Html.HiddenFor(m => m.VacQueId, new { id = "hdnQueId" })
+            @Html.HiddenFor(m => m.VacRndId, new { id = "hdnVacRndId" })
+        }
+
+        @if (ViewBag.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+        {
+            <br />
+            <ul style="margin-bottom: 8px;">
+                <li style="clear: both; list-style-type: square; margin-left: 20px; text-align: justify;">
+                    <span>@Model.Answer</span>
+                </li>
+            </ul>
+        }
+    </div>
+</div>

@@ -1,0 +1,316 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model BEClient.CandidateProfileForPDF
+@{
+    ViewBag.Title = "_profile";
+    Layout = "~/Areas/Employee/Views/CandidateDetails/Index.cshtml";
+}
+
+<div id="ProfileAccordion">
+    <div class="acc-header" data-header="Application">
+        <p class="prfle-tab-head">
+            @Html.Label("Applications")
+            <span class='ttldb count' style="color:#953634;">
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-inner">
+            <div class="AccApplication">
+                @Html.Partial("~/_AccApplicationList", Model.ObjApplications)
+            </div>
+        </div>
+
+    </div>
+    @*Personal Info*@
+    @Html.Partial("Shared/_PersonalInfo", Model.objUserDetails)
+    
+    @*Availability*@
+    @*@Html.Partial("Shared/_Availability", Model.ObjAvailability)*@
+
+    @* Resume Summary  *@
+    @*<div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Resume Summary")
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-inner">
+            <div class="SubAccordion">
+                @Html.Partial("Shared/_ExecutiveSummary", Model.ObjExecutiveSummary)
+                @Html.Partial("Shared/_Objective", Model.ObjObjective)
+            </div>
+        </div>
+    </div>*@
+
+
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Employment")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countEmployment = Model.ObjContactEmployments.Count() + Model.ObjContactAchievement.Count();
+                }
+                (@countEmployment)
+            </span>
+
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-inner">
+            <div class="SubAccordion">
+                @*Job History*@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel("Job History")
+                        <span class='ttldb count'>(@Model.ObjContactEmployments.Count())</span>@*RK 30052004*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accJobHistories">
+                        @foreach (BEClient.EmploymentHistory _currentEmployment in Model.ObjContactEmployments)
+                        {
+                            @Html.Partial("Shared/_JobHistory", _currentEmployment)
+                        }
+                    </div>
+
+
+                </div>
+                @*END Job History*@
+                @*Achievements*@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel("Achievements")
+                        <span class='ttldb count'>(@Model.ObjContactAchievement.Count())</span>@*RK 30052004*@
+
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accAchievements">
+                        @foreach (BEClient.Achievement _currentAchievement in Model.ObjContactAchievement)
+                        {
+                            @Html.Partial("Shared/_Achievement", _currentAchievement)
+                        }
+                    </div>
+
+
+                </div>
+                @*END Achievements*@
+
+            </div>
+        </div>
+    </div>
+    @*END Resume Job History Accordian*@
+    @*Skills Accordian*@
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.LanguageLabel(ATS.BusinessEntity.Common.SkillAndQualificationConstant.FRM_PRF_TTL_SKILLS_AND_QUALIFICATIONS)
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countSkills = Model.ObjContactSkills.Count();
+                }
+                (@countSkills)
+            </span>
+        </p>
+
+
+    </div>
+    <div class="acc-Content">
+        <div class="SubAccordion" id="accSkills">
+            @foreach (BEClient.Skills _currentSkills in Model.ObjContactSkills)
+            {
+                @Html.Partial("Shared/_SkillAndQualifications", _currentSkills)
+            }
+        </div>
+
+
+    </div>
+    @*End Skills Accordian*@
+
+
+    @* Start Education Background *@
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Educational Background")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countEducationBackground = Model.ObjContactEducations.Count() + Model.ObjContactLicenceAndCertifications.Count();
+                }
+                (@countEducationBackground)
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-inner">
+            @*Start Education *@
+            <div class="SubAccordion">
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel("Education")
+                        <span class='ttldb count'>(@Model.ObjContactEducations.Count())</span>@*RK 30052004*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accEducations">
+                        @foreach (BEClient.EducationHistory _currentEducationHistory in Model.ObjContactEducations)
+                        {
+                            @Html.Partial("Shared/_Education", _currentEducationHistory)
+                        }
+                    </div>
+
+                </div>
+                @*  END Education *@
+                @* Start LicenceAndCertifications *@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.LicenceAndCertificationsConstant.FRM_TITL_LICENCEANDCERTIFICATIONS)
+                        <span class='ttldb count'>(@Model.ObjContactLicenceAndCertifications.Count())</span>@*RK 300520048*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accLicenceAndCertifications">
+                        @foreach (BEClient.LicenceAndCertifications _currentLicenceAndCertifications in Model.ObjContactLicenceAndCertifications)
+                        {
+                            @Html.Partial("Shared/_LicenceAndCertifications", _currentLicenceAndCertifications)
+                        }
+                    </div>
+                </div>
+                @* End LicenceAndCertifications *@
+            </div>
+        </div>
+    </div>
+    @*End Education Back ground*@
+
+    @* Start Extracurricular  *@
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Extracurricular")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countExtracurricular = Model.ObjContactPublicationHistory.Count() + Model.ObjContactSpeakingEventHistory.Count() + Model.ObjContactAssociations.Count() + Model.ObjContactLanguages.Count();
+                }
+                (@countExtracurricular)
+            </span>
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="acc-in">
+
+            <div class="SubAccordion">
+                @* Start PublicationHistory*@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.PublicationHistoryConstant.FRM_PUB_TITL_PUBLICATION)
+                        <span class='ttldb count'>(@Model.ObjContactPublicationHistory.Count())</span>@*RK 30052004*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accPublicationHistory">
+                        @foreach (BEClient.PublicationHistory _currentPublicationHistory in Model.ObjContactPublicationHistory)
+                        {
+                            @Html.Partial("Shared/_PublicationHistory", _currentPublicationHistory)
+                        }
+                    </div>
+
+                </div>
+                @*END accPublicationHistory*@
+
+                @*SpeakingEventHistory*@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.SpeakingEventHistoryConst.FRM_SPK_TITL_SPEAKINGEVENTHISTORY)
+                        <span class='ttldb count'>(@Model.ObjContactSpeakingEventHistory.Count())</span>@*RK 30052004*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accSpeakingEventHistory">
+                        @foreach (BEClient.SpeakingEventHistory _currentSpeakingEventHistory in Model.ObjContactSpeakingEventHistory)
+                        {
+                            @Html.Partial("Shared/_SpeakingEventHistory", _currentSpeakingEventHistory)
+                        }
+                    </div>
+
+                </div>
+                @*SpeakingEventHistory*@
+
+                @*Association*@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.AssociationsConst.FRM_ASC_TITLE_ASSOCIATION)
+                        <span class='ttldb count'>(@Model.ObjContactAssociations.Count())</span>@*RK 30052004*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accAssociation">
+                        @foreach (BEClient.Associations _currentAssociations in Model.ObjContactAssociations)
+                        {
+                            @Html.Partial("Shared/_Associations", _currentAssociations)
+                        }
+                    </div>
+
+
+                </div>
+                @*END Association*@
+
+                @*Language*@
+                <div class="acc-header">
+                    <p class="prfle-tab-head-brown">
+                        @Html.LanguageLabel(ATS.BusinessEntity.Common.LanguagesConst.FRM_LAN_TITLE_LANGUAGES)
+                        <span class='ttldb count'>(@Model.ObjContactLanguages.Count())</span>@*RK 30052004*@
+                    </p>
+                </div>
+                <div class="acc-Content">
+                    <div class="SubAccordion" id="accLanguages">
+                        @foreach (BEClient.Languages _currentlanguages in Model.ObjContactLanguages)
+                        {
+                            @Html.Partial("Shared/_Languages", _currentlanguages)
+                        }
+                    </div>
+
+
+                </div>
+                @*END Language*@
+            </div>
+
+        </div>
+    </div>
+    @*End Extra curricular*@
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("References")
+            <span class='ttldb count' style="color:#953634;">
+                @{
+                    var countOtherInformation = Model.ObjContactReferences.Count();
+                }
+                (@countOtherInformation)
+            </span>
+
+        </p>
+    </div>
+    <div class="acc-Content">
+        @*References*@
+        <div class="acc-Content">
+            <div class="SubAccordion" id="accReferences">
+                @foreach (BEClient.References _currentreferences in Model.ObjContactReferences)
+                {
+                    @Html.Partial("Shared/_References", _currentreferences)
+                }
+            </div>
+        </div>
+        @*End References*@
+    </div>
+
+    @*Other Information*@
+    <div class="acc-header">
+        <p class="prfle-tab-head">
+            @Html.Label("Other Information")
+        </p>
+    </div>
+    <div class="acc-Content">
+        <div class="SubAccordion">
+            @* accAlternative / Emergency Contact Info*@
+            @Html.Partial("Shared/_AlternativeEmrContact", Model.objUserDetails)
+            @*END alternate info*@
+        </div>
+    </div>
+</div>
+@* End Other information*@

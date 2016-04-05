@@ -1,0 +1,195 @@
+﻿@model ATS.WebUi.Areas.Employee.Models.InterviewProcessQueModel
+@using BERoundAttr = ATS.BusinessEntity.RndAttrNo
+@using BEQueType = ATS.BusinessEntity.QuestionType
+@using HtmlHelpers.BeginCollectionItem
+@System.Web.Optimization.Scripts.Render("~/bundles/jNumberRange")
+@System.Web.Optimization.Styles.Render("~/Content/cssNumberRange")
+
+@{
+    BEQueType QueType = (BEQueType)(Convert.ToInt32(Model.ObjInterviewProcessQue.ObjQue.QueType));
+    var AnswerLable = "Applicant's Answer";
+    var HideCommentBox = false;
+    if (QueType == BEQueType.QT_RATE && (Model.ObjInterviewProcessQue.ObjQue.QueDataType == 3 || Model.ObjInterviewProcessQue.ObjQue.QueDataType == 4))
+    {
+        AnswerLable = "Reviewers's Answer";
+        HideCommentBox = true;
+    }
+}
+
+@if (Model.ObjInterviewProcessQue.ObjQue.QueId != Guid.Empty)
+{
+    @Html.HiddenFor(m => m.ObjInterviewProcessQue.VacQueId, new { @id = "hdnVacQueId" })
+    <div class="vacancy-quest-box" data-pkid="@Model.ObjInterviewProcessQue.ObjQue.QueId" data-querow='@Model.ObjInterviewProcessQue.TotalQue'>
+        <div class="std_width question-head">
+            <span class="red">Question @Model.ObjInterviewProcessQue.CurrentQue :</span>
+            @Model.ObjInterviewProcessQue.ObjQue.LocalName
+        </div>
+        <div class="std_width reviewer-textarea-bg">
+            <div class="question-dtl-lbl">Question Type</div>
+            <div class="question-dtl-value">@Model.ObjInterviewProcessQue.ObjQue.QueText (@Model.ObjInterviewProcessQue.ObjQue.QueDataTypeText)</div>
+
+            <div class="QuestionAnswer">
+                @using (Ajax.BeginForm("AddEditAnswer", "Application", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "AddEditAnswerSuccess",
+            OnFailure = "AddEditAnswerFailure",
+        }, new { id = "frmAddEditAnswer" }))
+                {
+                    <script>
+                        var formAddEditAnswer = $("#frmAddEditAnswer");
+                        $.validator.unobtrusive.parse(formAddEditAnswer);
+                    </script>
+                    <div class="CreateQues">
+                        @foreach (var _current in Model.Questions)
+                        {
+                            using (Html.BeginCollectionItem("Questions"))
+                            {
+                                <div class="question-dtl-lbl">@AnswerLable</div>
+                                @Html.Partial("InterViewQuestions/_CreateQuestionInt", _current)
+                                if (HideCommentBox == false)
+                                {
+                                    <div style="width: 100%; float: left; clear: both;">
+                                        <div class="question-dtl-lbl">Comments</div>
+                                        <div class="question-dtl-value">
+                                            <div class="one-div-full reviewer-textarea">
+                                                <div class="box">
+                                                    @Html.TextAreaFor(x => _current.Comment, new { @class = "input-details IntSaveAnswer", rows = "4" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        }
+                    </div>
+                }
+
+            </div>
+            <div class="question-dtl-lbl"> </div>
+            <div class="question-dtl-value">
+                @Html.Hidden("hdncur-data-url", @Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = @Model.ObjInterviewProcessQue.VacRndId, QueCatId = Model.ObjInterviewProcessQue.ObjQue.QueCatId, ScheduleIntId = "_SCHEDULEINTID_", Row = 1 }))
+                @if (Model.ObjInterviewProcessQue.CurrentQue > 1)
+                {
+                    <div class="prev-next">
+                        <a id="QuePrev" class="prev-active" data-url='@Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = @Model.ObjInterviewProcessQue.VacRndId, QueCatId = Model.ObjInterviewProcessQue.ObjQue.QueCatId,ScheduleIntId ="_SCHEDULEINTID_", Row = Model.ObjInterviewProcessQue.PrevQue })'>Prev</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="prev-next">
+                        <a data-row='@Model.ObjInterviewProcessQue.CurrentQue' class="prev-disable" href="javascript:void(0)">Prev</a>
+                    </div>
+                }
+                <div class="width-40 w40-prenext-btn">
+                    <button id="intComp" type="button" class="intrvw-complete" data-vacrndid="@Model.ObjInterviewProcessQue.VacRndId" onclick="return intcomp(event,this)">Interview Complete</button>
+                </div>
+                @if (Model.ObjInterviewProcessQue.NextQue == 0)
+                {
+                    <div class="prev-next">
+                        <a id="disNext" class="next-disable" href="javascript:void(0);">Next</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="prev-next">
+                        <a id="QueNext" class="next-active" data-url='@Url.Action("GetQuesByCatAndRow", "Application", new { VacRndId = @Model.ObjInterviewProcessQue.VacRndId, QueCatId = Model.ObjInterviewProcessQue.ObjQue.QueCatId, ScheduleIntId ="_SCHEDULEINTID_",Row = Model.ObjInterviewProcessQue.NextQue })'>Next</a>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="vacancy-quest-box">no questions</div>
+}
+
+
+
+<script>
+
+    function SaveAns(element) {
+
+        var _scheduleintid = $(element).parents('.acc-inner:first').parent().prev().attr('data-pkid');
+        $('#ScheduleInt').val(_scheduleintid);
+
+
+        $('#frmAddEditAnswer').submit();
+        return false;
+    }
+    function intcomp(e, element) {
+
+        e.preventDefault();
+
+        var result = VacancyModel.ValidateQuestionAnswer($('#frmAddEditAnswer'));
+
+        if (!result) {
+            $('#frmAddEditAnswer').submit();
+            InterviewComplete(element);
+        }
+    }
+    function InterviewComplete(element) {
+
+        var self = $(element);
+        var vacrndid = $(self).parents('.acc-Content:first').prev().attr('data-vacrndid');
+        var _ApplicationId = $(self).parents('.acc-Content').prev('div[data-isdeclined]').attr('data-pkid');
+        var scheduleintid = $(self).parents('.acc-Content:first').prev().attr('data-pkid');
+        var IsComplete = true
+        var dataLink = '@Html.Raw(Url.Action("UpdateInterViewStatus", "Application", new { VacRndId = "_VACRNDID_", ScheduleIntId = "_SCHEINTID_" ,IsComplete = "_ISCOMP_"}))';
+        dataLink = dataLink.replace("_VACRNDID_", vacrndid);
+        dataLink = dataLink.replace("_SCHEINTID_", scheduleintid);
+        dataLink = dataLink.replace("_ISCOMP_", IsComplete);
+        VacancyModel.CallPostMethod(dataLink, function (data) {
+            $(self).parents('.acc-Content:first').prev().find('#rndscore').text($(data).find('#rndscore').text());
+            //Need to change
+            $(self).parents('.acc-Content:first').parent().parents('.CanInterview').parents('.acc-Content:first').prev().find('#rndscore').text($(data).find('#TotalScore').val());
+
+            //            $(self).parents('.Interviews').parents('.acc-Content:first').next().find('#rndscore').text($(data).find('#TotalScore').val());
+            $(self).parents('.CanInterview').children().first().find('p').find('.floatright').children('#rndscore').text($(data).find('#TotalScore').val());
+            $(self).parents('.acc-inner:first').html('<div>' + data + '</div>');
+
+
+
+
+            $.post("/MyCandidates/GetBeginInterviews", { ApplicationId: _ApplicationId }, function (data) {
+                data = JSON.parse(data);
+                $('#BeginInterview').html('');
+
+
+                if (data.ScheduleIntId.length == 0) {
+                    $('#BeginInterview').append('<li class="NoRecords">No Pending Interviews</li>')
+                }
+                else {
+                    for (var i = 0; i < data.ScheduleIntId.length; i++) {
+                        var AppendHtml = '<li><a OnClick="return BeginInterview(this);" data-scheduleintid=' + data.ScheduleIntId[i] + ' data-vacrndid=' + data.VacRndId[i] + '>' + data.RoundDetail[i] + '</a></li>';
+                        $('#BeginInterview').append(AppendHtml);
+                    }
+                }
+            });
+
+        });
+    }
+
+
+    function AddEditAnswerSuccess(response) {
+        response = JSON.parse(response);
+        var _ele = $('#frmAddEditAnswer').parent();
+        if (response.IsError) {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', response.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        }
+        else {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', response.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            //$(".CreateQues").html('');
+            //$(".CreateQues").html(response.Data);
+            //$("#frmAddEditAnswer").parents("#Questions").html('')
+            //$("#frmAddEditAnswer").parents("#Questions").append("<div>" + response.Data + "</div>");
+        }
+
+    }
+
+</script>

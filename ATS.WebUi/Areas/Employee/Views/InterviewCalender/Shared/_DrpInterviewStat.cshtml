@@ -1,0 +1,31 @@
+﻿
+<li>
+    <a href='@Url.Action("Index", "InterviewCalender", new { @Status = "Pending", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.InterviewCalenderConstant.INT_PENDING) </span><span class="lblNavCount">@ViewBag.CntBegin</span>
+    </a>
+</li>
+<li>
+    <a href='@Url.Action("Index", "InterviewCalender", new { @Status = "Completed", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.InterviewCalenderConstant.INT_COMPLETED) </span><span class="lblNavCount">@ViewBag.CntComplete</span>
+    </a>
+</li>
+<li>
+    <a href='@Url.Action("Index", "InterviewCalender", new { @Status = "Terminated", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.InterviewCalenderConstant.INT_TERMINATED) </span><span class="lblNavCount">@ViewBag.CntTerminate</span>
+    </a>
+</li>
+<li>
+    <a href='@Url.Action("Index", "InterviewCalender", new { @Status = "AllPending", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.InterviewCalenderConstant.INT_ALLPENDING) </span><span class="lblNavCount">@ViewBag.CntAllBegin</span>
+    </a>
+</li>
+<li>
+    <a href='@Url.Action("Index", "InterviewCalender", new { @Status = "AllCompleted", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.InterviewCalenderConstant.INT_ALLCOMPLETED) </span><span class="lblNavCount">@ViewBag.CntAllComplete</span>
+    </a>
+</li>
+<li>
+    <a href='@Url.Action("Index", "InterviewCalender", new { @Status = "AllTerminated", area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE })'>
+        <span>@Html.LanguageLabel(ATS.BusinessEntity.Common.InterviewCalenderConstant.INT_ALLTERMINATED) </span><span class="lblNavCount">@ViewBag.CntAllTerminate</span>
+    </a>
+</li>

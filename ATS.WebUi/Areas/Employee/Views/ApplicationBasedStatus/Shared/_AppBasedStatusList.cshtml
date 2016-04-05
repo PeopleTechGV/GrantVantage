@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ATS.BusinessEntity.ApplicationBasedStatus>
+@using BEConstant = ATS.BusinessEntity.Common
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w35">@Html.LanguageLabel(BEConstant.AppBasedStatusConstant.FRM_APPBASEDSTATUSNAME)</li>
+        <li class="w25">@Html.LanguageLabel(BEConstant.AppBasedStatusConstant.FRM_APPBASEDSTATUSCATEGORY)</li>
+        <li class="w40">@Html.LanguageLabel(BEConstant.AppBasedStatusConstant.FRM_SHOWTOCANDIDATE)</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.ApplicationBasedStatus current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.ApplicationBasedStatusId'>
+            <li class="w35 SMW80 cntName">@current.LocalName</li>
+            <li class="w25 SMW80 cntCategory">@current.Category</li>
+            <li class="w40 SMW100 cntShowToCand">@current.ShowToCandidate</li>
+            <li id="btnVacStatusMob" class="ViewDetailsMob MobView" onclick="btnVacStatusMob(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "ApplicationBasedStatus")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var appbasedstatusId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "ApplicationBasedStatus", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", appbasedstatusId);
+        window.location = dLink;
+    });
+
+    function btnVacStatusMob(element) {
+        var vacancystatusId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "ApplicationBasedStatus", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_" })';
+        dLink = dLink.replace("_DATAID_", vacancystatusId);
+        window.location = dLink;
+    }
+</script>

@@ -1,0 +1,98 @@
+﻿@using ATS.WebUi.Helpers
+@using ATS.WebUi.Models
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SolrEntity.SolrSearchObject>
+@{
+    ViewBag.Title = "Search Job";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgSearch16W"></div>
+        <a id="SearchJobs" class="navTitle" href="@Html.Raw(Url.Action("Index","Search",new { @area = ATS.WebUi.Common.Constants.AREA_ROOT }))">SEARCH JOBS</a>@*</span>*@
+        <span class="chevron"></span>
+    </div>
+
+    <div class="NavItems">
+        <span class="navTitle">@Model.DisplayName</span>
+        <span class="chevron"></span>
+    </div>
+}
+
+<div class="content">
+    @using (Html.BeginForm("Index", "Search", FormMethod.Get))
+    {
+        @Html.Partial("_SearchJob", Model.obj)
+
+        if (Model.obj.QueryError)
+        {
+            <text> <span class="error">Invalid query</span>
+            </text>
+        }
+    }
+</div>
+
+@if (Model.obj.TotalCount > 0)
+{
+    <div class="floatleft" style="width: 200px;">
+        <select id="drpView" class="view-job-input" name="dsdsa">
+            <option value="0" selected>Title/Description</option>
+            <option value="1">Title/Location (1 Col)</option>
+            <option value="2">Title/Location (2 Col)</option>
+        </select>
+    </div>
+    <br /><br /><br />
+    <div id="viewResult0">
+        @Html.Partial("Search/_AnonymousSearchDefault", Model.obj)
+    </div>
+    @*<div id="viewResult1" style="display:none;">
+            @Html.Partial("Search/_SearchColumn1", Model.obj)
+        </div>
+        <div id="viewResult2" style="display:none;">
+            @Html.Partial("Search/_SearchColumn2", Model.obj)
+        </div>*@
+}
+else
+{
+    if (@Model.DisplayName == null)
+    {
+        <text>
+        </text>
+    }
+    else
+    {
+        <text> <span class="error">No Jobs were found that match your search criteria. Please broaden your criteria and try again.</span>
+        </text>
+    }
+}
+
+<script>
+    $(function () {
+        $("#drpView").change();
+    });
+    $("#drpView").change(function () {
+        var n = $(this).val();
+        switch (n) {
+            case '0':
+                $(".GridContainer").find(".FullContent").show();
+                $(".GridContainer").removeClass("GridCol2");
+                //$("#viewResult1").hide();
+                //$("#viewResult2").hide();
+                break;
+            case '1':
+                $(".GridContainer").find(".FullContent").hide();
+                $(".GridContainer").removeClass("GridCol2");
+                //$("#viewResult1").show();
+                //$("#viewResult0").hide();
+                //$("#viewResult2").hide();
+                break;
+            case '2':
+                $(".GridContainer").find(".FullContent").hide();
+                $(".GridContainer").addClass("GridCol2");
+                //$("#viewResult1").hide();
+                //$("#viewResult0").hide();
+                //$("#viewResult2").show();
+                break;
+        }
+    });
+</script>

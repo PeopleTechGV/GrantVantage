@@ -1,0 +1,101 @@
+﻿@model ATS.BusinessEntity.ApplicationDocuments
+@System.Web.Optimization.Scripts.Render("~/bundles/jAjaxFileUpload")
+
+<div class="box w100" style="padding-top: 5px; overflow: hidden;">
+    <span class="AccountSpan">@Model.RequiredDocumentName <span class="lblNblue lblRoundBraces">Ex: @Model.ExtensionTypes</span></span>
+    @using (Html.BeginForm("UploadDocument", "MyApplications", new { DocumentTypeId = Model.DocumentTypeId }, FormMethod.Post, new { @id = "frmUploadDocument" }))
+    {
+        @Html.HiddenFor(m => m.ApplicationDocumentId)
+        @Html.HiddenFor(m => m.ApplicationId)
+        @Html.HiddenFor(m => m.VacRndId)
+        @Html.HiddenFor(m => m.DocumentTypeId)
+        @Html.HiddenFor(m => m.RequiredDocumentId)
+
+        @Html.DropDownListFor(m => m.ATSResumeId, (SelectList)ViewBag.drpDocumentList, "--Select--", new { @class = "ddlFile detail-select w93 floatleft" })
+        <input type="button" id="btnFileUpload" class="ibtUpload floatright">
+        <input type="file" name="myfile[]" multiple class="txtFileUpload file-upload" data-extensions="@Model.ExtensionTypes">
+        <div style="padding: 10px 0;" class="w100 floatleft">
+            <button id="btnUpload" type="button" title="Upload" class="btn-icon24 bgUploadDocument24 floatright bordered CaseUpper">
+                Upload @Model.RequiredDocumentName
+            </button>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnUpload").click(function () {
+            if ($("#ATSResumeId").val() == '') {
+                $("#ATSResumeId").addClass("input-validation-error");
+                return false;
+            }
+            else {
+                $("#ATSResumeId").removeClass("input-validation-error");
+                $("#frmUploadDocument").attr("action", '@Url.Action("AddUpdateApplicationDocument", "MyApplications")');
+                $("#frmUploadDocument").removeClass("FileUpload");
+                $("#frmUploadDocument").submit();
+            }
+        });
+
+        $('#btnFileUpload').click(function (event) {
+            $(this).siblings('.txtFileUpload').click();
+        });
+
+        $('.txtFileUpload').change(function (click) {
+            if ($(this).val() == "")
+            {
+                return false;
+            }
+            if (ValidateDocument(this)) {
+                $("#frmUploadDocument").attr("action", '@Url.Action("UploadDocument", "MyApplications", new { DocumentTypeId = @Model.DocumentTypeId })');
+                $("#frmUploadDocument").addClass("FileUpload");
+                $('#frmUploadDocument').submit();
+            }
+        });
+
+        $('#frmUploadDocument').ajaxForm({
+            beforeSend: function () {
+                $("#loading").show();
+            },
+            success: function (html, status, xhr, CurrentForm) {
+                var data = JSON.parse(xhr.responseText);
+                if ($('#frmUploadDocument').hasClass("FileUpload")) {
+                    if (!data.IsError) {
+                        $(CurrentForm).find(".ddlFile").append($("<option></option>")
+                        .attr("value", JSON.parse(data.Data).ATSResumeId)
+                        .attr('selected', 'selected')
+                        .text(JSON.parse(data.Data).Name));
+                        $(CurrentForm).find(".ddlFile").removeClass("input-validation-error");
+                    }
+                    else {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+                else {
+                    if (!data.IsError) {
+                        var FileName = $("#ATSResumeId option:selected").text();
+                        $(".GridContainer").find(".RowEditing").replaceWith(data.Data);
+                        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@Model.RequiredDocumentName' + data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                        $("#dialog").dialog("close");
+                    }
+                    else {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    }
+                }
+                $("#loading").hide();
+            }
+        });
+
+        function ValidateDocument(element) {
+            var filename = $(element).val().replace(/.*(\/|\\)/, '');
+            var extensions = $(element).attr("data-extensions");
+            var ext = filename.split('.').pop();
+            if (extensions.indexOf(ext) != -1) {
+                return true;
+            } else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', "Invalid File Type!! allow only " + extensions, 1500)
+                return false;
+            }
+        }
+    });
+</script>

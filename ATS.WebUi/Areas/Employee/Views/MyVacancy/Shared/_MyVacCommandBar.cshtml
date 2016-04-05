@@ -1,0 +1,132 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<List<ATS.BusinessEntity.Vacancy>>>
+@using BEVacancyMDLConst = ATS.BusinessEntity.Common.ModelConstant
+@using BECompanySetupMenuConst = ATS.BusinessEntity.Common.CompanySetupMenu
+@using BEVacancyConstant = ATS.BusinessEntity.Common.VacancyConstant
+@using BECommonCons = ATS.BusinessEntity.Common.CommonConstant
+@using BEClient = ATS.BusinessEntity
+<script src="~/Content/js/Actionbar.js"></script>
+
+@{
+    bool AllowAdd = Model.obj.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Create)).Count() > 0 ? true : false;
+    bool AllowUpdate = Model.obj.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Modify)).Count() > 0 ? true : false;
+    bool AllowDelete = Model.obj.UserPermissionWithScope.SelectMany(t => t.PermissionType.Where(q => q == ATS.BusinessEntity.ATSPermissionType.Delete)).Count() > 0 ? true : false;
+}
+<div class="Searchbox">
+    <input id="txtSearch" class="txtSearch" type="text" name="txtSearch" value="@ViewBag.SearchText" placeholder="Search Opportunity" />
+    @if (ViewBag.SearchTextImg == "Search")
+    {
+        <a href="javascript:void(0);" title="Search"><img src="/Content/images/Search_Jobs_16.png" onclick="Search()" alt="" /></a>
+    }
+    else
+    {
+        <a href="javascript:void(0);" title="Clear Search"><img src="/Content/images/Close_Model_16.png" onclick="Clear()" alt="" /></a>
+    }
+</div>
+
+<ul class="ActionBar ResizableAction">
+    @if (AllowAdd)
+    {
+        <li>
+            <a id="addVacancy" class="bgAdd16B" href='@Model.obj.AddRecordURL' title='@String.Format("{0} {1}", Html.LanguageLabel(BECommonCons.ADD), Html.LanguageLabel(BEVacancyMDLConst.MDL_VACANCY))'>
+                @Html.LanguageLabel(BECommonCons.ADD) @Html.LanguageLabel(BEVacancyMDLConst.MDL_VACANCY)
+            </a>
+        </li>
+    }
+    @if (AllowUpdate)
+    {
+        <li class="ShowOnSingle">
+            <a id="updateVacancy" class="bgEdit16B" href='javascript:void(0);' title='@Html.LanguageLabel(BECommonCons.UPDATE) @Html.LanguageLabel(BEVacancyMDLConst.MDL_VACANCY)'>
+                @Html.LanguageLabel(BECommonCons.UPDATE) @Html.LanguageLabel(BEVacancyMDLConst.MDL_VACANCY)
+            </a>
+        </li>
+
+        <li id="ChangeStatusList" class="ShowOnMulti">
+            <a class="ComboDropdown bgChange16B" href='javascript:void(0);'>
+                @Html.LanguageLabel(BEVacancyMDLConst.MDL_CHANGE_STATUS)
+            </a>
+
+            <ul class="DropMenu ActionOptions">
+                <li>
+                    <a href="javascript:void(0);"><img src="/content/images/Down_Chevron_8.png" /></a>
+                    <ul class="MobRight">
+                        <li>
+                            @foreach (var vacancy in (SelectList)ViewBag.VacStatusDraft)
+                            {
+                                <a class="btn-draft-vacancy bgDraft16 WithIcon" vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href='javascript:void(0);' title="Draft Vacancy" data-nextstatus=@BEClient.VacancyStatusDrp.Draft>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DRAFT_VAC)</a>
+                            }
+                        </li>
+                        <li>
+                            @foreach (var vacancy in (SelectList)ViewBag.VacStatusOpen)
+                            {
+                                <a class="btn-open-vacancy bgOpen16 WithIcon" vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href='javascript:void(0);' title="Open Vacancy" data-nextstatus=@BEClient.VacancyStatusDrp.Open>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_OPEN_VAC)</a>
+                            }
+                        </li>
+                        <li>
+                            @foreach (var vacancy in (SelectList)ViewBag.VacStatusArchive)
+                            {
+                                <a class="btn-archive-vacancy bgArchive16 WithIcon" vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href='javascript:void(0);' title="Archive Vacancy" data-nextstatus=@BEClient.VacancyStatusDrp.Archive>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_ARC_VAC)</a>
+                            }
+                        </li>
+                        <li>
+                            <a id="removeVacancy" class="btn-close-vacancy bgClose16 WithIcon" href="javascript:void(0);" title="Close Vacancy">@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CLOSE_VAC)<img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow"></a>
+                            <ul class="RightMenu">
+                                @foreach (var vacancy in (SelectList)ViewBag.VacStatusClose)
+                                {
+                                    <li><a vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href="javascript:void(0);" data-nextstatus=@BEClient.VacancyStatusDrp.Close>@vacancy.Text</a></li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="EnableResize">
+                <li>
+                    @foreach (var vacancy in (SelectList)ViewBag.VacStatusDraft)
+                    {
+                        <a class="btn-draft-vacancy bgDraft16 WithIcon" vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href='javascript:void(0);' title="Draft Vacancy" data-nextstatus=@BEClient.VacancyStatusDrp.Draft>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_DRAFT_VAC)</a>
+                    }
+                </li>
+                <li>
+                    @foreach (var vacancy in (SelectList)ViewBag.VacStatusOpen)
+                    {
+                        <a class="btn-open-vacancy bgOpen16 WithIcon" vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href='javascript:void(0);' title="Open Vacancy" data-nextstatus=@BEClient.VacancyStatusDrp.Open>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_OPEN_VAC)</a>
+                    }
+                </li>
+                <li>
+                    @foreach (var vacancy in (SelectList)ViewBag.VacStatusArchive)
+                    {
+                        <a class="btn-archive-vacancy bgArchive16 WithIcon" vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href='javascript:void(0);' title="Archive Vacancy" data-nextstatus=@BEClient.VacancyStatusDrp.Archive>@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_ARC_VAC)</a>
+                    }
+                </li>
+                <li>
+                    <a id="removeVacancy" class="btn-close-vacancy bgClose16 WithIcon" href="javascript:void(0);" title="Close Vacancy">Close Vacancy <img src="/Content/images/RightArrow.png" class="OptionVacStatusArrow"></a>
+                    <ul class="RightMenu">
+                        @foreach (var vacancy in (SelectList)ViewBag.VacStatusClose)
+                        {
+                            <li><a vacancyvalue='@vacancy.Value' id='@String.Format("{0}_{1}", "remove", vacancy.Value)' href="javascript:void(0);" data-nextstatus=@BEClient.VacancyStatusDrp.Close>@vacancy.Text</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    }
+
+    @if (AllowDelete)
+    {
+        <li class="ShowOnMulti">
+            <a id="btn-remove-vacancy" class="bgDelete16B" href='javascript:void(0);' title='@Html.LanguageLabel(BECommonCons.DELETE) @Html.LanguageLabel(BEVacancyMDLConst.MDL_VACANCY)'>@Html.LanguageLabel(BECommonCons.DELETE) @Html.LanguageLabel(BEVacancyMDLConst.MDL_VACANCY)</a>
+        </li>
+    }
+    <li class="ShowOnSingle">
+        <a class="bgCandidateLink16B" onclick="OpenCopy('@String.Format("{0}", ((Int32)ATS.BusinessEntity.PublicCodelink.Candidate).ToString())');" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CAN_LINK)'>
+            @Html.LanguageLabel(BEVacancyConstant.FRM_VAC_CAN_LINK)
+        </a>
+    </li>
+
+    <li class="ShowOnSingle">
+        <a class="bgManagerLink16B" onclick="OpenCopy('@String.Format("{0}", ((Int32)ATS.BusinessEntity.PublicCodelink.Manager).ToString())');" title='@Html.LanguageLabel(BEVacancyConstant.FRM_VAC_MAN_LINK)' id="CopyVacancyManager">
+            @Html.LanguageLabel(BEVacancyConstant.FRM_VAC_MAN_LINK)
+        </a>
+    </li>
+</ul>

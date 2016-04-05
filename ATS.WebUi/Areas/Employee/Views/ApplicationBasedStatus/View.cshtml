@@ -1,0 +1,129 @@
+﻿@using BEClient = ATS.BusinessEntity
+@using ABSConstant = ATS.BusinessEntity.Common.AppBasedStatusConstant;
+@model ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.SRPEntity.DynamicSRP<BEClient.ApplicationBasedStatus>>
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MenuDisplayName = ATS.BusinessEntity.Common.CompanySetupMenu.CSMNU_APPBASEDSTATUS;
+}
+
+@section Navigation{
+    @Html.Partial("_NavCompanySetup")
+}
+
+<div id="Messages" style="width: auto; float: left;position:inherit;margin-left:25px;">
+</div>
+<style>
+    ul .options-dd {
+        width: 177px !important;
+    }
+
+    .cleditorMain {
+        float: left;
+        background-color: white;
+        border: 1px solid #999;
+        padding: 0 1px 1px;
+    }
+</style>
+<link type="text/css" rel="stylesheet" href="~/CLEditor/jquery.cleditor.css">
+<script type="text/javascript" src="~/CLEditor/jquery.cleditor.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#lblCount").html($("#Count_CSMNU_DECLINESTATUS").html());
+
+        $(".CLE-textarea").cleditor({
+            controls:
+        "source | bold italic underline | bullets numbering | outdent " +
+        "indent | alignleft center alignright justify | " +
+        "link unlink ",
+            height: "250px",
+        });
+    });
+</script>
+<style>
+    .cleditorMain, .cleditorPopup, .cleditorMain * {
+        box-sizing: border-box;
+    }
+
+    .cleditorMain {
+        width: 100% !important;
+    }
+</style>
+
+@using (Html.BeginForm(Model.obj.ActionName, "ApplicationBasedStatus", FormMethod.Post, new { id = "frmAppStatus" }))
+{
+    @Html.Partial("Buttons/_ViewGearAdmin", Model.obj)
+    @Html.HiddenFor(m => m.obj.obj.ApplicationBasedStatusId, new { Id = "AppBasedStatusId" })
+
+
+    <div class="form-default">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Category, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.StatusText, new { placeholder = Html.LanguageLabel(ABSConstant.FRM_DEFAULTSTATUSSHOWTOEMPLOYER) })
+            @Html.TextBoxFor(m => m.obj.obj.ShowToCandidate, new { placeholder = Html.LanguageLabel(ABSConstant.FRM_DEFAULTSTATUSSHOWTOCANDIDATE) })
+        </div>
+
+        @for (int i = 0; i < Model.obj.obj.ApplicationBasedStatusEntityLanguage.Count(); i++)
+        {
+            <text>
+                @{
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.obj.obj.ApplicationBasedStatusEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+                }
+                <div class="form-group w50">
+                    @Html.Label(languageame, new { @class = "label" })
+                    @Html.HiddenFor(m => m.obj.obj.ApplicationBasedStatusEntityLanguage[i].LanguageId)
+                    @Html.TextBoxFor(m => m.obj.obj.ApplicationBasedStatusEntityLanguage[i].LocalName, new { placeholder = Html.LanguageLabel(ABSConstant.FRM_SHOWTOEMPLOYER) })
+                    @Html.TextBoxFor(m => m.obj.obj.ApplicationBasedStatusEntityLanguage[i].ShowToCandidate, new { placeholder = Html.LanguageLabel(ABSConstant.FRM_SHOWTOCANDIDATE) })
+                </div>
+            </text>
+        }        
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Category, new { @class = "label" })
+            @Html.DropDownListFor(m => m.obj.obj.Category, (SelectList)ViewBag.AppBasedStatusCategory)
+        </div>
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.obj.obj.Subject, new { @class = "label" })
+            @Html.TextBoxFor(m => m.obj.obj.Subject)
+        </div>
+        <div class="form-group w70">
+            @Html.LanguageLabelFor(m => m.obj.obj.EmailDescription, new { @class = "label" })
+            @Html.TextAreaFor(m => m.obj.obj.EmailDescription, new { @class = "text-data CLE-textarea" })
+        </div>
+    </div>
+    <div id="ConfirmDiv">
+    </div>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+
+<script>
+    function OnClickValidate() {
+        $('#frmAppStatus').submit();
+    }
+    $(".btn-remove-vacancy").live("click", function () {
+        var VacancyCount = ""
+        @*if(@Model.obj.obj.RecordExistsCount.Count > 0)
+            VacancyCount = @Model.obj.obj.RecordExistsCount.Where(x => x.TableName == "Vacancy").Select(x => x.Count).FirstOrDefault()*@
+        //VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Vacacny status", 320, "Are you sure want to delete this Vacancy Status? <br /> The following records will also be deleted:<br />" + VacancyCount +" Vacancies", "Yes", "Cancel", "Delete", this, "test");
+        VacancyModel.ConfirmDialog("ConfirmDiv", "Delete Decline Applicant Reason", 320, "Are you sure want to delete this Decline Applicant Reason?", "Yes", "Cancel", "Delete", this, "test");
+        return false;
+    });
+    function Delete(Result, element, RemoveDivName) {
+        if (Result == true) {
+            var deletelink = '@Url.Action("Delete", "ApplicationBasedStatus", new { id = @Model.obj.obj.ApplicationBasedStatusId })'
+            window.location.href = deletelink;
+        }
+    }
+</script>

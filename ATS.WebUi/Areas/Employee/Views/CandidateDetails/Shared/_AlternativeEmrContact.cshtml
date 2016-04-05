@@ -1,0 +1,40 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model  BEClient.UserDetails
+
+<div class="acc-header">
+    <p class="prfle-tab-head-brown">
+        @Html.Label("Alternative info")
+        <span class="Save" style="display:none;"><button type="button"></button></span>
+    </p>
+</div>
+<div class="acc-Content">
+    <table>
+        <tr>
+            <td>
+                <div class="vacancy-Details">
+                    <div class="left-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EmergencyContact1, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EmergencyContact1, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EmergencyContact2, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EmergencyContact2, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                    <div class="right-div">
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EmergencyContact1Phone, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EmergencyContact1Phone, new { @class = "detail-input" })
+                        </div>
+                        <div class="box">
+                            @Html.LanguageLabelFor(m => m.EmergencyContact2Phone, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.EmergencyContact2Phone, new { @class = "detail-input" })
+                        </div>
+                    </div>
+                </div>
+                <br clear="all" />
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,87 @@
+﻿@using BLClient = ATS.BusinessLogic
+@using BEClient = ATS.BusinessEntity
+@using BEUploadResumeConst = ATS.BusinessEntity.Common.UploadResumeConst
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser != null)
+{
+    string profileImagePath = ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.ProfileImage;
+    if (profileImagePath == "")
+    {
+        profileImagePath = "Candidate.png";
+    }
+    if (ATS.WebUi.Common.CommonFunctions.CandidateHasProfile(ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.UserId, ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientId))
+    {
+        <button class="btn-upload-resume CaseUpper" href='@Url.Action("ProfileMaker", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ForWhat = "Create" })'
+                id="Create" onclick="javascript: window.location = '@Url.Action("ProfileMaker", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ForWhat = "Upload" })'" title="Upload Documents" dialog-width="400" dialog-close-button="false" dialog-title="Create Profile" dialog-companyname="@ViewBag.ClientName">
+            @Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENTS)
+        </button>
+    }
+    else
+    {
+        <button class="btn-upload-resume CaseUpper"
+                id="Upload" onclick="javascript:window.location='@Url.Action("CreateProfile", "MyProfile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ForWhat = "Update" })'"
+                title="Upload Documents">
+            @Html.LanguageLabel(BECommonConstantConst.UPLOADDOCUMENTS)
+
+        </button>
+    }
+    <div style="text-align: center; margin-top: 10px;">
+        @using (Html.BeginForm("UploadProfilePhoto", "MyProfile", FormMethod.Post, new { id = "UploadPhotoSideForm" }))
+        {
+            <img id="profileImg" onclick="UploadPhotoSideMenu()" src="/UploadImages/ProfileImage/@profileImagePath" style="width:80px;border: 5px solid #345E8E; border-radius: 10px; cursor:pointer;" />
+            if ("Candidate.png" == profileImagePath)
+            {
+                <br /><label id="lblClickToUpload" class="lblBbrown" onclick="UploadPhotoSideMenu()" style="font-size:11px; font-weight:normal; cursor:pointer;">CLICK TO UPLOAD YOUR PHOTO</label>
+            }
+            <input type="file" id="UploadPhotoSide" name="myfile[]" multiple class="file-upload">
+        }
+    </div>
+    @System.Web.Optimization.Scripts.Render("~/bundles/jAjaxFileUpload")
+
+    <script>
+        function UploadPhotoSideMenu() {
+            $('#UploadPhotoSide').click();
+        }
+
+        $('#UploadPhotoSide').change(function (click) {
+            filename = $(this).val().replace(/.*(\/|\\)/, '');
+            var result = ValidateImage(filename)
+
+            if (result && filename.length > 0) {
+                $('#UploadPhotoSideForm').submit();
+            }
+        });
+        function ValidateImage(filename) {
+            var _filename = filename;
+            var ext = _filename.split('.').pop();
+            ext = ext.toLowerCase();
+            if (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg" || _filename.length <= 0) {
+                return true
+            } else {
+                VacancyModel.DisplayErrorMeesage('#commonMessage', "Invalid Image!! Allow only .png,.jpg,.jpeg, .gif", 3000)
+                return false;
+            }
+        }
+
+        (function () {
+            $('#UploadPhotoSideForm').ajaxForm({
+                beforeSend: function () {
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                },
+                success: function () {
+                },
+                complete: function (xhr) {
+                    $("#profileImg").attr("src", JSON.parse(xhr.responseText));
+                    if ($("#aProfileImg").length > 0) {
+                        $("#aProfileImg").attr("title", "Change Profile Photo");
+                        $("#aProfileImg").html("Change Profile Photo");
+                    }
+                    if ($("#lblClickToUpload").length > 0) {
+                        $("#lblClickToUpload").hide();
+                    }
+                }
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,154 @@
+﻿@using BE = ATS.BusinessEntity
+@model BE.Achievement
+@using BECommonConst = ATS.BusinessEntity.Common.CommonConstant
+
+<div class="acc-header" recordid='@Model.AchievementId'>
+    <p class="prfle-tab-head">
+        <span class='ttldb'>@String.Format("{0}", String.IsNullOrEmpty(Model.IssuingAuthority) ? "New Achievement" : Model.IssuingAuthority)</span>
+        <span class="notification" style="display:none;"></span>
+        <span class="Save" style="display:none;"><button type="button" onclick="return outerSave(this);"></button></span>
+        <span class="delete"><a href='@Url.Action("RemoveAchievement", "Profile", new { @area = "", @precordId = Model.AchievementId })' recordid='@Model.AchievementId' onclick="return DeleteAchievement(this);"><img src="~/Content/images/delete_16.png" /></a></span>
+    </p>
+</div>
+<div class="acc-Content">
+    @using (Ajax.BeginForm("AddUpdateAchievements", "Profile", new { area = "" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "AchievementSuccess(data,'" + Model.AchievementId + "')",
+        OnFailure = "AchievementFailure"
+
+    }, new { id = "frmAchievement", isFormChange = "false" }))
+    {
+        <text>
+            <script>
+                function outerSave(element) {
+                    var head = $(element).closest('.acc-header');
+                    var myform = $(head).next().children().get(0);
+                    var isvalidate = $(myform).valid();
+                    if (isvalidate) {
+                        $(myform).submit();
+                    }
+                    return false;
+                }
+
+                $(function () {
+                    $('*[id^="achdatepick"]').datepicker({
+                        dateFormat: VacancyModel.DateFormat,
+                        changeMonth: true,
+                        changeYear: true,
+                        showWeeks: true,
+                        currentText: 'Now',
+                        autoSize: true,
+                        gotoCurrent: true,
+                        highlightWeek: true,
+                        maxDate: '0d'
+
+                    });
+                    $('*[id^="achdatepick"]').datepicker("setDate", new Date());
+                });
+                /*Set Header content*/
+                function CopyIssuingAuthority(changeVal) {
+                    var cur = $(changeVal);
+                    VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+                }
+
+                function CopyIssuingAuthority(changeVal) {
+                    var cur = $(changeVal);
+                    VacancyModel.CopyDataToHeader(cur, "ttldb", cur.val())
+                }
+
+                function AchievementFailure(data) {
+                    data = JSON.parse(data);
+                    if (data.IsError) {
+                        VacancyModel.DisplayErrorMeesage('#commonMessage', data.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+
+                    }
+                }
+
+                function DeleteAchievement(changeVal) {
+                    var _title = $(changeVal).parents('.acc-Content').prev().children('.prfle-tab-head-brown').text();
+                    var _index = _title.indexOf("(");
+                    _title = _title.substring(1, _index) + '"' + $($(changeVal).parent().siblings(".ttldb").first()).text() + '"';
+
+                    VacancyModel.ConfirmDialog("ConfirmDiv", "Are you sure you want to delete?", 300, _title, "Yes", "Cancel", "RemoveAchievementDiv", changeVal, "");
+                    return false;
+                }
+
+                function RemoveAchievementDiv(Result, element, RemoveDivName) {
+                    if (Result == true) {
+                        $.ajax({
+                            url: element.href,
+                            cache: false,
+                            success: function (data) {
+                                data = JSON.parse(data);
+                                if (data.IsError == false) {
+                                    var head = $(element).closest('.acc-header');
+                                    head.next().remove();
+                                    head.remove();
+                                    var $header = $("#accAchievements").parent().prev();
+                                    var headcount = $("#accAchievements").find(".acc-header").size();
+                                    $header.find('.prfle-tab-head-brown > .count').html("(" + headcount + ")")
+                                    VacancyModel.ProfileHeaderCount($header);
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert(xhr.status);
+                                alert(thrownError);
+                            }
+                        });
+
+                    }
+                }
+
+                function AchievementSuccess(data, custom) {
+                    data = JSON.parse(data);
+                    var deletelink = $("a[recordid='" + custom + "']").get(0);
+                    if (data.Data !== "" && !data.IsError) {
+                        var stext = $("input[value='" + custom + "']");
+                        stext.val(data.Data);
+                        deletelink.href = deletelink.href.replace(custom, data.Data)
+                        $(deletelink).attr("recordid", data.Data);
+                    }
+                    VacancyModel.DisplayProfileNotification(data, deletelink);
+                    return false;
+                }
+            </script>
+        </text>
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            @Html.HiddenFor(m => m.AchievementId, new { @class = "ignore" })
+                            @Html.HiddenFor(m => m.ProfileId, new { @class = "ignore" })
+                            @Html.HiddenFor(m => m.UserId, new { @class = "ignore" })
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.IssuingAuthority, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.IssuingAuthority, new { @class = "detail-input", @onchange = "CopyIssuingAuthority(this);", @tabindex = "21" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Description, new { @class = "label" })
+                                @Html.TextAreaFor(m => m.Description, new { @class = "detail-input txtarea", @tabindex = "23" })
+                            </div>
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.Date, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.DateText, new { @class = "detail-input", @id = String.Format("{0}{1}", "achdatepick", Guid.NewGuid()), @tabindex = "22", @readOnly = "readOnly" })
+                            </div>
+                        </div>
+                    </div>
+                    <br clear="all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdSaveButton">
+                    <div style="border-top: 2px solid #953634;">
+                        <button type="submit" class="prfle-button-save CaseUpper">Save Achievement</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

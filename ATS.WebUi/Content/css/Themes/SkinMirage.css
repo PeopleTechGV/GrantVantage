@@ -1,0 +1,185 @@
+﻿
+/*#region HEADER */
+header {
+    background-color: #2B3D50;
+}
+
+.HeaderText span {
+    color: #FFFFFF;
+}
+/*#endregion */
+
+
+/*#region SECTION */
+section.ContentSection {
+    background-color: #ffffff;
+}
+
+.contnt-left {
+    background-color: #e6e6e6;
+}
+
+ul.LeftMenu > li {
+    background-color: #2B3D50;
+}
+
+    ul.LeftMenu > li > a {
+        color: #ffffff;
+    }
+
+        ul.LeftMenu > li > a:hover, ul.LeftMenu > li > a.activeMenu:hover {
+            background-color: #AB3334;
+            color: #FFFFFF;
+        }
+
+        ul.LeftMenu > li > a.activeMenu {
+            background-color: #AB3334;
+            color: #FFFFFF;
+        }
+
+/*#endregion */
+
+
+.user-image {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+/*#region TOP NAVIGATION BAR */
+
+.NavigationBar {
+    background-color: #1A2530;
+}
+
+    .NavigationBar > .NavItems > .navTitle {
+        color: #FFFFFF;
+    }
+
+ul.dropdownMenu {
+    background-color: #f2f2f2;
+}
+
+    ul.dropdownMenu > li {
+        background-color: #2B3D50;
+    }
+
+        ul.dropdownMenu > li > a {
+            color: #ffffff;
+        }
+
+            ul.dropdownMenu > li > a.activeMenu {
+                background-color: #AB3334;
+            }
+
+                ul.dropdownMenu > li > a:hover,
+                ul.dropdownMenu > li > a.activeMenu:hover {
+                    background-color: #AB3334;
+                    color: #FFFFFF;
+                }
+
+.hasDropdown:hover {
+    background-color: #121212;
+}
+
+    .hasDropdown:hover > .navTitle {
+        color: #FFFFFF;
+    }
+
+ul.menuAqua > li > a {
+    background-color: #31859C;
+}
+
+    ul.menuAqua > li > a:hover {
+        background-color: #186c83;
+    }
+
+ul.menuPurple > li > a {
+    background-color: #604A7B;
+}
+
+    ul.menuPurple > li > a:hover {
+        background-color: #442e5f;
+    }
+
+.NavItems > .chevron {
+    background: url("/content/images/Down_Chevron_white_8.png") no-repeat scroll center center transparent;
+}
+
+.dropdownMenu > .dropdownInfo {
+    background-color: transparent;
+    color: #111111;
+}
+/*#endregion */
+
+
+
+
+
+/*#region COMMON GRID */
+
+.GridContainer ul.RowHeader {
+    border-bottom: 2px solid #AB3334;
+    color: #AB3334;
+}
+
+.GridContainer ul.RowContent {
+    color: #2B3D50;
+}
+
+    .GridContainer ul.RowContent:hover {
+        background-color: #C6E3FF;
+    }
+
+/*#endregion */
+
+
+
+
+
+.lblSBblue {
+    color: #2B3D50;
+}
+
+.lblNblue {
+    color: #2B3D50;
+}
+
+.lblBblue {
+    color: #2B3D50;
+}
+
+.lblSBbrown {
+    color: #AB3334;
+}
+
+.lblNbrown {
+    color: #AB3334;
+}
+
+.lblBbrown {
+    color: #AB3334;
+}
+
+.lblSBgold {
+    color: #DC9C4D;
+}
+
+.lblNgold {
+    color: #DC9C4D;
+}
+
+.lblBgold {
+    color: #DC9C4D;
+}
+
+
+.ApplicationBox > ul.boxHeader > li {
+    color: #AB3334;
+}

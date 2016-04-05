@@ -1,0 +1,26 @@
+﻿@model ATS.WebUi.Models.BreadScrumbModel<DBNull>
+@{
+    ViewBag.Title = "Candidate Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    <div class="NavItems hasDropdown">
+        <div class="MenuItemIcon bgFeaturedJob16W"></div>
+        <span class="navTitle">FEATURED OPPORTUNITIES</span>
+        <span class="chevron"></span>
+    </div>
+}
+
+@using (Html.BeginForm("SaveAndApplyJobByVacancyId", "Search", new { ActionType = "SaveJob" }, FormMethod.Post, new { @id = "frmmain" }))
+{
+    <input type="hidden" id="Save_JobId" name="Save_JobId" />
+    <input type="hidden" id="hdnActionType" name="hdnActionType" />
+
+    <div class="featured-jobs">
+        @{
+    Html.RenderAction("GetAllVacancyByCurrentClient", "Search", new { area = "Candidate" });
+        }
+        <div class="BlankDiv"></div>
+    </div>
+}

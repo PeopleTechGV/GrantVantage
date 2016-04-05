@@ -1,0 +1,23 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.UserDivisionPermission>
+
+
+<div class="GridContainer">
+    @foreach (var _curr in Model)
+    {
+        <ul class="RowContent">
+            <li class="w40">@_curr.DivisionName</li>
+            @if (ATS.WebUi.Common.CurrentSession.Instance.VerifiedUser.SecurityRoles.FirstOrDefault().AtsSecurityRole == ATS.BusinessEntity.ATSSecurityRole.SystemAdministrator)
+            {
+                <li><a href='javascript:void(0);' data-url="@Html.Raw(Url.Action("DeleteAdHocDivision", "User", new { UserPermissionId = @_curr.UserDivisionPermissionId, _UserId = @_curr.UserId }))" id="Adhocdelete" onclick="DeleteAdhoc(this);" data-pkid="@_curr.UserDivisionPermissionId"><img src="~/Content/images/delete_16.png" height="13" width="13" /></a></li>
+            }
+        </ul>
+    }
+</div>
+
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

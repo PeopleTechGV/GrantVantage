@@ -1,0 +1,39 @@
+﻿@model  IList<ATS.BusinessEntity.DegreeType>
+@using BEDegreeTypeConst = ATS.BusinessEntity.Common.DegreeType
+@System.Web.Optimization.Scripts.Render("~/bundles/jSelectableGrid")
+
+<div id="selectable" class="GridContainer">
+    <ul class="RowHeader">
+        <li class="w50">@Html.LanguageLabel(BEDegreeTypeConst.LST_DEREETYPE)</li>
+        <li class="w50">Priority</li>
+    </ul>
+    @foreach (ATS.BusinessEntity.DegreeType current in Model)
+    {
+        <ul class="RowContent CursorPointer" data-id='@current.DegreeTypeId'>
+            <li class="w50 cntDegreeType">@current.LocalName</li>
+            <li class="w50 cntPriority">@current.Priority</li>
+            <li id="MobDegreeType" class="ViewDetailsMob MobView" onclick="MobDegreeType(this);"><img src="/Content/images/ViewDetails.png" alt="" border="0" /></li>
+        </ul>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        SelectableGrid.DeleteUrl = '@Url.Action("DeleteMultiple", "DegreeType")';
+    });
+
+    var divdbl = $(".RowContent");
+    divdbl.dblclick(function () {
+        var degreetypeId = $(this).attr("data-id");
+        var dLink = '@Url.Action("View", "DegreeType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", degreetypeId);
+        window.location = dLink;
+    });
+
+    function MobDegreeType(element) {
+        var degreetypeId = $(element).parents(".RowContent").attr("data-id");
+        var dLink = '@Url.Action("View", "DegreeType", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", degreetypeId);
+        window.location = dLink;
+    }
+</script>

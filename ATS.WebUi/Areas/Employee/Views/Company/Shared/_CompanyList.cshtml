@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ATS.BusinessEntity.Company>
+           @using BECompanyConst = ATS.BusinessEntity.Common.Company
+<div class="search-result-detail">
+    <div class="search-heading">
+
+        <li class="location">@Html.LanguageLabel(BECompanyConst.LST_COMPANY_COMNAME)</li>
+        <li class="job-title">
+            @Html.LanguageLabel(BECompanyConst.LST_COMPANY_WEBSITE)
+        </li>
+        <li class="posted-on">&nbsp;</li>
+        <li class="action">&nbsp;</li>
+    </div>
+    @foreach (ATS.BusinessEntity.Company current in Model)
+{
+    <ul class="search-row default">
+        <li class="text-details">
+            <ul data-id='@current.CompanyId'>
+                <li class="detail-location">@current.CompanyName</li>
+
+                <li class="detail-job-title">@current.WebSite</li>
+
+            </ul>
+        </li>
+    </ul>
+}
+</div>
+
+<script>
+    var divdbl = $(".search-row");
+    divdbl.dblclick(function () {
+        var companyId = $(this).find('ul').attr("data-id");
+        var dLink = '@Url.Action("View", "Company", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE, id = "_DATAID_"})';
+        dLink = dLink.replace("_DATAID_", companyId);
+        window.location = dLink;
+    });
+</script>

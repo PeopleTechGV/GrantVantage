@@ -1,0 +1,339 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Areas.Candidate.Models.JobApplication<ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateApplications>>
+@using BEApplicationDetailsConstantConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@using BEApplicationMenuConstant = ATS.BusinessEntity.Common.ApplicationStatusMenuConstant
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+
+@{
+    ViewBag.Title = "Job Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation{
+    @if (@ViewBag.SelectedStatus != null)
+    {
+        <div class="NavItems hasDropdown">
+            <div class="MenuItemIcon bgMyApplication16W"></div>
+            <span class="navTitle">
+                MY APPLICATIONS:
+                <span class="navSubTitle lblNgold CaseUpper">@ViewBag.SelectedStatus</span>
+                <span class="lblNavCount">@ViewBag.TotalCount</span>
+            </span>
+            <span class="chevron"></span>
+            <ul class="dropdownMenu menuPurple CaseUpper">
+                @Html.Partial("_NavMyApplication")
+            </ul>
+        </div>
+        <div class="NavItems hasDropdown">
+            <span class="navTitle">@Model.mainObject.obj.objVacancy.JobTitle</span>
+            <span class="chevron"></span>
+            <ul class="dropdownMenu menuAqua">
+                @Html.Partial("_RecentViewed", Model.mainObject.objRecentViewedList)
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="NavItems">
+            <span class="navTitle">@Model.mainObject.obj.objVacancy.JobTitle, @Model.mainObject.obj.objVacancy.LocationText</span>
+            <span class="chevron"></span>
+        </div>
+    }
+}
+
+<style>
+    .std_hlfwdth1 {
+        float: left;
+        line-height: 1em;
+        padding-top: 2px;
+        right: 0;
+        top: 0;
+    }
+
+    .width_70 {
+        width: 45%;
+    }
+
+    .box {
+        margin: 4px 0px;
+    }
+</style>
+
+<div id="Messages" style="width: auto; float: left;"></div>
+
+<script>
+    function CheckBeforeSubmitApp() {
+        var result = VacancyModel.ValidateQuestionAnswer($('#frmApplication'));
+
+        if (!result) {
+            $('#frmApplication').submit();
+        }
+        return false;
+    }
+</script>
+
+@using (Html.BeginForm("Index", "JobApplication", FormMethod.Post, new { @id = "frmApplication" }))
+{
+    @Html.HiddenFor(m => m.mainObject.obj.ApplicationId);
+    <script>
+        function SubmitApp(element) {
+            if (window["CheckBeforeSubmitApp"] == '') {
+                return true;
+            }
+            else {
+                return window["CheckBeforeSubmitApp"]();
+            }
+        }
+    </script>
+    <ul class="ActionBar" style="width: auto;">
+        @if (ViewBag.IsView)
+        {
+            <li>
+                @if (Model.mainObject.obj.ApplicationStatus != BEApplicationOptionsConstant.APP_STAT_DRAFT)
+                {
+                    <a class="bgFlag16B" href='@Url.Action("Index", "JobApplication", new { ApplicationId = @Model.mainObject.obj.ApplicationId, Status = @ViewBag.SelectedStatus })' title='@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_VIEW)'>@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_VIEW)</a>
+                }
+                else
+                {
+                    <a class="bgFlag16B" href='@Url.Action("Index", "ApplyVacancy", new { VacancyId = @Model.mainObject.obj.objVacancy.VacancyId, Status = @ViewBag.SelectedStatus })' title='@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_VIEW)'>@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_VIEW)</a>
+                }
+            </li>
+        }
+        @if (Model.mainObject.obj.ApplicationStatus != BEApplicationOptionsConstant.APP_STAT_DRAFT)
+        {
+            if (Model.mainObject.obj.ApplicationStatus != BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+            {
+
+                <li>
+                    <a class="bgFlag16B" href="#" title='@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_DRAFT)'>@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_DRAFT)</a>
+                </li>
+            }
+            <li>
+                <a class="bgWithdraw16B" href='@Url.Action("WithdrawApplication", "MyApplications", new { ApplicationId = @Model.mainObject.obj.ApplicationId })' title='@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_WITHDRAW)'>@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_WITHDRAW)</a>
+            </li>
+        }
+
+        @if (Model.mainObject.obj.ApplicationStatus != BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+        {
+            <li>
+                @Html.Hidden("ApplicationStatus", BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+                @{
+            String contrName = Convert.ToString(ViewContext.RouteData.Values["Controller"]);
+                }
+                @if (contrName == "JobApplication")
+                {
+                    <a class="bgWithdraw16B" href='#' title='@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_SUBMIT)' onclick="return SubmitApp(this);">@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_SUBMIT)</a>
+                }
+                else
+                {
+                    <a class="bgWithdraw16B" href='@Url.Action("Index", "ApplyVacancy", new { VacancyId = @Model.mainObject.obj.objVacancy.VacancyId })' title='@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_SUBMIT)'>@Html.LanguageLabel(BEApplicationMenuConstant.APP_STAT_MNU_SUBMIT)</a>
+                }
+            </li>
+        }
+    </ul>
+
+    <div class="cmpSetup-inner SMContentBox">
+        <table>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            <div class="box">
+                                <div class="width_45 aplyjob-label">
+                                    Funding Oppty Number(FOA):
+                                </div>
+                                <div class="width_45 std_hlfwdth1">
+                                    @Model.mainObject.obj.objVacancy.FundingOpptyNumber
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="width_45 aplyjob-label">
+                                    Activity Code:
+                                </div>
+                                <div class="width_45 std_hlfwdth1">
+                                    @Model.mainObject.obj.objVacancy.ActivityCode
+                                </div>
+                            </div>
+
+                            <div class="box">
+                                <div class="width_45 aplyjob-label">
+                                    Announcement Type:
+                                </div>
+                                <div class="width_45 std_hlfwdth1">
+                                    @Model.mainObject.obj.objVacancy.AnnouncementType
+                                </div>
+                            </div>
+                            <div class="box">
+                                @if (Model.mainObject.obj.objVacancy.ShowOnWebSal)
+                                {
+
+                                    <div class="width_45 aplyjob-label">
+                                        @Html.LanguageLabel(BECommonConstatnConst.SALARY_RANGE):
+                                    </div>
+                                    <div class="width_45 std_hlfwdth1">
+                                        @String.Format("{0}{1}-{0}{2}", ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol, Model.mainObject.obj.objVacancy.SalaryMin, Model.mainObject.obj.objVacancy.SalaryMax)
+                                    </div>
+                                }
+                                else if (Model.mainObject.obj.objVacancy.ShowonWebHour)
+                                {
+                                    <div class="width_45 aplyjob-label">Hourly Range: </div>
+                                    <div class="width_45 aplyjob-content">
+                                        @String.Format("{0}{1}-{0}{2}/{3}", ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.CurrencySymbol, Html.DisplayFor(m => m.mainObject.obj.objVacancy.HourlyMin), Html.DisplayFor(m => m.mainObject.obj.objVacancy.HourlyMax), "hour")
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="right-div" style="line-height:1em;">
+                            <div class="box">
+                                <div class="width_45 aplyjob-label">
+                                    Open Date:
+                                </div>
+                                <div class="width_45 std_hlfwdth1">
+                                    @if (@Model.mainObject.obj.objVacancy.OpenDate != DateTime.MinValue)
+                                    {
+                                        @Model.mainObject.obj.objVacancy.OpenDate.ToString("MMM dd, yyyy")
+                                    }
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="width_45 aplyjob-label">
+                                    Announcement Date:
+                                </div>
+                                <div class="width_45 std_hlfwdth1">
+                                    @if (@Model.mainObject.obj.objVacancy.AnnouncementDate != DateTime.MinValue)
+                                    {
+                                        @Model.mainObject.obj.objVacancy.AnnouncementDate.ToString("MMM dd, yyyy")
+                                    }
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="width_45 aplyjob-label">
+                                    Application Due Date:
+                                </div>
+                                <div class="width_45 std_hlfwdth1">
+                                    @if (@Model.mainObject.obj.objVacancy.ApplicationDueDate != DateTime.MinValue)
+                                    {
+                                        @Model.mainObject.obj.objVacancy.ApplicationDueDate.ToString("MMM dd, yyyy")
+                                    }
+                                </div>
+                            </div>
+                            @*cr-3 CFDA number *@
+                            <div>
+                                <div class="box">
+                                    CFDA Number:
+                                </div>
+                            </div>
+                            @*<div class="box">
+                                    <div class="width_45 aplyjob-label">
+                                        @Html.LanguageLabelFor(m => m.mainObject.obj.objVacancy.EmploymentType):
+                                    </div>
+                                    <div class="width_45 std_hlfwdth1">
+                                        @Model.mainObject.obj.objVacancy.EmploymentTypeText
+                                    </div>
+                                </div>*@
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <div style="padding-bottom: 17px;">
+                        <h3 class="jobappdetails">
+                            @Html.LanguageLabel(BECommonConstatnConst.APPLICATION_SUMMARY)
+                        </h3>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="vacancy-Details">
+                        <div class="left-div">
+                            @*<div class="box">
+                                    <div class="width_30 aplyjob-label">
+                                        @Html.LanguageLabel(BEApplicationDetailsConstantConst.LST_APP_COVERLETTER):
+                                    </div>
+                                    <div class="width_70 std_hlfwdth1">
+                                        <a href='@Url.Action("DownloadCoverLetter", "MyApplications", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, CoverLetterId = Model.mainObject.obj.objAtsResume.CoverLetterId })'>@Model.mainObject.obj.objAtsResume.CoverLetterName</a>
+                                    </div>
+                                </div>*@
+
+                            <div class="box">
+                                <div class="width_30 aplyjob-label">
+                                    @Html.LanguageLabel(BEApplicationDetailsConstantConst.LST_APP_RESUME):
+
+                                </div>
+                                <div class="width_70 std_hlfwdth1">
+                                    <a href='@Url.Action("DownLoadResume", "JobApplication", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ResumeId = Model.mainObject.obj.objAtsResume.ATSResumeId })'>@Model.mainObject.obj.objAtsResume.ResumeName</a>
+                                </div>
+
+                            </div>
+                            <div class="box">
+                                <div class="width_30 aplyjob-label">
+                                    @Html.LanguageLabel(BEApplicationDetailsConstantConst.LST_APP_PROFILE):
+                                </div>
+                                <div class="width_70 std_hlfwdth1">
+                                    <a href='@Url.Action("IndexProfileChanger", "Myprofile", new { area = ATS.WebUi.Common.Constants.AREA_CANDIDATE, ProfileId = Model.mainObject.obj.objAtsResume.ProfileId })'>@Model.mainObject.obj.objAtsResume.ProfileName</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-div">
+                            <div class="box">
+                                <div class="width_30 aplyjob-label">
+                                    @Html.LanguageLabel(BECommonConstatnConst.APPLIED_ON):
+                                </div>
+                                <div class="width_70 std_hlfwdth1">
+                                    @Model.mainObject.obj.AppliedOnText
+
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="width_30 aplyjob-label">
+                                    @Html.LanguageLabel(BECommonConstatnConst.STATUS):
+                                </div>
+                                <div class="width_70 std_hlfwdth1">
+                                    @Html.LanguageLabel(Model.mainObject.obj.ShowToCandidate)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    @if (Model.mainObject.obj.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_DRAFT || Model.mainObject.obj.ApplicationStatus == BEApplicationOptionsConstant.APP_STAT_SUBMIT)
+                    {
+                        if (ViewBag.ScreenQue == 1)
+                        {
+                            <div style="padding-bottom: 17px;">
+                                <h3 class="jobapp-header">
+                                    @Html.LanguageLabel(BECommonConstatnConst.REQUIRED_SCREENING_QUESTIONS)
+                                </h3>
+                            </div>
+
+                            <div class="jobapp-textarea" style="margin-left: 15px;">
+                                @Html.Partial("Question/_CreateQuestions", Model)
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == true)
+{
+    <script>
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.IsError != null && ViewBag.IsError == false)
+{
+    <script>
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}

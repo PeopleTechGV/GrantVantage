@@ -1,0 +1,97 @@
+﻿@model  ATS.WebUi.Models.BreadScrumbModel<ATS.BusinessEntity.Profile>
+@using BEUploadResumeConst = ATS.BusinessEntity.Common.UploadResumeConst
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@{
+    ViewBag.Title = "_UpdateProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Navigation{
+    <div class="NavItems">
+        <div class="MenuItemIcon bgMyProfile24W"></div>
+        <span class="navTitle CaseUpper">@Html.LanguageLabel(ATS.BusinessEntity.Common.CandidateMenuConstant.MNU_MYPROFILES)</span>
+        <span class="chevron"></span>
+    </div>
+}
+@using (Html.BeginForm("UpdateProfile", "MyProfile", new { allowParse = true }, FormMethod.Post, new { enctype = "multipart/form-data", @id = "UpdateProfileform" }))
+{
+    @Html.HiddenFor(m => m.obj.ExtensionTypes, new { @id = "hdnExtensiontypes" })
+    @Html.HiddenFor(m => m.obj.DocCategoryType, new { @id = "hdnDocCategoryType" })
+    @Html.HiddenFor(m => m.obj.ProfileId, new { @id = "hdnProfileId" })
+    <div id="ErrorMessage"></div>
+    <div id="profileMaker">
+        <div class="uploadrsumedoc">
+            <div class="box w50">
+                @Html.LanguageLabelFor(m => m.obj.ProfileName, new { @class = "lblBbrown" })
+                @Html.TextBoxFor(m => m.obj.ProfileName, new { @placeholder = "Profile Name", @id = "txtProfilename", @class = "detail-input" })
+            </div>
+        </div>
+        <div class="box w50">
+            <label id="lblDocType" class="lblBbrown">@Html.LanguageLabel(BEUploadResumeConst.FRM_SELECT)</label><label id="lblDocType" class="lblBbrown"> Resume</label>
+            <input type="file" value="Browse" name="documentFile" id="uploadResume" class="detail-Browse w100" />
+        </div>
+        <span id="exfile" class="floatleft"></span>
+        <div class="box w50" style="margin-top: 8px;">
+            <button class="btn-icon24 bgUploadDocument24 floatright bordered CaseUpper" id="btnSub" title="Upload Resume" style="margin-right: 0">
+                @Html.LanguageLabel(BECommonConstantConst.UPLOADRESUME)
+            </button>
+        </div>
+
+    </div>
+    if (ViewBag.IsError != null)
+    {
+        <script>
+            VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+        </script>
+    }
+    if (ViewBag.Message != null)
+    {
+        <script>
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+        </script>
+    }
+
+}
+
+<script>
+    $(document).ready(function () {
+        var extension = $("#hdnExtensiontypes").val();
+        $("#exfile").text('');
+        $("#exfile").text("(Ex:" + ' ' + extension + ')');
+    });
+
+
+    $(function () {
+        $('#btnSub').click(function () {
+            var txtProfileName = $('#txtProfilename').val();
+      
+            var uploadResume = $('#uploadResume').val();
+      
+                if (txtProfileName == '') {
+                        $('#txtProfilename').addClass('input-validation-error');
+                        return false;
+                    }
+      
+                else {
+                    $('#txtProfilename').removeClass('input-validation-error');
+                }
+            if (!$('#uploadResume').prop("disabled")) {
+                var ext = $("#hdnExtensiontypes").val();
+                var obj = VacancyModel.ValidateDocumentType(uploadResume, ext, false);
+                if (obj.IsError) {
+                    VacancyModel.DisplayErrorMeesage('#commonMessage', obj.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+                    $('#uploadResume').addClass('input-validation-error');
+                    return false;
+                }
+                else {
+                    $('#uploadResume').removeClass('input-validation-error');
+                    SubmitCreateForm();
+                }
+            }
+        });
+    });
+
+    function SubmitCreateForm() {
+        $('#UpdateProfileform').submit();
+    }
+
+</script>

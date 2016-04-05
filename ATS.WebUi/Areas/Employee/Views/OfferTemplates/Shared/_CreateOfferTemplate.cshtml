@@ -1,0 +1,23 @@
+﻿@model ATS.BusinessEntity.SRPEntity.DynamicSRP<ATS.BusinessEntity.OfferTemplates>
+@using BEClient = ATS.BusinessEntity;
+@using OffertemplatesContants = ATS.BusinessEntity.Common.OfferTemplateConstant
+<div class="acc-header NewOfferTemplate">
+    <p class="prfle-tab-head" style="overflow:hidden;">
+        <span class="ttldb ">
+            <span class="lblNamePrefix"></span>
+            <span class="lblTemplateName">@Html.LanguageLabel(OffertemplatesContants.FRM_NEW_OFFER_TEMPLATE)</span>
+        </span>
+
+        <span class="ansoption">
+            <span id="DeleteTVac" class="delete"><a href='javascript:void(0);' onclick="TemplateOffer.DeleteOfferTemplateConfirm(this);"><img src="~/Content/images/delete_16.png" width="13" height="13" /></a></span>
+        </span>
+
+        <span class="notification" style="display:none;"></span>
+    </p>
+</div>
+
+<div class="acc-Content">
+    <span class="AccOfferTemplateDetails">
+        @Html.Partial("Shared/_AddEditOfferTemplates", Model.obj)
+    </span>
+</div>

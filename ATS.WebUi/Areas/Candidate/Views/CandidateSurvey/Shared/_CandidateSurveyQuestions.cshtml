@@ -1,0 +1,58 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.WebUi.Areas.Candidate.Models.JobApplication<ATS.WebUi.Models.BreadScrumbModel<BEClient.CandidateApplications>>
+@using BEApplicationDetailsConstantConst = ATS.BusinessEntity.Common.ApplicationDetailsConstant
+@using BEApplicationOptionsConstant = ATS.BusinessEntity.Common.ApplicationStatusOptionsConstant
+@using BECommonConstatnConst = ATS.BusinessEntity.Common.CommonConstant
+@using CommonFunction = ATS.WebUi.Common.CommonFunctions
+
+@using (Ajax.BeginForm("SubmitCandidateSurvey", "CandidateSurvey", new { returnUrl = ViewBag.ReturnURL }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "Post",
+            OnSuccess = "SubmitCandidateSurveySuccess",
+            OnFailure = "SubmitCandidateSurveyFailed"
+        }, new { @id = "frmCandidateSurveyApp" }))
+{
+    @Html.HiddenFor(m => m.mainObject.obj.ApplicationId);
+    <div class="CanAccountLeft" style="width: 85%; margin-top:15px;">
+        <div class="CanAccountTitle">
+            <span class="MainTitle">Applicant Survey</span>
+            <span class="SubTitle">The following questions are required as part of this opportunity application:</span>
+        </div>
+        @if (Model.ListPickList == null && Model.ListCheckList == null && Model.ListATSTextArea == null && Model.ListATSTextBox == null && Model.ListATSYesNo == null && Model.ListATSScale == null)
+        {
+            <span class="NoRecordMessage CaseUpper">No questions available</span>
+        }
+        else
+        {
+            <div class="jobapp-textarea QuestionForm" style="width: 100%;">
+                @Html.Partial("Question/_CreateQuestions", Model)
+            </div>
+        }
+        @if (@ViewBag.ApplicationStatus == "APP_STAT_DRAFT")
+        {
+            <div class="box CAAction">
+                <div class="w30 floatright">
+                    <button class="btn-icon24 bgSubmitApplication24 floatright" name="submitButton" value="SubmitApplication">SUBMIT APPLICATION</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script>
+    function SubmitCandidateSurveySuccess(data) {
+        var jsondata = JSON.parse(data);
+        if (!jsondata.IsError) {
+            var _URl = '@Url.Action("Index", "MyApplications", new { @area = "Candidate" })';
+            window.location = _URl;
+        }
+        else {
+            VacancyModel.DisplayErrorMeesage('#commonMessage', jsondata.Message, 3000);
+        }
+    }
+
+    function SubmitCandidateSurveyFailed() {
+        //alert("Failed")
+    }
+</script>

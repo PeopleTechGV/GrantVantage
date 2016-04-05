@@ -1,0 +1,45 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model ATS.BusinessEntity.PositionType
+
+@using (Ajax.BeginForm("InsertPositionType", "Division", new { area = "Employee" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnSuccess = "PositionTypeSuccess(data)",
+        OnFailure = "PositionTypeFailure"
+    }, new { id = "positionTypeDetails", isFormChange = "false" }))
+{
+    <script>
+        var formptd = $("#positionTypeDetails");
+        $.validator.unobtrusive.parse(formptd);
+    </script>
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(m => m.PositionTypeId)
+    @Html.HiddenFor(m => m.ClientId)
+    @Html.HiddenFor(m => m.DivisionId)
+    <div class="form-default">
+        <div class="form-group w50">
+            @Html.LanguageLabelFor(m => m.DefaultName, new { @class = "label" })
+            @Html.TextBoxFor(m => m.DefaultName, new { @class = "detail-input" })
+        </div>
+        @for (int i = 0; i < Model.PositionTypeEntityLanguage.Count(); i++)
+        {
+            String languageame = ATS.WebUi.Common.CurrentSession.Instance.VerifiedClient.ClientLanguageList.Where(x => x.LanguageId.Equals(Model.PositionTypeEntityLanguage[i].LanguageId)).First().objLanguage.LanguageName;
+            <div class="form-group w50">
+                @Html.Label(languageame, new { @class = "label" })
+                @Html.HiddenFor(m => m.PositionTypeEntityLanguage[i].LanguageId, new { @class = "detail-input" })
+                @Html.TextBoxFor(m => m.PositionTypeEntityLanguage[i].LocalName, new { @class = "detail-input" })
+            </div>
+        }
+        @if (Model.PositionTypeId != null && Model.PositionTypeId != Guid.Empty)
+        {
+            <div class="form-group w50">
+                @Html.CheckBoxFor(m => m.IsActive, new { @id = "isActive" }) @Html.LanguageLabel(ATS.BusinessEntity.Common.Credential.FRM_PRF_CREDENTIAL_ISACTIVE)
+            </div>
+        }
+        <div class="vacancy-Details ARPInlineAction">
+            <button type="submit" class="prfle-button-save CaseUpper">Save</button>
+            <button type="button" id="RemovePositionType" class="prfle-button-delete CaseUpper" onclick="">Remove</button>
+        </div>
+    </div>
+}

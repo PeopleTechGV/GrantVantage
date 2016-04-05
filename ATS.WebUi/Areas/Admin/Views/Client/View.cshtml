@@ -1,0 +1,136 @@
+﻿@model ATS.WebUi.Areas.Admin.Models.ClientMasterModel
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $("#StartDate,#EndDate").datepicker({
+            dateFormat: VacancyModel.DateFormat,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            showWeeks: true,
+            currentText: 'Now',
+            autoSize: true,
+            gotoCurrent: true,
+            showAnim: 'blind',
+            highlightWeek: true
+
+        });
+    });
+</script>
+        <div class="vacancies-heading">
+            @ViewBag.PageName</div>        
+<br />
+<br /><br />
+
+
+<div id="Messages">
+</div>
+@{
+    string actionName = ViewBag.RedirectAction;
+}
+@using (Html.BeginForm(actionName, "Client", FormMethod.Post, new { id = "frmClient" }))
+{
+
+    @*@Html.ValidationSummary(false)*@
+    @Html.HiddenFor(m => m.objClientMaster.ClientId)
+
+     <button class="btn-save-vacancy" type="submit" name="btnSave" onclick="return CheckDBNameExists();" style="height: 45px;">
+            @Html.LanguageLabel(ATS.BusinessEntity.Common.CommonConstant.SAVE)</button>
+    @*@Html.Partial("Buttons/_BackBtn")*@
+    <div class="vacancy-Details">
+        <div class="left-div">
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.ClientName, new { @class = "label" })
+          
+                @Html.TextBoxFor(m => m.objClientMaster.ClientName, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.ContactPerson, new { @class = "label" })
+           
+                @Html.TextBoxFor(m => m.objClientMaster.ContactPerson, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.ContactNo, new { @class = "label" })
+           
+                @Html.TextBoxFor(m => m.objClientMaster.ContactNo, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.SubDomain, new { @class = "label" })
+           
+                @Html.TextBoxFor(m => m.objClientMaster.SubDomain, new { @class = "detail-input" })
+            </div>
+
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.WebSite, new { @class = "label" })
+
+                @Html.TextBoxFor(m => m.objClientMaster.WebSite, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.ConnectionString, new { @class = "label" })
+           
+                @Html.TextBoxFor(m => m.objClientMaster.ConnectionString, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.DatabaseName, new { @class = "label" })
+           
+                @if (ViewBag.RedirectAction == "Edit")
+                {
+                    @Html.TextBoxFor(m => m.objClientMaster.DatabaseName, new { @class = "detail-input", @readonly = "readonly" })
+                }
+                else
+                { @Html.TextBoxFor(m => m.objClientMaster.DatabaseName, new { @class = "detail-input", @id = "DBName" })}
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.StartDate, new { @class = "label" })
+                @Html.TextBoxFor(m => m.objClientMaster.StartDateText, new { @class = "detail-input", @id = "StartDate", @readOnly = "readOnly" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.EndDate, new { @class = "label" })
+                @Html.TextBoxFor(m => m.objClientMaster.EndDateText, new { @class = "detail-input", @id = "EndDate", @readOnly = "readOnly" })
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.UserLimit, new { @class = "label" })
+           
+                <div class="ats-user-box" style="width:51%">
+                    @Html.DropDownListFor(m => m.objClientMaster.SubscriptionId, (SelectList)ViewBag.UserLimitList1, new { @class = "user-select" })
+                </div>
+            </div>
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.objClientMaster.Currency, new { @class = "label" })
+                
+                @Html.TextBoxFor(m => m.objClientMaster.Currency, new { @class = "detail-input" })
+            </div>
+            <div class="box">
+                <span class="label">@Html.LanguageLabel(ATS.BusinessEntity.Common.ClientLabel.FRM_CLIENT_LANGUAGE)</span>
+           
+                @{
+                string[] value = ViewBag.DisableLanguageName;
+                var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 2, new { @class = "styled_list", id = "RoleChk" });
+                
+                    @Html.CheckBoxListFor(model => model.Language.LanguageId,
+                      model => model.AvailableLanguage,
+                      language => language.LanguageId,
+                      language => language.LanguageName,
+           model => model.SelectedLanguage, new { @class = "styled_checkbox" }, htmlListInfo, value, x => new { })
+                                           
+                }
+            </div>
+        </div>
+       
+    </div>
+}
+@if (ViewBag.IsError != null)
+{
+    <script type="text/javascript">
+        VacancyModel.DisplayErrorMeesage('#commonMessage', '@ViewBag.IsError', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+    </script>
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        VacancyModel.DisplaySuccessMeesage('#commonMessage', '@ViewBag.Message', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT')
+    </script>
+}

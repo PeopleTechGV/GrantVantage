@@ -1,0 +1,151 @@
+﻿@model ATS.BusinessEntity.TVacQueCat
+@using BECommonConstantConst = ATS.BusinessEntity.Common.CommonConstant
+@*@System.Web.Optimization.Scripts.Render("~/bundles/AjaxVal")*@
+@System.Web.Optimization.Scripts.Render("~/bundles/jSalaryRange")
+
+@using (Ajax.BeginForm("AddSaveTVacQueCat", "TemplateVacancy", new { area = ATS.WebUi.Common.Constants.AREA_EMPLOYEE }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "SaveVacQueCatSuccess",
+            OnFailure = "SaveVacQueCatSuccessFailed"
+        }, new { id = "frmVacQueCat" }))
+{
+
+    <script>
+        var form = $("#frmVacQueCat");
+        $.validator.unobtrusive.parse(form);
+    </script>
+    @Html.HiddenFor(m => m.TVacId, new { Id = "TVacId" })
+    @Html.HiddenFor(m => m.TVacQueCatId, new { Id = "TVacQueCatId" })
+    @Html.HiddenFor(m => m.TVacRndId, new { Id = "TVacRndId" })
+    <div class="vacancy-Details" style="margin-left: 4%; width: 97%;">
+        @if (ViewBag.PageMode == "Update")
+        {
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.QueCatId, new { @class = "label" })
+                @Html.DropDownListFor(m => m.QueCatId, (SelectList)ViewBag.AllQueCat, new { @class = "detail-select ddlSelectSingleTVacQueCat", @disabled = "disabled" })
+                @Html.HiddenFor(m => m.QueCatId)
+            </div>
+
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.Weight, new { @class = "label" })
+                @Html.TextBoxFor(m => m.Weight, new { @class = "detail-input", @onchange = "CopyWight(this);" })
+            </div>
+        }
+        else
+        {
+            <div class="box">
+                @Html.LanguageLabelFor(m => m.QueCatId, new { @class = "label" })
+                @Html.ListBoxFor(m => m.ListQueCatId, ViewBag.AllQueCat as MultiSelectList, new { @class = "w100 detail-select ddlMultiSelect" })
+            </div>
+        }
+    </div>
+
+    <div class="vacancy-Details" style="margin-left: 4%; width: 97%;">
+        <div class="box">
+            <div class="box" style="border-bottom: 2px solid #953634; ">
+                <button type="submit" class="prfle-button-save CaseUpper" onclick="return ValidateForm(this);">@Html.LanguageLabel(BECommonConstantConst.FRM_QUE_CAT_SAVE)</button>
+                @if (Model.TVacQueCatId == Guid.Empty)
+                {
+                    <button id="btnRemove" type="button" class="prfle-button-delete CaseUpper" onclick="return RemoveTVacCategory(this);">Remove Category</button>
+                }
+              </div>
+        </div>
+    </div>
+    <script>
+        function ValidateForm(element) {
+
+            var _drp = $(".ddlSelectSingleTVacQueCat").length;
+            if (_drp > 0) {
+                return true;
+            }
+            else {
+                var chkLenght = $("div.ui-dropdownchecklist").find("input[type=checkbox]:checked").length;
+                if (chkLenght == 0) {
+                    $("#ddcl-ListQueCatId").addClass("input-validation-error");
+                    return false;
+                }
+                else {
+                    $("#ddcl-ListQueCatId").removeClass("input-validation-error");
+                    return true;
+                }
+            }
+        }
+
+        $(".ddlMultiSelect").dropdownchecklist({
+            emptyText: "Select One",
+            onItemClick: function (checkbox, selector) {
+                var values = "";
+                for (i = 0; i < selector.options.length; i++) {
+                    if (selector.options[i].selected && (selector.options[i].value != "")) {
+                        if (values != "")
+                            values += ",";
+                        values += selector.options[i].value;
+                    }
+                }
+            }
+        });
+
+        function CopyQueCat(element) {
+            var cur = $(element);
+            VacancyModel.CopyDataToHeader(cur, "ttldb", cur.find("option:selected").text())
+            var _QueCatId = $(element).find("option:selected").val();
+            _dataLink = '@Html.Raw(Url.Action("GetVacQueCatDetails", "MyVacancy", new { QueCatId = "_QUECATID_" }))'
+            _dataLink = _dataLink.replace("_QUECATID_", _QueCatId);
+            VacancyModel.CallGetMethod(
+                _dataLink, function (response) {
+                    if (cur.parents('.box').find('#Weight').length > 0) {
+                        cur.parents('.box').find('#Weight').val(response);
+                        CopyWight(cur.parents('.box').find('#Weight'));
+                    }
+                });
+        }
+
+        function CopyWight(changeVal) {
+            var cur = $(changeVal);
+            VacancyModel.CopyDataToHeader(cur, "lblCatWeight", cur.val())
+        }
+
+        function SaveVacQueCatSuccess(data) {
+            var jsonData = JSON.parse(data);
+            var VacQueCatAcc = ".VacQueCat";
+            var AccRound = ".AccTVacRounds";
+            var newJsonData = "<div>" + jsonData.Data + "</div>";
+            var _vacRndId = $(newJsonData).find(".acc-header").attr('data-roundid');
+            var $rndAcc = $(AccRound).find("div[data-pkid='" + _vacRndId + "']");
+            var _active = $(AccRound).accordion("option", "active");
+            var $VacQueCatAcc = $rndAcc.next().find("div[data-index='2']").next().find(VacQueCatAcc);
+            if (!jsonData.IsError) {
+                $VacQueCatAcc.find("div[class^='acc-header'][aria-selected='true']").remove('div')
+                $VacQueCatAcc.find("div[class^='acc-Content'][style^='display: block;']").remove('div');
+                var parentAcc = $VacQueCatAcc.parent().prev();
+                $(parentAcc).click();
+                $(parentAcc).click();
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            else {
+                VacancyModel.DisplaySuccessMeesage('#commonMessage', jsonData.Message, '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');
+            }
+            $("#addTvacQueCat").show();
+        }
+
+        function SaveVacQueCatSuccessFailed() {
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', 'Failed', '@ATS.WebUi.Common.Constants.JSCR_MSG_FADEOUT');;
+        }
+        function RemoveTVacCategory(element) {
+
+            var that = $(element).parents('.VacQueCat').next();
+            $(element).closest("form").closest('.acc-Content').prev().remove();
+            $(element).closest("form").closest('.acc-Content').remove();
+            var _$addbtn = $(that).find('#addTVacQueCat');
+            if (_$addbtn.length > 0) {
+                _$addbtn.show();
+            }
+            else {
+                $(that).append(MyVacancy.AddCategoryBtn);
+            }
+            return false;
+        }
+    </script>
+}

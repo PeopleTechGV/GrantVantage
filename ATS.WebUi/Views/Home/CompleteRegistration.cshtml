@@ -1,0 +1,76 @@
+﻿@model ATS.WebUi.Models.SignUpModel
+
+@{
+    ViewBag.Title = "CompleteRegistration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.IsExpired == true)
+{
+    <text>
+        <div>
+            <p>
+                <h2>Welcome  ,</h2>
+                <br />
+                Activation link is expired. Please <a href='@Url.Action("ResendActivationLink", "Home", new { UserId = @ViewBag.UserIdActivation })'>Click here</a> to resend the activation link
+            </p>
+            <br />
+        </div>
+    </text>
+}
+else if (ViewBag.Message != null)
+{
+    <text>
+        <div>
+            <h2>Welcome @Html.Raw(ViewBag.UserName)</h2>
+            <br />
+            <p>
+                @Html.Raw(ViewBag.Message)
+            </p>
+            <br />
+
+        </div>
+    </text>
+}
+else
+{
+    <text> @Html.Raw("Failed")
+    </text>
+}
+@if (ViewBag.RegistrationDone != null && ViewBag.RegistrationDone == true)
+{
+
+}
+else if (ViewBag.IsUserDetails == false)
+{
+    using (Html.BeginForm("CompleteRegistration", "Home", FormMethod.Post, new { @id = "signupAgain" }))
+    {
+        <text>
+            <div id="signupagaindiv">
+                <div class="vacancy-Details">
+                    <input type="Submit" value="Join Us" id="btnSub" class="btn-add-new" style="width:120px;" />
+                    <div class="left-div" style="padding:0px;">
+                        @Html.ValidationSummary()
+                        <div style="float: left;">
+                            @Html.HiddenFor(m => m.ContactId, new { @Value = ViewBag.ContactId })
+                            @Html.HiddenFor(m => m.ClientId, new { @Value = ViewBag.ClientId })
+
+
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.FirstName, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "detail-input" })
+                            </div>
+                            <div class="box">
+                                @Html.LanguageLabelFor(m => m.LastName, new { @class = "label" })
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "detail-input" })
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both">
+
+                    </div>
+                </div>
+            </div>
+        </text>
+    }
+}

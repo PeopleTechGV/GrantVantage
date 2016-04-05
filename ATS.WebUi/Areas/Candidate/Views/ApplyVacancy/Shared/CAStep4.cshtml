@@ -1,0 +1,60 @@
+﻿@using CommonFunction = ATS.WebUi.Common.CommonFunctions
+@using BEClient = ATS.BusinessEntity
+@{
+    string StrStep4Block = "";
+    StrStep4Block = ATS.WebUi.Common.CommonFunctions.GetLangBlockContent(ATS.BusinessEntity.LanguageBlock.Step3_4Block);
+    if (ViewBag.IsApplied == true)
+    {
+        <script>
+            VacancyModel.DisplaySuccessMeesage('#commonMessage', "You have already applied for this position", 4000);
+        </script>
+    }
+    BEClient.NavCount NavCount = CommonFunction.CandidateNavigationCount();
+
+    string Title = "Step 4: Complete Your Profile";
+}
+
+<div class="CanAccountLeft" style="margin-top:15px;">
+    <div class="CanAccountTitle">
+        @if (ViewBag.StepNo == null)
+        {
+            <span class="MainTitle">@Title</span>
+        }
+        else
+        {
+            <span class="MainTitle">Step @ViewBag.StepNo: Complete Your Profile</span>
+        }
+        <span class="SubTitle">@StrStep4Block</span>
+    </div>
+    <div class="box CAAction">
+        <button id="btnBackToScreeningAns" class="btn-icon24 bgBack24 floatleft">BACK</button>
+
+        <button id="btnCompleteProfile" class="btn-icon24 bgMyProfile24 floatright">COMPLETE PROFILE</button>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".LeftMenu").find(".lblMyAppCount").html(@NavCount.MyApplication);
+        $('#sticker').removeClass("GrayScale");
+        $('#sticker').find("a").unbind('click');
+        $('#sticker').find("button").show();
+        $('#sticker').find("#profileImg").show();
+        $('#sticker').find("#lblClickToUpload").show();
+    });
+
+    $("#btnBackToScreeningAns").click(function (element) {
+        var AnVacid = $('#AnVacancyId').val();
+        var dataLink = '@Url.Action("GetSubmittedQuestions", "ApplyVacancy", new { VacancyId = "_VACID_" })';
+        dataLink = dataLink.replace("_VACID_", AnVacid);
+        VacancyModel.CallGetMethod(dataLink, function (data) {
+            $("#CADirectApply").html('');
+            $("#CADirectApply").append(data);
+        });
+    });
+
+    $("#btnCompleteProfile").click(function () {
+        window.location.href = '@Url.Action("GetLatestProfile", "MyProfile")'
+    });
+</script>

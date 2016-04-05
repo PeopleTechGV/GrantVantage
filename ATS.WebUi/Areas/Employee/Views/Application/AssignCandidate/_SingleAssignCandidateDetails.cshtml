@@ -1,0 +1,9 @@
+﻿@using BEClient = ATS.BusinessEntity
+@model List<BEClient.Reviewers>
+
+
+@foreach (var _curr in Model)
+{
+    @Html.Partial("AssignCandidate/_ListView", @_curr)
+}
+
